@@ -21,4 +21,6 @@ t/basic.ovr
 t/basic.pod
 t/basic.t
 t/basic.txt
+t/man.t
 t/parselink.t
+t/text-errors.t

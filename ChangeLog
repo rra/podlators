@@ -1,3 +1,50 @@
+2002-01-02  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.19 released.
+
+	* t/man.t: New file, testing special behavior of Pod::Man.
+
+	* lib/Pod/Man.pm (cmd_head1): Keep track of whether the current
+	section is the NAME section.
+	(collapse): Don't apply guesswork to the text inside the NAME
+	section since it may get pulled out by programs like catman.
+	(begin_pod): No longer output .UC after the .TH macro; catman
+	doesn't like anything between the NAME section and .TH and .UC
+	doesn't appear to actually do anything on any modern platform.
+	Also initialize IN_NAME here.
+	* t/basic.man: Adjust to reflect lack of guesswork in the NAME
+	section and removal of the .UC request.
+
+2002-01-01  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Text/Termcap.pm (initialize): Terminal speed should be a
+	number, not a string.  Also fall back on a hard-coded terminal
+	speed if getospeed doesn't work.
+
+2001-12-31  Russ Allbery  <rra@stanford.edu>
+
+	* t/basic.pod: Add a verbatim paragraph right before a heading,
+	which was previously mishandled by Pod::Man.
+	* t/basic.cap: Update.
+	* t/basic.clr: Update.
+	* t/basic.man: Update.
+	* t/basic.ovr: Update.
+	* t/basic.txt: Update.
+
+	* lib/Pod/Man.pm (verbatim): Remove the blank line from .Ve in the
+	preamble and set NEEDSPACE here instead, as this works better
+	before headings and in other, similar situations.
+
+	* t/text-errors.t: New file, testing errors issued by Pod::Text.
+
+	* lib/Pod/Text.pm (interior_sequence): Fix error reporting for
+	unknown sequences; the code was initializing $seq twice.
+	(command): Fix the unknown command warning to use a colon rather
+	than quotes like the other warnings and update the documentation
+	to match.
+	(interior_sequence): Fix the unknown formatting code warning to
+	match the documentation.
+
 2001-11-30  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.18 released.

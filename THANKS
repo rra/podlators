@@ -88,3 +88,11 @@ nearly verbatim for Pod::ParseLink.
 Craig Berry, for reporting that POSIX::Termios doesn't work on VMS and
 providing the information necessary to add a workaround in
 Pod::Text::Termcap.
+
+Autrijus Tang, for finding a bug in error reporting in Pod::Text and
+providing a couple of test cases that became the beginning of the error
+test suite.
+
+Marcus Shawcroft, for suggesting that guesswork not be applied to the
+NAME section since that text is frequently pulled out by tools like
+catman that don't understand *roff.
