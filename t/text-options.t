@@ -46,6 +46,7 @@ while (<DATA>) {
     close TMP;
     my $parser = Pod::Text->new (%options) or die "Cannot create parser\n";
     $parser->parse_from_file ('tmp.pod', 'out.tmp');
+    undef $parser;
     open (TMP, 'out.tmp') or die "Cannot open out.tmp: $!\n";
     my $output;
     {
@@ -141,4 +142,34 @@ This is another indented paragraph.
 
               This is another indented paragraph.
 
+###
+
+###
+code 1
+###
+This is some random text.
+This is more random text.
+
+This is some random text.
+This is more random text.
+
+=head1 SAMPLE
+
+This is POD.
+
+=cut
+
+This is more random text.
+###
+This is some random text.
+This is more random text.
+
+This is some random text.
+This is more random text.
+
+SAMPLE
+    This is POD.
+
+
+This is more random text.
 ###
