@@ -8,13 +8,13 @@ $ID = q$Id$;
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 #
-# The driver script for Pod::SimpleText, Pod::Text::Termcap, and
+# The driver script for Pod::PlainText, Pod::Text::Termcap, and
 # Pod::Text::Color, invoked by perldoc -t among other things.
 
 require 5.004;
 
 use Getopt::Long qw(GetOptions);
-use Pod::SimpleText ();
+use Pod::PlainText ();
 use Pod::Usage qw(pod2usage);
 
 use strict;
@@ -30,7 +30,7 @@ for (my $i = 0; $i < @ARGV; $i++) {
     }
 }
 
-# Parse our options.  Use the same names as Pod::SimpleText for simplicity,
+# Parse our options.  Use the same names as Pod::PlainText for simplicity,
 # and default to sentence boundaries turned off for compatibility.
 my %options;
 $options{termcap} = -t STDOUT;
@@ -41,7 +41,7 @@ GetOptions (\%options, 'alt|a', 'color|c', 'help|h', 'indent|i=i',
 pod2usage (1) if $options{help};
 
 # Figure out what formatter we're going to use.  -c overrides -t.
-my $formatter = 'Pod::SimpleText';
+my $formatter = 'Pod::PlainText';
 if ($options{color}) {
     $formatter = 'Pod::Text::Color';
     require Pod::Text::Color;
@@ -69,7 +69,7 @@ pod2txt B<-h>
 
 =head1 DESCRIPTION
 
-B<pod2txt> is a front-end for Pod::SimpleText and its subclasses.  It uses
+B<pod2txt> is a front-end for Pod::PlainText and its subclasses.  It uses
 them to generate formatted ASCII text from POD source.  It can optionally
 use either termcap sequences or ANSI color escape sequences to format the
 text.
@@ -78,6 +78,9 @@ I<input> is the file to read for POD source (the POD can be embedded in
 code).  If I<input> isn't given, it defaults to STDIN.  I<output>, if given,
 is the file to which to write the formatted output.  If I<output> isn't
 given, the formatted output is written to STDOUT.
+
+pod2txt defaults to trying to use Pod::Text::Termcap if STDOUT is a tty.  To
+explicitly say not to attempt termcap escape sequences, use B<--notermcap>.
 
 =head1 OPTIONS
 
@@ -101,14 +104,13 @@ for C<=over> blocks.  Defaults to 4 spaces if this option isn't given.
 =item B<-l>, B<--loose>
 
 Print a blank line after a C<=head1> heading.  Normally, no blank line is
-printed after C<=head1>, although one is still printed after C<=head2>.
-This is the default because it's the expected formatting for manual pages;
-if you're formatting arbitrary text documents, using this option is
-recommended.
+printed after C<=head1>, although one is still printed after C<=head2>,
+because this is the expected formatting for manual pages; if you're
+formatting arbitrary text documents, using this option is recommended.
 
 =item B<-s>, B<--sentence>
 
-Assume each sentence ends in two spaces and try to preserve that spacing.
+Assume each sentence ends with two spaces and try to preserve that spacing.
 Without this option, all consecutive whitespace in non-verbatim paragraphs
 is compressed into a single space.
 
@@ -150,12 +152,12 @@ current terminal device.
 
 =head1 DIAGNOSTICS
 
-If B<pod2txt> fails with POD errors, see L<Pod::SimpleText> and
+If B<pod2txt> fails with POD errors, see L<Pod::PlainText> and
 L<Pod::Parser> for information about what those errors might mean.
 
 =head1 SEE ALSO
 
-L<Pod::SimpleText|Pod::SimpleText>, L<Pod::Text::Color|Pod::Text::Color>,
+L<Pod::PlainText|Pod::PlainText>, L<Pod::Text::Color|Pod::Text::Color>,
 L<Pod::Text::Termcap|Pod::Text::Termcap>, L<Pod::Parser|Pod::Parser>
 
 =head1 AUTHOR
