@@ -36,17 +36,19 @@ $Config{startperl}
 print OUT <<'!NO!SUBS!';
 
 # pod2roff -- Convert POD data to formatted *roff input.
-#             Copyright 1999 by Russ Allbery <rra@stanford.edu>
+#
+# Copyright 1999 by Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 #
-# The driver script for Pod::Roff, similar to pod2man.
+# The driver script for Pod::Man.  This script is expected to eventually
+# replace pod2man in the standard Perl distribution.
 
 require 5.004;
 
 use Getopt::Long qw(GetOptions);
-use Pod::Roff ();
+use Pod::Man ();
 use Pod::Usage qw(pod2usage);
 
 use strict;
@@ -67,7 +69,7 @@ if ($options{official} && !defined $options{center}) {
 }
 
 # Initialize and run the formatter.
-my $parser = Pod::Roff->new (\%options);
+my $parser = Pod::Man->new (\%options);
 $parser->parse_from_file (@ARGV);
 
 __END__
@@ -88,7 +90,7 @@ pod2txt B<--help>
 
 =head1 DESCRIPTION
 
-B<pod2roff> is a front-end for Pod::Roff, using it to generate *roff input
+B<pod2roff> is a front-end for Pod::Man, using it to generate *roff input
 from POD source.  The resulting *roff code is suitable for display on a
 terminal using nroff(1), normally via man(1), or printing using troff(1).
 
@@ -98,8 +100,8 @@ is the file to which to write the formatted output.  If I<output> isn't
 given, the formatted output is written to STDOUT.
 
 B<--section>, B<--release>, B<--center>, B<--date>, and B<--official> can be
-used to set the headers and footers to use; if not given, Pod::Roff will
-assume various defaults.  See below or L<Pod::Roff> for details.
+used to set the headers and footers to use; if not given, Pod::Man will
+assume various defaults.  See below or L<Pod::Man> for details.
 
 B<pod2roff> assumes that your *roff formatters have a fixed-width font named
 CW.  If yours is called something else (like CR), use B<--fixed> to specify
@@ -107,15 +109,14 @@ it.  This generally only matters for troff output for printing.  Similarly,
 you can set the fonts used for bold, italic, and bold italic fixed-width
 output.
 
-Besides the obvious pod conversions, Pod::Roff, and therefore pod2man also
+Besides the obvious pod conversions, Pod::Man, and therefore pod2man also
 takes care of formatting func(), func(n), and simple variable references
 like $foo or @bar so you don't have to use code escapes for them; complex
 expressions like C<$fred{'stuff'}> will still need to be escaped, though.
 It also translates dashes that aren't used as hyphens into en dashes, makes
-long dashes--like this--into proper em dashes, fixes "paired quotes," makes
-C++ and PI look right, puts a little space between double underbars, makes
-ALLCAPS a teeny bit smaller in troff(1), and escapes stuff that *roff treats
-as special so that you don't have to.
+long dashes--like this--into proper em dashes, fixes "paired quotes," and
+takes care of several other troff-specific tweaks.  See L<Pod::Man> for
+complete information.
 
 =head1 OPTIONS
 
@@ -151,7 +152,7 @@ version).  Defaults to CI.  Only matters for troff(1) output.
 =item B<--fixedbolditalic>=I<font>
 
 Bold italic (probably actually oblique) version of the fixed-width font.
-Pod::Roff doesn't assume you have this, and defaults to CB.  Some systems
+Pod::Man doesn't assume you have this, and defaults to CB.  Some systems
 (such as Solaris) have this font available as CX.  Only matters for troff(1)
 output.
 
@@ -162,7 +163,7 @@ Print out usage information.
 =item B<-l>, B<--lax>
 
 Don't complain when required sections are missing.  Not currently used, as
-POD checking functionality is not yet implemented in Pod::Roff.
+POD checking functionality is not yet implemented in Pod::Man.
 
 =item B<-o>, B<--official>
 
@@ -195,8 +196,8 @@ section 3 will be selected.
 
 =head1 DIAGNOSTICS
 
-If B<pod2txt> fails with POD errors, see L<Pod::PlainText> and
-L<Pod::Parser> for information about what those errors might mean.
+If B<pod2roff> fails with errors, see L<Pod::Man> and L<Pod::Parser> for
+information about what those errors might mean.
 
 =head1 EXAMPLES
 
@@ -216,7 +217,13 @@ To get index entries on stderr, turn on the F register, as in:
 
 The indexing merely outputs messages via C<.tm> for each major page,
 section, subsection, item, and any C<XE<lt>E<gt>> directives.  See
-L<Pod::Roff> for more details.
+L<Pod::Man> for more details.
+
+=head1 BUGS
+
+Lots of this documentation is duplicated from L<Pod::Man>.
+
+POD checking and the corresponding B<--lax> option don't work yet.
 
 =head1 NOTES
 
@@ -227,9 +234,9 @@ The name of the program being documented is conventionally written in bold
 (using BE<lt>E<gt>) wherever it occurs, as are all program options.
 Arguments should be written in italics (IE<lt>E<gt>).  Functions are
 traditionally written in italics; if you write a function as function(),
-Pod::Roff will take care of this for you.  Literal code or commands should
+Pod::Man will take care of this for you.  Literal code or commands should
 be in CE<lt>E<gt>.  References to other man pages should be in the form
-C<manpage(section)>, and Pod::Roff will automatically format those
+C<manpage(section)>, and Pod::Man will automatically format those
 appropriately.  As an exception, it's traditional not to use this form when
 referring to module documentation; use C<LE<lt>Module::NameE<gt>> instead.
 
@@ -388,7 +395,7 @@ numbering conventions.
 
 =head1 SEE ALSO
 
-L<Pod::Roff|Pod::Roff>, L<Pod::Parser|Pod::Parser>, man(1), nroff(1),
+L<Pod::Man|Pod::Man>, L<Pod::Parser|Pod::Parser>, man(1), nroff(1),
 troff(1), man(7)
 
 The man page documenting the an macro set may be man(5) instead of man(7) on
