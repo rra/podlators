@@ -1,3 +1,44 @@
+2000-09-03  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.03 released.
+
+	* scripts/pod2man.PL: Added a new --quotes option.
+	* scripts/pod2text.PL: Likewise.
+
+	* lib/Pod/Man.pm: Changed the preamble to allow configurable quote
+	characters around C<> text.
+	(initialize): Parse the new quotes option to set the configurable
+	quote characters.
+	(begin_pod): Substitute the quote characters into the preamble.
+	Make a new copy of the preamble for each file so that the
+	fixed-width font and the quote characters may change between
+	different Pod::Man objects and different files.
+
+	* lib/Pod/Text.pm (initialize): Added support for a quotes option
+	to specify what quotes to use around C<> text.
+	(seq_c): Use the configurable quote characters.
+
+	* lib/Pod/Text.pm (command): Check using can() before calling cmd_
+	handlers and report a nice error when encountering an unknown
+	paragraph command.
+	* lib/Pod/Man.pm (command): Likewise.
+
+2000-09-02  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Text.pm: Add sol and verbar to the escapes.
+	* lib/Pod/Man.pm: Likewise.
+
+	* lib/Pod/Text.pm (pod2text): When given two arguments, was
+	incorrectly assigning to $_[0], causing other strange problems.
+
+	* lib/Pod/Man.pm (cmd_item): Fix the regex for stripping bullets
+	from index entries so that it doesn't strip a leading 'o'.
+
+2000-04-30  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm: In the prelude, terminate the .IX definition
+	with .. instead of ".    ." for groff.
+
 2000-04-25  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.02 released.
