@@ -1,5 +1,12 @@
 2001-11-26  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 1.16 released.
+
+	* t/basic.t: Use an @INC path of ../lib for Perl core tests.
+	(source_path): New function to find the test source files, needed
+	when testing as Part of Perl core.  Used for all source file
+	paths.
+
 	* VERSION: podlators 1.15 released.
 
 	* scripts/pod2man.PL: Delete the lax option before calling
