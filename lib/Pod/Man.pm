@@ -38,7 +38,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Perl core and too many things could munge CVS magic revision strings.
 # This number should ideally be the same as the CVS revision in podlators,
 # however.
-$VERSION = 1.12;
+$VERSION = 1.13;
 
 
 ############################################################################
@@ -410,6 +410,10 @@ sub begin_pod {
         }
     }
 
+    # If $name contains spaces, quote it; this mostly comes up in the case
+    # of input from stdin.
+    $name = '"' . $name . '"' if ($name =~ /\s/);
+
     # Modification date header.  Try to use the modification time of our
     # input.
     if (!defined $$self{date}) {
@@ -630,6 +634,7 @@ sub cmd_head1 {
     local $_ = $self->parse (@_);
     s/\s+$//;
     s/\\s-?\d//g;
+    s/\s*\n\s*/ /g;
     if ($$self{ITEMS} > 1) {
         $$self{ITEMS} = 0;
         $self->output (".PD\n");
@@ -644,6 +649,7 @@ sub cmd_head2 {
     my $self = shift;
     local $_ = $self->parse (@_);
     s/\s+$//;
+    s/\s*\n\s*/ /g;
     if ($$self{ITEMS} > 1) {
         $$self{ITEMS} = 0;
         $self->output (".PD\n");
@@ -658,6 +664,7 @@ sub cmd_head3 {
     my $self = shift;
     local $_ = $self->parse (@_);
     s/\s+$//;
+    s/\s*\n\s*/ /g;
     if ($$self{ITEMS} > 1) {
         $$self{ITEMS} = 0;
         $self->output (".PD\n");
@@ -673,6 +680,7 @@ sub cmd_head4 {
     my $self = shift;
     local $_ = $self->parse (@_);
     s/\s+$//;
+    s/\s*\n\s*/ /g;
     if ($$self{ITEMS} > 1) {
         $$self{ITEMS} = 0;
         $self->output (".PD\n");
