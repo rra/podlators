@@ -63,7 +63,7 @@ my $stdin;
 # allowing short forms as well.  --lax is currently ignored.
 my %options;
 Getopt::Long::config ('bundling_override');
-GetOptions (\%options, 'section|s=s', 'release|r=s', 'center|c=s',
+GetOptions (\%options, 'section|s=s', 'release|r:s', 'center|c=s',
             'date|d=s', 'fixed=s', 'fixedbold=s', 'fixeditalic=s',
             'fixedbolditalic=s', 'name|n=s', 'official|o', 'quotes|q=s',
             'lax|l', 'help|h', 'verbose|v') or exit 1;
@@ -100,7 +100,7 @@ pod2man - Convert POD data to formatted *roff input
 
 =head1 SYNOPSIS
 
-pod2man [B<--section>=I<manext>] [B<--release>=I<version>]
+pod2man [B<--section>=I<manext>] [B<--release>[=I<version>]]
 [B<--center>=I<string>] [B<--date>=I<string>] [B<--fixed>=I<font>]
 [B<--fixedbold>=I<font>] [B<--fixeditalic>=I<font>]
 [B<--fixedbolditalic>=I<font>] [B<--name>=I<name>] [B<--official>]
