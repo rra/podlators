@@ -1,9 +1,15 @@
-                          podlators version 1.07
+                          podlators version 1.08
              (Format POD source into various output formats)
 
   Copyright 1999, 2000, 2001 Russ Allbery <rra@stanford.edu>.  This
   program is free software; you can redistribute it and/or modify it under
   the same terms as Perl itself.
+
+  I welcome all bug reports and patches for this package (and in
+  particular, if you're looking for a project, see TODO).  However, please
+  be aware that I tend to be extremely busy and to get a lot of mail.
+  I'll save your mail and get to it as soon as I can, but depending on how
+  busy I am it may take me a couple of months.
 
 
 INTRODUCTION
@@ -30,11 +36,12 @@ INTRODUCTION
   pod2man, the replacement for pod2man found in Perl distributions prior
   to 5.6.0.  The modules contained in it use Pod::Parser rather than doing
   the POD parsing themselves, and are designed to be object-oriented and
-  to subclass.  As an example, two useful subclasses of Pod::Text are also
-  included: Pod::Text::Color, which uses ANSI color escape sequences to
-  highlight text, and Pod::Text::Termcap, which determines the correct
+  to subclass.  As an example, three useful subclasses of Pod::Text are
+  also included: Pod::Text::Color, which uses ANSI color escape sequences
+  to highlight text, Pod::Text::Termcap, which determines the correct
   control sequences to embolden and underline text from terminal termcap
-  information.
+  information, and Pod::Text::Overstrike, which uses the backspacing
+  method of underlining and bold also used by the output of nroff.
 
 
 Pod::Text
