@@ -29,7 +29,9 @@ $loaded = 1;
 print "ok 1\n";
 
 # Hard-code a few values to try to get reproducible results.
-@ENV{qw(TERMCAP COLUMNS)} = ('co=80:do=^J:md=\E[1m:us=\E[4m:me=\E[m', 80);
+$ENV{COLUMNS} = 80;
+$ENV{TERM} = 'xterm';
+$ENV{TERMCAP} = 'xterm:co=80:do=^J:md=\E[1m:us=\E[4m:me=\E[m';
 
 # Map of translators to file extensions to find the formatted output to
 # compare against.
