@@ -43,7 +43,7 @@ use vars qw(@ISA @EXPORT %ESCAPES $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.17;
+$VERSION = 2.18;
 
 
 ##############################################################################
@@ -227,7 +227,7 @@ sub command {
         ($file, $line) = $paragraph->file_line;
         $text =~ s/\n+\z//;
         $text = " $text" if ($text =~ /^\S/);
-        warn qq($file:$line: Unknown command paragraph "=$command$text"\n);
+        warn qq($file:$line: Unknown command paragraph: =$command$text\n);
         return;
     }
 }
@@ -316,7 +316,7 @@ sub interior_sequence {
     elsif ($command eq 'L') { return $self->seq_l ($_, $seq) }
     else {
         my ($file, $line) = $seq->file_line;
-        warn "$file:$line: Unknown formatting code $command<$_>\n";
+        warn "$file:$line: Unknown formatting code: $command<$_>\n";
     }
 }
 
@@ -769,7 +769,7 @@ and the input file it was given could not be opened.
 (F) The quote specification given (the quotes option to the constructor) was
 invalid.  A quote specification must be one, two, or four characters long.
 
-=item %s:%d: Unknown command paragraph "%s".
+=item %s:%d: Unknown command paragraph: %s
 
 (W) The POD source contained a non-standard command paragraph (something of
 the form C<=command args>) that Pod::Man didn't know about.  It was ignored.
