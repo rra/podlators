@@ -37,7 +37,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.21;
+$VERSION = 1.22;
 
 
 ##############################################################################
@@ -1132,10 +1132,10 @@ sub switchquotes {
         # changes for nroff in =item tags, since they're unnecessary.
         $nroff =~ s/\\f\(CW(.*)\\f[PR]/$1/g;
 
-        # Now finally output the command.  Only bother with .if if the nroff
+        # Now finally output the command.  Only bother with .ie if the nroff
         # and troff output isn't the same.
         if ($nroff ne $troff) {
-            return ".if n $command $nroff\n.el $command $troff\n";
+            return ".ie n $command $nroff\n.el $command $troff\n";
         } else {
             return "$command $nroff\n";
         }
