@@ -2,6 +2,16 @@
 
 	* VERSION: podlators 1.05 released.
 
+	* scripts/pod2man.PL: Allow pod2man to take multiple pairs of
+	input and output files on the command line to decrease the time
+	that it takes to process all of Perl's documentation.
+
+	* lib/Pod/Man.pm (textmapfonts): New function, like mapfonts but
+	without the last change to work around a Solaris 2.6 nroff bug.
+	(textblock): Use textmapfonts instead of mapfonts.
+	(cmd_head4): Likewise.
+	(cmd_item): Likewise.
+
 	* lib/Pod/Man.pm (switchquotes): Turned into a method rather than
 	a static function.  Switch \*C` and \*C' sequences from C<> as
 	well as literal double-quotes if the quote character contains
