@@ -34,7 +34,7 @@ use Exporter;
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.03;
+$VERSION = 1.04;
 
 
 ##############################################################################
@@ -49,7 +49,7 @@ sub _parse_section {
 
     # If the whole link is enclosed in quotes, interpret it all as a section
     # even if it contains a slash.
-    return (undef, $1) if (/^"\s*(.*?)\s*"$/);
+    return (undef, $1) if ($link =~ /^"\s*(.*?)\s*"$/);
 
     # Split into page and section on slash, and then clean up quoting in the
     # section.  If there is no section and the name contains spaces, also
