@@ -1,4 +1,18 @@
+2000-03-30  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.01 released.
+
+	* Makefile.PL: Install the modules in the Perl core area if the
+	Perl version is 5.6.0 or higher.
+
+2000-03-18  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (begin_pod): Strip a leading lib/ from a file
+	name for module man pages, needed for ExtUtils::MakeMaker.
+
 2000-03-16  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.00 released.
 
 	* Makefile.PL: pod2roff renamed to pod2man.
 
