@@ -65,16 +65,15 @@ my %translators = ('Pod::Man'              => 'man',
 my $n = 2;
 for (sort keys %translators) {
     if ($_ eq 'Pod::Text::Color') {
-        eval { require Pod::Text::Color };
-        if ($@ && $@ =~ m%Term..?ANSIColor%) {
+        eval { require Term::ANSIColor };
+        if ($@) {
             print "ok $n # skip\n";
             $n++;
             print "ok $n # skip\n";
             $n++;
             next;
-        } elsif ($@) {
-            die $@;
         }
+        require Pod::Text::Color;
     }
     my $parser = $_->new (%options);
     print (($parser && ref ($parser) eq $_) ? "ok $n\n" : "not ok $n\n");
