@@ -35,19 +35,20 @@ $Config{startperl}
 
 print OUT <<'!NO!SUBS!';
 
-# pod2txt -- Convert POD data to formatted ASCII text.
-#            Copyright 1999 by Russ Allbery <rra@stanford.edu>
+# pod2text -- Convert POD data to formatted ASCII text.
+#
+# Copyright 1999 by Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 #
-# The driver script for Pod::PlainText, Pod::Text::Termcap, and
-# Pod::Text::Color, invoked by perldoc -t among other things.
+# The driver script for Pod::Text, Pod::Text::Termcap, and Pod::Text::Color,
+# invoked by perldoc -t among other things.
 
 require 5.004;
 
 use Getopt::Long qw(GetOptions);
-use Pod::PlainText ();
+use Pod::Text ();
 use Pod::Usage qw(pod2usage);
 
 use strict;
@@ -63,8 +64,8 @@ for (my $i = 0; $i < @ARGV; $i++) {
     }
 }
 
-# Parse our options.  Use the same names as Pod::PlainText for simplicity,
-# and default to sentence boundaries turned off for compatibility.
+# Parse our options.  Use the same names as Pod::Text for simplicity, and
+# default to sentence boundaries turned off for compatibility.
 my %options;
 $options{termcap} = -t STDOUT;
 $options{sentence} = 0;
@@ -74,9 +75,11 @@ GetOptions (\%options, 'alt|a', 'color|c', 'help|h', 'indent|i=i',
 pod2usage (1) if $options{help};
 
 # Figure out what formatter we're going to use.  -c overrides -t.
-my $formatter = 'Pod::PlainText';
+my $formatter = 'Pod::Text';
 if ($options{color}) {
     $formatter = 'Pod::Text::Color';
+    eval { require Term::ANSIColor };
+    if ($@) { die "-c (--color) requires Term::ANSIColor be installed\n" }
     require Pod::Text::Color;
 } elsif ($options{termcap}) {
     $formatter = 'Pod::Text::Termcap';
@@ -92,28 +95,28 @@ __END__
 
 =head1 NAME
 
-pod2txt - Convert POD data to formatted ASCII text
+pod2text - Convert POD data to formatted ASCII text
 
 =head1 SYNOPSIS
 
-pod2txt [B<-aclst>] [B<-i> I<indent>] [B<-w> I<width>] [I<input> [I<output>]]
+pod2text [B<-aclst>] [B<-i> I<indent>] [B<-w> I<width>] [I<input> [I<output>]]
 
-pod2txt B<-h>
+pod2text B<-h>
 
 =head1 DESCRIPTION
 
-B<pod2txt> is a front-end for Pod::PlainText and its subclasses.  It uses
-them to generate formatted ASCII text from POD source.  It can optionally
-use either termcap sequences or ANSI color escape sequences to format the
-text.
+B<pod2text> is a front-end for Pod::Text and its subclasses.  It uses them
+to generate formatted ASCII text from POD source.  It can optionally use
+either termcap sequences or ANSI color escape sequences to format the text.
 
 I<input> is the file to read for POD source (the POD can be embedded in
 code).  If I<input> isn't given, it defaults to STDIN.  I<output>, if given,
 is the file to which to write the formatted output.  If I<output> isn't
 given, the formatted output is written to STDOUT.
 
-pod2txt defaults to trying to use Pod::Text::Termcap if STDOUT is a tty.  To
-explicitly say not to attempt termcap escape sequences, use B<--notermcap>.
+B<pod2text> defaults to trying to use Pod::Text::Termcap if STDOUT is a tty.
+To explicitly say not to attempt termcap escape sequences, use
+B<--notermcap>.
 
 =head1 OPTIONS
 
@@ -133,6 +136,10 @@ requires that Term::ANSIColor be installed on your system.
 
 Set the number of spaces to indent regular text, and the default indentation
 for C<=over> blocks.  Defaults to 4 spaces if this option isn't given.
+
+=item B<-h>, B<--help>
+
+Print out usage information and exit.
 
 =item B<-l>, B<--loose>
 
@@ -154,8 +161,8 @@ sequences for the terminal from termcap, and use that information in
 formatting the output.  Output will be wrapped at two columns less than the
 width of your terminal device.  Using this option requires that your system
 have a termcap file somewhere where Term::Cap can find it.  With this
-option, the output of B<pod2txt> will contain terminal control sequences for
-your current terminal type.
+option, the output of B<pod2text> will contain terminal control sequences
+for your current terminal type.
 
 =item B<-w>, B<--width=>I<width>, B<->I<width>
 
@@ -165,32 +172,49 @@ your terminal device.
 
 =back
 
+=head1 DIAGNOSTICS
+
+If B<pod2text> fails with errors, see L<Pod::Text> and L<Pod::Parser> for
+information about what those errors might mean.  Internally, it can also
+produce the following diagnostics:
+
+=over 4
+
+=item -c (--color) requires Term::ANSIColor be installed
+
+(F) B<-c> or B<--color> were given, but Term::ANSIColor could not be
+loaded.
+
+=item Unknown option: %s
+
+(F) An unknown command line option was given.
+
+=back
+
+In addition, other L<Getopt::Long|Getopt::Long> error messages may result
+from invalid command-line options.
+
 =head1 ENVIRONMENT
 
 =over 4
 
 =item COLUMNS
 
-If B<-t> is given, B<pod2txt> will take the current width of your screen
+If B<-t> is given, B<pod2text> will take the current width of your screen
 from this environment variable, if available.  It overrides terminal width
 information in TERMCAP.
 
 =item TERMCAP
 
-If B<-t> is given, B<pod2txt> will use the contents of this environment
+If B<-t> is given, B<pod2text> will use the contents of this environment
 variable if available to determine the correct formatting sequences for your
 current terminal device.
 
 =back
 
-=head1 DIAGNOSTICS
-
-If B<pod2txt> fails with POD errors, see L<Pod::PlainText> and
-L<Pod::Parser> for information about what those errors might mean.
-
 =head1 SEE ALSO
 
-L<Pod::PlainText|Pod::PlainText>, L<Pod::Text::Color|Pod::Text::Color>,
+L<Pod::Text|Pod::Text>, L<Pod::Text::Color|Pod::Text::Color>,
 L<Pod::Text::Termcap|Pod::Text::Termcap>, L<Pod::Parser|Pod::Parser>
 
 =head1 AUTHOR
