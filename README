@@ -1,4 +1,4 @@
-                          podlators version 1.13
+                          podlators version 1.14
              (Format POD source into various output formats)
 
   Copyright 1999, 2000, 2001 Russ Allbery <rra@stanford.edu>.  This
@@ -42,6 +42,10 @@ INTRODUCTION
   control sequences to embolden and underline text from terminal termcap
   information, and Pod::Text::Overstrike, which uses the backspacing
   method of underlining and bold also used by the output of nroff.
+
+  A general parser utility module for L<> formatting code parsing is also
+  included, Pod::ParseLink.  This implements only the simple parse
+  described in perlpodspec.
 
 
 Pod::Text
