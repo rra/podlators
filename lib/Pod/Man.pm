@@ -38,7 +38,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.25;
+$VERSION = 1.26;
 
 
 ##############################################################################
@@ -933,6 +933,7 @@ sub guesswork {
       \b
      } {
          my ($prefix, $hyphen, $main, $suffix) = ($1, $2, $3, $4);
+         $hyphen ||= '';
          $main =~ s/\\-/-/g;
          $prefix . $hyphen . $main . $suffix;
     }egx;
