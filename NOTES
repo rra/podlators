@@ -337,3 +337,41 @@ currently doesn't have E<> escapes for.
 .    ds oe oe
 .    ds Oe OE
 .\}
+
+                      ------------------------------
+
+The following patch implements anchor text for URLs (at the cost of losing
+the URL itself in text and man page output).  This patch has not been
+applied due to controversy over whether this is the right approach (anchor
+text in URL links is currently not allowed in perlpodspec).
+
+--- lib/Pod/ParseLink.pm	15 Jul 2002 05:46:00 -0000	1.6
++++ lib/Pod/ParseLink.pm	15 Jan 2003 23:06:58 -0000
+@@ -86,18 +86,18 @@ sub _infer_text {
+ sub parselink {
+     my ($link) = @_;
+     $link =~ s/\s+/ /g;
++    my $text;
++    if ($link =~ /\|/) {
++        ($text, $link) = split (/\|/, $link, 2);
++    }
+     if ($link =~ /\A\w+:[^:\s]\S*\Z/) {
+-        return (undef, $link, $link, undef, 'url');
+-    } else {
+-        my $text;
+-        if ($link =~ /\|/) {
+-            ($text, $link) = split (/\|/, $link, 2);
+-        }
+-        my ($name, $section) = _parse_section ($link);
+-        my $inferred = $text || _infer_text ($name, $section);
+-        my $type = ($name && $name =~ /\(\S*\)/) ? 'man' : 'pod';
+-        return ($text, $inferred, $name, $section, $type);
++        my $inferred = $text || $link;
++        return ($text, $inferred, $link, undef, 'url');
+     }
++    my ($name, $section) = _parse_section ($link);
++    my $inferred = $text || _infer_text ($name, $section);
++    my $type = ($name && $name =~ /\(\S*\)/) ? 'man' : 'pod';
++    return ($text, $inferred, $name, $section, $type);
+ }
+ 
