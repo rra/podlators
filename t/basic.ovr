@@ -184,8 +184,8 @@ FFOORRMMAATTTTIINNGG  CCOODDEESS
     up doing what you might expect since the first > will still terminate
     the first < seen.
 
-    Lets make sure these work for empty ones too, like and ">>" (just to be
-    obnoxious)
+    Lets make sure these work for empty ones too, like "" and ">>" (just to
+    be obnoxious)
 
     The statement: "This is dog kind's _f_i_n_e_s_t hour!" is a parody of a
     quotation from Winston Churchill.
