@@ -1,3 +1,32 @@
+2000-10-09  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.04 released.
+
+	* lib/Pod/Man.pm: Output .PD 0 and .PD around repeated =item tags
+	so that they're formatted without intervening blank lines,
+	improving formatting of e.g. perlfunc.pod.
+	(initialize): Initialize ITEMS to 0.
+	(verbatim): Call makespace unconditionally.
+	(textblock): Likewise.
+	(cmd_head1): Output .PD and reset ITEMS if ITEMS > 1.
+	(cmd_head2): Likewise.
+	(cmd_item): Count the number of consecutive =item commands and
+	output .PD 0 before the second.
+	(makespace): Handle the check for NEEDSPACE here rather than in
+	the caller and output .PD and reset ITEMS if ITEMS > 1.
+
+	* lib/Pod/Text.pm: Fix incorrect mappings for E<Iacute> and
+	E<iacute>, reported by Sean Burke.
+
+2000-10-08  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (initialize): Change the default quote character
+	for C<> to be double quotes rather than matched left/right single
+	quotes.
+
+	* lib/Pod/Text.pm (command): Fixed a shadowed variable warning.
+	* lib/Pod/Man.pm (command): Likewise.
+
 2000-09-03  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.03 released.
