@@ -1,5 +1,10 @@
 2001-11-15  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 1.13 released.
+
+	* lib/Pod/Man.pm (guesswork): Minor tweak to make the hyphen
+	handling -w clean.
+
 	* VERSION: podlators 1.12 released.
 
 2001-11-14  Russ Allbery  <rra@stanford.edu>
