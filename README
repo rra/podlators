@@ -1,4 +1,4 @@
-                          podlators version 0.05
+                          podlators version 0.06
              (Format POD source into various output formats)
 
   Copyright 1999 Russ Allbery <rra@stanford.edu>.  All rights reserved.
@@ -8,35 +8,68 @@
 
 INTRODUCTION
 
-  This package currently contains only a proposed replacement for pod2text
-  and Pod::Text in the current Perl distribution (Pod::PlainText is the
-  current name of the module).  The modules contained in it use
-  Pod::Parser rather than doing the POD parsing themselves, and are
-  designed to be object-oriented and very easy to subclass.  As an
-  example, two useful subclasses of Pod::PlainText are also included:
-  Pod::Text::Color, which uses ANSI color escape sequences to highlight
-  text, and Pod::Text::Termcap, which determines the correct control
-  sequences to embolden and underline text from terminal termcap
-  information.
+  WARNING: Installation of this package will override the version of
+  Pod::Text that comes with your Perl distribution and replace the
+  pod2text script that comes with it.  The version in this package
+  attempts to be backwards-compatible but is not bug compatible, and some
+  things like the default wrap margin have changed.  The version contained
+  in this package is the default version for Perl 5.005_56 or thereabouts
+  and higher, but may be slightly newer depending on how updates have been
+  synchronized.
 
-  The output of Pod::PlainText should be identical to the output of the
-  original Pod::Text module, except for fixed bugs.  This has been tested
-  by comparing the output of both modules when run on perlfunc.pod from
-  the Perl 5.005_02 distribution, by comparing output for several other
-  shorter pages, and by using the Pod::Parser test suite.
+  WARNING: This package requires Pod::Parser be installed.
 
-  Known bugs fixed relative to Pod::Text:  The first line of text after an
-  =item command is wrapped correctly, various problems with L<> text have
-  been fixed, and if you use Pod::Text::Termcap, the termcap sequences
-  work correctly and use POSIX termios to determine the terminal speed.
+  This package contains the replacement for pod2text and Pod::Text in
+  versions of Perl 5.005 and earlier.  It also contains Pod::Man and
+  pod2roff, a proposed replacement for pod2man in the current Perl
+  distribution.  The modules contained in it use Pod::Parser rather than
+  doing the POD parsing themselves, and are designed to be object-oriented
+  and to subclass.  As an example, two useful subclasses of Pod::PlainText
+  are also included: Pod::Text::Color, which uses ANSI color escape
+  sequences to highlight text, and Pod::Text::Termcap, which determines
+  the correct control sequences to embolden and underline text from
+  terminal termcap information.
+
+
+Pod::Text
+
+  The default output of Pod::Text should be mostly identical to the output
+  of the original Pod::Text module, except for fixed bugs.  This has been
+  tested by comparing the output of both modules when run on perlfunc.pod
+  from the Perl 5.005_02 distribution, by comparing output for several
+  other shorter pages, and by using the Pod::Parser test suite.
+
+  Known bugs fixed relative to the original Pod::Text:  The first line of
+  text after an =item command is wrapped correctly, various problems with
+  L<> text have been fixed, and if you use Pod::Text::Termcap, the termcap
+  sequences work correctly and use POSIX termios to determine the terminal
+  speed.
 
   There are also a number of additional features, mostly finer control of
   the output of the module under a variety of circumstances.  The
   programmatic interface is also cleaner.
 
-  This package has a general name because it will likely eventually
-  include other translators for other output formats.  LaTeX and *roff are
-  the most likely to show up first.
+
+Pod::Man
+
+  The output of Pod::Man should be mostly identical to the output of
+  pod2man except for fixed bugs and added new features.  This has been
+  tested by comparing the output of both modules given a variety of
+  different input.
+
+  Known bugs fixed relative to pod2man:  Nested fonts now work correctly,
+  nested =over/=back pairs now work correctly, double quotes are now
+  correct in headings and =item tags, hyphens and en dashes are now more
+  frequently correct, use of small caps is now more consistent and
+  correct, em dashes are now more frequently correct and double dashes for
+  things like long options are no longer converted to em dashes, various
+  hyphenation problems have been fixed by always turning off hyphenation,
+  and index entries no longer cause trailing whitespace and are emitted
+  close to the relevant text.
+
+  Additional features over pod2man include a shorter and better documented
+  prelude, inclusion of `' quotes around sections marked with C<> when
+  viewed using nroff, and a better programmatic interface.
 
 
 INSTALLATION
@@ -46,25 +79,37 @@ INSTALLATION
 
           perl Makefile.PL
           make
-          make test
           make install
 
-  You'll probably need to do the last as root.  This will also install a
-  driver script named pod2txt; see it's man page for more information.
+  WARNING: As mentioned above, this will install Pod::Text in a location
+  that will likely override the version that comes with Perl, and will
+  probably overwrite Perl's pod2text with the version that comes with this
+  package.  Save a backup copy of pod2text if you do this, and make sure
+  this is what you want.
+
+  You'll probably need to do the last as root.  This will also install
+  driver scripts named pod2text and pod2roff; see their man pages for more
+  information.
 
   Note that in order to use Pod::Text::Color, you have to have the module
   Term::ANSIColor (available from CPAN) installed.
 
+  Pod::Man and pod2roff can be installed without overriding or overwriting
+  any part of the standard Perl installation; if you want to install just
+  them and not Pod::Text and its driver script, run make and then copy
+  blib/lib/Pod/Man.pm and blib/script/pod2roff to the appropriate places
+  (your Perl module directory and somewhere on your path, respectively).
+
 
 THANKS
 
-  To Tom Christiansen, for writing the original Pod::Text.  This module is
-  based very heavily on that, particularly the termcap handling, and its
-  output is designed to mimic the output of that module.
+  To Tom Christiansen, for writing the original Pod::Text and pod2man.
+  These modules are based very heavily on those, particularly the termcap
+  handling and pretty much all of Pod::Man.
 
-  To Brad Appleton, for writing Pod::Parser, which made writing this
-  entire package the work of a single Saturday, and for finding lots of
-  bugs in the first try.
+  To Brad Appleton, for writing Pod::Parser, which made writing Pod::Text
+  the work of a single Saturday and Pod::Man the work of another single
+  Saturday, and for finding lots of bugs in the first try.
 
   To Gurusamy Sarathy, for pointing out the need for a pod2text()
   compatibility interface for older applications, and for being willing to
