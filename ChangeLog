@@ -1,3 +1,10 @@
+2003-03-30  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.26 released.
+
+	* lib/Pod/Man.pm: Make sure the module returns 1, to keep Perl
+	5.8.0 happy.
+
 2003-01-04  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.25 released.
