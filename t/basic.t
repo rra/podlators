@@ -74,6 +74,7 @@ for (sort keys %translators) {
     # changes with each version change or touch of the input file.
     if ($_ eq 'Pod::Man') {
         $parser->parse_from_file (source_path ('basic.pod'), 'out.tmp');
+        undef $parser;
         open (TMP, 'out.tmp') or die "Cannot open out.tmp: $!\n";
         open (OUTPUT, "> out.$translators{$_}")
             or die "Cannot create out.$translators{$_}: $!\n";
