@@ -518,7 +518,7 @@ section numbering conventions.
 
 =head1 SEE ALSO
 
-L<Pod::Man>, L<Pod::Parser>, L<man(1)>, L<nroff(1)>, L<podchecker(1)>,
+L<Pod::Man>, L<Pod::Simple>, L<man(1)>, L<nroff(1)>, L<podchecker(1)>,
 L<troff(1)>, L<man(7)>
 
 The man page documenting the an macro set may be L<man(5)> instead of
