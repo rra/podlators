@@ -10,6 +10,11 @@
 
 BEGIN {
     chdir 't' if -d 't';
+    if ($ENV{PERL_CORE}) {
+        @INC = '../lib';
+    } else {
+        unshift (@INC, '../blib/lib');
+    }
     unshift (@INC, '../blib/lib');
     $| = 1;
     print "1..11\n";
@@ -24,6 +29,20 @@ use Pod::Text;
 use Pod::Text::Color;
 use Pod::Text::Overstrike;
 use Pod::Text::Termcap;
+
+# Find the path to the test source files.  This requires some fiddling when
+# these tests are run as part of Perl core.
+sub source_path {
+    my $file = shift;
+    if ($ENV{PERL_CORE}) {
+        require File::Spec;
+        my $updir = File::Spec->updir;
+        my $dir = File::Spec->catdir ($updir, 'lib', 'Pod', 't');
+        return File::Spec->catfile ($dir, $file);
+    } else {
+        return $file;
+    }
+}
 
 $loaded = 1;
 print "ok 1\n";
@@ -54,7 +73,7 @@ for (sort keys %translators) {
     # line.  That means that we don't check those things; oh well.  The header
     # changes with each version change or touch of the input file.
     if ($_ eq 'Pod::Man') {
-        $parser->parse_from_file ('basic.pod', 'out.tmp');
+        $parser->parse_from_file (source_path ('basic.pod'), 'out.tmp');
         open (TMP, 'out.tmp') or die "Cannot open out.tmp: $!\n";
         open (OUTPUT, "> out.$translators{$_}")
             or die "Cannot create out.$translators{$_}: $!\n";
@@ -65,11 +84,12 @@ for (sort keys %translators) {
         close TMP;
         unlink 'out.tmp';
     } else {
-        $parser->parse_from_file ('basic.pod', "out.$translators{$_}");
+        my $basic = source_path ('basic.pod');
+        $parser->parse_from_file ($basic, "out.$translators{$_}");
     }
     {
         local $/;
-        open (MASTER, "basic.$translators{$_}")
+        open (MASTER, source_path ("basic.$translators{$_}"))
             or die "Cannot open basic.$translators{$_}: $!\n";
         open (OUTPUT, "out.$translators{$_}")
             or die "Cannot open out.$translators{$_}: $!\n";
