@@ -36,7 +36,7 @@ use vars qw(@ISA $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.05;
+$VERSION = 1.06;
 
 
 ##############################################################################
@@ -88,7 +88,7 @@ sub heading {
     $self->output (' ' x $indent . $text . "\n");
 }
 
-# Fix the various interior sequences.
+# Fix the various formatting codes.
 sub seq_b { local $_ = strip_format (@_); s/(.)/$1\b$1/g; $_ }
 sub seq_f { local $_ = strip_format (@_); s/(.)/_\b$1/g; $_ }
 sub seq_i { local $_ = strip_format (@_); s/(.)/_\b$1/g; $_ }
@@ -101,7 +101,7 @@ sub output_code {
 }
 
 # We unfortunately have to override the wrapping code here, since the normal
-# wrapping code gets really confused by all the escape sequences.
+# wrapping code gets really confused by all the backspaces.
 sub wrap {
     my $self = shift;
     local $_ = shift;
