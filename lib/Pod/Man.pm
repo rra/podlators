@@ -39,7 +39,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.00;
+$VERSION = 2.01;
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -1593,7 +1593,7 @@ only matters for troff output.
 
 =head1 SEE ALSO
 
-L<Pod::Parser>, L<perlpod(1)>, L<pod2man(1)>, L<nroff(1)>, L<troff(1)>,
+L<Pod::Simple>, L<perlpod(1)>, L<pod2man(1)>, L<nroff(1)>, L<troff(1)>,
 L<man(1)>, L<man(7)>
 
 Ossanna, Joseph F., and Brian W. Kernighan.  "Troff User's Manual,"
