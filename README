@@ -1,4 +1,4 @@
-                          podlators version 1.04
+                          podlators version 1.05
              (Format POD source into various output formats)
 
   Copyright 1999, 2000 Russ Allbery <rra@stanford.edu>.  This program is
@@ -127,7 +127,8 @@ THANKS
   To Marek Rochal, for pointing out a bug in handling of Z<> in Pod::Man,
   that even periods preceded by font escapes need protection at the
   beginning of lines from *roff, and that the handling of =item text with
-  embedded newlines was buggy in a previous version of Pod::Man.
+  embedded newlines was buggy in a previous version of Pod::Man.  Thanks
+  also for finding a bug with C<> in headings confusing nroff.
 
   To Tim Jenness, for providing the remaining ISO 8859-1 escapes for
   Pod::Text.  Volunteers to implement the same for Pod::Man are welcome.
@@ -137,6 +138,13 @@ THANKS
 
   To Abigail, for better error handling code for unknown command
   paragraphs.
+
+  To Zack Weinberg, for suggesting the right *roff magic to prevent blank
+  lines between consecutive =item tags in lists and for explaining \fP and
+  how to prevent escapes like C<> from breaking the font in headings.
+
+  To Nicholas Clark, for the original patch to pod2man to allow it to
+  process multiple files with one invocation.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
