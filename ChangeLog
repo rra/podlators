@@ -1,5 +1,7 @@
 2001-10-20  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 1.11 released.
+
 	* scripts/pod2man.PL: Add --verbose to print out each output file
 	as it is generated.  Silence -w warnings about the magic to exec
 	Perl if run under a shell.
