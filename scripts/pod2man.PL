@@ -55,7 +55,7 @@ use vars;
 # Parse our options, trying to retain backwards compatibility with pod2man
 # but allowing short forms as well.  --lax is currently ignored.
 my %options;
-Getopt::Long::config ('bundling');
+Getopt::Long::config ('bundling_override');
 GetOptions (\%options, 'section|s=s', 'release|r=s', 'center|c=s',
             'date|d=s', 'fixed=s', 'fixedbold=s', 'fixeditalic=s',
             'fixedbolditalic=s', 'official|o', 'lax|l', 'help|h') or exit 1;
