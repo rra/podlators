@@ -1,3 +1,16 @@
+2000-04-25  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (sequence): Pass a special flag to collapse() for
+	C<> blocks rather than trying to fix up hyphens and underscores.
+	(collapse): Fix hyphens and underscores for literal C<> block
+	content.
+
+2000-04-09  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (sequence): Fix hyphens and underscores in only
+	those children of a C<> sequence that haven't already had
+	guesswork applied to them.
+
 2000-03-30  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.01 released.
