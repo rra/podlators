@@ -1,3 +1,79 @@
+2001-11-23  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.14 released.
+
+	* t/parselink.t: New file.
+	* t/basic.t: New file.
+	* t/basic.cap: New file.
+	* t/basic.clr: New file.
+	* t/basic.ovr: New file.
+	* t/basic.man: New file.
+	* t/basic.pod: New file.
+	* t/basic.txt: New file.
+
+	* lib/Pod/Text/Overstrike.pm (strip_format): New function.
+	(seq_b): Use it.
+	(seq_f): Likewise.
+	(seq_i): Likewise.
+	(heading): New override to prevent excessive interpolation, since
+	it's necessary to interpolate before formatting or the formatting
+	codes end up in the output.
+	(cmd_head1): Simplify, interpolate here, and use strip_format.
+	(cmd_head2): Likewise.
+	(cmd_head3): Likewise.
+	(cmd_head4): New function, doing the same as cmd_head3().
+
+	* lib/Pod/Man.pm (initialize): Move initialization of per-file
+	variables from here...
+	(begin_pod): ...to here.  Remove WEIRDINDENT, add SHIFTS, and
+	rename NEWINDENT to SHIFTWAIT.
+	(textblock): Maintain a stack of shifts rather than using
+	WEIRDINDENT.  Rename NEWINDENT to SHIFTWAIT.
+	(cmd_over): Likewise.
+	(cmd_back): Likewise.
+	(cmd_item): Likewise.
+	(cmd_head3): Use font escapes rather than .I to avoid strange
+	problems with quoting, at least for =head3.  =head1 and =head2
+	likely still have troubles with repeated double-quotes.
+	(outindex): Accumulate output in an array to avoid some duplicate
+	code.
+	(switchquotes): Fix all fixed-width font changes for nroff, not
+	just the simple ones, and don't hard-code the value of any
+	fixed-width font.
+
+2001-11-22  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/ParseLink.pm (_parse_section): Fix a bug in the handling
+	of link text that's entirely in quotes.
+
+	* lib/Pod/Text.pm (heading): New function, for generic code for
+	all headings.  loose now applies to all headers, not just =head1.
+	Also output any =item tags left open.
+	(cmd_head1): Use it.
+	(cmd_head2): Likewise.
+	(cmd_head3): Likewise.
+	(cmd_head4): Likewise.
+	(cmd_over): Output any =item tags left open.
+	(cmd_back): Likewise.
+	(command): No longer handle open =item tags here since this is now
+	handled by individual commands.  Fixes handling of =for or
+	=begin/=end in =item paragraphs.
+	(cmd_item): Default to a tag of "*" if none is given.
+	(item): Insert some whitespace for empty item paragraphs to keep
+	them from blending into subsequent text.  Fix -w warnings.
+
+	* lib/Pod/ParseLink.pm: Documentation fixes.  Double quotes are
+	only removed around sections, not names.  Text entirely enclosed
+	in double quotes is interpreted as a link to a section.  Expand
+	the explanation of formatting codes inside L<> codes.
+	(_parse_section): Avoid -w warnings on empty page or section
+	components.
+	(parselink): Avoid -w warnings on empty name components.
+
+	* lib/Pod/Man.pm (begin_pod): When intuiting the man page name for
+	a module, also strip $^O by itself as a directory component even
+	when not preceeded or followed by a dash and other text.
+
 2001-11-15  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.13 released.
