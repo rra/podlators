@@ -34,7 +34,7 @@ use Exporter;
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.02;
+$VERSION = 1.03;
 
 
 ##############################################################################
@@ -140,12 +140,28 @@ The inferred anchor text is implemented per L<perlpodspec>:
 
 The name may contain embedded EE<lt>E<gt> and ZE<lt>E<gt> formatting codes,
 and the section, anchor text, and inferred anchor text may contain any
-formatting codes.  Any double quotes around the name or section are removed
-as part of the parsing, as are any leading or trailing whitespace.
+formatting codes.  Any double quotes around the section are removed as part
+of the parsing, as is any leading or trailing whitespace.
 
-No attempt is made to resolve formatting codes.  The caller must be prepared
-to do that either before or after calling parselink().  (This is because
-interpretation of EE<lt>E<gt> formatting codes may vary by formatter.)
+If the text of the LE<lt>E<gt> escape is entirely enclosed in double quotes,
+it's interpreted as a link to a section for backwards compatibility.
+
+No attempt is made to resolve formatting codes.  This must be done after
+calling parselink (since EE<lt>E<gt> formatting codes can be used to escape
+characters that would otherwise be significant to the parser and resolving
+them before parsing would result in an incorrect parse of a formatting code
+like:
+
+    L<verticalE<verbar>barE<sol>slash>
+
+which should be interpreted as a link to the C<vertical|bar/slash> POD page
+and not as a link to the C<slash> section of the C<bar> POD page with an
+anchor text of C<vertical>.  Note that not only the anchor text will need to
+have formatting codes expanded, but so will the target of the link (to deal
+with EE<lt>E<gt> and ZE<lt>E<gt> formatting codes), and special handling of
+the section may be necessary depending on whether the translator wants to
+consider markup in sections to be significant when resolving links.  See
+L<perlpodspec> for more information.
 
 =head1 AUTHOR
 
