@@ -34,7 +34,7 @@ use Exporter;
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.01;
+$VERSION = 1.02;
 
 
 ##############################################################################
@@ -55,8 +55,8 @@ sub _parse_section {
     # section.  If there is no section and the name contains spaces, also
     # guess that it's an old section link.
     my ($page, $section) = split (/\s*\/\s*/, $link, 2);
-    $section =~ s/^"\s*(.*?)\s*"$/$1/;
-    if ($page =~ / / && !defined ($section)) {
+    $section =~ s/^"\s*(.*?)\s*"$/$1/ if $section;
+    if ($page && $page =~ / / && !defined ($section)) {
         $section = $page;
         $page = undef;
     } else {
@@ -95,7 +95,7 @@ sub parselink {
         }
         my ($name, $section) = _parse_section ($link);
         my $inferred = $text || _infer_text ($name, $section);
-        my $type = ($name =~ /\(\S*\)/) ? 'man' : 'pod';
+        my $type = ($name && $name =~ /\(\S*\)/) ? 'man' : 'pod';
         return ($text, $inferred, $name, $section, $type);
     }
 }
