@@ -38,9 +38,9 @@ print OUT <<'!NO!SUBS!';
 # pod2man -- Convert POD data to formatted *roff input.
 # $Id$
 #
-# Copyright 1999, 2000 by Russ Allbery <rra@stanford.edu>
+# Copyright 1999, 2000, 2001 by Russ Allbery <rra@stanford.edu>
 #
-# This program is free software; you can redistribute it and/or modify it
+# This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
 
 require 5.004;
@@ -57,8 +57,8 @@ use strict;
 my $stdin;
 @ARGV = map { $_ eq '-' && !$stdin++ ? ('--', $_) : $_ } @ARGV;
 
-# Parse our options, trying to retain backwards compatibility with pod2man
-# but allowing short forms as well.  --lax is currently ignored.
+# Parse our options, trying to retain backwards compatibility with pod2man but
+# allowing short forms as well.  --lax is currently ignored.
 my %options;
 Getopt::Long::config ('bundling_override');
 GetOptions (\%options, 'section|s=s', 'release|r=s', 'center|c=s',
@@ -72,8 +72,8 @@ if ($options{official} && !defined $options{center}) {
     $options{center} = 'Perl Programmers Reference Guide';
 }
 
-# Initialize and run the formatter, pulling a pair of input and output off
-# at a time.
+# Initialize and run the formatter, pulling a pair of input and output off at
+# a time.
 my $parser = Pod::Man->new (%options);
 my @files;
 do {
@@ -423,6 +423,9 @@ LE<lt>E<gt>, but other things in this section probably should be when
 appropriate.  You may need to use the C<LE<lt>...|...E<gt>> syntax to keep
 B<pod2man> and B<pod2text> from being too verbose; see perlpod(1).
 
+If the package has a mailing list, include a URL or subscription
+instructions here.
+
 If the package has a web site, include a URL here.
 
 =item AUTHOR
@@ -433,10 +436,28 @@ so that users have a way of contacting you is a good idea.  Remember that
 program documentation tends to roam the wild for far longer than you expect
 and pick an e-mail address that's likely to last if possible.
 
+=item COPYRIGHT AND LICENSE
+
+For copyright
+
+    Copyright YEAR(s) by YOUR NAME(s)
+
+(No, (C) is not needed.  No, "all rights reserved" is not needed.)
+
+For licensing the easiest way is to use the same licensing as Perl itself:
+
+    This library is free software; you may redistribute it and/or modify
+    it under the same terms as Perl itself.
+
+This makes it easy for people to use your module with Perl.  Note that
+this licensing is neither an endorsement or a requirement, you are of
+course free to choose any licensing.
+
 =item HISTORY
 
-Programs derived from other sources sometimes have this, or you might keep a
-modification log here.
+Programs derived from other sources sometimes have this, or you might keep
+a modification log here.  If the log gets overly long or detailed,
+consider maintaining it in a separate file, though.
 
 =back
 
@@ -447,10 +468,7 @@ of a C library.  Documentation of object-oriented libraries or modules may
 use CONSTRUCTORS and METHODS sections for detailed documentation of the
 parts of the library and save the DESCRIPTION section for an overview; other
 large modules may use FUNCTIONS for similar reasons.  Some people use
-OVERVIEW to summarize the description if it's quite long.  Sometimes there's
-an additional COPYRIGHT section at the bottom, for licensing terms.
-AVAILABILITY is sometimes added, giving the canonical download site for the
-software or a URL for updates.
+OVERVIEW to summarize the description if it's quite long.
 
 Section ordering varies, although NAME should I<always> be the first section
 (you'll break some man page systems otherwise), and NAME, SYNOPSIS,
@@ -485,6 +503,13 @@ Russ Allbery E<lt>rra@stanford.eduE<gt>, based I<very> heavily on the
 original B<pod2man> by Larry Wall and Tom Christiansen.  Large portions of
 this documentation, particularly the sections on the anatomy of a proper man
 page, are taken from the B<pod2man> documentation by Tom.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 1999, 2000, 2001 by Russ Allbery <rra@stanford.edu>.
+
+This program is free software; you may redistribute it and/or modify it
+under the same terms as Perl itself.
 
 =cut
 !NO!SUBS!
