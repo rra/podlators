@@ -1,0 +1,103 @@
+This is a somewhat random and unordered list of things I'd like to see
+fixed or improved, but which I've not yet had a chance to do.  Patches for
+any of the following are very much welcome.
+
+ * Do something about the other high-bit characters that aren't supported
+   currently by Pod::Man.  Do some versions of groff support Unicode?
+   We'd definitely need help from the *roff implementation here for a
+   general solution.
+
+ * Do something about high-bit characters directly in the text (including
+   verbatim paragraphs) in Pod::Man.  Many versions of *roff choke on them
+   badly unless we do the same sort of processing that we would if they
+   were E<> escapes.
+
+ * Add a heuristic so that if you have "C<text>" or C<"text">, C<> doesn't
+   add additional quotes in nroff mode.
+
+ * Make use of a more generic parsing layer above the translators that
+   handles such things as command dispatch and tracking the nesting level
+   of lists to cut down on the amount of code one has to repeat between
+   translators.  The best line of division between a translator and a
+   generic parsing layer is unclear.
+
+ * There should be some way to turn off all heuristics when people are
+   using POD for some purpose other than Perl or some other programming
+   language with similar needs.
+
+ * Pod::Man is still blessing already-formatted strings to work around an
+   old limitation in Pod::Parser.  We should be able to drop the bless and
+   just use references to indicate an already-formatted string, but
+   someone needs to track down what version of Pod::Parser in which that
+   limitation was actually finally removed (there were several
+   unsuccessful attempts at it) and require that version as a prereq
+   before that can be done.
+
+The following items require changes to the POD specification and are
+therefore of broader scope than just this code:
+
+ * Introduce a new interior sequence for metasyntactic variables, probably
+   M<>, and reserve I<> exclusively for emphasis.  This resolves a
+   significant ambiguity in the current POD specification in a way that
+   would make the Pod::Text output much better.  (Metasyntactic variables
+   should be surrounded in angle brackets and emphasized text should be
+   surrounded by asterisks.)
+
+ * Introduce a new interior sequence for footnotes.  (Tom Christiansen is
+   currently using [FOOTNOTE: ...], but I think an interior sequence would
+   be better; F<> is already taken, though.)  This is lower priority,
+   since it's unclear how to do a footnote in text or *roff output anyway,
+   but it's useful in other contexts.
+
+ * Ideally, all of guesswork() in Pod::Man should be pulled up a level
+   into a parsing layer that converts such things into E<> escapes (for
+   stuff like long dashes) or interior sequences (for things like small
+   caps).  It's unclear the best way to do this; some of the
+   transformations are very specific to a translator.
+
+ * Add a =verbatim command that outputs text exactly as it appears without
+   any indentation or other changes.  (This is mostly useful inside a
+   =begin/=end pair but may be useful elsewhere.)
+
+ * Lots of people seem to think that translating POD into a canonical XML
+   form and then generating output from that instead of directly from POD
+   is a good idea.  Pod::Man and Pod::Text should actually be able to do
+   that without too many major changes, since they already don't process
+   POD directly but instead deal with the objects returned by Pod::Parser.
+   No one seems to be actually working on this, though, and the concrete
+   efforts that have been made in this direction have been met by almost
+   complete silence.
+
+The following ideas about guesswork and heuristics were all taken from a
+post by Tom Christiansen to pod-people@perl.org:
+
+ * All of the following should be okay to use verbatim in any POD text and
+   have the translator do something appropriate:
+
+   FILEHANDLE PackageName
+   $variable @variable %variable &function
+   $var::iable @vari::able %variab::le &functio::n
+   function() fun::ction() fun::ct::ion()
+   manpage(3r)
+   user@host.com
+   http://somewhere.com/stuff/ ftp://somewhere.com/stuff/
+
+   Pod::Man and Pod::Text handle much of this already, but not all of it
+   (and I've not checked to see exactly where they break).
+
+ * A better way to deal with the many L<> things in the SEE ALSO would be
+   good.
+
+ * Something ALLCAPS should be in small caps.  I [Tom] usually use
+   \s-1ALLCAPS\s0 but \s-2ALLCAPS\s0 might be better.  (Pod::Man already
+   does this.)
+
+ * Something in __ALLCAPS__ should be in code font but perhaps not small,
+   and maybe some magic between the unders, as in \f(CW_\|_ALLCAPS_\|_\fP.
+   (I don't believe Pod::Man currently handles this correctly.)
+
+ * An area for further work is headers and footers.  You should include
+   the module version number and the file's last modification date in
+   headers/footers where appropriate.  That means that when processing a
+   module, ideally one wants to pull out the module's $VERSION to use in
+   the footer rather than Perl's version.
