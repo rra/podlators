@@ -1,4 +1,4 @@
-                          podlators version 1.02
+                          podlators version 1.03
              (Format POD source into various output formats)
 
   Copyright 1999, 2000 Russ Allbery <rra@stanford.edu>.  This program is
@@ -74,7 +74,7 @@ Pod::Man
   close to the relevant text.
 
   Additional features over pod2man include a shorter and better documented
-  prelude, inclusion of `' quotes around sections marked with C<> when
+  prelude, inclusion of '' quotes around sections marked with C<> when
   viewed using nroff, and a better programmatic interface.
 
 
@@ -134,6 +134,9 @@ THANKS
 
   To Johan Vromans, for pointing out a bug in the filename parsing in
   Pod::Man and help with various packaging problems.
+
+  To Abigail, for better error handling code for unknown command
+  paragraphs.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
