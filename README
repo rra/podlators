@@ -1,4 +1,4 @@
-                          podlators version 0.07
+                          podlators version 0.08
              (Format POD source into various output formats)
 
   Copyright 1999 Russ Allbery <rra@stanford.edu>.  All rights reserved.
@@ -122,6 +122,9 @@ THANKS
 
   To Larry Virden, for feedback on the section on writing a man page in
   pod2roff and lots of good suggestions for improving it.
+
+  To Michael Schwern, for pointing out that pod2text() needs to be
+  exported for backwards compatibility.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
