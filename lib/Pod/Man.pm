@@ -20,13 +20,13 @@ package Pod::Roff;
 require 5.004;
 
 use Carp qw(carp croak);
-use Pod::Select ();
+use Pod::Parser ();
 
 use strict;
 use subs qw(makespace);
 use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 
-@ISA = qw(Pod::Select);
+@ISA = qw(Pod::Parser);
 
 ($VERSION = (split (' ', q$Revision$ ))[1]) =~ s/\.(\d)$/.0$1/;
 
@@ -87,7 +87,7 @@ $PREAMBLE = <<'----END OF PREAMBLE----';
 .    ds C' '
 'br\}
 .el\{\
-.    ds -- \(em\|
+.    ds -- \|\(em\|
 .    ds PI \(*p
 .    ds L" ``
 .    ds R" ''
@@ -173,7 +173,6 @@ $PREAMBLE = <<'----END OF PREAMBLE----';
 .\}
 .rm #[ #] #H #V #F C
 ----END OF PREAMBLE----
-#`# for cperl-mode
                                    
 # This table is taken nearly verbatim from Tom Christiansen's pod2man.  It
 # assumes that the standard preamble has already been printed, since that's
@@ -348,14 +347,6 @@ sub initialize {
                       '110' => toescape ($$self{fixedbold}),
                       '111' => toescape ($$self{fixedbolditalic})};
 
-    # Modification date header.
-    if (!defined $$self{date}) {
-        my ($day, $month, $year) = (localtime)[3,4,5];
-        $month++;
-        $year += 1900;
-        $$self{date} = join ('-', $year, $month, $day);
-    }
-
     # Extra stuff for page titles.
     $$self{center} = 'User Contributed Perl Documentation'
         unless defined $$self{center};
@@ -391,6 +382,7 @@ sub begin_pod {
     my $name = $$self{name};
     if (!defined $name) {
         $name = $self->input_file;
+        $section = 3 if (!$$self{section} && $name =~ /\.pm$/i);
         $name =~ s/\.p(od|[lm])$//i;
         if ($section =~ /^1/) {
             require File::Basename;
@@ -412,6 +404,16 @@ sub begin_pod {
                 s%/%::%g;
             }
         }
+    }
+
+    # Modification date header.  Try to use the modification time of our
+    # input.
+    if (!defined $$self{date}) {
+        my $time = (stat $self->input_file)[9] || time;
+        my ($day, $month, $year) = (localtime $time)[3,4,5];
+        $month++;
+        $year += 1900;
+        $$self{date} = join ('-', $year, $month, $day);
     }
 
     # Now, print out the preamble and the title.
@@ -878,11 +880,10 @@ sub guesswork {
     # to make @ARGV into small caps, nor do we want to fix the MIME in
     # MIME-Version, since it looks weird with the full-height V.
     s{
-        ( ^ | [\s\(\"\'\[\{<] )
-        ( [A-Z] [A-Z] [/A-Z+:\d_\$-]* )
-        (?! -\w )
-        \b
-    } { $1 . "\0<_sm>" . $2 . "\0<_endsm>" }egx;
+        ( ^ | [\s\(\"\'\`\[\{<>] )
+        ( [A-Z] [A-Z] [/A-Z+:\d_\$&-]* )
+        ( [\s>\}\]\)\'\"\0.?!,;:] | $ )
+    } { $1 . "\0<_sm>" . $2 . "\0<_endsm>" . $3 }egx;
 
     # All done.
     s/\0</E</g;
@@ -961,3 +962,219 @@ __END__
 ############################################################################
 # Documentation
 ############################################################################
+
+=head1 NAME
+
+Pod::Roff - Convert POD data to formatted *roff input
+
+=head1 SYNOPSIS
+
+    use Pod::Roff;
+    my $parser = Pod::Roff->new (release => $VERSION, section => 8);
+
+    # Read POD from STDIN and write to STDOUT.
+    $parser->parse_from_filehandle;
+
+    # Read POD from file.pod and write to file.1.
+    $parser->parse_from_file ('file.pod', 'file.1');
+
+=head1 DESCRIPTION
+
+Pod::Roff is a module to convert documentation in the POD format (the
+preferred language for documenting Perl) into *roff input using the man
+macro set.  The resulting *roff code is suitable for display on a terminal
+using nroff(1), normally via man(1), or printing using troff(1).  It is
+conventionally invoked using the driver script B<pod2roff>, but it can also
+be used directly.
+
+As a derived class from Pod::Parser, Pod::Roff supports the same methods and
+interfaces.  See L<Pod::Parser> for all the details; briefly, one creates a
+new parser with C<Pod::Roff-E<gt>new()> and then calls either
+parse_from_filehandle() or parse_from_file().
+
+new() can take options, in the form of key/value pairs that control the
+behavior of the parser.  See below for details.
+
+If no options are given, Pod::Roff uses the name of the input file with any
+trailing C<.pod>, C<.pm>, or C<.pl> stripped as the man page title, to
+section 1 unless the file ended in C<.pm> in which case it defaults to
+section 3, to a centered title of "User Contributed Perl Documentation", to
+a centered footer of the Perl version it is run with, and to a left-hand
+footer of the modification date of its input (or the current date if given
+STDIN for input).
+
+Pod::Roff assumes that your *roff formatters have a fixed-width font named
+CW.  If yours is called something else (like CR), use the C<fixed> option to
+specify it.  This generally only matters for troff output for printing.
+Similarly, you can set the fonts used for bold, italic, and bold italic
+fixed-width output.
+
+Besides the obvious pod conversions, Pod::Roff also takes care of formatting
+func(), func(n), and simple variable references like $foo or @bar so you
+don't have to use code escapes for them; complex expressions like
+C<$fred{'stuff'}> will still need to be escaped, though.  It also translates
+dashes that aren't used as hyphens into en dashes, makes long dashes--like
+this--into proper em dashes, fixes "paired quotes," makes C++ and PI look
+right, puts a little space between double underbars, makes ALLCAPS a teeny
+bit smaller in troff(1), and escapes stuff that *roff treats as special so
+that you don't have to.
+
+The recognized options to new() are as follows.  All options take a single
+argument.
+
+=over 4
+
+=item center
+
+Sets the centered page header to use instead of "User Contributed Perl
+Documentation".
+
+=item date
+
+Sets the left-hand footer.  By default, the modification date of the input
+file will be used, or the current date if stat() can't find that file (the
+case if the input is from STDIN), and the date will be formatted as
+YYYY-MM-DD.
+
+=item fixed
+
+The fixed-width font to use for vertabim text and code.  Defaults to CW.
+Some systems may want CR instead.  Only matters for troff(1) output.
+
+=item fixedbold
+
+Bold version of the fixed-width font.  Defaults to CB.  Only matters for
+troff(1) output.
+
+=item fixeditalic
+
+Italic version of the fixed-width font (actually, something of a misnomer,
+since most fixed-width fonts only have an oblique version, not an italic
+version).  Defaults to CI.  Only matters for troff(1) output.
+
+=item fixedbolditalic
+
+Bold italic (probably actually oblique) version of the fixed-width font.
+Pod::Roff doesn't assume you have this, and defaults to CB.  Some systems
+(such as Solaris) have this font available as CX.  Only matters for troff(1)
+output.
+
+=item release
+
+Set the centered footer.  By default, this is the version of Perl you run
+Pod::Roff under.  Note that some system an macro sets assume that the
+centered footer will be a modification date and will prepend something like
+"Last modified: "; if this is the case, you may want to set C<release> to
+the last modified date and C<date> to the version number.
+
+=item section
+
+Set the section for the C<.TH> macro.  The standard section numbering
+convention is to use 1 for user commands, 2 for system calls, 3 for
+functions, 4 for devices, 5 for file formats, 6 for games, 7 for
+miscellaneous information, and 8 for administrator commands.  There is a lot
+of variation here, however; some systems (like Solaris) use 4 for file
+formats, 5 for miscellaneous information, and 7 for devices.  Still others
+use 1m instead of 8, or some mix of both.  About the only section numbers
+that are reliably consistent are 1, 2, and 3.
+
+By default, section 1 will be used unless the file ends in .pm in which case
+section 3 will be selected.
+
+=back
+
+The standard Pod::Parser method parse_from_filehandle() takes up to two
+arguments, the first being the file handle to read POD from and the second
+being the file handle to write the formatted output to.  The first defaults
+to STDIN if not given, and the second defaults to STDOUT.  The method
+parse_from_file() is almost identical, except that its two arguments are the
+input and output disk files instead.  See L<Pod::Parser> for the specific
+details.
+
+=head1 DIAGNOSTICS
+
+=over 4
+
+=item roff font should be 1 or 2 chars, not `%s'
+
+(F) You specified a *roff font (using C<fixed>, C<fixedbold>, etc.) that
+wasn't either one or two characters.  Pod::Roff doesn't support *roff fonts
+longer than two characters, although some *roff extensions do (the canonical
+versions of nroff(1) and troff(1) don't either).
+
+=item Invalid link %s
+
+(W) The POD source contained a C<LE<lt>E<gt>> sequence that Pod::Roff was
+unable to parse.  You should never see this error message; it probably
+indicates a bug in Pod::Roff.
+
+=item Unknown escape EE<lt>%sE<gt>
+
+(W) The POD source contained an C<EE<lt>E<gt>> escape that Pod::Roff didn't
+know about.  C<EE<lt>%sE<gt>> was printed verbatim in the output.
+
+=item Unknown sequence %s
+
+(W) The POD source contained a non-standard interior sequence (something of
+the form C<XE<lt>E<gt>>) that Pod::Roff didn't know about.  It was ignored.
+
+=item Unmatched =back
+
+(W) Pod::Roff encountered a C<=back> command that didn't correspond to an
+C<=over> command.
+
+=back
+
+=head1 BUGS
+
+The lint-like features and strict POD format checking done by B<pod2man> are
+not yet implemented and should be, along with the corresponding C<lax>
+option.
+
+The handling of hyphens, en dashes, and em dashes is somewhat fragile, and
+one may get the wrong one under some circumstances.  This should only matter
+for troff(1) output.
+
+When and whether to use small caps is somewhat tricky, and Pod::Roff doesn't
+necessarily get it right.
+
+Pod::Roff doesn't handle font names longer than two characters.  Neither do
+most troff(1) implementations, but GNU troff does as an extension.  It would
+be nice to support as an option for those who want to use it.
+
+The preamble added to each output file is rather verbose, and most of it is
+only necessary in the presence of EE<lt>E<gt> escapes for non-ASCII
+characters.  It would ideally be nice if all of those definitions were only
+output if needed, perhaps on the fly as the characters are used.
+
+Some of the automagic applied to file names assumes Unix directory
+separators.
+
+Pod::Roff is excessively slow.
+
+=head1 NOTES
+
+The intention is for this module and its driver script to eventually replace
+B<pod2man> in Perl core.
+
+=head1 SEE ALSO
+
+L<Pod::Parser|Pod::Parser>, perlpod(1), pod2roff(1), nroff(1), troff(1),
+man(1), man(7)
+
+Ossanna, Joseph F., and Brian W. Kernighan.  "Troff User's Manual,"
+Computing Science Technical Report No. 54, AT&T Bell Laboratories.  This is
+the best documentation of standard nroff(1) and troff(1).  At the time of
+this writing, it's available at http://www.cs.bell-labs.com/cm/cs/cstr.html.
+
+The man page documenting the man macro set may be man(5) instead of man(7)
+on your system.  Also, please see pod2roff(1) for extensive documentation on
+writing manual pages if you've not done it before and aren't familiar with
+the conventions.
+
+=head1 AUTHOR
+
+Russ Allbery E<lt>rra@stanford.eduE<gt>, based I<very> heavily on the
+original B<pod2man> by Tom Christiansen E<lt>tchrist@mox.perl.comE<gt>.
+
+=cut
