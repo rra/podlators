@@ -1,3 +1,39 @@
+2001-10-20  Russ Allbery  <rra@stanford.edu>
+
+	* scripts/pod2man.PL: Add --verbose to print out each output file
+	as it is generated.  Silence -w warnings about the magic to exec
+	Perl if run under a shell.
+	* scripts/pod2text.PL: Silence -w warnings likewise.
+
+	* lib/Pod/Text/Overstrike.pm (wrap): Better handle the case where
+	a highlighted portion of text ends a line.
+
+	* lib/Pod/Text.pm: Add the code option to include the non-POD text
+	of the input file and document it.
+	(initialize): Pass -want_nonPODs to Pod::Parser	if code is set.
+	(preprocess_paragraph): Call output_code for any paragraphs
+	received that aren't part of the POD.
+	(output_code): New function.
+	* lib/Pod/Text/Color.pm (output_code): New function.
+	* lib/Pod/Text/Overstrike.pm (output_code): New function.
+	* lib/Pod/Text/Termcap.pm (output_code): New function.
+	* scripts/pod2text.PL: Add support and documentation for --code.
+
+	* lib/Pod/Man.pm (outindex): No output was being emitted for X<>
+	sequences due to a misplaced my.
+	(switchquotes): Must use .ie for if statements containing a .el
+	clause in *roff; .if won't work.
+
+2001-07-19  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (sequence): Turned carps for unknown escapes and
+	unknown sequences into warnings, suppressed the Perl file and line
+	number, and added the file and line number for the POD data.
+	(cmd_back): Likewise for unmatched =back errors.
+	* lib/Pod/Text.pm (interior_sequence): Likewise for unknown
+	escapes and unknown sequences.
+	(cmd_back): Likewise for unmatched =back errors.
+
 2001-07-10  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.10 released.
