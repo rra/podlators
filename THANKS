@@ -76,3 +76,9 @@ suggesting a --name option for pod2man.
 Mike Fry, for pointing out that the intuiting of the manual page name from
 the directory path didn't deal with three-component version numbers,
 serving as the impetus to rewrite that code to use File::Spec.
+
+Sean Burke, for writing up a detailed specification of the POD language
+that cleaned up a lot of edge cases and for his patience in explaining and
+defending the decisions of that specification.  Thanks also for writing
+detailed instructions on how to parse L<> codes that I just implemented
+nearly verbatim for Pod::ParseLink.
