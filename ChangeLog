@@ -1,5 +1,14 @@
 Mon Aug 30 00:09:03 1999  Russ Allbery  <eagle@windlord.stanford.edu>
 
+        * VERSION: podlators 0.04 released.
+
+        * Makefile.PL: Use File::Spec to build file paths for portability,
+        removed the dist setting since current Perls get this right, and
+        added the magic to cope with pod2txt as a .PL file.
+
+        * scripts/pod2txt.PL: Added the .PL magic to fix the shebang line
+        that will be necessary when this script is part of Perl core.
+
         * VERSION: podlators 0.03 released.
 
         * lib/Pod/Text/Color.pm: Pod::SimpleText changed to Pod::PlainText
