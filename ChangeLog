@@ -1,3 +1,47 @@
+2001-07-10  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.10 released.
+
+	* scripts/pod2man.PL: Added a description of the COPYRIGHT AND
+	LICENSE section, add a mention of a mailing list in SEE ALSO, and
+	mention that large logs are better kept separate from HISTORY in
+	the description of a standard manual page.  Added a COPYRIGHT AND
+	LICENSE section for pod2man.
+	* scripts/pod2text.PL: Added a COPYRIGHT AND LICENSE section to
+	the documentation.
+
+	* lib/Pod/Man.pm: Changed LICENSE to COPYRIGHT AND LICENSE.
+	* lib/Pod/Text.pm: Likewise.
+
+	* lib/Pod/Text/Color.pm: Added a COPYRIGHT AND LICENSE section to
+	the documentation.
+	* lib/Pod/Text/Overstrike.pm: Likewise.
+	* lib/Pod/Text/Termcap.pm: Likewise.
+
+	* lib/Pod/Text.pm (seq_c): Add heuristics to decide whether or not
+	to quote the argument of C<>.
+
+	* lib/Pod/Man.pm (switchquotes): Remove font changes for nroff to
+	work around a bug in the Solaris 2.6 version of nroff's handling
+	of \fP in headings.  No longer add an extra level of quoting for
+	=item; it isn't necessary.
+
+	* lib/Pod/Man.pm (sequence): Call quote_literal to handle C<>.
+	(quote_literal): New function, handling the decision of whether or
+	not to put quotes around the argument of C<>.
+
+	* lib/Pod/Man.pm: Added a LICENSE section to the documentation.
+	* lib/Pod/Text.pm: Likewise.
+
+	* lib/Pod/Man.pm (guesswork): Remove the logic turning PI into a
+	pretty pi character; it produces too many false positives.
+
+	* lib/Pod/Man.pm: Removed the definition .Ip from the preamble.
+	Removed .bd B 3 from the preamble; this isn't part of the accent
+	mark definitions but instead changes the way bolding is done,
+	confusing some other translators.
+	(cmd_item): Emit .IP instead of .Ip.
+
 2001-04-09  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.09 released.
