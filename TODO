@@ -30,10 +30,6 @@ any of the following are very much welcome.
    options to the various modules, the scripts, =for, =over/=back, or the
    guesswork in Pod::Man.
 
- * Pod::Man is still blessing already-formatted strings to work around an
-   old limitation in Pod::Parser.  We should be able to drop the bless and
-   just use references to indicate an already-formatted string.
-
 The following items require changes to the POD specification and are
 therefore of broader scope than just this code:
 
@@ -44,20 +40,27 @@ therefore of broader scope than just this code:
    should be surrounded in angle brackets and emphasized text should be
    surrounded by asterisks.)
 
- * Introduce a new interior sequence for footnotes.  (Tom Christiansen is
-   currently using [FOOTNOTE: ...], but I think an interior sequence would
-   be better; F<> is already taken, though.)  This is lower priority,
-   since it's unclear how to do a footnote in text or *roff output anyway,
-   but it's useful in other contexts.
+ * Introduce a new interior sequence for footnotes.  There has been
+   extensive discussion of this on pod-people@perl.org.  One proposal is
+   to use a new formatting code for footnotes, probably N<>, and just
+   in-line the footnote as part of the interior sequence.  This doesn't
+   allow multi-paragraph footnotes, however, so a second proposal is to
+   have the content of the N<> formatting code be a unique marker that
+   matches an =item tag in a new =begin footnotes section processed by
+   translators that know how to do footnotes.  (The translator should
+   probably number the footnotes and insert some sort of numerical marker
+   into the text at the point of the footnote.)  This would require
+   translators to formatting languages that do something more interesting
+   with footnotes to parse the entire document, extract the footnote
+   section, and then stick the footnotes back into the main text at the
+   point where they occur, however.
 
- * Lots of people seem to think that translating POD into a canonical XML
-   form and then generating output from that instead of directly from POD
-   is a good idea.  Pod::Man and Pod::Text should actually be able to do
-   that without too many major changes, since they already don't process
-   POD directly but instead deal with the objects returned by Pod::Parser.
-   No one seems to be actually working on this, though, and the concrete
-   efforts that have been made in this direction have been met by almost
-   complete silence.
+   There are some preliminary patches for Pod::Man and Pod::Text in NOTES.
+   It's possible to do footnotes directly in *roff (it's section T4 of the
+   troff paper), but that relies on header and footer triggers and for
+   terminal display it's becoming common to suppress the headers and
+   footers.  For the purposes of Pod::Man, end notes are probably a better
+   model and can be handled about the same way as they are for Pod::Text.
 
 The following ideas about guesswork and heuristics were all taken from a
 post by Tom Christiansen to pod-people@perl.org:
