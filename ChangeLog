@@ -1,3 +1,38 @@
+2001-11-27  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.17 released.
+
+	* lib/Pod/Text/Color.pm: Change all documentation references from
+	interior sequences to formatting codes to match the terminology of
+	perlpodspec.
+	* lib/Pod/Text/Overstrike.pm: Likewise.
+
+	* lib/Pod/Text.pm: Change all documentation references from
+	interior sequences to formatting codes to match the terminology of
+	perlpodspec.
+	(interior_sequence): Change the unknown sequence warning to
+	unknown formatting code.
+
+	* lib/Pod/Man.pm: Change all documentation references from
+	interior sequences to formatting codes to match the terminology of
+	perlpodspec.  Move the extra *roff code to NOTES instead of
+	carrying it around inside the module.
+	(sequence): Return references to arrays rather than references to
+	scalars for already-formatted text because there are too many odd
+	bugs with scalar references in older versions of Perl.  No longer
+	bless references since the current Pod::Parser doesn't require it.
+	Pass a third argument to collapse().  Change the unknown sequence
+	warning to unknown formatting code.
+	(collapse): Simplify and handle references to arrays rather than
+	references to scalars.  Take a third argument that says whether to
+	do C<> cleanup operations rather than checking $literal > 1.
+
+	* Makefile.PL: Require version 1.13 of Pod::Parser so that
+	Pod::Man doesn't have to bless already-formatted strings.
+
+	* lib/Pod/Text/Termcap.pm: Fix a documentation typo.  =head should
+	be =head1.
+
 2001-11-26  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.16 released.
