@@ -41,7 +41,7 @@ use vars qw(@ISA @EXPORT %ESCAPES $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.12;
+$VERSION = 2.13;
 
 
 ##############################################################################
@@ -194,6 +194,9 @@ sub initialize {
     $$self{MARGIN}   = $$self{indent};  # Current left margin in spaces.
 
     $self->SUPER::initialize;
+
+    # Tell Pod::Parser that we want the non-POD stuff too if code was set.
+    $self->parseopts ('-want_nonPODs' => 1) if $$self{code};
 }
 
 
@@ -344,11 +347,14 @@ sub interior_sequence {
 }
 
 # Called for each paragraph that's actually part of the POD.  We take
-# advantage of this opportunity to untabify the input.
+# advantage of this opportunity to untabify the input.  Also, if given the
+# code option, we may see paragraphs that aren't part of the POD and need to
+# output them directly.
 sub preprocess_paragraph {
     my $self = shift;
     local $_ = shift;
     1 while s/^(.*?)(\t+)/$1 . ' ' x (length ($2) * 8 - length ($1) % 8)/me;
+    $self->output_code ($_) if $self->cutting;
     $_;
 }
 
@@ -658,6 +664,11 @@ sub reformat {
 # Output text to the output device.
 sub output { $_[1] =~ tr/\01/ /; print { $_[0]->output_handle } $_[1] }
 
+# Output a block of code (something that isn't part of the POD text).  Called
+# by preprocess_paragraph only if we were given the code option.  Exists here
+# only so that it can be overridden by subclasses.
+sub output_code { $_[0]->output ($_[1]) }
+
 
 ##############################################################################
 # Backwards compatibility
@@ -747,6 +758,12 @@ behavior of the parser.  The currently recognized options are:
 If set to a true value, selects an alternate output format that, among other
 things, uses a different heading style and marks C<=item> entries with a
 colon in the left margin.  Defaults to false.
+
+=item code
+
+If set to a true value, the non-POD parts of the input file will be included
+in the output.  Useful for viewing code documented with POD blocks with the
+POD rendered and the code left intact.
 
 =item indent
 
