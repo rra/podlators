@@ -1,13 +1,13 @@
-# Makefile.PL for pod-translators.
+# Makefile.PL for podlators.
 # $Id$
 use ExtUtils::MakeMaker;
 WriteMakefile (
-    NAME         => 'Pod::SimpleText',
-    DISTNAME     => 'Pod-SimpleText',
+    NAME         => 'Pod',
+    DISTNAME     => 'podlators',
     EXE_FILES    => [ 'scripts/pod2txt' ],
     ($] >= 5.005 ?
-     (ABSTRACT   => 'Convert POD data to formatted ASCII text',
+     (ABSTRACT   => 'Convert POD data to various other formats',
       AUTHOR     => 'Russ Allbery (rra@stanford.edu)') : ()),
-    VERSION_FROM => 'lib/Pod/SimpleText.pm',
+    VERSION_FROM => 'VERSION',
     dist         => { COMPRESS => 'gzip', SUFFIX => 'gz' }
 );
