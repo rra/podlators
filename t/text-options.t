@@ -3,7 +3,7 @@
 #
 # text-options.t -- Additional tests for Pod::Text options.
 #
-# Copyright 2002 by Russ Allbery <rra@stanford.edu>
+# Copyright 2002, 2004 by Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -17,7 +17,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..3\n";
+    print "1..5\n";
 }
 
 END {
@@ -172,4 +172,20 @@ SAMPLE
 
 
 This is more random text.
+###
+
+###
+sentence 1
+###
+=head1 EXAMPLE
+
+Whitespace around C<<  this.  >> must be ignored per perlpodspec.  >>
+needs to eat all of the space in front of it.
+
+=cut
+###
+EXAMPLE
+    Whitespace around "this." must be ignored per perlpodspec.  >> needs to
+    eat all of the space in front of it.
+
 ###
