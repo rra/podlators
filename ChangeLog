@@ -1,3 +1,11 @@
+2002-02-16  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.21 released.
+
+	* lib/Pod/Text/Overstrike.pm (wrap): Fix the regex for wrapping
+	lines to use a non-backtracking section for each character to
+	avoid exponential backtracking on lines with a lot of markup.
+
 2002-01-27  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.20 released.
