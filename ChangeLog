@@ -1,3 +1,20 @@
+2000-12-25  Russ Allbery  <rra@stanford.edu>
+
+	* scripts/pod2text.PL: Add -o or --overstrike to use
+	Pod::Text::Overstrike as the formatter.
+
+	* lib/Pod/Man.pm (switchquotes): =item text requires another level
+	of quoting of double quotes, which was already present but not
+	working for C<> text because it was in the wrong order.  Fixed and
+	more comments added.
+
+	* lib/Pod/Text/Color.pm: Use a static version number rather than
+	the CVS revision.
+	* lib/Pod/Text/Termcap.pm: Likewise.
+
+	* lib/Pod/Text/Overstrike.pm: New file.  Contributed by Joe Smith
+	<Joe.Smith@inwap.com>.
+
 2000-11-18  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.05 released.

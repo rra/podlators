@@ -6,6 +6,7 @@ VERSION
 lib/Pod/Man.pm
 lib/Pod/Text.pm
 lib/Pod/Text/Color.pm
+lib/Pod/Text/Overstrike.pm
 lib/Pod/Text/Termcap.pm
 scripts/pod2man.PL
 scripts/pod2text.PL
