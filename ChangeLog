@@ -1,3 +1,10 @@
+2003-07-09  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.27 released.
+
+	* lib/Pod/Text/Termcap.pm (initialize): Handle the case where the
+	HOME environment variable isn't set, mostly for Windows.
+
 2003-03-30  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.26 released.
