@@ -38,7 +38,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.30;
+$VERSION = 1.31;
 
 
 ##############################################################################
@@ -70,7 +70,6 @@ $PREAMBLE = <<'----END OF PREAMBLE----';
 ..
 .de Ve \" End verbatim text
 .ft R
-
 .fi
 ..
 .\" Set up some character translations and predefined strings.  \*(-- will
@@ -520,7 +519,7 @@ sub verbatim {
     s/^(\s*\S)/'\&' . $1/gme;
     $self->makespace;
     $self->output (".Vb $lines\n$_.Ve\n");
-    $$self{NEEDSPACE} = 0;
+    $$self{NEEDSPACE} = 1;
 }
 
 # Called for a regular text block.  Gets the paragraph, the line number, and a
