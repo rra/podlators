@@ -1131,6 +1131,11 @@ The lint-like features and strict POD format checking done by B<pod2man> are
 not yet implemented and should be, along with the corresponding C<lax>
 option.
 
+The NAME section should be recognized specially and index entries emitted
+for everything in that section.  This would have to be deferred until the
+next section, since extraneous things in NAME tends to confuse various man
+page processors.
+
 The handling of hyphens, en dashes, and em dashes is somewhat fragile, and
 one may get the wrong one under some circumstances.  This should only matter
 for troff(1) output.
