@@ -24,3 +24,4 @@ t/basic.txt
 t/man.t
 t/parselink.t
 t/text-errors.t
+t/text.t

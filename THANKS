@@ -97,3 +97,6 @@ test suite.
 Marcus Shawcroft, for suggesting that guesswork not be applied to the
 NAME section since that text is frequently pulled out by tools like
 catman that don't understand *roff.
+
+Hugo van der Sanden, for reporting that the anti-quoting regexes thought
+that a period was a number.

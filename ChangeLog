@@ -1,3 +1,13 @@
+2002-06-23  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.22 released.
+
+	* lib/Pod/Man.pm (quote_literal): Tweak the regex for matching
+	numbers to not consider a single period to be a number.
+	* lib/Pod/Text.pm (seq_c): Likewise.
+	* t/man.t: Add a test for proper quoting of C<.>.
+	* t/text.t: New file.  Likewise.
+
 2002-02-16  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.21 released.
