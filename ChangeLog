@@ -1,5 +1,7 @@
 2000-12-25  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 1.06 released.
+
 	* scripts/pod2text.PL: Add -o or --overstrike to use
 	Pod::Text::Overstrike as the formatter.
 
