@@ -37,7 +37,7 @@ print OUT <<'!NO!SUBS!';
 
 # pod2text -- Convert POD data to formatted ASCII text.
 #
-# Copyright 1999, 2000 by Russ Allbery <rra@stanford.edu>
+# Copyright 1999, 2000, 2001 by Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -74,7 +74,7 @@ my $stdin;
 my %options;
 $options{sentence} = 0;
 Getopt::Long::config ('bundling');
-GetOptions (\%options, 'alt|a', 'color|c', 'help|h', 'indent|i=i',
+GetOptions (\%options, 'alt|a', 'code', 'color|c', 'help|h', 'indent|i=i',
             'loose|l', 'overstrike|o', 'quotes|q=s', 'sentence|s',
             'termcap|t', 'width|w=i') or exit 1;
 pod2usage (1) if $options{help};
@@ -107,8 +107,8 @@ pod2text - Convert POD data to formatted ASCII text
 
 =head1 SYNOPSIS
 
-pod2text [B<-aclost>] [B<-i> I<indent>] [B<-q> I<quotes>] [B<-w> I<width>]
-[I<input> [I<output>]]
+pod2text [B<-aclost>] [B<--code>] [B<-i> I<indent>] S<[B<-q> I<quotes>]>
+S<[B<-w> I<width>]> [I<input> [I<output>]]
 
 pod2text B<-h>
 
@@ -131,6 +131,12 @@ given, the formatted output is written to STDOUT.
 
 Use an alternate output format that, among other things, uses a different
 heading style and marks C<=item> entries with a colon in the left margin.
+
+=item B<--code>
+
+Include any non-POD text from the input file in the output as well.  Useful
+for viewing code documented with POD blocks with the POD rendered and the
+code left intact.
 
 =item B<-c>, B<--color>
 
