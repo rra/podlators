@@ -1,3 +1,29 @@
+2001-11-26  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.15 released.
+
+	* scripts/pod2man.PL: Delete the lax option before calling
+	Pod::Man and document that it's obsolete and that podchecker
+	should be used instead.  Mark some man page references with an
+	explicit L<> and remove unnecessary anchor text on L<> references
+	to other POD modules.  Add podchecker to the references section.
+
+	* lib/Pod/Man.pm: Documentation fixes.  Remove the mention of lax
+	from BUGS since podchecker now handles that.  Add mentions of
+	turning off guesswork and proper 8-bit character handling.  Move
+	some notes about fragile heuristics to a CAVEATS section.
+
+2001-11-25  Russ Allbery  <rra@stanford.edu>
+
+	* t/basic.t: Set TERM and TERMCAP per the Term::Cap documentation
+	to obtain reproducible results for the Pod::Text::Termcap test.
+
+	* lib/Pod/Text/Termcap.pm (initialize): Wrap the call into
+	Term::Cap with eval because it throws exceptions if the terminal
+	can't be found.  Fall back on the ANSI escape sequences rather
+	than dying if the termcap entry is incomplete.  Note the fallback
+	in the documentation.
+
 2001-11-23  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.14 released.
