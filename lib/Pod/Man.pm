@@ -38,7 +38,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Perl core and too many things could munge CVS magic revision strings.
 # This number should ideally be the same as the CVS revision in podlators,
 # however.
-$VERSION = 1.00;
+$VERSION = 1.01;
 
 
 ############################################################################
@@ -264,13 +264,13 @@ $PREAMBLE = <<'----END OF PREAMBLE----';
 # Static helper functions
 ############################################################################
 
-# Protect leading quotes and periods against interpretation as commands.  A
-# leading *roff font escape apparently still leaves a period interpretable
-# as a command by some *roff implementations, so look for a period even
-# after one of those.
+# Protect leading quotes and periods against interpretation as commands.
+# Also protect anything starting with a backslash, since it could expand
+# or hide something that *roff would interpret as a command.  This is
+# overkill, but it's much simpler than trying to parse *roff here.
 sub protect {
     local $_ = shift;
-    s{ ^ ( (?: \\f(?:.|\(..) )* [.\'] ) } {\\&$1}xmg;
+    s/^([.\'\\])/\\&$1/mg;
     $_;
 }
                     
@@ -669,11 +669,14 @@ sub cmd_back {
 # An individual list item.  Emit an index entry for anything that's
 # interesting, but don't emit index entries for things like bullets and
 # numbers.  rofficate bullets too while we're at it (so for nice output, use
-# * for your lists rather than o or . or - or some other thing).
+# * for your lists rather than o or . or - or some other thing).  Newlines
+# in an item title are turned into spaces since *roff can't handle them
+# embedded.
 sub cmd_item {
     my $self = shift;
     local $_ = $self->parse (@_);
     s/\s+$//;
+    s/\s*\n\s*/ /g;
     my $index;
     if (/\w/ && !/^\w[.\)]\s*$/) {
         $index = $_;
