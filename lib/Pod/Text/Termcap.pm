@@ -30,7 +30,7 @@ use vars qw(@ISA $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.04;
+$VERSION = 1.05;
 
 
 ##############################################################################
@@ -140,7 +140,7 @@ text using the correct termcap escape sequences for the current terminal.
 Apart from the format codes, it in all ways functions like Pod::Text.  See
 L<Pod::Text> for details and available options.
 
-=head NOTES
+=head1 NOTES
 
 This module uses Term::Cap to retrieve the formatting escape sequences for
 the current terminal, and falls back on the ECMA-48 (the same in this
