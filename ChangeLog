@@ -1,3 +1,70 @@
+Mon Sep 20 00:55:29 1999  Russ Allbery  <eagle@windlord.stanford.edu>
+
+        * VERSION: podlators 0.06 released.
+
+        * scripts/pod2roff.PL: Expanded the man page documentation to take
+        into account suggestions from Larry Virden.  Added examples for
+        ENVIRONMENT, more examples for OPTIONS, better examples for
+        subsections in DESCRIPTION, more details on ERRORS, a plea for a
+        method of fixing problems in DIAGNOSTICS as well as what the
+        message means, a plea for an explanation of examples in EXAMPLES,
+        a plea for documenting files that are modified in FILES, a mention
+        of a program web site in SEE ALSO, a mention of e-mail addresses
+        in AUTHORS, the AVAILABILITY section, and a note about markup
+        including L<> issues with e-mail addresses and URLs.
+
+        * lib/Pod/Man.pm: Added a BUGS entry for index entries for stuff
+        in NAME.
+
+        * lib/Pod/Text.pm: =begin text blocks are now output verbatim
+        rather than interpreted as POD.  Documented the oddity with
+        Ctrl-As as a restriction.
+
+        * Makefile.PL: pod2txt renamed to pod2text.
+
+        * scripts/pod2roff.PL: Exit on Getopt::Long errors.
+
+        * scripts/pod2text.PL: Renamed to pod2text and updated for the
+        renaming of Pod::PlainText to Pod::Text.  Added an explicit check
+        for Term::ANSIColor if -c was given.  Added documentation of -h,
+        expanded the DIAGNOSTICS section to include directly generated
+        error messages and the most common Getopt::Long message.
+
+        * lib/Pod/Text/Termcap.pm: Updated for the renaming of
+        Pod::PlainText to Pod::Text.
+
+        * lib/Pod/Text/Color.pm: Updated for the renaming of
+        Pod::PlainText to Pod::Text, added BUGS note that the
+        implementation is rather incomplete and a note in DESCRIPTION that
+        it relies on Term::ANSIColor.
+
+        * lib/Pod/Text.pm: Renamed to Pod::Text, various comment cleanups,
+        always treat =for paragraphs as verbatim text, cleaned up the
+        documentation a little, and added two more diagnostics and a
+        cross-reference to pod2text(1).  Bumped revision to 2.0 to be
+        larger than the old Pod::Text.
+
+        * lib/Pod/Man.pm: Renamed to Pod::Man from Pod::Roff, since there
+        is no standard Pod::Man module to worry about conflicting with.
+
+        * scripts/pod2roff.PL: Cut down on some information redundant with
+        Pod::Man's documentation, changed for the renaming of Pod::Roff to
+        Pod::Man, and added a BUGS section noting a few currently unfixed
+        problems.
+
+        * lib/Pod/Roff.pm: Inherit from Pod::Parser instead of
+        Pod::Select, get the date from our input file by default, be even
+        more conservative about small caps but put AT&T in small caps, and
+        added documentation.
+
+        * Makefile.PL: Add pod2roff to the scripts, improve handling of
+        scripts a little.
+
+Sun Sep 19 22:23:21 1999  Russ Allbery  <eagle@windlord.stanford.edu>
+
+        * lib/Pod/Roff.pm: New file.
+        scripts/pod2roff.PL: New file.
+
 Sat Sep 18 12:34:17 1999  Russ Allbery  <eagle@windlord.stanford.edu>
 
         * VERSION: podlators 0.05 released.
@@ -53,8 +120,6 @@ Sat Jun 12 19:38:24 1999  Russ Allbery  <eagle@windlord.stanford.edu>
         * VERSION: Pod::SimpleText 0.01 released.
 
         * lib/Pod/SimpleText.pm: Minor documentation fixes.
-
-        * README: New file.
 
         * scripts/pod2txt: New file.
 
