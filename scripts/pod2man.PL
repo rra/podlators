@@ -55,8 +55,7 @@ use strict;
 use vars qw($running_under_some_shell);
 
 # Insert -- into @ARGV before any single dash argument to hide it from
-# Getopt::Long; we want to interpret it as meaning stdin (which Pod::Parser
-# does correctly).
+# Getopt::Long; we want to interpret it as meaning stdin.
 my $stdin;
 @ARGV = map { $_ eq '-' && !$stdin++ ? ('--', $_) : $_ } @ARGV;
 
@@ -85,9 +84,9 @@ delete $options{lax};
 
 # Initialize and run the formatter, pulling a pair of input and output off at
 # a time.
-my $parser = Pod::Man->new (%options);
 my @files;
 do {
+    my $parser = Pod::Man->new (%options);
     @files = splice (@ARGV, 0, 2);
     print "  $files[1]\n" if $verbose;
     $parser->parse_from_file (@files);
@@ -252,7 +251,7 @@ Print out the name of each output file as it is being generated.
 
 =head1 DIAGNOSTICS
 
-If B<pod2man> fails with errors, see L<Pod::Man> and L<Pod::Parser> for
+If B<pod2man> fails with errors, see L<Pod::Man> and L<Pod::Simple> for
 information about what those errors might mean.
 
 =head1 EXAMPLES
