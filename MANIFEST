@@ -2,9 +2,11 @@ ChangeLog
 MANIFEST
 Makefile.PL
 README
+THANKS
 TODO
 VERSION
 lib/Pod/Man.pm
+lib/Pod/ParseLink.pm
 lib/Pod/Text.pm
 lib/Pod/Text/Color.pm
 lib/Pod/Text/Overstrike.pm

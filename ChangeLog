@@ -1,3 +1,86 @@
+2001-11-15  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.12 released.
+
+2001-11-14  Russ Allbery  <rra@stanford.edu>
+
+	* Makefile.PL: Require at least version 0.8 of File::Spec.
+
+	* lib/Pod/Man.pm: Use L<> for all man page references in the
+	documentation that should be highlighted.  Switch the rest to bold
+	versions of the program name.  Change func(n) to func(3) in the
+	example of things that are automatically formatted so that it will
+	be formatted.  Remove from BUGS the note that some of the path
+	mangling assumes Unix directory separators.  Don't give anchor
+	text for L<> links that no longer require it.
+	* lib/Pod/Text.pm: Update the documentation to use now-allowable
+	POD constructs like C<< >>.  Don't escape angle brackets that
+	don't require escaping.  Don't give anchor text for L<> links that
+	no longer require it.
+	* lib/Pod/Text/Color.pm: Likewise.
+	* lib/Pod/Text/Overstrike.pm: Likewise.
+	* lib/Pod/Text/Termcap.pm: Likewise.
+
+	* lib/Pod/Text.pm (interior_sequence): Inside S<>, convert all
+	whitespace to non-breaking spaces, not just spaces.
+
+	* lib/Pod/Man.pm (guesswork): Rewrite the handling of dashes and
+	hyphens.  Be much more conservative about which hyphens are turned
+	into dashes, and make all hyphens non-breaking unless we can be
+	fairly sure that they're inside normal words.
+
+	* lib/Pod/Man.pm (textblock): Remove the special handling of
+	consecutive L</section> links.
+	(sequence): Defer expansion of formatting escapes inside L<> until
+	L<> is processed.  Use Pod::ParseLink to parse the link text and
+	determine the text used.  Expand formatting escapes in the link
+	text after the final text is determined.  Surround URLs with angle
+	brackets in the output.
+	(buildlink): Deleted.
+	(collapse): Only escape backslashes for C<> codes.
+	* lib/Pod/Text.pm (textblock): Remove the special handling of
+	consecutive L</section> links.
+	(interior_sequence): Defer expansion of formatting escapes inside
+	L<> until L<> is processed.  Pass the Pod::InteriorSequence object
+	to seq_l.
+	(seq_l): Use Pod::ParseLink to parse the link text and determine
+	the text used.  Expand formatting escapes in the link text after
+	the final text is determined.  Surround URLs with angle brackets
+	in the output.
+	* lib/Pod/ParseLink.pm: New file.
+
+	* lib/Pod/Man.pm (initialize): Initialize NEWINDENT.
+	(textblock): Handle indentation of =item-less =over/=back blocks
+	if NEWINDENT is set.
+	(cmd_over): Set NEWINDENT.
+	(cmd_back): Clear NEWINDENT.
+	(cmd_item): Likewise.
+
+	* lib/Pod/Man.pm (begin_pod): Include the version of Pod::Parser
+	in the header.
+
+	* lib/Pod/Man.pm: Support E<apos>, E<nbsp>, and E<shy>.
+	* lib/Pod/Text.pm: Support E<apos> and E<nbsp> and treat E<shy> as
+	an empty string.
+
+2001-11-13  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (begin_pod): Completely rewrite the name parsing
+	code for modules to use File::Spec.  In the process, fix a bug in
+	dealing with the new three-component version number directories.
+	Swap the order of date and release in the .TH line to better
+	comply with the man macro documentation.
+
+2001-11-04  Russ Allbery  <rra@stanford.edu>
+
+	* scripts/pod2man.PL: Add the --name option and documentation.
+	* lib/Pod/Man.pm: Add documentation for the name option, which was
+	already implemented.
+	(begin_pod): Only try to determine a module name from the path for
+	the man page name if the man page we're generating is in section
+	3.  No longer insert a timestamp into the generated man page; it
+	just causes unnecessary differences and merge conflicts.
+
 2001-10-20  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.11 released.
