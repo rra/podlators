@@ -1,8 +1,27 @@
+Thu Jul 29 08:23:09 1999  Russ Allbery  <eagle@windlord.stanford.edu>
+
+        * lib/Pod/PlainText.pm: Added a pod2text() function for backwards
+        compatibility.
+
+        * lib/Pod/Text/Termcap.pm: Switch from using Pod::SimpleText to
+        using Pod::PlainText.
+        lib/Pod/Text/Color.pm: Likewise.
+
+        * lib/Pod/PlainText.pm: Properly wrap multi-line =item tags.
+
+        * Makefile.PL: Changed the name of the package to podlators.
+
+        * lib/Pod/PlainText.pm: Fixed a spurious space with =for text
+        commands, check the content of sequences against '' specifically
+        rather than testing truth so that it does the right thing with 0,
+        process sequences for =head headings, and changed the name from
+        SimpleText to PlainText.  Also speeded up some sequences slightly.
+
 Sat Jun 12 19:38:24 1999  Russ Allbery  <eagle@windlord.stanford.edu>
 
         * VERSION: Pod::SimpleText 0.01 released.
 
-	* lib/Pod/SimpleText.pm: Minor documentation fixes.
+        * lib/Pod/SimpleText.pm: Minor documentation fixes.
 
         * README: New file.
 

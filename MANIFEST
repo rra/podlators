@@ -2,7 +2,8 @@ ChangeLog
 MANIFEST
 Makefile.PL
 README
-lib/Pod/SimpleText.pm
+VERSION
+lib/Pod/PlainText.pm
 lib/Pod/Text/Color.pm
 lib/Pod/Text/Termcap.pm
 scripts/pod2txt
