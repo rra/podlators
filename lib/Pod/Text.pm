@@ -37,7 +37,7 @@ use vars qw(@ISA @EXPORT %ESCAPES $VERSION);
 # Perl core and too many things could munge CVS magic revision strings.
 # This number should ideally be the same as the CVS revision in podlators,
 # however.
-$VERSION = 2.08;
+$VERSION = 2.09;
 
 
 ############################################################################
@@ -82,12 +82,12 @@ $VERSION = 2.08;
     "eth"       =>    "\xF0",   # small eth, Icelandic
     "Euml"      =>    "\xCB",   # capital E, dieresis or umlaut mark
     "euml"      =>    "\xEB",   # small e, dieresis or umlaut mark
-    "Iacute"    =>    "\xCC",   # capital I, acute accent
-    "iacute"    =>    "\xEC",   # small i, acute accent
+    "Iacute"    =>    "\xCD",   # capital I, acute accent
+    "iacute"    =>    "\xED",   # small i, acute accent
     "Icirc"     =>    "\xCE",   # capital I, circumflex accent
     "icirc"     =>    "\xEE",   # small i, circumflex accent
-    "Igrave"    =>    "\xCD",   # capital I, grave accent
-    "igrave"    =>    "\xED",   # small i, grave accent
+    "Igrave"    =>    "\xCC",   # capital I, grave accent
+    "igrave"    =>    "\xEC",   # small i, grave accent
     "Iuml"      =>    "\xCF",   # capital I, dieresis or umlaut mark
     "iuml"      =>    "\xEF",   # small i, dieresis or umlaut mark
     "Ntilde"    =>    "\xD1",   # capital N, tilde
