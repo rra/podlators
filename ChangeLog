@@ -1,4 +1,14 @@
+2001-11-30  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.18 released.
+
+	* lib/Pod/ParseLink.pm: Escape L<> in the NAME section of the
+	documentation.
+
 2001-11-27  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Text/Termcap.pm (initialize): Fall back on a hard-coded
+	terminal speed if POSIX::Termios doesn't work, such as on VMS.
 
 	* VERSION: podlators 1.17 released.
 

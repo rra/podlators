@@ -84,3 +84,7 @@ that cleaned up a lot of edge cases and for his patience in explaining and
 defending the decisions of that specification.  Thanks also for writing
 detailed instructions on how to parse L<> codes that I just implemented
 nearly verbatim for Pod::ParseLink.
+
+Craig Berry, for reporting that POSIX::Termios doesn't work on VMS and
+providing the information necessary to add a workaround in
+Pod::Text::Termcap.
