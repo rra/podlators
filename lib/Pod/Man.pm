@@ -1,15 +1,21 @@
 # Pod::Man -- Convert POD data to formatted *roff input.
 # $Id$
 #
-# Copyright 1999 by Russ Allbery <rra@stanford.edu>
+# Copyright 1999, 2000 by Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 #
-# This module is intended to be a replacement for pod2man, and attempts to
-# match its output except for some specific circumstances where other
-# decisions seemed to produce better output.  It uses Pod::Parser and is
-# designed to be very easy to subclass.
+# This module is intended to be a replacement for the pod2man script
+# distributed with versions of Perl prior to 5.6, and attempts to match its
+# output except for some specific circumstances where other decisions seemed
+# to produce better output.  It uses Pod::Parser and is designed to be easy
+# to subclass.
+#
+# Perl core hackers, please note that this module is also separately
+# maintained outside of the Perl core as part of the podlators.  Please send
+# me any patches at the address above in addition to sending them to the
+# standard Perl mailing lists.
 
 ############################################################################
 # Modules and declarations
@@ -28,7 +34,11 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 
 @ISA = qw(Pod::Parser);
 
-($VERSION = (split (' ', q$Revision$ ))[1]) =~ s/\.(\d)$/.0$1/;
+# Don't use the CVS revision as the version, since this module is also in
+# Perl core and too many things could munge CVS magic revision strings.
+# This number should ideally be the same as the CVS revision in podlators,
+# however.
+$VERSION = 1.00;
 
 
 ############################################################################
@@ -254,8 +264,15 @@ $PREAMBLE = <<'----END OF PREAMBLE----';
 # Static helper functions
 ############################################################################
 
-# Protect leading quotes and periods against interpretation as commands.
-sub protect { local $_ = shift; s/^([.\'])/\\&$1/mg; $_ }
+# Protect leading quotes and periods against interpretation as commands.  A
+# leading *roff font escape apparently still leaves a period interpretable
+# as a command by some *roff implementations, so look for a period even
+# after one of those.
+sub protect {
+    local $_ = shift;
+    s{ ^ ( (?: \\f(?:.|\(..) )* [.\'] ) } {\\&$1}xmg;
+    $_;
+}
                     
 # Given a command and a single argument that may or may not contain double
 # quotes, handle double-quote formatting for it.  If there are no double
@@ -336,15 +353,20 @@ sub initialize {
 
     # We used to try first to get the version number from a local binary,
     # but we shouldn't need that any more.  Get the version from the running
-    # Perl.
+    # Perl.  Work a little magic to handle subversions correctly under both
+    # the pre-5.6 and the post-5.6 version numbering schemes.
     if (!defined $$self{release}) {
-        my ($version, $patch) = ($] =~ /^(.{5})(\d{2})?/);
-        $$self{release}  = "perl $version";
-        $$self{release} .= ", patch $patch" if $patch;
+        my @version = ($] =~ /^(\d+)\.(\d{3})(\d{0,3})$/);
+        $version[2] ||= 0;
+        $version[2] *= 10 ** (3 - length $version[2]);
+        for (@version) { $_ += 0 }
+        $$self{release} = 'perl v' . join ('.', @version);
     }
 
     # Double quotes in things that will be quoted.
-    for (qw/center date release/) { $$self{$_} =~ s/\"/\"\"/g }
+    for (qw/center date release/) {
+        $$self{$_} =~ s/\"/\"\"/g if $$self{$_};
+    }
 
     $$self{INDENT}  = 0;        # Current indentation level.
     $$self{INDENTS} = [];       # Stack of indentations.
@@ -364,8 +386,8 @@ sub begin_pod {
     my $name = $$self{name};
     if (!defined $name) {
         $name = $self->input_file;
-        $section = 3 if (!$$self{section} && $name =~ /\.pm$/i);
-        $name =~ s/\.p(od|[lm])$//i;
+        $section = 3 if (!$$self{section} && $name =~ /\.pm\z/i);
+        $name =~ s/\.p(od|[lm])\z//i;
         if ($section =~ /^1/) {
             require File::Basename;
             $name = uc File::Basename::basename ($name);
@@ -377,11 +399,11 @@ sub begin_pod {
             # which works.  Should be fixed to use File::Spec.
             for ($name) {
                 s%//+%/%g;
-                if (     s%^.*?/lib/[^/]*perl[^/]*/%%i
-                      or s%^.*?/[^/]*perl[^/]*/(?:lib/)?%%i) {
-                    s%^site(_perl)?/%%;       # site and site_perl
-                    s%^(.*-$^O|$^O-.*)/%%o;   # arch
-                    s%^\d+\.\d+%%;            # version
+                if (     s%^.*?/lib/[^/]*perl[^/]*/%%si
+                      or s%^.*?/[^/]*perl[^/]*/(?:lib/)?%%si) {
+                    s%^site(_perl)?/%%s;      # site and site_perl
+                    s%^(.*-$^O|$^O-.*)/%%so;  # arch
+                    s%^\d+\.\d+%%s;           # version
                 }
                 s%/%::%g;
             }
@@ -395,7 +417,7 @@ sub begin_pod {
         my ($day, $month, $year) = (localtime $time)[3,4,5];
         $month++;
         $year += 1900;
-        $$self{date} = join ('-', $year, $month, $day);
+        $$self{date} = sprintf ('%4d-%02d-%02d', $year, $month, $day);
     }
 
     # Now, print out the preamble and the title.
@@ -468,7 +490,8 @@ sub textblock {
     # Perform a little magic to collapse multiple L<> references.  We'll
     # just rewrite the whole thing into actual text at this part, bypassing
     # the whole internal sequence parsing thing.
-    s{
+    my $text = shift;
+    $text =~ s{
         (L<                     # A link of the form L</something>.
               /
               (
@@ -486,25 +509,26 @@ sub textblock {
         )
     } {
         local $_ = $1;
-        s{ L< / ([^>]+ ) } {$1}g;
+        s{ L< / ( [^>]+ ) > } {$1}xg;
         my @items = split /(?:,?\s+(?:and\s+)?)/;
-        my $string = "the ";
+        my $string = 'the ';
         my $i;
         for ($i = 0; $i < @items; $i++) {
             $string .= $items[$i];
-            $string .= ", " if @items > 2 && $i != $#items;
-            $string .= " and " if ($i == $#items - 1);
+            $string .= ', ' if @items > 2 && $i != $#items;
+            $string .= ' ' if @items == 2 && $i == 2;
+            $string .= 'and ' if ($i == $#items - 1);
         }
-        $string .= " entries elsewhere in this document";
+        $string .= ' entries elsewhere in this document';
         $string;
     }gex;
 
     # Parse the tree and output it.  collapse knows about references to
     # scalars as well as scalars and does the right thing with them.
-    local $_ = $self->parse (@_);
-    s/\n\s*$/\n/;
+    $text = $self->parse ($text, @_);
+    $text =~ s/\n\s*$/\n/;
     $self->makespace if $$self{NEEDSPACE};
-    $self->output (protect $self->mapfonts ($_));
+    $self->output (protect $self->mapfonts ($text));
     $self->outindex;
     $$self{NEEDSPACE} = 1;
 }
@@ -518,7 +542,11 @@ sub sequence {
     my $command = $seq->cmd_name;
 
     # Zero-width characters.
-    if ($command eq 'Z') { return bless \ '\&', 'Pod::Man::String' }
+    if ($command eq 'Z') {
+        # Workaround to generate a blessable reference, needed by 5.005.
+        my $tmp = '\&';
+        return bless \ "$tmp", 'Pod::Man::String';
+    }
 
     # C<>, L<>, X<>, and E<> don't apply guesswork to their contents.
     local $_ = $self->collapse ($seq->parse_tree, $command =~ /^[CELX]$/);
@@ -554,7 +582,9 @@ sub sequence {
 
     # Handle links.
     if ($command eq 'L') {
-        return bless \ ($self->buildlink ($_)), 'Pod::Man::String';
+        # A bug in lvalue subs in 5.6 requires the temporary variable.
+        my $tmp = $self->buildlink ($_);
+        return bless \ "$tmp", 'Pod::Man::String';
     }
                          
     # Whitespace protection replaces whitespace with "\ ".
@@ -686,7 +716,6 @@ sub cmd_end {
 sub cmd_for {
     my $self = shift;
     local $_ = shift;
-    my $line = shift;
     return unless s/^(?:man|roff)\b[ \t]*\n?//;
     $self->output ($_);
 }
@@ -836,7 +865,7 @@ sub guesswork {
         ( ^ | [\s\(\"\'\`\[\{<>] )
         ( [A-Z] [A-Z] [/A-Z+:\d_\$&-]* )
         (?: (?= [\s>\}\]\)\'\".?!,;:] | -- ) | $ )
-    } { $1 . '\s-1' . $2 . '\s0' . $3 }egx;
+    } { $1 . '\s-1' . $2 . '\s0' }egx;
 
     # Turn PI into a pretty pi.
     s{ (?: \\s-1 | \b ) PI (?: \\s0 | \b ) } {\\*\(PI}gx;
@@ -987,7 +1016,7 @@ Pod::Man is a module to convert documentation in the POD format (the
 preferred language for documenting Perl) into *roff input using the man
 macro set.  The resulting *roff code is suitable for display on a terminal
 using nroff(1), normally via man(1), or printing using troff(1).  It is
-conventionally invoked using the driver script B<pod2roff>, but it can also
+conventionally invoked using the driver script B<pod2man>, but it can also
 be used directly.
 
 As a derived class from Pod::Parser, Pod::Man supports the same methods and
@@ -1160,14 +1189,9 @@ separators.
 
 Pod::Man is excessively slow.
 
-=head1 NOTES
-
-The intention is for this module and its driver script to eventually replace
-B<pod2man> in Perl core.
-
 =head1 SEE ALSO
 
-L<Pod::Parser|Pod::Parser>, perlpod(1), pod2roff(1), nroff(1), troff(1),
+L<Pod::Parser|Pod::Parser>, perlpod(1), pod2man(1), nroff(1), troff(1),
 man(1), man(7)
 
 Ossanna, Joseph F., and Brian W. Kernighan.  "Troff User's Manual,"
@@ -1176,7 +1200,7 @@ the best documentation of standard nroff(1) and troff(1).  At the time of
 this writing, it's available at http://www.cs.bell-labs.com/cm/cs/cstr.html.
 
 The man page documenting the man macro set may be man(5) instead of man(7)
-on your system.  Also, please see pod2roff(1) for extensive documentation on
+on your system.  Also, please see pod2man(1) for extensive documentation on
 writing manual pages if you've not done it before and aren't familiar with
 the conventions.
 
