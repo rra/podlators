@@ -1,9 +1,9 @@
-                          podlators version 1.06
+                          podlators version 1.07
              (Format POD source into various output formats)
 
-  Copyright 1999, 2000 Russ Allbery <rra@stanford.edu>.  This program is
-  free software; you can redistribute it and/or modify it under the same
-  terms as Perl itself.
+  Copyright 1999, 2000, 2001 Russ Allbery <rra@stanford.edu>.  This
+  program is free software; you can redistribute it and/or modify it under
+  the same terms as Perl itself.
 
 
 INTRODUCTION
@@ -115,7 +115,7 @@ THANKS
 
   To Gurusamy Sarathy, for pointing out the need for a pod2text()
   compatibility interface for older applications, and for being willing to
-  roll this code into the next Perl distribution.
+  roll this code into the Perl core distribution.
 
   To Larry Virden, for feedback on the section on writing a man page in
   pod2roff and lots of good suggestions for improving it.
@@ -147,6 +147,9 @@ THANKS
   process multiple files with one invocation.
 
   To Joe Smith, for Pod::Text::Overstrike.
+
+  To Robin Barker, for finding problems with multiline =head* headings and
+  input filenames containing spaces.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
