@@ -127,7 +127,6 @@ sub initialize {
     $$self{sentence} = 0  unless defined $$self{sentence};
     $$self{width}    = 76 unless defined $$self{width};
 
-    $$self{BEGUN}    = [];              # Stack of =begin blocks.
     $$self{INDENTS}  = [];              # Stack of indentations.
     $$self{MARGIN}   = $$self{indent};  # Current left margin in spaces.
 
@@ -169,9 +168,11 @@ sub verbatim {
 # Called for a regular text block.  Gets the paragraph, the line number, and
 # a Pod::Paragraph object.  Perform interpolation and output the results.
 sub textblock {
-    my ($self, $text, $line) = @_;
+    my $self = shift;
     return if $$self{EXCLUDE};
-    local $_ = $text;
+    $self->output ($_[0]), return if $$self{VERBATIM};
+    local $_ = shift;
+    my $line = shift;
 
     # Perform a little magic to collapse multiple L<> references.  This is
     # here mostly for backwards-compatibility.  We'll just rewrite the whole
@@ -330,23 +331,25 @@ sub cmd_item {
     $$self{ITEM} = $self->interpolate ($_);
 }
 
-# Begin a block for a particular translator.  To allow for weird nested
-# =begin blocks, keep track of how many blocks we were excluded from and
-# only unwind one level with each =end.
+# Begin a block for a particular translator.  Setting VERBATIM triggers
+# special handling in textblock().
 sub cmd_begin {
     my $self = shift;
     local $_ = shift;
     my ($kind) = /^(\S+)/ or return;
-    push (@{ $$self{BEGUN} }, $kind);
-    $$self{EXCLUDE}++ unless $kind eq 'text';
+    if ($kind eq 'text') {
+        $$self{VERBATIM} = 1;
+    } else {
+        $$self{EXCLUDE} = 1;
+    }
 }
 
 # End a block for a particular translator.  We assume that all =begin/=end
-# pairs are properly nested and just pop the previous one.
+# pairs are properly closed.
 sub cmd_end {
     my $self = shift;
-    my $kind = pop @{ $$self{BEGUN} };
-    $$self{EXCLUDE}-- if $$self{EXCLUDE};
+    $$self{EXCLUDE} = 0;
+    $$self{VERBATIM} = 0;
 }    
 
 # One paragraph for a particular translator.  Ignore it unless it's intended
@@ -664,6 +667,11 @@ C<=over> command.
 
 =back
 
+=head1 RESTRICTIONS
+
+Embedded Ctrl-As (octal 001) in the input will be mapped to spaces on
+output, due to an internal implementation detail.
+
 =head1 NOTES
 
 This is a replacement for an earlier Pod::Text module written by Tom
@@ -675,7 +683,7 @@ though.
 The original Pod::Text contained code to do formatting via termcap
 sequences, although it wasn't turned on by default and it was problematic to
 get it to work at all.  This rewrite doesn't even try to do that, but a
-subclass of it does.  Look for Pod::Text::Termcap.
+subclass of it does.  Look for L<Pod::Text::Termcap|Pod::Text::Termcap>.
 
 =head1 SEE ALSO
 
