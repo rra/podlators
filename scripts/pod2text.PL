@@ -37,7 +37,7 @@ print OUT <<'!NO!SUBS!';
 
 # pod2text -- Convert POD data to formatted ASCII text.
 #
-# Copyright 1999 by Russ Allbery <rra@stanford.edu>
+# Copyright 1999, 2000 by Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
