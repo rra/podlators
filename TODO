@@ -2,19 +2,29 @@ This is a somewhat random and unordered list of things I'd like to see
 fixed or improved, but which I've not yet had a chance to do.  Patches for
 any of the following are very much welcome.
 
- * Do something about the other high-bit characters that aren't supported
-   currently by Pod::Man.  Do some versions of groff support Unicode?
-   We'd definitely need help from the *roff implementation here for a
-   general solution.
+ * The latest version of GNU groff supports both ISO 8859-1 and UTF-8
+   characters, but Pod::Man can't deal with them.  It should be possible
+   to pass through UTF-8 to the output and let the *roff formatter deal
+   with it, including mapping all E<> escapes to the appropriate code
+   points.  It would also be good to support ISO 8859-1 in the same way
+   because it's widely used.  This probably requires an argument to the
+   module specifying the output character set.  Then, the current
+   fallbacks should only be used when the output character set is pure
+   ASCII.
 
- * Do something about high-bit characters directly in the text (including
-   verbatim paragraphs) in Pod::Man.  Many versions of *roff choke on them
-   badly unless we do the same sort of processing that we would if they
-   were E<> escapes.
+ * The current handling of high-bit characters by Pod::Man is wrong.  E<>
+   escapes should be mapped to the appropriate UTF-8 code point, and then
+   a single transformation should be done on each paragraph right before
+   output, converting all of the UTF-8 code points to something else if
+   the output character set is not UTF-8.  This should probably use
+   Pod::Escapes to provide fallbacks.  This would also allow correct
+   output of high-bit characters found in verbatim paragraphs.
 
  * There should be some way to turn off all heuristics when people are
    using POD for some purpose other than Perl or some other programming
-   language with similar needs.
+   language with similar needs.  The best way to do this would be via a
+   new Pod::Guesswork module that acts on parse trees before they're
+   expanded, adding additional interior sequences as appropriate.
 
  * The test suite is still fairly basic, and doesn't test all of the
    options to the various modules, the scripts, =for, =over/=back, or the
@@ -22,11 +32,7 @@ any of the following are very much welcome.
 
  * Pod::Man is still blessing already-formatted strings to work around an
    old limitation in Pod::Parser.  We should be able to drop the bless and
-   just use references to indicate an already-formatted string, but
-   someone needs to track down what version of Pod::Parser in which that
-   limitation was actually finally removed (there were several
-   unsuccessful attempts at it) and require that version as a prereq
-   before that can be done.
+   just use references to indicate an already-formatted string.
 
 The following items require changes to the POD specification and are
 therefore of broader scope than just this code:
@@ -43,16 +49,6 @@ therefore of broader scope than just this code:
    be better; F<> is already taken, though.)  This is lower priority,
    since it's unclear how to do a footnote in text or *roff output anyway,
    but it's useful in other contexts.
-
- * Ideally, all of guesswork() in Pod::Man should be pulled up a level
-   into a parsing layer that converts such things into E<> escapes (for
-   stuff like long dashes) or interior sequences (for things like small
-   caps).  It's unclear the best way to do this; some of the
-   transformations are very specific to a translator.
-
- * Add a =verbatim command that outputs text exactly as it appears without
-   any indentation or other changes.  (This is mostly useful inside a
-   =begin/=end pair but may be useful elsewhere.)
 
  * Lots of people seem to think that translating POD into a canonical XML
    form and then generating output from that instead of directly from POD
@@ -80,16 +76,12 @@ post by Tom Christiansen to pod-people@perl.org:
    Pod::Man and Pod::Text handle much of this already, but not all of it
    (and I've not checked to see exactly where they break).
 
- * A better way to deal with the many L<> things in the SEE ALSO would be
-   good.
-
  * Something in __ALLCAPS__ should be in code font but perhaps not small,
    and maybe some magic between the unders, as in \f(CW_\|_ALLCAPS_\|_\fP.
    (Pod::Man handles the spaces between the underbars, but not putting
    this into code font.)
 
- * An area for further work is headers and footers.  You should include
-   the module version number and the file's last modification date in
-   headers/footers where appropriate.  That means that when processing a
-   module, ideally one wants to pull out the module's $VERSION to use in
-   the footer rather than Perl's version.
+ * The module version number should be included in the headers/footers
+   where appropriate.  That means that when processing a module, ideally
+   one wants to pull out the module's $VERSION to use in the footer rather
+   than Perl's version.
