@@ -1,4 +1,4 @@
-                          podlators version 1.05
+                          podlators version 1.06
              (Format POD source into various output formats)
 
   Copyright 1999, 2000 Russ Allbery <rra@stanford.edu>.  This program is
@@ -145,6 +145,8 @@ THANKS
 
   To Nicholas Clark, for the original patch to pod2man to allow it to
   process multiple files with one invocation.
+
+  To Joe Smith, for Pod::Text::Overstrike.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
