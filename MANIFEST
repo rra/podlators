@@ -1,6 +1,7 @@
+ChangeLog
 MANIFEST
 Makefile.PL
-VERSION
+README
 lib/Pod/SimpleText.pm
 lib/Pod/Text/Color.pm
 lib/Pod/Text/Termcap.pm
