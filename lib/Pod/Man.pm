@@ -3,7 +3,7 @@
 #
 # Copyright 1999, 2000, 2001 by Russ Allbery <rra@stanford.edu>
 #
-# This program is free software; you can redistribute it and/or modify it
+# This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
 #
 # This module is intended to be a replacement for the pod2man script
@@ -37,7 +37,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.18;
+$VERSION = 1.19;
 
 
 ##############################################################################
@@ -1413,11 +1413,11 @@ the conventions.
 Russ Allbery E<lt>rra@stanford.eduE<gt>, based I<very> heavily on the
 original B<pod2man> by Tom Christiansen E<lt>tchrist@mox.perl.comE<gt>.
 
-=head1 LICENSE
+=head1 COPYRIGHT AND LICENSE
 
 Copyright 1999, 2000, 2001 by Russ Allbery <rra@stanford.edu>.
 
-This program is free software; you can redistribute it and/or modify it
+This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut

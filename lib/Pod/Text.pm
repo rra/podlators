@@ -3,7 +3,7 @@
 #
 # Copyright 1999, 2000, 2001 by Russ Allbery <rra@stanford.edu>
 #
-# This program is free software; you can redistribute it and/or modify it
+# This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
 #
 # This module replaces the old Pod::Text that came with versions of Perl prior
@@ -41,7 +41,7 @@ use vars qw(@ISA @EXPORT %ESCAPES $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.10;
+$VERSION = 2.11;
 
 
 ##############################################################################
@@ -857,11 +857,11 @@ original Pod::Text by Tom Christiansen E<lt>tchrist@mox.perl.comE<gt> and
 its conversion to Pod::Parser by Brad Appleton
 E<lt>bradapp@enteract.comE<gt>.
 
-=head1 LICENSE
+=head1 COPYRIGHT AND LICENSE
 
 Copyright 1999, 2000, 2001 by Russ Allbery <rra@stanford.edu>.
 
-This program is free software; you can redistribute it and/or modify it
+This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
