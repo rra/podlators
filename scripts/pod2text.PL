@@ -67,11 +67,10 @@ for (my $i = 0; $i < @ARGV; $i++) {
 # Parse our options.  Use the same names as Pod::Text for simplicity, and
 # default to sentence boundaries turned off for compatibility.
 my %options;
-$options{termcap} = -t STDOUT;
 $options{sentence} = 0;
 Getopt::Long::config ('bundling');
 GetOptions (\%options, 'alt|a', 'color|c', 'help|h', 'indent|i=i',
-            'loose|l', 'sentence|s', 'termcap|t!', 'width|w=i') or exit 1;
+            'loose|l', 'sentence|s', 'termcap|t', 'width|w=i') or exit 1;
 pod2usage (1) if $options{help};
 
 # Figure out what formatter we're going to use.  -c overrides -t.
@@ -113,10 +112,6 @@ I<input> is the file to read for POD source (the POD can be embedded in
 code).  If I<input> isn't given, it defaults to STDIN.  I<output>, if given,
 is the file to which to write the formatted output.  If I<output> isn't
 given, the formatted output is written to STDOUT.
-
-B<pod2text> defaults to trying to use Pod::Text::Termcap if STDOUT is a tty.
-To explicitly say not to attempt termcap escape sequences, use
-B<--notermcap>.
 
 =head1 OPTIONS
 
@@ -160,9 +155,9 @@ Try to determine the width of the screen and the bold and underline
 sequences for the terminal from termcap, and use that information in
 formatting the output.  Output will be wrapped at two columns less than the
 width of your terminal device.  Using this option requires that your system
-have a termcap file somewhere where Term::Cap can find it.  With this
-option, the output of B<pod2text> will contain terminal control sequences
-for your current terminal type.
+have a termcap file somewhere where Term::Cap can find it and requires that
+your system support termios.  With this option, the output of B<pod2text>
+will contain terminal control sequences for your current terminal type.
 
 =item B<-w>, B<--width=>I<width>, B<->I<width>
 
