@@ -28,8 +28,7 @@ use vars qw(@ISA %ESCAPES $VERSION);
 
 @ISA = qw(Pod::Parser);
 
-# Use the CVS revision of this file as its version number.
-($VERSION = (split (' ', q$Revision$ ))[1]) =~ s/\.(\d)$/.0$1/;
+$VERSION = '0.01';
 
 
 ############################################################################
@@ -550,21 +549,14 @@ behavior of the parser.  The currently recognized options are:
 
 =item alt
 
-If set to a true value, selects an alternate output format that uses a
-different heading style and marks C<=item> entries with a colon in the left
-margin.  Defaults to false.
+If set to a true value, selects an alternate output format that, among other
+things, uses a different heading style and marks C<=item> entries with a
+colon in the left margin.  Defaults to false.
 
-=item ident
+=item indent
 
 The number of spaces to indent regular text, and the default indentation for
 C<=over> blocks.  Defaults to 4.
-
-=item sentence
-
-If set to a true value, Pod::SimpleText will assume that each sentence ends
-in two spaces, and will try to preserve that spacing.  If set to false, all
-consecutive whitespace in non-verbatim paragraphs is compressed into a
-single space.  Defaults to true.
 
 =item loose
 
@@ -574,6 +566,13 @@ although one is still printed after C<=head2>.  This is the default because
 it's the expected formatting for manual pages; if you're formatting
 arbitrary text documents, setting this to true may result in more pleasing
 output.
+
+=item sentence
+
+If set to a true value, Pod::SimpleText will assume that each sentence ends
+in two spaces, and will try to preserve that spacing.  If set to false, all
+consecutive whitespace in non-verbatim paragraphs is compressed into a
+single space.  Defaults to true.
 
 =item width
 
