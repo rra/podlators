@@ -247,27 +247,6 @@ $PREAMBLE = <<'----END OF PREAMBLE----';
     'Yacute'    =>    "Y\\*'",  # capital Y, acute accent
     'yacute'    =>    "y\\*'",  # small y, acute accent
     'yuml'      =>    'y\\*:',  # small y, dieresis or umlaut mark
-
-# The following are strictly internal.  Don't use them in POD source; other
-# translators won't know about them or could do completely different things
-# with them.
-
-    '_bullet'   =>    '\\(bu',  # bullet
-    '_cplus'    =>    '\\*(C+', # C++
-    '_emdash'   =>    '\\*(--', # em-dash
-    '_pi'       =>    '\\*(PI', # pi
-    '_space'    =>    '\\ ',    # nonbreaking space, used by S<>
-    '_thsp'     =>    '\\|',    # thin space
-    '_zero'     =>    '\\&',    # zero-width character
-
-    '_c'        =>    '\\*(C`', # start of a C<> block
-    '_endc'     =>    "\\*(C'", # end of a C<> block
-
-    '_lquote'   =>    '\\*(L"', # left double quote
-    '_rquote'   =>    '\\*(R"', # right double quote
-
-    '_sm'       =>    '\\s-1',  # small text
-    '_endsm'    =>    '\\s0',   # normal sized text
 );
 
 
@@ -275,6 +254,9 @@ $PREAMBLE = <<'----END OF PREAMBLE----';
 # Static helper functions
 ############################################################################
 
+# Protect leading quotes and periods against interpretation as commands.
+sub protect { local $_ = shift; s/^([.\'])/\\&$1/mg; $_ }
+                    
 # Given a command and a single argument that may or may not contain double
 # quotes, handle double-quote formatting for it.  If there are no double
 # quotes, just return the command followed by the argument in double quotes.
@@ -468,7 +450,6 @@ sub verbatim {
     return if /^\s+$/;
     s/\s+$/\n/;
     my $lines = tr/\n/\n/;
-    my $indent;
     1 while s/^(.*?)(\t+)/$1 . ' ' x (length ($2) * 8 - length ($1) % 8)/me;
     s/\\/\\e/g;
     s/^(\s*\S)/'\&' . $1/gme;
@@ -518,49 +499,70 @@ sub textblock {
         $string;
     }gex;
 
-    # Parse the tree and output it.  collapse does guesswork and then
-    # starts at the bottom and calls interior_sequence on each sequence.
-    local $_ = $self->parse_text ({ -expand_ptree => 'collapse' }, @_);
-    $_ = join ('', $_->children);
-    s/\s+$/\n/;
+    # Parse the tree and output it.  collapse knows about references to
+    # scalars as well as scalars and does the right thing with them.
+    local $_ = $self->parse (@_);
+    s/\n\s*$/\n/;
     $self->makespace if $$self{NEEDSPACE};
-    $self->output ($self->unescape ($_));
+    $self->output (protect $self->mapfonts ($_));
     $self->outindex;
     $$self{NEEDSPACE} = 1;
 }
 
-# Called for an interior sequence.  Gets the command, argument, and a
-# Pod::InteriorSequence object and is expected to return the resulting text.
-# Leave E<> alone and unchanged in the output; we fix those as the very last
-# thing that we do before we output the paragraph.
-sub interior_sequence {
-    my $self = shift;
-    my $command = shift;
-    local $_ = shift;
+# Called for an interior sequence.  Takes a Pod::InteriorSequence object and
+# returns a reference to a scalar.  This scalar is the final formatted text.
+# It's returned as a reference so that other interior sequences above us
+# know that the text has already been processed.
+sub sequence {
+    my ($self, $seq) = @_;
+    my $command = $seq->cmd_name;
 
-    # Handle special sequences.
-    if ($command eq 'E') { return "E<$_>"    }
-    if ($command eq 'Z') { return 'E<_zero>' }
+    # Zero-width characters.
+    if ($command eq 'Z') { return bless \ '\&', 'Pod::Man::String' }
 
-    # For all the other sequences, empty content produces no output.
-    return if $_ eq '';
+    # C<>, L<>, X<>, and E<> don't apply guesswork to their contents.
+    local $_ = $self->collapse ($seq->parse_tree, $command =~ /^[CELX]$/);
 
-    # Handle formatting sequences.
-    if ($command eq 'B') { return 'E<_FS_B>' . $_ . 'E<_FE_B>' }
-    if ($command eq 'F') { return 'E<_FS_I>' . $_ . 'E<_FE_I>' }
-    if ($command eq 'I') { return 'E<_FS_I>' . $_ . 'E<_FE_I>' }
-    if ($command eq 'C') {
-        return 'E<_FS_F>E<_c>' . $_ . 'E<_endc>E<_FE_F>';
+    # Handle E<> escapes.
+    if ($command eq 'E') {
+        if (exists $ESCAPES{$_}) {
+            return bless \ "$ESCAPES{$_}", 'Pod::Man::String';
+        } else {
+            carp "Unknown escape E<$1>";
+            return bless \ "E<$_>", 'Pod::Man::String';
+        }
     }
 
-    # Whitespace protection replaces whitespace with E<_space>.
-    if ($command eq 'S') { s/\s+/E<_space>/g; return $_ }
+    # For all the other sequences, empty content produces no output.
+    return '' if $_ eq '';
+
+    # Handle formatting sequences.
+    if ($command eq 'B') {
+        return bless \ ('\f(BS' . $_ . '\f(BE'), 'Pod::Man::String';
+    } elsif ($command eq 'F') {
+        return bless \ ('\f(IS' . $_ . '\f(IE'), 'Pod::Man::String';
+    } elsif ($command eq 'I') {
+        return bless \ ('\f(IS' . $_ . '\f(IE'), 'Pod::Man::String';
+    } elsif ($command eq 'C') {
+        s/-/\\-/g;
+        s/__/_\\|_/g;
+        return bless \ ('\f(FS\*(C`' . $_ . "\\*(C'\\f(FE"),
+            'Pod::Man::String';
+    }
 
     # Handle links.
-    if ($command eq 'L') { return $self->buildlink ($_) }
+    if ($command eq 'L') {
+        return bless \ ($self->buildlink ($_)), 'Pod::Man::String';
+    }
+                         
+    # Whitespace protection replaces whitespace with "\ ".
+    if ($command eq 'S') {
+        s/\s+/\\ /g;
+        return bless \ "$_", 'Pod::Man::String';
+    }
 
-    # For indexes, add to the list for the current paragraph.
-    if ($command eq 'X') { push (@{ $$self{INDEX} }, $_); return }
+    # Add an index entry to the list of ones waiting to be output.
+    if ($command eq 'X') { push (@{ $$self{INDEX} }, $_); return '' }
 
     # Anything else is unknown.
     carp "Unknown sequence $command<$_>";
@@ -579,11 +581,10 @@ sub interior_sequence {
 # them.
 sub cmd_head1 {
     my $self = shift;
-    $_ = $self->parse_text ({ -expand_ptree => 'collapse' }, @_);
-    $_ = join ('', $_->children);
+    local $_ = $self->parse (@_);
     s/\s+$//;
-    s/E<_(?:end)?sm>//g;
-    $self->output (switchquotes ('.SH', $self->unescape ($_)));
+    s/\\s-?\d//g;
+    $self->output (switchquotes ('.SH', $self->mapfonts ($_)));
     $self->outindex (($_ eq 'NAME') ? () : ('Header', $_));
     $$self{NEEDSPACE} = 0;
 }
@@ -591,10 +592,9 @@ sub cmd_head1 {
 # Second level heading.
 sub cmd_head2 {
     my $self = shift;
-    $_ = $self->parse_text ({ -expand_ptree => 'collapse' }, @_);
-    $_ = $self->unescape (join ('', $_->children));
+    local $_ = $self->parse (@_);
     s/\s+$//;
-    $self->output (switchquotes ('.Sh', $_));
+    $self->output (switchquotes ('.Sh', $self->mapfonts ($_)));
     $self->outindex ('Subsection', $_);
     $$self{NEEDSPACE} = 0;
 }
@@ -640,20 +640,19 @@ sub cmd_back {
 # * for your lists rather than o or . or - or some other thing).
 sub cmd_item {
     my $self = shift;
-    $_ = $self->parse_text ({ -expand_ptree => 'collapse' }, @_);
-    $_ = join ('', $_->children);
+    local $_ = $self->parse (@_);
     s/\s+$//;
     my $index;
     if (/\w/ && !/^\w[.\)]\s*$/) {
         $index = $_;
         $index =~ s/^\s*[-*+o.]?\s*//;
     }
-    s/^\*(\s|\Z)/E<_bullet>$1/;
-    $_ = $self->unescape ($_);
+    s/^\*(\s|\Z)/\\\(bu$1/;
     if ($$self{WEIRDINDENT}) {
         $self->output (".RE\n");
         $$self{WEIRDINDENT} = 0;
     }
+    $_ = $self->mapfonts ($_);
     $self->output (switchquotes ('.Ip', $_, $$self{INDENT}));
     $self->outindex ($index ? ('Item', $index) : ());
     $$self{NEEDSPACE} = 0;
@@ -722,16 +721,16 @@ sub buildlink {
         $section = '"' . $1 . '"';
     } elsif (m{ ^ [-:.\w]+ (?: \( \S+ \) )? $ }x) {
         ($manpage, $section) = ($_, '');
-        $manpage =~ s/^([^\(]+)\(/'E<_FS_I>' . $1 . 'E<_FE_I>'/e;
+        $manpage =~ s/^([^\(]+)\(/'\f(IS' . $1 . '\f(IE\|('/e;
     } elsif (m%/%) {
         ($manpage, $section) = split (/\s*\/\s*/, $_, 2);
         if ($manpage =~ /^[-:.\w]+(?:\(\S+\))?$/) {
-            $manpage =~ s/^([^\(]+)\(/'E<_FS_I>' . $1 . 'E<_FE_I>'/e;
+            $manpage =~ s/^([^\(]+)\(/'\f(IS' . $1 . '\f(IE\|'/e;
         }
         $section =~ s/^\"\s*//;
         $section =~ s/\s*\"$//;
     }
-    if ($manpage && $manpage !~ /E</) {
+    if ($manpage && $manpage !~ /\\f\(IS/) {
         $manpage = "the $manpage manpage";
     }
 
@@ -757,124 +756,75 @@ sub buildlink {
 # Escaping and fontification
 ############################################################################
 
-# Most of the deep magic.  All E<> sequences are deferred until we reach
-# this point, and we've accumulated some additional magic sequences in the
-# process.
-sub unescape {
+# At this point, we'll have embedded font codes of the form \f(<font>[SE]
+# where <font> is one of B, I, or F.  Turn those into the right font start
+# or end codes.  B<someI<thing> else> should map to \fBsome\f(BIthing\fB
+# else\fR.  The old pod2man didn't get this right; the second \fB was \fR,
+# so nested sequences didn't work right.  We take care of this by using
+# variables as a combined pointer to our current font sequence, and set each
+# to the number of current nestings of start tags for that font.  Use them
+# as a vector to look up what font sequence to use.
+sub mapfonts {
     my $self = shift;
     local $_ = shift;
 
-    # rofficate backslashes and dashes but keep hyphens hyphens.
-    s/\\/\\e/g;
-    s/(\G|^|[^a-zA-Z])-/$1\\-/g;
-
-    # Ensure double underbars have a tiny space between them.
-    s/__/_\\|_/g;
-
-    # Protect leading quotes from interpretation as commands.
-    s/^([.\'])/\\&$1/gm;
-
-    # If there aren't any E<> sequences, all done.
-    return $_ unless /E</;
-
-    # B<someI<thing> else> should map to \fBsome\f(BIthing\fB else\fR.  The
-    # old pod2man didn't get this right; the second \fB was \fR, so nested
-    # sequences didn't work right.  We take care of this by using variables
-    # as a combined pointer to our current font sequence, and set each to
-    # the number of current nestings of start tags for that font.  Use them
-    # as a vector to look up what font sequence to use.
     my ($fixed, $bold, $italic) = (0, 0, 0);
     my %magic = (F => \$fixed, B => \$bold, I => \$italic);
-    s { E<_F(.)_(.)> } {
-        ${ $magic{$2} } += ($1 eq 'S') ? 1 : -1;
+    s { \\f\((.)(.) } {
+        ${ $magic{$1} } += ($2 eq 'S') ? 1 : -1;
         $$self{FONTS}{($fixed && 1) . ($bold && 1) . ($italic && 1)};
-    }gxe;
-
-    # Now clean up all the rest of our escapes.
-    s { E< ([^>]+) > } {
-        if (exists $ESCAPES{$1}) {
-            $ESCAPES{$1};
-        } else {
-            carp "Unknown escape E<$1>";
-            "E<$1>";
-        }
     }gxe;
     $_;
 }
 
 
 ############################################################################
-# *roff-specific guesswork
+# *roff-specific parsing
 ############################################################################
 
-# Call guesswork on the parse tree and then do a bottom-up expansion.
+# Called instead of parse_text, calls parse_text with the right flags.
+sub parse {
+    my $self = shift;
+    $self->parse_text ({ -expand_seq   => 'sequence',
+                         -expand_ptree => 'collapse' }, @_);
+}
+    
+# Takes a parse tree and a flag saying whether or not to treat it as literal
+# text (not call guesswork on it), and returns the concatenation of all of
+# the text strings in that parse tree.  If the literal flag isn't true,
+# guesswork() will be called on all plain scalars in the parse tree.
+# Assumes that everything in the parse tree is either a scalar or a
+# reference to a scalar.
 sub collapse {
-    my ($self, $ptree, $noguess) = @_;
-    my @output;
-    unless ($noguess) {
-        @output = map { ref ($_) ? $_ : guesswork ($_) } $ptree->children;
+    my ($self, $ptree, $literal) = @_;
+    if ($literal) {
+        return join ('', map {
+            if (ref $_) {
+                $$_;
+            } else {
+                s/\\/\\e/g;
+                $_;
+            }
+        } $ptree->children);
     } else {
-        @output = $ptree->children;
+        return join ('', map {
+            ref ($_) ? $$_ : $self->guesswork ($_)
+        } $ptree->children);
     }
-    for (@output) {
-        if (ref) {
-            my $cguess = $noguess || ($_->cmd_name =~ /[^BIS]/);
-            $self->collapse ($_->parse_tree, $cguess);
-            my $text = join ('', $_->parse_tree->children);
-            $_ = $self->interior_sequence ($_->name, $text, $_);
-        }
-    }
-    $ptree->children (@output);
-    $ptree;
 }
 
 # Takes a text block to perform guesswork on; this is guaranteed not to
 # contain any interior sequences.  Returns the text block with remapping
-# done.  We map things to internal E<> escapes, which we can leave in the
-# text block due to the way we process them.  When we output E<> escapes, we
-# output \0 instead of E and then fix it at the end of the routine; this is
-# to prevent the E from being picked up as part of a word by other rules.
+# done.
 sub guesswork {
+    my $self = shift;
     local $_ = shift;
 
-    # Italize functions in the form func().
-    s{
-        \b
-        (
-            [:\w]+ \(\)
-        )
-    } { "\0<_FS_I>" . $1 . "\0<_FE_I>" }egx;
+    # rofficate backslashes.
+    s/\\/\\e/g;
 
-    # func(n) is a reference to a manual page.  Make it \fIfunc\fR\|(n).
-    s{
-        \b
-        (\w[-:.\w]+)
-        (
-            \( [^\)] \)
-        )
-    } { "\0<_FS_I>" . $1 . "\0<_FE_I>\0<_thsp>" . $2 }egx;
-
-    # Convert simple Perl variable references to a fixed-width font.
-    s{
-        ( \s+ )
-        ( [\$\@%] [\w:]+ )
-        (?! \( )
-    } { $1 . "\0<_FS_F>" . $2 . "\0<_FE_F>"}egx;
-
-    # Translate -- into a real emdash.
-    s{      \b -- \b      } {      "\0<_emdash>"      }egx;
-    s{    (\s) -- (\s)    } { $1 . "\0<_emdash>" . $2 }egx;
-    s{      \" -- ([^\"]) } {    "\"\0<_emdash>" . $1 }egx;
-    s{ ([^\"]) -- \"      } { $1 . "\0<_emdash>\""    }egx;
-
-    # Fix up double quotes.
-    s{ \" ([^\"]+) \" } { "\0<_lquote>" . $1 . "\0<_rquote>" }egx;
-
-    # Make C++ into \*(C+, which is a squinched version.
-    s{ \b C\+\+ } {\0<_cplus>}gx;
-
-    # Map PI to \*(PI.
-    s{ \b PI \b } {\0<_pi>}gx;
+    # Ensure double underbars have a tiny space between them.
+    s/__/_\\|_/g;
 
     # Make all caps a little smaller.  Be careful here, since we don't want
     # to make @ARGV into small caps, nor do we want to fix the MIME in
@@ -882,11 +832,61 @@ sub guesswork {
     s{
         ( ^ | [\s\(\"\'\`\[\{<>] )
         ( [A-Z] [A-Z] [/A-Z+:\d_\$&-]* )
-        ( [\s>\}\]\)\'\"\0.?!,;:] | $ )
-    } { $1 . "\0<_sm>" . $2 . "\0<_endsm>" . $3 }egx;
+        (?: (?= [\s>\}\]\)\'\".?!,;:] | -- ) | $ )
+    } { $1 . '\s-1' . $2 . '\s0' . $3 }egx;
+
+    # Turn PI into a pretty pi.
+    s{ (?: \\s-1 | \b ) PI (?: \\s0 | \b ) } {\\*\(PI}gx;
+
+    # Italize functions in the form func().
+    s{
+        \b
+        (
+            [:\w]+ (?:\\s-1)? \(\)
+        )
+    } { '\f(IS' . $1 . '\f(IE' }egx;
+
+    # func(n) is a reference to a manual page.  Make it \fIfunc\fR\|(n).
+    s{
+        \b
+        (\w[-:.\w]+ (?:\\s-1)?)
+        (
+            \( [^\)] \)
+        )
+    } { '\f(IS' . $1 . '\f(IE\|' . $2 }egx;
+
+    # Convert simple Perl variable references to a fixed-width font.
+    s{
+        ( \s+ )
+        ( [\$\@%] [\w:]+ )
+        (?! \( )
+    } { $1 . '\f(FS' . $2 . '\f(FE'}egx;
+
+    # Translate -- into a real em dash if it's used like one and fix up
+    # dashes, but keep hyphens hyphens.
+    s{ (\G|^|.) (-+) (\b|.) } {
+        my ($pre, $dash, $post) = ($1, $2, $3);
+        if (length ($dash) == 1) {
+            ($pre =~ /[a-zA-Z]/) ? "$pre-$post" : "$pre\\-$post";
+        } elsif (length ($dash) == 2
+                 && ((!$pre && !$post)
+                     || ($pre =~ /\w/ && !$post)
+                     || ($pre eq ' ' && $post eq ' ')
+                     || ($pre eq '=' && $post ne '=')
+                     || ($pre ne '=' && $post eq '='))) {
+            "$pre\\*(--$post";
+        } else {
+            $pre . ('\-' x length $dash) . $post;
+        }
+    }egxs;
+
+    # Fix up double quotes.
+    s{ \" ([^\"]+) \" } { '\*(L"' . $1 . '\*(R"' }egx;
+
+    # Make C++ into \*(C+, which is a squinched version.
+    s{ \b C\+\+ } {\\*\(C+}gx;
 
     # All done.
-    s/\0</E</g;
     $_;
 }
 
@@ -911,14 +911,14 @@ sub outindex {
     $$self{INDEX} = [];
     my $output;
     if (@entries) {
-        for (@entries) { s/E<[^>]+>//g }
         my $output = '.IX Xref "'
             . join (' ', map { s/\"/\"\"/; $_ } @entries)
             . '"' . "\n";
     }
     if ($section) {
         $index =~ s/\"/\"\"/;
-        $index =~ s/E<[^>]+>//g;
+        $index =~ s/\\-/-/g;
+        $index =~ s/\\(?:s-?\d|.\(..|.)//g;
         $output .= ".IX $section " . '"' . $index . '"' . "\n";
     }
     $self->output ($output);
