@@ -1,0 +1,64 @@
+                       Pod::SimpleText version 0.01
+                   (Format POD source into ASCII text)
+
+  Copyright 1999 Russ Allbery <rra@stanford.edu>.  All rights reserved.
+  This program is free software; you can redistribute it and/or modify it
+  under the same terms as Perl itself.
+
+
+INTRODUCTION
+
+  This package is a proposed replacement for pod2text and Pod::Text in the
+  current Perl distribution.  The modules contained in it use Pod::Parser
+  rather than doing the POD parsing themselves, and are designed to be
+  object-oriented and very easy to subclass.  As an example, two useful
+  subclasses of Pod::SimpleText are also included:  Pod::Text::Color,
+  which uses ANSI color escape sequences to highlight text, and
+  Pod::Text::Termcap, which determines the correct control sequences to
+  embolden and underline text from terminal termcap information.
+
+  The output of Pod::SimpleText should be identical to the output of the
+  original Pod::Text module, except for fixed bugs.  This has been tested
+  by comparing the output of both modules when run on perlfunc.pod from
+  the Perl 5.005_02 distribution, and also by comparing output for several
+  other shorter pages.
+
+  Known bugs fixed relative to Pod::Text:  The first line of text after an
+  =item command is wrapped correctly, various problems with L<> text have
+  been fixed, and if you use Pod::Text::Termcap, the termcap sequences
+  work correctly and use POSIX termios to determine the terminal speed.
+
+  There are also a number of additional features, mostly finer control of
+  the output of the module under a variety of circumstances.  The
+  programmatic interface is also cleaner.
+
+
+INSTALLATION
+
+  Follow the standard installation procedure for Perl modules, which is to
+  type the following commands:
+
+          perl Makefile.PL
+          make
+          make test
+          make install
+
+  You'll probably need to do the last as root.  This will also install a
+  driver script named pod2txt; see it's man page for more information.
+
+  Note that in order to use Pod::Text::Color, you have to have the module
+  Term::ANSIColor (available from CPAN) installed.
+
+
+THANKS
+
+  To Tom Christiansen, for writing the original Pod::Text.  This module is
+  based very heavily on that, particularly the termcap handling, and its
+  output is designed to mimic the output of that module.
+
+  To Brad Appleton, for writing Pod::Parser, which made writing this
+  entire package the work of a single Saturday.
+
+
+                                                Russ Allbery
+                                                rra@stanford.edu

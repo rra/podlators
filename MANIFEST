@@ -1,0 +1,7 @@
+MANIFEST
+Makefile.PL
+VERSION
+lib/Pod/SimpleText.pm
+lib/Pod/Text/Color.pm
+lib/Pod/Text/Termcap.pm
+scripts/pod2txt

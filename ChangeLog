@@ -1,0 +1,13 @@
+Sat Jun 12 19:38:24 1999  Russ Allbery  <eagle@windlord.stanford.edu>
+
+        * VERSION: Pod::SimpleText 0.01 released.
+
+	* lib/Pod/SimpleText.pm: Minor documentation fixes.
+
+        * README: New file.
+
+        * scripts/pod2txt: New file.
+
+        * lib/Pod/SimpleText.pm: New file.
+        lib/Pod/Text/Color.pm: New file.
+        lib/Pod/Text/Termcap.pm: New file.
