@@ -1,3 +1,19 @@
+2002-08-03  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.24 released.
+
+	* lib/Pod/Text.pm (initialize): Accept margin option and use it to
+	set the initial indentation level.
+	(item): Fix handling of the colon in the margin when alt is
+	specified, and make it work properly in the presence of a non-zero
+	margin setting.
+	(heading): Indent headings by the margin setting.
+	* lib/Pod/Text/Overstrike.pm (heading): Indent headings by the
+	margin setting.
+	* scripts/pod2text.PL: Accept and document the -m option to set
+	the left margin.
+	* t/text-options.t: New file.  Test margin and alt.
+
 2002-07-14  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.23 released.
