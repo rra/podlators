@@ -29,7 +29,7 @@ use vars qw(@ISA $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.01;
+$VERSION = 1.02;
 
 
 ##############################################################################
@@ -125,7 +125,7 @@ B<pod2text> should be taught about those.
 
 =head1 SEE ALSO
 
-L<Pod::Text|Pod::Text>, L<Pod::Parser|Pod::Parser>
+L<Pod::Text>, L<Pod::Parser>
 
 =head1 AUTHOR
 
