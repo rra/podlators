@@ -27,8 +27,11 @@ use vars qw(@ISA $VERSION);
 
 @ISA = qw(Pod::Text);
 
-# Use the CVS revision of this file as its version number.
-($VERSION = (split (' ', q$Revision$ ))[1]) =~ s/\.(\d)$/.0$1/;
+# Don't use the CVS revision as the version, since this module is also in
+# Perl core and too many things could munge CVS magic revision strings.
+# This number should ideally be the same as the CVS revision in podlators,
+# however.
+$VERSION = 1.00;
 
 
 ############################################################################
