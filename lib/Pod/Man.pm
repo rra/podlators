@@ -525,7 +525,9 @@ sub sequence {
 
     # Handle E<> escapes.
     if ($command eq 'E') {
-        if (exists $ESCAPES{$_}) {
+        if (/^\d+$/) {
+            return bless \ chr ($_), 'Pod::Man::String';
+        } elsif (exists $ESCAPES{$_}) {
             return bless \ "$ESCAPES{$_}", 'Pod::Man::String';
         } else {
             carp "Unknown escape E<$1>";

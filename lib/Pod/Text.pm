@@ -235,9 +235,13 @@ sub interior_sequence {
 
     # Expand escapes into the actual character now, carping if invalid.
     if ($command eq 'E') {
-        return $ESCAPES{$_} if defined $ESCAPES{$_};
-        carp "Unknown escape: E<$_>";
-        return "E<$_>";
+        if (/^\d+$/) {
+            return chr;
+        } else {
+            return $ESCAPES{$_} if defined $ESCAPES{$_};
+            carp "Unknown escape: E<$_>";
+            return "E<$_>";
+        }
     }
 
     # For all the other sequences, empty content produces no output.
