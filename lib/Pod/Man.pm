@@ -38,7 +38,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.26;
+$VERSION = 1.27;
 
 
 ##############################################################################
@@ -420,7 +420,7 @@ sub begin_pod {
                 splice (@dirs, 0, $cut);
                 shift @dirs if ($dirs[0] =~ /^site(_perl)?$/);
                 shift @dirs if ($dirs[0] =~ /^[\d.]+$/);
-                shift @dirs if ($dirs[0] =~ /^(.*-$^O|$^O-.*)$/);
+                shift @dirs if ($dirs[0] =~ /^(.*-$^O|$^O-.*|$^O)$/);
             }
             shift @dirs if $dirs[0] eq 'lib';
             splice (@dirs, 0, 2) if ($dirs[0] eq 'blib' && $dirs[1] eq 'lib');
