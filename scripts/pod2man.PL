@@ -499,9 +499,9 @@ your system.
 
 =head1 AUTHOR
 
-Russ Allbery E<lt>rra@stanford.eduE<gt>, based I<very> heavily on the
-original B<pod2man> by Larry Wall and Tom Christiansen.  Large portions of
-this documentation, particularly the sections on the anatomy of a proper man
+Russ Allbery <rra@stanford.edu>, based I<very> heavily on the original
+B<pod2man> by Larry Wall and Tom Christiansen.  Large portions of this
+documentation, particularly the sections on the anatomy of a proper man
 page, are taken from the B<pod2man> documentation by Tom.
 
 =head1 COPYRIGHT AND LICENSE
