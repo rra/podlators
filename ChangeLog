@@ -1,3 +1,31 @@
+2000-11-18  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.05 released.
+
+	* lib/Pod/Man.pm (switchquotes): Turned into a method rather than
+	a static function.  Switch \*C` and \*C' sequences from C<> as
+	well as literal double-quotes if the quote character contains
+	double quotes.  Not doing this was causing weird output on some
+	systems in some circumstances.
+	(cmd_head1): Call of switchquotes changed.
+	(cmd_head2): Likewise.
+	(cmd_item): Likewise.
+
+	* lib/Pod/Man.pm (mapfonts): Use \fP to switch back to the default
+	font rather than changing back to \fR so that font changes work
+	correctly in headings using a different font.  Sprinkle \fP
+	through all font changes so that the default font is always the
+	"previous" font so that the above works.
+
+	* lib/Pod/Man.pm (cmd_head3): New function.
+	(cmd_head4): New function.
+	* lib/Pod/Text.pm: (cmd_head3): New function.
+	(cmd_head4): New function.
+
+	* lib/Pod/Text.pm (initialize): Change the default quote character
+	for C<> to be double quotes rather than matched left/right single
+	quotes.
+
 2000-10-09  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.04 released.
