@@ -20,14 +20,18 @@ package Pod::Text;
 require 5.004;
 
 use Carp qw(carp croak);
+use Exporter ();
 use Pod::Select ();
 
 use strict;
-use vars qw(@ISA %ESCAPES $VERSION);
+use vars qw(@ISA @EXPORT %ESCAPES $VERSION);
 
 # We inherit from Pod::Select instead of Pod::Parser so that we can be used
 # by Pod::Usage.
-@ISA = qw(Pod::Select);
+@ISA = qw(Pod::Select Exporter);
+
+# We have to export pod2text for backward compatibility.
+@EXPORT = qw(pod2text);
 
 ($VERSION = (split (' ', q$Revision$ ))[1]) =~ s/\.(\d)$/.0$1/;
 
