@@ -1,4 +1,4 @@
-                          podlators version 1.08
+                          podlators version 1.09
              (Format POD source into various output formats)
 
   Copyright 1999, 2000, 2001 Russ Allbery <rra@stanford.edu>.  This
@@ -157,6 +157,10 @@ THANKS
 
   To Robin Barker, for finding problems with multiline =head* headings and
   input filenames containing spaces.
+
+  To Brendan O'Dea and Robin Barker (again!), for finding problems with
+  Pod::Man guesswork and function and man page references that contained
+  words in all caps and proposing fixes.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
