@@ -2,11 +2,6 @@ This is a somewhat random and unordered list of things I'd like to see
 fixed or improved, but which I've not yet had a chance to do.  Patches for
 any of the following are very much welcome.
 
-This module desperately needs a test suite.  Pod::Parser comes with a
-framework suitable for testing Pod::Text, but I haven't had the time to
-pull it into this package or adopt it so that it can also test the other
-modules.  Any contributions in this area would be *greatly* appreciated.
-
  * Do something about the other high-bit characters that aren't supported
    currently by Pod::Man.  Do some versions of groff support Unicode?
    We'd definitely need help from the *roff implementation here for a
@@ -20,6 +15,10 @@ modules.  Any contributions in this area would be *greatly* appreciated.
  * There should be some way to turn off all heuristics when people are
    using POD for some purpose other than Perl or some other programming
    language with similar needs.
+
+ * The test suite is still fairly basic, and doesn't test all of the
+   options to the various modules, the scripts, =for, =over/=back, or the
+   guesswork in Pod::Man.
 
  * Pod::Man is still blessing already-formatted strings to work around an
    old limitation in Pod::Parser.  We should be able to drop the bless and
