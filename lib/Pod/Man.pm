@@ -37,7 +37,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.17;
+$VERSION = 1.18;
 
 
 ##############################################################################
@@ -585,8 +585,9 @@ sub sequence {
     } elsif ($command eq 'I') {
         return bless \ ('\f(IS' . $_ . '\f(IE'), 'Pod::Man::String';
     } elsif ($command eq 'C') {
-        return bless \ ('\f(FS\*(C`' . $_ . "\\*(C'\\f(FE"),
-            'Pod::Man::String';
+        # A bug in lvalue subs in 5.6 requires the temporary variable.
+        my $tmp = $self->quote_literal ($_);
+        return bless \ "$tmp", 'Pod::Man::String';
     }
 
     # Handle links.
@@ -902,7 +903,7 @@ sub textmapfonts {
 
 
 ##############################################################################
-# *roff-specific parsing
+# *roff-specific parsing and magic
 ##############################################################################
 
 # Called instead of parse_text, calls parse_text with the right flags.
@@ -1013,6 +1014,38 @@ sub guesswork {
     $_;
 }
 
+# Handles C<> text, deciding whether to put \*C` around it or not.  This is a
+# whole bunch of messy heuristics to try to avoid overquoting, originally from
+# Barrie Slaymaker.  This largely duplicates similar code in Pod::Text.
+sub quote_literal {
+    my $self = shift;
+    local $_ = shift;
+
+    # A regex that matches the portion of a variable reference that's the
+    # array or hash index, separated out just because we want to use it in
+    # several places in the following regex.
+    my $index = '(?: \[.*\] | \{.*\} )?';
+
+    # Check for things that we don't want to quote, and if we find any of
+    # them, return the string with just a font change and no quoting.
+    m{
+      ^\s*
+      (?:
+         ( [\'\`\"] ) .* \1                             # already quoted
+       | \` .* \'                                       # `quoted'
+       | \$+ [\#^]? \S $index                           # special ($^Foo, $")
+       | [\$\@%&*]+ \#? [:\'\w]+ $index                 # plain var or func
+       | [\$\@%&*]* [:\'\w]+ (?: -> )? \(\s*[^\s,]\s*\) # 0/1-arg func call
+       | [+-]? [\d.]+ (?: [eE] [+-]? \d+ )?             # a number
+       | 0x [a-fA-F\d]+                                 # a hex constant
+      )
+      \s*\z
+     }xo && return '\f(FS' . $_ . '\f(FE';
+
+    # If we didn't return, go ahead and quote the text.
+    return '\f(FS\*(C`' . $_ . "\\*(C'\\f(FE";
+}
+
 
 ##############################################################################
 # Output formatting
@@ -1074,18 +1107,34 @@ sub switchquotes {
     # requires an extra level of quoting of double quotes because it passes
     # the argument off to .TP.
     my $c_is_quote = ($$self{LQUOTE} =~ /\"/) || ($$self{RQUOTE} =~ /\"/);
-    if (/\"/ || ($c_is_quote && /\\\*\(C[\'\`]/)) {
+    if (/\"/ || /\\f\(CW/) {
         s/\"/\"\"/g;
+        my $nroff = $_;
         my $troff = $_;
         $troff =~ s/\"\"([^\"]*)\"\"/\`\`$1\'\'/g;
-        s/\\\*\(C\`/$$self{LQUOTE}/g;
-        s/\\\*\(C\'/$$self{RQUOTE}/g;
-        $troff =~ s/\\\*\(C[\'\`]//g;
-        s/\"/\"\"/g if $extra;
-        $troff =~ s/\"/\"\"/g if $extra;
-        $_ = qq("$_") . ($extra ? " $extra" : '');
+        if ($c_is_quote && /\\\*\(C[\'\`]/) {
+            $nroff =~ s/\\\*\(C\`/$$self{LQUOTE}/g;
+            $nroff =~ s/\\\*\(C\'/$$self{RQUOTE}/g;
+            $troff =~ s/\\\*\(C[\'\`]//g;
+        }
+        $nroff = qq("$nroff") . ($extra ? " $extra" : '');
         $troff = qq("$troff") . ($extra ? " $extra" : '');
-        return ".if n $command $_\n.el $command $troff\n";
+
+        # Work around the Solaris nroff bug where \f(CW\fP leaves the font set
+        # to Roman rather than the actual previous font when used in headings.
+        # troff output may still be broken, but at least we can fix nroff by
+        # just stripping out the font changes since fixed-width fonts don't
+        # mean anything for nroff.  While we're at it, also remove the font
+        # changes for nroff in =item tags, since they're unnecessary.
+        $nroff =~ s/\\f\(CW(.*)\\f[PR]/$1/g;
+
+        # Now finally output the command.  Only bother with .if if the nroff
+        # and troff output isn't the same.
+        if ($nroff ne $troff) {
+            return ".if n $command $nroff\n.el $command $troff\n";
+        } else {
+            return "$command $nroff\n";
+        }
     } else {
         $_ = qq("$_") . ($extra ? " $extra" : '');
         return "$command $_\n";
@@ -1363,5 +1412,12 @@ the conventions.
 
 Russ Allbery E<lt>rra@stanford.eduE<gt>, based I<very> heavily on the
 original B<pod2man> by Tom Christiansen E<lt>tchrist@mox.perl.comE<gt>.
+
+=head1 LICENSE
+
+Copyright 1999, 2000, 2001 by Russ Allbery <rra@stanford.edu>.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
 
 =cut
