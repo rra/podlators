@@ -37,7 +37,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.23;
+$VERSION = 1.24;
 
 
 ##############################################################################
@@ -381,23 +381,47 @@ sub begin_pod {
             require File::Basename;
             $name = uc File::Basename::basename ($name);
         } else {
-            # Lose everything up to the first of
-            #     */lib/*perl*      standard or site_perl module
-            #     */*perl*/lib      from -D prefix=/opt/perl
-            #     */*perl*/         random module hierarchy
-            # which works.  Should be fixed to use File::Spec.  Also handle a
-            # leading lib/ since that's what ExtUtils::MakeMaker creates.
-            for ($name) {
-                s%//+%/%g;
-                if (     s%^.*?/lib/[^/]*perl[^/]*/%%si
-                      or s%^.*?/[^/]*perl[^/]*/(?:lib/)?%%si) {
-                    s%^site(_perl)?/%%s;      # site and site_perl
-                    s%^(.*-$^O|$^O-.*)/%%so;  # arch
-                    s%^\d+\.\d+%%s;           # version
+            # Assume that we're dealing with a module.  We want to figure out
+            # the full module name from the path to the file, but we don't
+            # want to include too much of the path into the module name.  Lose
+            # everything up to the first of:
+            #
+            #     */lib/*perl*/         standard or site_perl module
+            #     */*perl*/lib/         from -Dprefix=/opt/perl
+            #     */*perl*/             random module hierarchy
+            #
+            # which works.  Also strip off a leading site or site_perl
+            # component, any OS-specific component, and any version number
+            # component, and strip off an initial component of "lib" or
+            # "blib/lib" since that's what ExtUtils::MakeMaker creates.
+            # splitdir requires at least File::Spec 0.8.
+            require File::Spec;
+            my ($volume, $dirs, $file) = File::Spec->splitpath ($name);
+            my @dirs = File::Spec->splitdir ($dirs);
+            my $cut = 0;
+            my $i;
+            for ($i = 0; $i < scalar @dirs; $i++) {
+                if ($dirs[$i] eq 'lib' && $dirs[$i + 1] =~ /perl/) {
+                    $cut = $i + 2;
+                    last;
+                } elsif ($dirs[$i] =~ /perl/) {
+                    $cut = $i + 1;
+                    $cut++ if $dirs[$i + 1] eq 'lib';
+                    last;
                 }
-                s%^lib/%%;
-                s%/%::%g;
             }
+            if ($cut > 0) {
+                splice (@dirs, 0, $cut);
+                shift @dirs if ($dirs[0] =~ /^site(_perl)?$/);
+                shift @dirs if ($dirs[0] =~ /^[\d.]+$/);
+                shift @dirs if ($dirs[0] =~ /^(.*-$^O|$^O-.*)$/);
+            }
+            shift @dirs if $dirs[0] eq 'lib';
+            splice (@dirs, 0, 2) if ($dirs[0] eq 'blib' && $dirs[1] eq 'lib');
+
+            # Remove empty directories when building the module name; they
+            # occur too easily on Unix by doubling slashes.
+            $name = join ('::', (grep { $_ ? $_ : () } @dirs), $file);
         }
     }
 
@@ -415,7 +439,15 @@ sub begin_pod {
         $$self{date} = sprintf ('%4d-%02d-%02d', $year, $month, $day);
     }
 
-    # Now, print out the preamble and the title.
+    # Now, print out the preamble and the title.  The meaning of the arguments
+    # to .TH unfortunately vary by system; some systems consider the fourth
+    # argument to be a "source" and others use it as a version number.
+    # Generally it's just presented as the left-side footer, though, so it
+    # doesn't matter too much if a particular system gives it another
+    # interpretation.
+    #
+    # The order of date and release used to be reversed in older versions of
+    # this module, but this order is correct for both Solaris and Linux.
     local $_ = $PREAMBLE;
     s/\@CFONT\@/$$self{fixed}/;
     s/\@LQUOTE\@/$$self{LQUOTE}/;
@@ -430,7 +462,7 @@ $_
 .\\" ========================================================================
 .\\"
 .IX Title "$name $section"
-.TH $name $section "$$self{release}" "$$self{date}" "$$self{center}"
+.TH $name $section "$$self{date}" "$$self{release}" "$$self{center}"
 .UC
 ----END OF HEADER----
 
