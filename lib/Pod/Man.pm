@@ -39,7 +39,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.01;
+$VERSION = 2.03;
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -286,7 +286,7 @@ sub _handle_element_end {
         DEBUG > 4 and print "Pending: [", pretty ($$self{PENDING}), "]\n";
         my $method = 'cmd_' . $method;
         my $text = $self->$method ($$tag[0], $$tag[2]);
-        if ($text) {
+        if (defined $text) {
             if (@{ $$self{PENDING} } > 1) {
                 $$self{PENDING}[-1][2] .= $text;
             } else {
