@@ -38,7 +38,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Perl core and too many things could munge CVS magic revision strings.
 # This number should ideally be the same as the CVS revision in podlators,
 # however.
-$VERSION = 1.02;
+$VERSION = 1.03;
 
 
 ############################################################################
@@ -550,6 +550,21 @@ sub sequence {
         return bless \ "$tmp", 'Pod::Man::String';
     }
 
+    # C<> needs to fix hyphens and underscores but can't apply guesswork and
+    # can't just apply those fixes to the entire string, since then it might
+    # mess up the results of guesswork on substrings.  So we do this
+    # somewhat roundabout way of handling it.
+    if ($command eq 'C') {
+        my @children = $seq->parse_tree ()->children;
+        for (@children) {
+            unless (ref) {
+                s/-/\\-/g;
+                s/__/_\\|_/g;
+            }
+        }
+        $seq->parse_tree ()->children (@children);
+    }
+
     # C<>, L<>, X<>, and E<> don't apply guesswork to their contents.
     local $_ = $self->collapse ($seq->parse_tree, $command =~ /^[CELX]$/);
 
@@ -576,8 +591,6 @@ sub sequence {
     } elsif ($command eq 'I') {
         return bless \ ('\f(IS' . $_ . '\f(IE'), 'Pod::Man::String';
     } elsif ($command eq 'C') {
-        s/-/\\-/g;
-        s/__/_\\|_/g;
         return bless \ ('\f(FS\*(C`' . $_ . "\\*(C'\\f(FE"),
             'Pod::Man::String';
     }
