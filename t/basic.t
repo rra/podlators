@@ -3,7 +3,7 @@
 #
 # basic.t -- Basic tests for podlators.
 #
-# Copyright 2001 by Russ Allbery <rra@stanford.edu>
+# Copyright 2001, 2002, 2004 by Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -26,7 +26,6 @@ END {
 
 use Pod::Man;
 use Pod::Text;
-use Pod::Text::Color;
 use Pod::Text::Overstrike;
 use Pod::Text::Termcap;
 
@@ -65,6 +64,18 @@ my %translators = ('Pod::Man'              => 'man',
 
 my $n = 2;
 for (sort keys %translators) {
+    if ($_ eq 'Pod::Text::Color') {
+        eval { require Pod::Text::Color };
+        if ($@ && $@ =~ m%Term..?ANSIColor%) {
+            print "ok $n # skip\n";
+            $n++;
+            print "ok $n # skip\n";
+            $n++;
+            next;
+        } elsif ($@) {
+            die $@;
+        }
+    }
     my $parser = $_->new (%options);
     print (($parser && ref ($parser) eq $_) ? "ok $n\n" : "not ok $n\n");
     $n++;
