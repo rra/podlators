@@ -1,3 +1,21 @@
+Thu Oct  7 02:37:05 1999  Russ Allbery  <eagle@windlord.stanford.edu>
+
+        * VERSION: podlators 0.08 released.
+
+        * lib/Pod/Text.pm: Export pod2text() for backwards compatibility.
+
+        * lib/Pod/Text.pm (interior_sequence): Add support for numeric E<>
+        escapes.
+        * lib/Pod/Man.pm (sequence): Likewise.
+
+Mon Sep 27 08:44:00 1999  Russ Allbery  <eagle@windlord.stanford.edu>
+
+        * lib/Pod/Man.pm (buildlink): Links to sections had doubled quote
+        marks.
+
+        * scripts/pod2roff.PL: Pod::Parser constructors take an expanded
+        hash, not a hash ref.
+
 Sat Sep 25 12:49:54 1999  Russ Allbery  <eagle@windlord.stanford.edu>
 
         * VERSION: podlators 0.07 released.
