@@ -18,7 +18,7 @@ package Pod::Text::Color;
 
 require 5.004;
 
-use Pod::SimpleText ();
+use Pod::PlainText ();
 use Term::ANSIColor qw(colored);
 
 use strict;
@@ -107,7 +107,7 @@ and available options.
 
 =head1 SEE ALSO
 
-L<Pod::SimpleText|Pod::SimpleText>, L<Pod::Parser|Pod::Parser>
+L<Pod::PlainText|Pod::PlainText>, L<Pod::Parser|Pod::Parser>
 
 =head1 AUTHOR
 

@@ -18,7 +18,7 @@ package Pod::Text::Termcap;
 
 require 5.004;
 
-use Pod::SimpleText ();
+use Pod::PlainText ();
 use POSIX ();
 use Term::Cap;
 use strict;
@@ -132,7 +132,7 @@ Pod::SimpleText.  See L<Pod::SimpleText> for details and available options.
 
 =head1 SEE ALSO
 
-L<Pod::SimpleText|Pod::SimpleText>, L<Pod::Parser|Pod::Parser>
+L<Pod::PlainText|Pod::PlainText>, L<Pod::Parser|Pod::Parser>
 
 =head1 AUTHOR
 
