@@ -1,4 +1,4 @@
-                          podlators version 1.10
+                          podlators version 1.11
              (Format POD source into various output formats)
 
   Copyright 1999, 2000, 2001 Russ Allbery <rra@stanford.edu>.  This
@@ -168,10 +168,18 @@ THANKS
 
   To Colin Watson, for finally pointing me in the right direction to find
   the problem with excessive double-quoting of text in =item's on some
-  platforms and see how to fix it.
+  platforms and see how to fix it, and also for finding a problem with
+  Pod::Man's output of section headings for troff.
 
   To Jarkko Hietaniemi, for the original language for pod2man.PL
   explaining the COPYRIGHT AND LICENSE section.
+
+  To Peter Prymmer, for pointing out the error reporting in Pod::Text and
+  Pod::Man didn't include enough information to find the errant POD.
+
+  To Michael Schwern, for the initial patch to support --code in pod2text,
+  the patch for --verbose in pod2man, and finding a problem with the
+  handling of X<>.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
