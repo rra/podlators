@@ -13,17 +13,21 @@ sub script {
     wantarray ? @scripts : join (' ', @scripts);
 }
 
+# Install the modules into the Perl core directory for versions of Perl at
+# 5.6.0 or higher, since these modules now come with Perl.
 use ExtUtils::MakeMaker;
 WriteMakefile (
-    NAME         => 'Pod',
-    DISTNAME     => 'podlators',
-    PL_FILES     => { script ('pod2text.PL', 'pod2text'),
-                      script ('pod2man.PL', 'pod2man') },
-    EXE_FILES    => [ script ('pod2text', 'pod2man') ],
-    PREREQ_PM    => { 'File::Spec' => 0, 'Pod::Parser' => 0 },
+    NAME          => 'Pod',
+    DISTNAME      => 'podlators',
+    ($] >= 5.006 ?
+     (INSTALLDIRS => 'perl') : ()),
+    PL_FILES      => { script ('pod2text.PL', 'pod2text'),
+                       script ('pod2man.PL', 'pod2man') },
+    EXE_FILES     => [ script ('pod2text', 'pod2man') ],
+    PREREQ_PM     => { 'File::Spec' => 0, 'Pod::Parser' => 0 },
     ($] >= 5.005 ?
-     (ABSTRACT   => 'Convert POD data to various other formats',
-      AUTHOR     => 'Russ Allbery (rra@stanford.edu)') : ()),
-    VERSION_FROM => 'VERSION',
-    realclean    => { FILES => scalar script ('pod2text', 'pod2man') }
+     (ABSTRACT    => 'Convert POD data to various other formats',
+      AUTHOR      => 'Russ Allbery (rra@stanford.edu)') : ()),
+    VERSION_FROM  => 'VERSION',
+    realclean     => { FILES => scalar script ('pod2text', 'pod2man') }
 );
