@@ -50,7 +50,12 @@ use Pod::Man ();
 use Pod::Usage qw(pod2usage);
 
 use strict;
-use vars;
+
+# Insert -- into @ARGV before any single dash argument to hide it from
+# Getopt::Long; we want to interpret it as meaning stdin (which Pod::Parser
+# does correctly).
+my $stdin;
+@ARGV = map { $_ eq '-' && !$stdin++ ? ('--', $_) : $_ } @ARGV;
 
 # Parse our options, trying to retain backwards compatibility with pod2man
 # but allowing short forms as well.  --lax is currently ignored.

@@ -52,7 +52,6 @@ use Pod::Text ();
 use Pod::Usage qw(pod2usage);
 
 use strict;
-use vars qw($ID);
 
 # Take an initial pass through our options, looking for one of the form
 # -<number>.  We turn that into -w <number> for compatibility with the
@@ -63,6 +62,12 @@ for (my $i = 0; $i < @ARGV; $i++) {
         splice (@ARGV, $i++, 1, '-w', $1);
     }
 }
+
+# Insert -- into @ARGV before any single dash argument to hide it from
+# Getopt::Long; we want to interpret it as meaning stdin (which Pod::Parser
+# does correctly).
+my $stdin;
+@ARGV = map { $_ eq '-' && !$stdin++ ? ('--', $_) : $_ } @ARGV;
 
 # Parse our options.  Use the same names as Pod::Text for simplicity, and
 # default to sentence boundaries turned off for compatibility.
