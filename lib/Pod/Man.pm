@@ -38,7 +38,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Perl core and too many things could munge CVS magic revision strings.
 # This number should ideally be the same as the CVS revision in podlators,
 # however.
-$VERSION = 1.14;
+$VERSION = 1.15;
 
 
 ############################################################################
@@ -805,6 +805,10 @@ sub buildlink {
     # Okay, leading and trailing whitespace isn't important.
     s/^\s+//;
     s/\s+$//;
+
+    # If the argument looks like a URL, return it verbatim.  This only
+    # handles URLs that use the server syntax.
+    if (m%^[a-z]+://\S+$%) { return $_ }
 
     # Default to using the whole content of the link entry as a section
     # name.  Note that L<manpage/> forces a manpage interpretation, as does
