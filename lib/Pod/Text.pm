@@ -1,4 +1,4 @@
-# Pod::SimpleText -- Convert POD data to formatted ASCII text.
+# Pod::PlainText -- Convert POD data to formatted ASCII text.
 # $Id$
 #
 # Copyright 1999 by Russ Allbery <rra@stanford.edu>
@@ -16,17 +16,17 @@
 # Modules and declarations
 ############################################################################
 
-package Pod::SimpleText;
+package Pod::PlainText;
 
 require 5.004;
 
 use Carp qw(carp);
-use Pod::Parser ();
+use Pod::Select ();
 
 use strict;
 use vars qw(@ISA %ESCAPES $VERSION);
 
-@ISA = qw(Pod::Parser);
+@ISA = qw(Pod::Select);
 
 $VERSION = '0.01';
 
@@ -239,7 +239,7 @@ sub interior_sequence {
     }
 
     # For all the other sequences, empty content produces no output.
-    return unless $_;
+    return if $_ eq '';
 
     # For S<>, compress all internal whitespace and then map spaces to \01.
     # When we output the text, we'll map this back.
@@ -279,6 +279,7 @@ sub cmd_head1 {
     my $self = shift;
     local $_ = shift;
     s/\s+$//;
+    $_ = $self->interpolate ($_, shift);
     if ($$self{alt}) {
         $self->output ("\n==== $_ ====\n\n");
     } else {
@@ -292,6 +293,7 @@ sub cmd_head2 {
     my $self = shift;
     local $_ = shift;
     s/\s+$//;
+    $_ = $self->interpolate ($_, shift);
     if ($$self{alt}) {
         $self->output ("\n==   $_   ==\n\n");
     } else {
@@ -353,8 +355,8 @@ sub cmd_for {
     my $self = shift;
     local $_ = shift;
     my $line = shift;
-    return unless s/^text\b[ \t]*//;
-    if (/^\n\s+/) {
+    return unless s/^text\b[ \t]*\n?//;
+    if (/^\s+/) {
         $self->verbatim ($_, $line);
     } else {
         $self->textblock ($_, $line);
@@ -368,9 +370,9 @@ sub cmd_for {
 
 # The simple formatting ones.  These are here mostly so that subclasses can
 # override them and do more complicated things.
-sub seq_b { my $self = shift; return $$self{alt} ? "``$_[0]''" : $_[0] }
-sub seq_c { my $self = shift; return $$self{alt} ? "``$_[0]''" : "`$_[0]'" }
-sub seq_f { my $self = shift; return $$self{alt} ? "\"$_[0]\"" : $_[0] }
+sub seq_b { return $_[0]{alt} ? "``$_[1]''" : $_[1] }
+sub seq_c { return $_[0]{alt} ? "``$_[1]''" : "`$_[1]'" }
+sub seq_f { return $_[0]{alt} ? "\"$_[1]\"" : $_[1] }
 sub seq_i { return '*' . $_[1] . '*' }
 
 # The complicated one.  Handle links.  Since this is plain text, we can't
@@ -517,12 +519,12 @@ __END__
 
 =head1 NAME
 
-Pod::SimpleText - Convert POD data to formatted ASCII text
+Pod::PlainText - Convert POD data to formatted ASCII text
 
 =head1 SYNOPSIS
 
-    use Pod::SimpleText;
-    my $parser = Pod::SimpleText->new (sentence => 0, width => 78);
+    use Pod::PlainText;
+    my $parser = Pod::PlainText->new (sentence => 0, width => 78);
 
     # Read POD from STDIN and write to STDOUT.
     $parser->parse_from_filehandle;
@@ -532,14 +534,14 @@ Pod::SimpleText - Convert POD data to formatted ASCII text
 
 =head1 DESCRIPTION
 
-Pod::SimpleText is a module that can convert documentation in the POD format
+Pod::PlainText is a module that can convert documentation in the POD format
 (such as can be found throughout the Perl distribution) into formatted
 ASCII.  It uses no special formatting controls or codes whatsoever, and its
 output is therefore suitable for nearly any device.
 
-As a derived class from Pod::Parser, Pod::SimpleText supports the same
+As a derived class from Pod::Parser, Pod::PlainText supports the same
 methods and interfaces.  See L<Pod::Parser> for all the details; briefly,
-one creates a new parser with C<Pod::SimpleText-E<gt>new()> and then calls
+one creates a new parser with C<Pod::PlainText-E<gt>new()> and then calls
 either C<parse_from_filehandle()> or C<parse_from_file()>.
 
 C<new()> can take options, in the form of key/value pairs, that control the
@@ -569,7 +571,7 @@ output.
 
 =item sentence
 
-If set to a true value, Pod::SimpleText will assume that each sentence ends
+If set to a true value, Pod::PlainText will assume that each sentence ends
 in two spaces, and will try to preserve that spacing.  If set to false, all
 consecutive whitespace in non-verbatim paragraphs is compressed into a
 single space.  Defaults to true.
@@ -594,17 +596,17 @@ specific details.
 
 =item Unknown escape: %s
 
-The POD source contained an C<EE<lt>E<gt>> escape that Pod::SimpleText
+The POD source contained an C<EE<lt>E<gt>> escape that Pod::PlainText
 didn't know about.
 
 =item Unknown sequence: %s
 
 The POD source contained a non-standard internal sequence (something of the
-form C<XE<lt>E<gt>>) that Pod::SimpleText didn't know about.
+form C<XE<lt>E<gt>>) that Pod::PlainText didn't know about.
 
 =item Unmatched =back
 
-Pod::SimpleText encountered a C<=back> command that didn't correspond to an
+Pod::PlainText encountered a C<=back> command that didn't correspond to an
 C<=over> command.
 
 =back
