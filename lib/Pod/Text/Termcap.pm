@@ -6,9 +6,9 @@
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 #
-# This is a simple subclass of Pod::PlainText that overrides a few key
-# methods to output the right termcap escape sequences for formatted text
-# on the current terminal type.
+# This is a simple subclass of Pod::Text that overrides a few key methods to
+# output the right termcap escape sequences for formatted text on the
+# current terminal type.
 
 ############################################################################
 # Modules and declarations
@@ -18,13 +18,14 @@ package Pod::Text::Termcap;
 
 require 5.004;
 
-use Pod::PlainText ();
+use Pod::Text ();
 use POSIX ();
 use Term::Cap;
+
 use strict;
 use vars qw(@ISA $VERSION);
 
-@ISA = qw(Pod::PlainText);
+@ISA = qw(Pod::Text);
 
 # Use the CVS revision of this file as its version number.
 ($VERSION = (split (' ', q$Revision$ ))[1]) =~ s/\.(\d)$/.0$1/;
@@ -125,14 +126,14 @@ Pod::Text::Color - Convert POD data to ASCII text with format escapes
 
 =head1 DESCRIPTION
 
-Pod::Text::Termcap is a simple subclass of Pod::PlainText that highlights
-output text using the correct termcap escape sequences for the current
-terminal.  Apart from the format codes, it in all ways functions like
-Pod::PlainText.  See L<Pod::PlainText> for details and available options.
+Pod::Text::Termcap is a simple subclass of Pod::Text that highlights output
+text using the correct termcap escape sequences for the current terminal.
+Apart from the format codes, it in all ways functions like Pod::Text.  See
+L<Pod::Text> for details and available options.
 
 =head1 SEE ALSO
 
-L<Pod::PlainText|Pod::PlainText>, L<Pod::Parser|Pod::Parser>
+L<Pod::Text|Pod::Text>, L<Pod::Parser|Pod::Parser>
 
 =head1 AUTHOR
 
