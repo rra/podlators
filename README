@@ -1,4 +1,4 @@
-                          podlators version 1.11
+                          podlators version 1.12
              (Format POD source into various output formats)
 
   Copyright 1999, 2000, 2001 Russ Allbery <rra@stanford.edu>.  This
@@ -108,78 +108,6 @@ INSTALLATION
   Note that in order to use Pod::Text::Color, you have to have the module
   Term::ANSIColor (available from CPAN and part of Perl core as of 5.6.0)
   installed.
-
-
-THANKS
-
-  To Tom Christiansen, for writing the original Pod::Text and pod2man.
-  These modules are based very heavily on those, particularly the termcap
-  handling and pretty much all of Pod::Man.
-
-  To Brad Appleton, for writing Pod::Parser, which made writing Pod::Text
-  the work of a single Saturday and Pod::Man the work of another single
-  Saturday, and for finding lots of bugs in the first try.
-
-  To Gurusamy Sarathy, for pointing out the need for a pod2text()
-  compatibility interface for older applications, and for being willing to
-  roll this code into the Perl core distribution.
-
-  To Larry Virden, for feedback on the section on writing a man page in
-  pod2roff and lots of good suggestions for improving it.
-
-  To Michael Schwern, for pointing out that pod2text() needs to be
-  exported for backwards compatibility and for pointing out a bug in the
-  collapsing of adjacent L</foo> links in Pod::Man.
-
-  To Marek Rochal, for pointing out a bug in handling of Z<> in Pod::Man,
-  that even periods preceded by font escapes need protection at the
-  beginning of lines from *roff, and that the handling of =item text with
-  embedded newlines was buggy in a previous version of Pod::Man.  Thanks
-  also for finding a bug with C<> in headings confusing nroff.
-
-  To Tim Jenness, for providing the remaining ISO 8859-1 escapes for
-  Pod::Text.  Volunteers to implement the same for Pod::Man are welcome.
-
-  To Johan Vromans, for pointing out a bug in the filename parsing in
-  Pod::Man and help with various packaging problems.
-
-  To Abigail, for better error handling code for unknown command
-  paragraphs.
-
-  To Zack Weinberg, for suggesting the right *roff magic to prevent blank
-  lines between consecutive =item tags in lists and for explaining \fP and
-  how to prevent escapes like C<> from breaking the font in headings.
-
-  To Nicholas Clark, for the original patch to pod2man to allow it to
-  process multiple files with one invocation.
-
-  To Joe Smith, for Pod::Text::Overstrike.
-
-  To Robin Barker, for finding problems with multiline =head* headings and
-  input filenames containing spaces.
-
-  To Brendan O'Dea and Robin Barker (again!), for finding problems with
-  Pod::Man guesswork and function and man page references that contained
-  words in all caps and proposing fixes.
-
-  To Barrie Slaymaker, for the initial version of the heuristics in
-  Pod::Man and Pod::Text used to decide whether to add quotes around the
-  argument of C<>.
-
-  To Colin Watson, for finally pointing me in the right direction to find
-  the problem with excessive double-quoting of text in =item's on some
-  platforms and see how to fix it, and also for finding a problem with
-  Pod::Man's output of section headings for troff.
-
-  To Jarkko Hietaniemi, for the original language for pod2man.PL
-  explaining the COPYRIGHT AND LICENSE section.
-
-  To Peter Prymmer, for pointing out the error reporting in Pod::Text and
-  Pod::Man didn't include enough information to find the errant POD.
-
-  To Michael Schwern, for the initial patch to support --code in pod2text,
-  the patch for --verbose in pod2man, and finding a problem with the
-  handling of X<>.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
