@@ -30,7 +30,7 @@ use vars qw(@ISA $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.06;
+$VERSION = 1.07;
 
 
 ##############################################################################
@@ -51,10 +51,10 @@ sub initialize {
     # available (such as on VMS).
     eval { $termios = POSIX::Termios->new };
     if ($@) {
-        $ospeed = '9600';
+        $ospeed = 9600;
     } else {
         $termios->getattr;
-        $ospeed = $termios->getospeed;
+        $ospeed = $termios->getospeed || 9600;
     }
 
     # Fall back on the ANSI escape sequences if Term::Cap doesn't work.
