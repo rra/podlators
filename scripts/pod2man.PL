@@ -280,36 +280,53 @@ of the documentation for man pages that document something else.  If
 particularly long, it's a good idea to break this up into subsections
 C<=head2> directives like:
 
-    =head2 A Sample Subection
+    =head2 Normal Usage
 
-    =head2 Yet Another Sample Subection
+    =head2 Advanced Features
+
+    =head2 Writing Configuration Files
+
+or whatever is appropriate for your documentation.
 
 =item OPTIONS
 
 Detailed description of each of the command-line options taken by the
 program.  This should be separate from the description for the use of things
 like L<Pod::Usage|Pod::Usage>.  This is normally presented as a list, with
-each option as a separate C<=item>.  Options should be enclosed in
-BE<lt>E<gt>.  Any values that the option takes should be enclosed in
-IE<lt>E<gt>.  For example, the option B<--section>=I<manext> would be
-written:
+each option as a separate C<=item>.  The specific option string should be
+enclosed in BE<lt>E<gt>.  Any values that the option takes should be
+enclosed in IE<lt>E<gt>.  For example, the section for the option
+B<--section>=I<manext> would be introduced with:
 
-    B<--section>=I<manext>
+    =item B<--section>=I<manext>
 
 Synonymous options (like both the short and long forms) are separated by a
 comma and a space on the same C<=item> line, or optionally listed as their
-own item with a reference to the canonical name.
+own item with a reference to the canonical name.  For example, since
+B<--section> can also be written as B<-s>, the above would be:
+
+    =item B<-s> I<manext>, B<--section>=I<manext>
+
+(Writing the short option first is arguably easier to read, since the long
+option is long enough to draw the eye to it anyway and the short option can
+otherwise get lost in visual noise.)
 
 =item RETURN VALUE
 
 What the program or function returns, if successful.  This section can be
-omitted for programs if they return 0 on success and something non-zero on
-failure, as is standard, and the precise exit codes aren't important.
+omitted for programs whose precise exit codes aren't important, provided
+they return 0 on success as is standard.  It should always be present for
+functions.
 
 =item ERRORS
 
-Exceptions, return codes, exit stati, and errno settings.  Typically used
-for function documentation; program documentation uses DIAGNOSTICS instead.
+Exceptions, error return codes, exit stati, and errno settings.  Typically
+used for function documentation; program documentation uses DIAGNOSTICS
+instead.  The general rule of thumb is that errors printed to STDOUT or
+STDERR and intended for the end user are documented in DIAGNOSTICS while
+errors passed internal to the calling program and intended for other
+programmers are documented in ERRORS.  When documenting a function that sets
+errno, a full list of the possible errno values should be given here.
 
 =item DIAGNOSTICS
 
@@ -317,23 +334,43 @@ All possible messages the program can print out--and what they mean.  You
 may wish to follow the same documentation style as the Perl documentation;
 see perldiag(1) for more details (and look at the POD source as well).
 
+If applicable, please include details on what the user should do to correct
+the error; documenting an error as indicating "the input buffer is too
+small" without telling the user how to increase the size of the input buffer
+(or at least telling them that it isn't possible) aren't very useful.
+
 =item EXAMPLES
 
 Give some example uses of the program or function.  Don't skimp; users often
 find this the most useful part of the documentation.  The examples are
 generally given as verbatim paragraphs.
 
+Don't just present an example without explaining what it does.  Adding a
+short paragraph saying what the example will do can increase the value of
+the example immensely.
+
 =item ENVIRONMENT
 
 Environment variables that the program cares about, normally presented as a
-list using C<=over>, C<=item>, and C<=back>.  Since environment variables
-are normally in all uppercase, no additional special formatting is generally
-needed; they're glaring enough as it is.
+list using C<=over>, C<=item>, and C<=back>.  For example:
+
+    =over 6
+
+    =item HOME
+
+    Used to determine the user's home directory.  F<.foorc> in this
+    directory is read for configuration details, if it exists.
+
+    =back
+
+Since environment variables are normally in all uppercase, no additional
+special formatting is generally needed; they're glaring enough as it is.
 
 =item FILES
 
 All files used by the program or function, normally presented as a list, and
-what it uses them for.  File names should be enclosed in FE<lt>E<gt>.
+what it uses them for.  File names should be enclosed in FE<lt>E<gt>.  It's
+particularly important to document files that will be potentially modified.
 
 =item CAVEATS
 
@@ -361,9 +398,15 @@ LE<lt>E<gt>, but other things in this section probably should be when
 appropriate.  You may need to use the C<LE<lt>...|...E<gt>> syntax to keep
 B<pod2man> and B<pod2text> from being too verbose; see perlpod(1).
 
+If the package has a web site, include a URL here.
+
 =item AUTHOR
 
-Who wrote it (use AUTHORS for multiple people).
+Who wrote it (use AUTHORS for multiple people).  Including your current
+e-mail address (or some e-mail address to which bug reports should be sent)
+so that users have a way of contacting you is a good idea.  Remember that
+program documentation tends to roam the wild for far longer than you expect
+and pick an e-mail address that's likely to last if possible.
 
 =item HISTORY
 
@@ -381,6 +424,8 @@ parts of the library and save the DESCRIPTION section for an overview; other
 large modules may use FUNCTIONS for similar reasons.  Some people use
 OVERVIEW to summarize the description if it's quite long.  Sometimes there's
 an additional COPYRIGHT section at the bottom, for licensing terms.
+AVAILABILITY is sometimes added, giving the canonical download site for the
+software or a URL for updates.
 
 Section ordering varies, although NAME should I<always> be the first section
 (you'll break some man page systems otherwise), and NAME, SYNOPSIS,
@@ -388,6 +433,14 @@ DESCRIPTION, and OPTIONS generally always occur first and in that order if
 present.  In general, SEE ALSO, AUTHOR, and similar material should be left
 for last.  Some systems also move WARNINGS and NOTES to last.  The order
 given above should be reasonable for most purposes.
+
+Finally, as a general note, try not to use an excessive amount of markup.
+As documented here and in L<Pod::Man>, you can safely leave Perl variables,
+function names, man page references, and the like unadorned by markup and
+the POD translators will figure it out for you.  This makes it much easier
+to later edit the documentation.  Note that many existing translators
+(including this one currently) will do the wrong thing with e-mail addresses
+or URLs when wrapped in LE<lt>E<gt>, so don't do that.
 
 For additional information that may be more accurate for your specific
 system, see either man(5) or man(7) depending on your system manual section
