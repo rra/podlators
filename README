@@ -1,8 +1,8 @@
-                          podlators version 1.09
+                          podlators version 1.10
              (Format POD source into various output formats)
 
   Copyright 1999, 2000, 2001 Russ Allbery <rra@stanford.edu>.  This
-  program is free software; you can redistribute it and/or modify it under
+  program is free software; you may redistribute it and/or modify it under
   the same terms as Perl itself.
 
   I welcome all bug reports and patches for this package (and in
@@ -81,8 +81,8 @@ Pod::Man
   close to the relevant text.
 
   Additional features over pod2man include a shorter and better documented
-  prelude, inclusion of '' quotes around sections marked with C<> when
-  viewed using nroff, and a better programmatic interface.
+  prelude, inclusion of "" quotes around some sections marked with C<>
+  when viewed using nroff, and a better programmatic interface.
 
 
 INSTALLATION
@@ -161,6 +161,17 @@ THANKS
   To Brendan O'Dea and Robin Barker (again!), for finding problems with
   Pod::Man guesswork and function and man page references that contained
   words in all caps and proposing fixes.
+
+  To Barrie Slaymaker, for the initial version of the heuristics in
+  Pod::Man and Pod::Text used to decide whether to add quotes around the
+  argument of C<>.
+
+  To Colin Watson, for finally pointing me in the right direction to find
+  the problem with excessive double-quoting of text in =item's on some
+  platforms and see how to fix it.
+
+  To Jarkko Hietaniemi, for the original language for pod2man.PL
+  explaining the COPYRIGHT AND LICENSE section.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
