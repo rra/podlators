@@ -115,5 +115,8 @@ THANKS
   compatibility interface for older applications, and for being willing to
   roll this code into the next Perl distribution.
 
+  To Larry Virden, for feedback on the section on writing a man page in
+  pod2roff and lots of good suggestions for improving it.
+
                                                 Russ Allbery
                                                 rra@stanford.edu
