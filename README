@@ -1,4 +1,4 @@
-                          podlators version 1.22
+                          podlators version 1.23
              (Format POD source into various output formats)
 
   Copyright 1999, 2000, 2001, 2002 Russ Allbery <rra@stanford.edu>.  This
@@ -112,6 +112,3 @@ INSTALLATION
   Note that in order to use Pod::Text::Color, you have to have the module
   Term::ANSIColor (available from CPAN and part of Perl core as of 5.6.0)
   installed.
-
-                                                Russ Allbery
-                                                rra@stanford.edu

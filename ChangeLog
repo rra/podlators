@@ -1,3 +1,19 @@
+2002-07-14  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.23 released.
+
+	* lib/Pod/Man.pm: Add a pointer to the module web site.
+	* lib/Pod/Text.pm: Likewise.
+	* lib/Pod/Text/Color.pm: Likewise.
+	* lib/Pod/Text/Overstrike.pm: Likewise.
+	* lib/Pod/Text/Termcap.pm: Likewise.
+	* lib/Pod/ParseLink.pm: Likewise, and reference Pod::Parser.
+	* scripts/pod2man.PL: Likewise, and remove a recommendation to
+	provide link text for L<>.
+	* scripts/pod2text.PL: Likewise, clean up some old-style L<> links
+	to work around bugs in Pod::Man and Pod::Text that have been
+	fixed, and reference Pod::Text::Overstrike.
+
 2002-06-23  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.22 released.
