@@ -1,9 +1,11 @@
 \bCVS\b
-^\.cvsignore$
 ^MANIFEST\.
 ^Makefile$
+^podlators-.*\.tar\.gz$
+^blib/
+^pm_to_blib$
 ~$
 \.old$
 \.bak$
-^blib/
-^pm_to_blib$
+^\.
+/\.
