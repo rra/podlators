@@ -102,3 +102,5 @@ catman that don't understand *roff.
 
 Hugo van der Sanden, for reporting that the anti-quoting regexes thought
 that a period was a number.
+
+Martin Quinson, for finding a bug in the handling of =item 0.

@@ -1,3 +1,18 @@
+2003-01-04  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.25 released.
+
+	* lib/Pod/Man.pm (begin_pod): Initialize ITEMTYPES.
+	(textblock): Fix a comment about SHIFTWAIT and SHIFTS.
+	(cmd_over): Push unknown onto ITEMTYPES.
+	(cmd_back): Pop an item type off ITEMTYPES.
+	(cmd_item): Set the top element of ITEMTYPES if set to unknown
+	based on whether this item is =item/=item * or not.  Only map
+	asterisk to a real bullet if the item type for this =over/=back
+	pair is bullet.  Fix a bug where =item 0 was interpreted the same
+	as =item.
+	* t/man.t: Add tests for bullet handling with =item.
+
 2002-08-03  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.24 released.

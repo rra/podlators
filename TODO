@@ -22,6 +22,14 @@ any of the following are very much welcome.
    Pod::Escapes to provide fallbacks.  This would also allow correct
    output of high-bit characters found in verbatim paragraphs.
 
+ * Pod::Man doesn't support the full HTML entity list, which would be
+   easier to do once the above two points have been addressed.
+
+ * perlpodspec says that it should be possible to suppress the output of
+   errors and instead attach them as a closing section of the document.
+   There haven't been any specific requests for this functionality yet,
+   but it shouldn't be too hard to add to Pod::Man and Pod::Text.
+
  * There should be some way to turn off all heuristics when people are
    using POD for some purpose other than Perl or some other programming
    language with similar needs.  The best way to do this would be via a
