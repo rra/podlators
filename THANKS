@@ -60,8 +60,9 @@ and see how to fix it, and also for finding a problem with Pod::Man's
 output of section headings for troff.
 
 Jarkko Hietaniemi, for the original language for pod2man.PL explaining the
-COPYRIGHT AND LICENSE section and the modifications to the test suite
-needed to run it as part of Perl's core tests.
+COPYRIGHT AND LICENSE section, the modifications to the test suite needed
+to run it as part of Perl's core tests, and testing and bug reports for
+OS/390 and EBCDIC.
 
 Peter Prymmer, for pointing out the error reporting in Pod::Text and
 Pod::Man didn't include enough information to find the errant POD.

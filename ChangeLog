@@ -1,3 +1,17 @@
+2002-01-27  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.20 released.
+
+	* t/basic.t: EBCDIC compatibility when testing Pod::Text::Termcap.
+	Convert the escape characters so that the test will match.  I'm
+	not entirely sure this doesn't paper over another problem, but
+	it's an improvement at least.
+
+	* lib/Pod/Text/Overstrike.pm (wrap): Use [\b] instead of \cH in
+	regexes to match backspaces, for platforms that use EBCDIC where
+	\b and \cH aren't the same character.
+	(strip_format): Likewise.
+
 2002-01-02  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.19 released.
