@@ -60,7 +60,7 @@ my %options;
 Getopt::Long::config ('bundling');
 GetOptions (\%options, 'section|s=s', 'release|r=s', 'center|c=s',
             'date|d=s', 'fixed=s', 'fixedbold=s', 'fixeditalic=s',
-            'fixedbolditalic=s', 'official|o', 'lax|l', 'help|h');
+            'fixedbolditalic=s', 'official|o', 'lax|l', 'help|h') or exit 1;
 pod2usage (0) if $options{help};
 
 # Official sets --center, but don't override things explicitly set.
