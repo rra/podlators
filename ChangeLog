@@ -1,3 +1,11 @@
+2001-02-09  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.08 released.
+
+	* lib/Pod/Text.pm (seq_l): Output anything that looks like a URL
+	verbatim rather than interpreting it as a manual page reference.
+	* lib/Pod/Man.pm (buildlink): Likewise.
+
 2001-01-16  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.07 released.

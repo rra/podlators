@@ -2,6 +2,7 @@ ChangeLog
 MANIFEST
 Makefile.PL
 README
+TODO
 VERSION
 lib/Pod/Man.pm
 lib/Pod/Text.pm
