@@ -36,7 +36,7 @@ use vars qw(@ISA $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.08;
+$VERSION = 1.09;
 
 
 ##############################################################################
@@ -186,6 +186,10 @@ There may be some better approach possible.
 =head1 SEE ALSO
 
 L<Pod::Text>, L<Pod::Parser>
+
+The current version of this module is always available from its web site at
+L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
+Perl core distribution as of 5.6.0.
 
 =head1 AUTHOR
 

@@ -43,7 +43,7 @@ use vars qw(@ISA @EXPORT %ESCAPES $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.19;
+$VERSION = 2.20;
 
 
 ##############################################################################
@@ -812,6 +812,10 @@ subclass of it does.  Look for L<Pod::Text::Termcap>.
 =head1 SEE ALSO
 
 L<Pod::Parser>, L<Pod::Text::Termcap>, L<pod2text(1)>
+
+The current version of this module is always available from its web site at
+L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
+Perl core distribution as of 5.6.0.
 
 =head1 AUTHOR
 
