@@ -43,7 +43,7 @@ use vars qw(@ISA @EXPORT %ESCAPES $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.16;
+$VERSION = 2.17;
 
 
 ##############################################################################
@@ -291,7 +291,6 @@ sub interior_sequence {
             return chr;
         } else {
             return $ESCAPES{$_} if defined $ESCAPES{$_};
-            my $seq = shift;
             my ($file, $line) = $seq->file_line;
             warn "$file:$line: Unknown escape: E<$_>\n";
             return "E<$_>";
@@ -316,7 +315,6 @@ sub interior_sequence {
     elsif ($command eq 'I') { return $self->seq_i ($_) }
     elsif ($command eq 'L') { return $self->seq_l ($_, $seq) }
     else {
-        my $seq = shift;
         my ($file, $line) = $seq->file_line;
         warn "$file:$line: Unknown formatting code $command<$_>\n";
     }
