@@ -40,7 +40,7 @@ use Pod::Simple ();
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 3.00;
+$VERSION = 3.01;
 
 ##############################################################################
 # Initialization
@@ -67,7 +67,11 @@ sub new {
     $self->nbsp_for_S (1);
 
     # Tell Pod::Simple to keep whitespace whenever possible.
-    $self->preserve_whitespace (1);
+    if ($self->can ('preserve_whitespace')) {
+        $self->preserve_whitespace (1);
+    } else {
+        $self->fullstop_space_harden (1);
+    }
 
     # The =for and =begin targets that we accept.
     $self->accept_targets (qw/text TEXT/);

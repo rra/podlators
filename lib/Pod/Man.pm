@@ -1,7 +1,8 @@
 # Pod::Man -- Convert POD data to formatted *roff input.
 # $Id$
 #
-# Copyright 1999, 2000, 2001, 2002, 2003, 2004 Russ Allbery <rra@stanford.edu>
+# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005
+#     Russ Allbery <rra@stanford.edu>
 # Substantial contributions by Sean Burke <sburke@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -39,7 +40,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.03;
+$VERSION = 2.04;
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -76,7 +77,11 @@ sub new {
     $self->nbsp_for_S (1);
 
     # Tell Pod::Simple to keep whitespace whenever possible.
-    $self->preserve_whitespace (1);
+    if ($self->can ('preserve_whitespace')) {
+        $self->preserve_whitespace (1);
+    } else {
+        $self->fullstop_space_harden (1);
+    }
 
     # The =for and =begin targets that we accept.
     $self->accept_targets (qw/man MAN roff ROFF/);
@@ -772,10 +777,11 @@ sub devise_title {
     #     */*perl*/lib/         from -Dprefix=/opt/perl
     #     */*perl*/             random module hierarchy
     #
-    # which works.  Also strip off a leading site or site_perl component, any
-    # OS-specific component, and any version number component, and strip off
-    # an initial component of "lib" or "blib/lib" since that's what
-    # ExtUtils::MakeMaker creates.  splitdir requires at least File::Spec 0.8.
+    # which works.  Also strip off a leading site, site_perl, or vendor_perl
+    # component, any OS-specific component, and any version number component,
+    # and strip off an initial component of "lib" or "blib/lib" since that's
+    # what ExtUtils::MakeMaker creates.  splitdir requires at least File::Spec
+    # 0.8.
     if ($section !~ /^3/) {
         require File::Basename;
         $name = uc File::Basename::basename ($name);
@@ -797,7 +803,7 @@ sub devise_title {
         }
         if ($cut > 0) {
             splice (@dirs, 0, $cut);
-            shift @dirs if ($dirs[0] =~ /^site(_perl)?$/);
+            shift @dirs if ($dirs[0] =~ /^(site|vendor)(_perl)?$/);
             shift @dirs if ($dirs[0] =~ /^[\d.]+$/);
             shift @dirs if ($dirs[0] =~ /^(.*-$^O|$^O-.*|$^O)$/);
         }
@@ -1591,6 +1597,22 @@ Converting neutral double quotes to properly matched double quotes doesn't
 work unless there are no formatting codes between the quote marks.  This
 only matters for troff output.
 
+=head1 AUTHOR
+
+Russ Allbery <rra@stanford.edu>, based I<very> heavily on the original
+B<pod2man> by Tom Christiansen <tchrist@mox.perl.com>.  The modifications to
+work with Pod::Simple instead of Pod::Parser were originally contributed by
+Sean Burke (but I've since hacked them beyond recognition and all bugs are
+mine).
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005
+by Russ Allbery <rra@stanford.edu>.
+
+This program is free software; you may redistribute it and/or modify it
+under the same terms as Perl itself.
+
 =head1 SEE ALSO
 
 L<Pod::Simple>, L<perlpod(1)>, L<pod2man(1)>, L<nroff(1)>, L<troff(1)>,
@@ -1610,21 +1632,5 @@ aren't familiar with the conventions.
 The current version of this module is always available from its web site at
 L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
 Perl core distribution as of 5.6.0.
-
-=head1 AUTHOR
-
-Russ Allbery <rra@stanford.edu>, based I<very> heavily on the original
-B<pod2man> by Tom Christiansen <tchrist@mox.perl.com>.  The modifications to
-work with Pod::Simple instead of Pod::Parser were originally contributed by
-Sean Burke (but I've since hacked them beyond recognition and all bugs are
-mine).
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 1999, 2000, 2001, 2002, 2003, 2004
-by Russ Allbery <rra@stanford.edu>.
-
-This program is free software; you may redistribute it and/or modify it
-under the same terms as Perl itself.
 
 =cut
