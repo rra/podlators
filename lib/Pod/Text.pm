@@ -1,4 +1,4 @@
-# Pod::PlainText -- Convert POD data to formatted ASCII text.
+# Pod::Text -- Convert POD data to formatted ASCII text.
 # $Id$
 #
 # Copyright 1999 by Russ Allbery <rra@stanford.edu>
@@ -15,7 +15,7 @@
 # Modules and declarations
 ############################################################################
 
-package Pod::PlainText;
+package Pod::Text;
 
 require 5.004;
 
@@ -25,6 +25,8 @@ use Pod::Select ();
 use strict;
 use vars qw(@ISA %ESCAPES $VERSION);
 
+# We inherit from Pod::Select instead of Pod::Parser so that we can be used
+# by Pod::Usage.
 @ISA = qw(Pod::Select);
 
 ($VERSION = (split (' ', q$Revision$ ))[1]) =~ s/\.(\d)$/.0$1/;
@@ -35,8 +37,8 @@ use vars qw(@ISA %ESCAPES $VERSION);
 ############################################################################
 
 # This table is taken near verbatim from Pod::PlainText in Pod::Parser,
-# which got it near verbatim from Pod::Text.  It is therefore credited to
-# Tom Christiansen, and I'm glad I didn't have to write it.  :)
+# which got it near verbatim from the original Pod::Text.  It is therefore
+# credited to Tom Christiansen, and I'm glad I didn't have to write it.  :)
 %ESCAPES = (
     'amp'       =>    '&',      # ampersand
     'lt'        =>    '<',      # left chevron, less-than
@@ -172,9 +174,9 @@ sub textblock {
     local $_ = $text;
 
     # Perform a little magic to collapse multiple L<> references.  This is
-    # here mostly for backwards-compatibility with Pod::Text.  We'll just
-    # rewrite the whole thing into actual text at this part, bypassing the
-    # whole internal sequence parsing thing.
+    # here mostly for backwards-compatibility.  We'll just rewrite the whole
+    # thing into actual text at this part, bypassing the whole internal
+    # sequence parsing thing.
     s{
         (
           L<                    # A link of the form L</something>.
@@ -348,18 +350,13 @@ sub cmd_end {
 }    
 
 # One paragraph for a particular translator.  Ignore it unless it's intended
-# for text, in which case we treat it as either a normal text block or a
-# verbatim text block, depending on whether it's indented.
+# for text, in which case we treat it as a verbatim text block.
 sub cmd_for {
     my $self = shift;
     local $_ = shift;
     my $line = shift;
     return unless s/^text\b[ \t]*\n?//;
-    if (/^\s+/) {
-        $self->verbatim ($_, $line);
-    } else {
-        $self->textblock ($_, $line);
-    }
+    $self->verbatim ($_, $line);
 }
 
 
@@ -390,7 +387,6 @@ sub seq_l {
     # Okay, leading and trailing whitespace isn't important; get rid of it.
     s/^\s+//;
     s/\s+$//;
-    chomp;
 
     # Default to using the whole content of the link entry as a section
     # name.  Note that L<manpage/> forces a manpage interpretation, as does
@@ -537,7 +533,7 @@ sub pod2text {
     }
 
     # Now that we know what arguments we're using, create the parser.
-    my $parser = Pod::PlainText->new (@args);
+    my $parser = Pod::Text->new (@args);
 
     # If two arguments were given, the second argument is going to be a file
     # handle.  That means we want to call parse_from_filehandle(), which
@@ -566,12 +562,12 @@ __END__
 
 =head1 NAME
 
-Pod::PlainText - Convert POD data to formatted ASCII text
+Pod::Text - Convert POD data to formatted ASCII text
 
 =head1 SYNOPSIS
 
-    use Pod::PlainText;
-    my $parser = Pod::PlainText->new (sentence => 0, width => 78);
+    use Pod::Text;
+    my $parser = Pod::Text->new (sentence => 0, width => 78);
 
     # Read POD from STDIN and write to STDOUT.
     $parser->parse_from_filehandle;
@@ -581,17 +577,17 @@ Pod::PlainText - Convert POD data to formatted ASCII text
 
 =head1 DESCRIPTION
 
-Pod::PlainText is a module that can convert documentation in the POD format
-(such as can be found throughout the Perl distribution) into formatted
-ASCII.  It uses no special formatting controls or codes whatsoever, and its
-output is therefore suitable for nearly any device.
+Pod::Text is a module that can convert documentation in the POD format (the
+preferred language for documenting Perl) into formatted ASCII.  It uses no
+special formatting controls or codes whatsoever, and its output is therefore
+suitable for nearly any device.
 
-As a derived class from Pod::Parser, Pod::PlainText supports the same
-methods and interfaces.  See L<Pod::Parser> for all the details; briefly,
-one creates a new parser with C<Pod::PlainText-E<gt>new()> and then calls
-either C<parse_from_filehandle()> or C<parse_from_file()>.
+As a derived class from Pod::Parser, Pod::Text supports the same methods and
+interfaces.  See L<Pod::Parser> for all the details; briefly, one creates a
+new parser with C<Pod::Text-E<gt>new()> and then calls either
+parse_from_filehandle() or parse_from_file().
 
-C<new()> can take options, in the form of key/value pairs, that control the
+new() can take options, in the form of key/value pairs, that control the
 behavior of the parser.  The currently recognized options are:
 
 =over 4
@@ -618,8 +614,8 @@ output.
 
 =item sentence
 
-If set to a true value, Pod::PlainText will assume that each sentence ends
-in two spaces, and will try to preserve that spacing.  If set to false, all
+If set to a true value, Pod::Text will assume that each sentence ends in two
+spaces, and will try to preserve that spacing.  If set to false, all
 consecutive whitespace in non-verbatim paragraphs is compressed into a
 single space.  Defaults to true.
 
@@ -629,49 +625,62 @@ The column at which to wrap text on the right-hand side.  Defaults to 76.
 
 =back
 
-The standard Pod::Parser method C<parse_from_filehandle()> takes up to two
+The standard Pod::Parser method parse_from_filehandle() takes up to two
 arguments, the first being the file handle to read POD from and the second
 being the file handle to write the formatted output to.  The first defaults
 to STDIN if not given, and the second defaults to STDOUT.  The method
-C<parse_from_file()> is almost identical, except that its two arguments are
-the input and output disk files instead.  See L<Pod::Parser> for the
-specific details.
+parse_from_file() is almost identical, except that its two arguments are the
+input and output disk files instead.  See L<Pod::Parser> for the specific
+details.
 
 =head1 DIAGNOSTICS
 
 =over 4
 
+=item Bizarre space in item
+
+(W) Something has gone wrong in internal C<=item> processing.  This message
+indicates a bug in Pod::Text; you should never see it.
+
+=item Can't open %s for reading: %s
+
+(F) Pod::Text was invoked via the compatibility mode pod2text() interface
+and the input file it was given could not be opened.
+
 =item Unknown escape: %s
 
-The POD source contained an C<EE<lt>E<gt>> escape that Pod::PlainText
-didn't know about.
+(W) The POD source contained an C<EE<lt>E<gt>> escape that Pod::Text didn't
+know about.
 
 =item Unknown sequence: %s
 
-The POD source contained a non-standard internal sequence (something of the
-form C<XE<lt>E<gt>>) that Pod::PlainText didn't know about.
+(W) The POD source contained a non-standard internal sequence (something of
+the form C<XE<lt>E<gt>>) that Pod::Text didn't know about.
 
 =item Unmatched =back
 
-Pod::PlainText encountered a C<=back> command that didn't correspond to an
+(W) Pod::Text encountered a C<=back> command that didn't correspond to an
 C<=over> command.
 
 =back
 
 =head1 NOTES
 
-I'm hoping this module will eventually replace Pod::Text in Perl core once
-Pod::Parser has been added to Perl core.  Accordingly, don't be surprised if
-the name of this module changes to Pod::Text down the road.
+This is a replacement for an earlier Pod::Text module written by Tom
+Christiansen.  It has a revamped interface, since it now uses Pod::Parser,
+but an interface roughly compatible with the old Pod::Text::pod2text()
+function is still available.  Please change to the new calling convention,
+though.
 
 The original Pod::Text contained code to do formatting via termcap
 sequences, although it wasn't turned on by default and it was problematic to
-get it to work at all.  This module doesn't even try to do that, but a
+get it to work at all.  This rewrite doesn't even try to do that, but a
 subclass of it does.  Look for Pod::Text::Termcap.
 
 =head1 SEE ALSO
 
-L<Pod::Parser|Pod::Parser>, L<Pod::Text::Termcap|Pod::Text::Termcap>
+L<Pod::Parser|Pod::Parser>, L<Pod::Text::Termcap|Pod::Text::Termcap>,
+pod2text(1)
 
 =head1 AUTHOR
 
