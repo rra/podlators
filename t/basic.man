@@ -1,6 +1,5 @@
-.UC
 .SH "NAME"
-basic.pod \- Test of various basic \s-1POD\s0 features in translators.
+basic.pod \- Test of various basic POD features in translators.
 .SH "HEADINGS"
 .IX Header "HEADINGS"
 Try a few different levels of headings, with embedded formatting codes and
