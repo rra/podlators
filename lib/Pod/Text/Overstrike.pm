@@ -36,7 +36,7 @@ use vars qw(@ISA $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 1.07;
+$VERSION = 1.08;
 
 
 ##############################################################################
@@ -109,8 +109,12 @@ sub wrap {
     my $spaces = ' ' x $$self{MARGIN};
     my $width = $$self{width} - $$self{MARGIN};
     while (length > $width) {
-        if (s/^((?:(?:[^\n][\b])?[^\n]){0,$width})(\Z|\s+)//
-            || s/^((?:(?:[^\n][\b])?[^\n]){$width})//) {
+        # This regex represents a single character, that's possibly underlined
+        # or in bold (in which case, it's three characters; the character, a
+        # backspace, and a character).  Use [^\n] rather than . to protect
+        # against odd settings of $*.
+        my $char = '(?:[^\n][\b])?[^\n]';
+        if (s/^((?>$char){0,$width})(?:\Z|\s+)//) {
             $output .= $spaces . $1 . "\n";
         } else {
             last;
