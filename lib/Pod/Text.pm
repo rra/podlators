@@ -449,7 +449,12 @@ sub item {
     my $space = ' ' x $indent;
     $space =~ s/^ /:/ if $$self{alt};
     if (!$_ || /^\s+$/ || ($$self{MARGIN} - $indent < length ($tag) + 1)) {
-        $self->output ($space . $tag . "\n");
+        my $margin = $$self{MARGIN};
+        $$self{MARGIN} = $indent;
+        my $output = $self->reformat ($tag);
+        $output =~ s/\n*$/\n/;
+        $self->output ($output);
+        $$self{MARGIN} = $margin;
         $self->output ($self->reformat ($_)) if /\S/;
     } else {
         $_ = $self->reformat ($_);
