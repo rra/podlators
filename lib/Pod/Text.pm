@@ -6,11 +6,10 @@
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 #
-# This module may potentially be a replacement for Pod::Text, although it
-# does not (at the current time) attempt to match the output of Pod::Text
-# and makes several different formatting choices (mostly in the direction of
-# less markup).  It uses Pod::Parser and is designed to be very easy to
-# subclass.
+# This module is intended to be a replacement for Pod::Text, and attempts to
+# match its output except for some specific circumstances where other
+# decisions seemed to produce better output.  It uses Pod::Parser and is
+# designed to be very easy to subclass.
 
 ############################################################################
 # Modules and declarations
@@ -20,7 +19,7 @@ package Pod::PlainText;
 
 require 5.004;
 
-use Carp qw(carp);
+use Carp qw(carp croak);
 use Pod::Select ();
 
 use strict;
@@ -28,7 +27,7 @@ use vars qw(@ISA %ESCAPES $VERSION);
 
 @ISA = qw(Pod::Select);
 
-$VERSION = '0.01';
+($VERSION = (split (' ', q$Revision$ ))[1]) =~ s/\.(\d)$/.0$1/;
 
 
 ############################################################################
@@ -513,6 +512,49 @@ sub reformat {
 
 # Output text to the output device.
 sub output { $_[1] =~ tr/\01/ /; print { $_[0]->output_handle } $_[1] }
+
+
+############################################################################
+# Backwards compatibility
+############################################################################
+
+# The old Pod::Text module did everything in a pod2text() function.  This
+# tries to provide the same interface for legacy applications.
+sub pod2text {
+    my @args;
+
+    # This is really ugly; I hate doing option parsing in the middle of a
+    # module.  But the old Pod::Text module supported passing flags to its
+    # entry function, so handle -a and -<number>.
+    while ($_[0] =~ /^-/) {
+        my $flag = shift;
+        if    ($flag eq '-a')       { push (@args, alt => 1)    }
+        elsif ($flag =~ /^-(\d+)$/) { push (@args, width => $1) }
+        else {
+            unshift (@_, $flag);
+            last;
+        }
+    }
+
+    # Now that we know what arguments we're using, create the parser.
+    my $parser = Pod::PlainText->new (@args);
+
+    # If two arguments were given, the second argument is going to be a file
+    # handle.  That means we want to call parse_from_filehandle(), which
+    # means we need to turn the first argument into a file handle.  Magic
+    # open will handle the <&STDIN case automagically.
+    if (defined $_[1]) {
+        local *IN;
+        unless (open (IN, $_[0])) {
+            croak ("Can't open $_[0] for reading: $!\n");
+            return;
+        }
+        $_[0] = \*IN;
+        return $parser->parse_from_filehandle (@_);
+    } else {
+        return $parser->parse_from_file (@_);
+    }
+}
 
 
 ############################################################################
