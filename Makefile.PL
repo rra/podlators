@@ -8,18 +8,22 @@ BEGIN {
 }
 
 # Use File::Spec to handle paths, for portability.
-sub script { File::Spec->catfile ('scripts', @_) }
+sub script {
+    my @scripts = map { File::Spec->catfile ('scripts', $_) } @_;
+    wantarray ? @scripts : join (' ', @scripts);
+}
 
 use ExtUtils::MakeMaker;
 WriteMakefile (
     NAME         => 'Pod',
     DISTNAME     => 'podlators',
-    PL_FILES     => { script ('pod2txt.PL') => script ('pod2txt') },
-    EXE_FILES    => [ script ('pod2txt') ],
-    PREREQ_PM    => { 'File::Spec' => 0 },
+    PL_FILES     => { script ('pod2txt.PL', 'pod2txt'),
+                      script ('pod2roff.PL', 'pod2roff') },
+    EXE_FILES    => [ script ('pod2txt', 'pod2roff') ],
+    PREREQ_PM    => { 'File::Spec' => 0, 'Pod::Parser' => 0 },
     ($] >= 5.005 ?
      (ABSTRACT   => 'Convert POD data to various other formats',
       AUTHOR     => 'Russ Allbery (rra@stanford.edu)') : ()),
     VERSION_FROM => 'VERSION',
-    realclean    => { FILES => script ('pod2txt') }
+    realclean    => { FILES => scalar script ('pod2txt', 'pod2roff') }
 );
