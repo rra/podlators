@@ -1,3 +1,14 @@
+2001-01-16  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.07 released.
+
+	* lib/Pod/Man.pm (begin_pod): Quote the file name if it contains
+	spaces.
+	(cmd_head1): Remove newlines.
+	(cmd_head2): Likewise.
+	(cmd_head3): Likewise.
+	(cmd_head4): Likewise.
+
 2000-12-25  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.06 released.
