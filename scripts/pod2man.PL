@@ -441,20 +441,6 @@ Bugs you don't plan to fix.  :-)
 
 Miscellaneous commentary.
 
-=item SEE ALSO
-
-Other man pages to check out, like man(1), man(7), makewhatis(8), or
-catman(8).  Normally a simple list of man pages separated by commas, or a
-paragraph giving the name of a reference work.  Man page references, if they
-use the standard C<name(section)> form, don't have to be enclosed in
-LE<lt>E<gt> (although it's recommended), but other things in this section
-probably should be when appropriate.
-
-If the package has a mailing list, include a URL or subscription
-instructions here.
-
-If the package has a web site, include a URL here.
-
 =item AUTHOR
 
 Who wrote it (use AUTHORS for multiple people).  Including your current
@@ -462,6 +448,12 @@ e-mail address (or some e-mail address to which bug reports should be sent)
 so that users have a way of contacting you is a good idea.  Remember that
 program documentation tends to roam the wild for far longer than you expect
 and pick an e-mail address that's likely to last if possible.
+
+=item HISTORY
+
+Programs derived from other sources sometimes have this, or you might keep
+a modification log here.  If the log gets overly long or detailed,
+consider maintaining it in a separate file, though.
 
 =item COPYRIGHT AND LICENSE
 
@@ -480,11 +472,19 @@ This makes it easy for people to use your module with Perl.  Note that
 this licensing is neither an endorsement or a requirement, you are of
 course free to choose any licensing.
 
-=item HISTORY
+=item SEE ALSO
 
-Programs derived from other sources sometimes have this, or you might keep
-a modification log here.  If the log gets overly long or detailed,
-consider maintaining it in a separate file, though.
+Other man pages to check out, like man(1), man(7), makewhatis(8), or
+catman(8).  Normally a simple list of man pages separated by commas, or a
+paragraph giving the name of a reference work.  Man page references, if they
+use the standard C<name(section)> form, don't have to be enclosed in
+LE<lt>E<gt> (although it's recommended), but other things in this section
+probably should be when appropriate.
+
+If the package has a mailing list, include a URL or subscription
+instructions here.
+
+If the package has a web site, include a URL here.
 
 =back
 
@@ -510,7 +510,7 @@ function names, man page references, and the like unadorned by markup and
 the POD translators will figure it out for you.  This makes it much easier
 to later edit the documentation.  Note that many existing translators
 (including this one currently) will do the wrong thing with e-mail addresses
-or URLs when wrapped in LE<lt>E<gt>, so don't do that.
+when wrapped in LE<lt>E<gt>, so don't do that.
 
 For additional information that may be more accurate for your specific
 system, see either L<man(5)> or L<man(7)> depending on your system manual
