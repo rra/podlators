@@ -102,7 +102,7 @@ Pod::Text::Color - Convert POD data to formatted color ASCII text
 
 Pod::Text::Color is a simple subclass of Pod::PlainText that highlights
 output text using ANSI color escape sequences.  Apart from the color, it in
-all ways functions like Pod::SimpleText.  See L<Pod::PlainText> for details
+all ways functions like Pod::PlainText.  See L<Pod::PlainText> for details
 and available options.
 
 =head1 SEE ALSO
