@@ -717,8 +717,8 @@ sub buildlink {
     # see guesswork().  If we've added italics, don't add the "manpage"
     # text; markup is sufficient.
     my ($manpage, $section) = ('', $_);
-    if (/^\"\s*(.*?)\s*\"$/) {
-        $section = $1;
+    if (/^"\s*(.*?)\s*"$/) {
+        $section = '"' . $1 . '"';
     } elsif (m{ ^ [-:.\w]+ (?: \( \S+ \) )? $ }x) {
         ($manpage, $section) = ($_, '');
         $manpage =~ s/^([^\(]+)\(/'\f(IS' . $1 . '\f(IE\|('/e;
@@ -745,7 +745,8 @@ sub buildlink {
         $text .= (length $manpage) ? " in $manpage"
                                    : " elsewhere in this document";
     } else {
-        $text .= 'the section on "' . $section . '"';
+        if ($section !~ /^".*"$/) { $section = '"' . $section . '"' }
+        $text .= 'the section on ' . $section;
         $text .= " in $manpage" if length $manpage;
     }
     $text;
