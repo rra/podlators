@@ -6,7 +6,7 @@
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 #
-# This is a simple subclass of Pod::SimpleText that overrides a few key
+# This is a simple subclass of Pod::PlainText that overrides a few key
 # methods to output the right termcap escape sequences for formatted text
 # on the current terminal type.
 
@@ -24,7 +24,7 @@ use Term::Cap;
 use strict;
 use vars qw(@ISA $VERSION);
 
-@ISA = qw(Pod::SimpleText);
+@ISA = qw(Pod::PlainText);
 
 # Use the CVS revision of this file as its version number.
 ($VERSION = (split (' ', q$Revision$ ))[1]) =~ s/\.(\d)$/.0$1/;
@@ -125,10 +125,10 @@ Pod::Text::Color - Convert POD data to ASCII text with format escapes
 
 =head1 DESCRIPTION
 
-Pod::Text::Termcap is a simple subclass of Pod::SimpleText that highlights
+Pod::Text::Termcap is a simple subclass of Pod::PlainText that highlights
 output text using the correct termcap escape sequences for the current
 terminal.  Apart from the format codes, it in all ways functions like
-Pod::SimpleText.  See L<Pod::SimpleText> for details and available options.
+Pod::PlainText.  See L<Pod::PlainText> for details and available options.
 
 =head1 SEE ALSO
 

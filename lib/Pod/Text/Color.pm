@@ -24,7 +24,7 @@ use Term::ANSIColor qw(colored);
 use strict;
 use vars qw(@ISA $VERSION);
 
-@ISA = qw(Pod::SimpleText);
+@ISA = qw(Pod::PlainText);
 
 # Use the CVS revision of this file as its version number.
 ($VERSION = (split (' ', q$Revision$ ))[1]) =~ s/\.(\d)$/.0$1/;
@@ -100,9 +100,9 @@ Pod::Text::Color - Convert POD data to formatted color ASCII text
 
 =head1 DESCRIPTION
 
-Pod::Text::Color is a simple subclass of Pod::SimpleText that highlights
+Pod::Text::Color is a simple subclass of Pod::PlainText that highlights
 output text using ANSI color escape sequences.  Apart from the color, it in
-all ways functions like Pod::SimpleText.  See L<Pod::SimpleText> for details
+all ways functions like Pod::SimpleText.  See L<Pod::PlainText> for details
 and available options.
 
 =head1 SEE ALSO
