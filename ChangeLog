@@ -1,4 +1,19 @@
+Mon Aug 30 00:09:03 1999  Russ Allbery  <eagle@windlord.stanford.edu>
+
+        * VERSION: podlators 0.03 released.
+
+        * lib/Pod/Text/Color.pm: Pod::SimpleText changed to Pod::PlainText
+        everywhere.
+        lib/Pod/Text/Termcap.pm: Likewise.
+
+        * scripts/pod2txt: Pod::SimpleText changed to Pod::PlainText
+        everywhere, added documentation that Pod::Text::Termcap is used by
+        default if STDOUT is a tty, and clarified the documentation of
+        --loose.
+
 Thu Jul 29 08:23:09 1999  Russ Allbery  <eagle@windlord.stanford.edu>
+
+        * VERSION: podlators 0.02 released.
 
         * lib/Pod/PlainText.pm: Added a pod2text() function for backwards
         compatibility.
