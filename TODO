@@ -2,6 +2,11 @@ This is a somewhat random and unordered list of things I'd like to see
 fixed or improved, but which I've not yet had a chance to do.  Patches for
 any of the following are very much welcome.
 
+This module desperately needs a test suite.  Pod::Parser comes with a
+framework suitable for testing Pod::Text, but I haven't had the time to
+pull it into this package or adopt it so that it can also test the other
+modules.  Any contributions in this area would be *greatly* appreciated.
+
  * Do something about the other high-bit characters that aren't supported
    currently by Pod::Man.  Do some versions of groff support Unicode?
    We'd definitely need help from the *roff implementation here for a
@@ -11,9 +16,6 @@ any of the following are very much welcome.
    verbatim paragraphs) in Pod::Man.  Many versions of *roff choke on them
    badly unless we do the same sort of processing that we would if they
    were E<> escapes.
-
- * Add a heuristic so that if you have "C<text>" or C<"text">, C<> doesn't
-   add additional quotes in nroff mode.
 
  * Make use of a more generic parsing layer above the translators that
    handles such things as command dispatch and tracking the nesting level
