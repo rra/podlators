@@ -8,14 +8,17 @@
 
 INTRODUCTION
 
-  WARNING: Installation of this package will override the version of
-  Pod::Text that comes with your Perl distribution and replace the
-  pod2text script that comes with it.  The version in this package
-  attempts to be backwards-compatible but is not bug compatible, and some
-  things like the default wrap margin have changed.  The version contained
-  in this package is the default version for Perl 5.005_56 or thereabouts
-  and higher, but may be slightly newer depending on how updates have been
-  synchronized.
+  WARNING: Installation of this package will replace the pod2text script
+  that comes with it, but the new version of Pod::Text won't actually be
+  useable unless you overwrite the version that comes with Perl with it
+  (since Perl looks in its own directories before it looks in site_perl).
+  That means that most of the pod2text options will fail unless you do
+  that, since it will try to pass them to the old Pod::Text.  Note also
+  that the version in this package attempts to be backwards-compatible but
+  is not bug compatible, and some things like the default wrap margin have
+  changed.  The version contained in this package is the default version
+  for Perl 5.005_56 or thereabouts and higher, but may be slightly newer
+  depending on how updates have been synchronized.
 
   WARNING: This package requires Pod::Parser be installed.
 
@@ -82,10 +85,12 @@ INSTALLATION
           make install
 
   WARNING: As mentioned above, this will install Pod::Text in a location
-  that will likely override the version that comes with Perl, and will
-  probably overwrite Perl's pod2text with the version that comes with this
-  package.  Save a backup copy of pod2text if you do this, and make sure
-  this is what you want.
+  that won't be seen by Perl by default, and will probably overwrite
+  Perl's pod2text with the version that comes with this package.  Save a
+  backup copy of pod2text if you do this, and make sure this is what you
+  want.  If you do this, you probably will also want to replace Pod::Text
+  in your Perl module area with the version installed by this package,
+  saving a backup copy.
 
   You'll probably need to do the last as root.  This will also install
   driver scripts named pod2text and pod2roff; see their man pages for more
