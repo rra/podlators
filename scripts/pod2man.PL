@@ -78,13 +78,13 @@ pod2man - Convert POD data to formatted *roff input
 
 =head1 SYNOPSIS
 
-pod2txt [B<--section>=I<manext>] [B<--release>=I<version>]
+pod2man [B<--section>=I<manext>] [B<--release>=I<version>]
 [B<--center>=I<string>] [B<--date>=I<string>] [B<--fixed>=I<font>]
 [B<--fixedbold>=I<font>] [B<--fixeditalic>=I<font>]
 [B<--fixedbolditalic>=I<font>] [B<--official>] [B<--lax>] [I<input>
 [I<output>]]
 
-pod2txt B<--help>
+pod2man B<--help>
 
 =head1 DESCRIPTION
 
