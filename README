@@ -1,4 +1,4 @@
-                          podlators version 1.00
+                          podlators version 1.01
              (Format POD source into various output formats)
 
   Copyright 1999, 2000 Russ Allbery <rra@stanford.edu>.  This program is
@@ -9,16 +9,19 @@
 INTRODUCTION
 
   WARNING: Installation of this package will replace the pod2text and
-  pod2man scripts that come with Perl, but the new version of Pod::Text
-  won't actually be useable unless you overwrite the version that comes
-  with Perl with it (since Perl looks in its own directories before it
-  looks in site_perl).  That means that most of the pod2text options will
-  fail unless you do that, since it will try to pass them to the old
-  Pod::Text.  Note also that the version in this package attempts to be
-  backwards-compatible but is not bug compatible, and some things like the
-  default wrap margin have changed.  The version contained in this package
-  is the default version for Perl 5.5.560 or thereabouts and higher, but
-  may be slightly newer depending on how updates have been synchronized.
+  pod2man scripts that come with Perl, and for Perl 5.6.0 or later the
+  versions of Pod::Text and Pod::Man installed with Perl.  Make sure that
+  you have a version of this package as new as or newer than the modules
+  that come with Perl.  For older versions of Perl, pod2text and pod2man
+  will still be overwritten, but Pod::Text will not be, making many of the
+  options in pod2text not actually useable unless you overwrite the
+  version that comes with Perl with it (since Perl looks in its own
+  directories before it looks in site_perl).  Note also that the version
+  in this package attempts to be backwards-compatible but is not bug
+  compatible, and some things like the default wrap margin have changed.
+  The version contained in this package is the default version for Perl
+  5.5.560 or thereabouts and higher, but may be slightly newer depending
+  on how updates have been synchronized.
 
   WARNING: This package requires Pod::Parser be installed.
 
@@ -84,13 +87,12 @@ INSTALLATION
           make
           make install
 
-  WARNING: As mentioned above, this will install Pod::Text in a location
-  that won't be seen by Perl by default, and will probably overwrite
-  Perl's pod2text and pod2man with the version that comes with this
-  package.  Save backup copies of pod2text and pod2man if you do this, and
-  make sure this is what you want.  If you do this, you probably will also
-  want to replace Pod::Text in your Perl module area with the version
-  installed by this package, saving a backup copy.
+  WARNING: For versions of Perl prior to 5.6.0, as mentioned above, this
+  will install Pod::Text in a location that won't be seen by Perl by
+  default.  This will also overwrite Perl's pod2text and pod2man with the
+  version that comes with this package, and for Perl 5.6.0 or higher will
+  replace Pod::Man and Pod::Text that came with Perl.  Save backup copies
+  of these files if you do this, and make sure this is what you want.
 
   You'll probably need to do the "make install" as root.  This will also
   install driver scripts named pod2text and pod2man; see their man pages
@@ -129,6 +131,9 @@ THANKS
 
   To Tim Jenness, for providing the remaining ISO 8859-1 escapes for
   Pod::Text.  Volunteers to implement the same for Pod::Man are welcome.
+
+  To Johan Vromans, for pointing out a bug in the filename parsing in
+  Pod::Man and help with various packaging problems.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
