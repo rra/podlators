@@ -37,7 +37,7 @@ use vars qw(@ISA @EXPORT %ESCAPES $VERSION);
 # Perl core and too many things could munge CVS magic revision strings.
 # This number should ideally be the same as the CVS revision in podlators,
 # however.
-$VERSION = 2.06;
+$VERSION = 2.07;
 
 
 ############################################################################
@@ -173,7 +173,7 @@ sub initialize {
     $$self{width}    = 76 unless defined $$self{width};
 
     # Figure out what quotes we'll be using for C<> text.
-    $$self{quotes} ||= "'";
+    $$self{quotes} ||= '"';
     if ($$self{quotes} eq 'none') {
         $$self{LQUOTE} = $$self{RQUOTE} = '';
     } elsif (length ($$self{quotes}) == 1) {
@@ -373,6 +373,32 @@ sub cmd_head2 {
         $self->output ("\n==   $_   ==\n\n");
     } else {
         $self->output (' ' x ($$self{indent} / 2) . $_ . "\n\n");
+    }
+}
+
+# Third level heading.
+sub cmd_head3 {
+    my $self = shift;
+    local $_ = shift;
+    s/\s+$//;
+    $_ = $self->interpolate ($_, shift);
+    if ($$self{alt}) {
+        $self->output ("\n=    $_    =\n\n");
+    } else {
+        $self->output (' ' x ($$self{indent} * 2 / 3 + 0.5) . $_ . "\n\n");
+    }
+}
+
+# Third level heading.
+sub cmd_head4 {
+    my $self = shift;
+    local $_ = shift;
+    s/\s+$//;
+    $_ = $self->interpolate ($_, shift);
+    if ($$self{alt}) {
+        $self->output ("\n-    $_    -\n\n");
+    } else {
+        $self->output (' ' x ($$self{indent} * 3 / 4 + 0.5) . $_ . "\n\n");
     }
 }
 
