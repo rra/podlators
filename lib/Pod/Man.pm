@@ -38,7 +38,7 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 # Perl core and too many things could munge CVS magic revision strings.
 # This number should ideally be the same as the CVS revision in podlators,
 # however.
-$VERSION = 1.09;
+$VERSION = 1.10;
 
 
 ############################################################################
@@ -541,7 +541,7 @@ sub textblock {
     $text = $self->parse ($text, @_);
     $text =~ s/\n\s*$/\n/;
     $self->makespace;
-    $self->output (protect $self->mapfonts ($text));
+    $self->output (protect $self->textmapfonts ($text));
     $self->outindex;
     $$self{NEEDSPACE} = 1;
 }
@@ -678,7 +678,7 @@ sub cmd_head4 {
         $self->output (".PD\n");
     }
     $self->makespace;
-    $self->output ($self->mapfonts ($_) . "\n");
+    $self->output ($self->textmapfonts ($_) . "\n");
     $self->outindex ('Subsection', $_);
     $$self{NEEDSPACE} = 1;
 }
@@ -739,7 +739,7 @@ sub cmd_item {
         $self->output (".RE\n");
         $$self{WEIRDINDENT} = 0;
     }
-    $_ = $self->mapfonts ($_);
+    $_ = $self->textmapfonts ($_);
     $self->output (".PD 0\n") if ($$self{ITEMS} == 1);
     $self->output ($self->switchquotes ('.Ip', $_, $$self{INDENT}));
     $self->outindex ($index ? ('Item', $index) : ());
@@ -878,6 +878,24 @@ sub mapfonts {
             $last = $f;
             $sequence;
         }
+    }gxe;
+    $_;
+}
+
+# Unfortunately, there is a bug in Solaris 2.6 nroff (not present in GNU
+# groff) where the sequence \fB\fP\f(CW\fP leaves the font set to B rather
+# than R, presumably because \f(CW doesn't actually do a font change.  To
+# work around this, use a separate textmapfonts for text blocks where the
+# default font is always R and only use the smart mapfonts for headings.
+sub textmapfonts {
+    my $self = shift;
+    local $_ = shift;
+
+    my ($fixed, $bold, $italic) = (0, 0, 0);
+    my %magic = (F => \$fixed, B => \$bold, I => \$italic);
+    s { \\f\((.)(.) } {
+        ${ $magic{$1} } += ($2 eq 'S') ? 1 : -1;
+        $$self{FONTS}{($fixed && 1) . ($bold && 1) . ($italic && 1)};
     }gxe;
     $_;
 }
