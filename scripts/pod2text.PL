@@ -53,6 +53,9 @@ use Pod::Usage qw(pod2usage);
 
 use strict;
 
+# Silence -w warnings.
+use vars qw($running_under_some_shell);
+
 # Take an initial pass through our options, looking for one of the form
 # -<number>.  We turn that into -w <number> for compatibility with the
 # original pod2text script.
