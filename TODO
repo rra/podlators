@@ -17,12 +17,6 @@ modules.  Any contributions in this area would be *greatly* appreciated.
    badly unless we do the same sort of processing that we would if they
    were E<> escapes.
 
- * Make use of a more generic parsing layer above the translators that
-   handles such things as command dispatch and tracking the nesting level
-   of lists to cut down on the amount of code one has to repeat between
-   translators.  The best line of division between a translator and a
-   generic parsing layer is unclear.
-
  * There should be some way to turn off all heuristics when people are
    using POD for some purpose other than Perl or some other programming
    language with similar needs.
@@ -90,13 +84,10 @@ post by Tom Christiansen to pod-people@perl.org:
  * A better way to deal with the many L<> things in the SEE ALSO would be
    good.
 
- * Something ALLCAPS should be in small caps.  I [Tom] usually use
-   \s-1ALLCAPS\s0 but \s-2ALLCAPS\s0 might be better.  (Pod::Man already
-   does this.)
-
  * Something in __ALLCAPS__ should be in code font but perhaps not small,
    and maybe some magic between the unders, as in \f(CW_\|_ALLCAPS_\|_\fP.
-   (I don't believe Pod::Man currently handles this correctly.)
+   (Pod::Man handles the spaces between the underbars, but not putting
+   this into code font.)
 
  * An area for further work is headers and footers.  You should include
    the module version number and the file's last modification date in
