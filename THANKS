@@ -75,7 +75,8 @@ suggesting a --name option for pod2man.
 
 Mike Fry, for pointing out that the intuiting of the manual page name from
 the directory path didn't deal with three-component version numbers,
-serving as the impetus to rewrite that code to use File::Spec.
+serving as the impetus to rewrite that code to use File::Spec, and finding
+another bug with the module name intuition on OS/2.
 
 Sean Burke, for writing up a detailed specification of the POD language
 that cleaned up a lot of edge cases and for his patience in explaining and
