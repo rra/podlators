@@ -17,7 +17,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..3\n";
+    print "1..5\n";
 }
 
 END {
@@ -93,4 +93,47 @@ This C<.> should be quoted.
 .SH "PERIODS"
 .IX Header "PERIODS"
 This \f(CW\*(C`.\*(C'\fR should be quoted.
+###
+
+###
+=over 4
+
+=item *
+
+A bullet.
+
+=item    *
+
+Another bullet.
+
+=item * Not a bullet.
+
+=back
+###
+.IP "\(bu" 4
+A bullet.
+.IP "\(bu" 4
+Another bullet.
+.IP "* Not a bullet." 4
+.IX Item "Not a bullet."
+###
+
+###
+=over 4
+
+=item foo
+
+Not a bullet.
+
+=item *
+
+Also not a bullet.
+
+=back
+###
+.IP "foo" 4
+.IX Item "foo"
+Not a bullet.
+.IP "*" 4
+Also not a bullet.
 ###
