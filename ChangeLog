@@ -1,3 +1,19 @@
+2001-04-09  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 1.09 released.
+
+	* lib/Pod/Man.pm (guesswork): Fine-tune.  Don't allow colons after
+	sequences to put in small caps since they're already handled by
+	being rolled into the sequence and were causing weird things to
+	happen in references to functions.  Allow small caps before an
+	open paren.  Teach the handling of functions and manual page
+	references about small caps escapes, and be pickier about what
+	constitutes a manual page reference.
+
+	* lib/Pod/Text.pm: Fix again the incorrect mappings for E<Iacute>
+	and E<iacute>, and this time for E<Igrave> and E<igrave> too.
+	Reported by Sean Burke.
+
 2001-02-09  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.08 released.
