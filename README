@@ -1,4 +1,4 @@
-                       Pod::SimpleText version 0.01
+                          podlators version 0.02
                    (Format POD source into ASCII text)
 
   Copyright 1999 Russ Allbery <rra@stanford.edu>.  All rights reserved.
@@ -8,20 +8,22 @@
 
 INTRODUCTION
 
-  This package is a proposed replacement for pod2text and Pod::Text in the
-  current Perl distribution.  The modules contained in it use Pod::Parser
-  rather than doing the POD parsing themselves, and are designed to be
-  object-oriented and very easy to subclass.  As an example, two useful
-  subclasses of Pod::SimpleText are also included:  Pod::Text::Color,
-  which uses ANSI color escape sequences to highlight text, and
-  Pod::Text::Termcap, which determines the correct control sequences to
-  embolden and underline text from terminal termcap information.
+  This package currently contains only a proposed replacement for pod2text
+  and Pod::Text in the current Perl distribution (Pod::PlainText is the
+  current name of the module).  The modules contained in it use
+  Pod::Parser rather than doing the POD parsing themselves, and are
+  designed to be object-oriented and very easy to subclass.  As an
+  example, two useful subclasses of Pod::PlainText are also included:
+  Pod::Text::Color, which uses ANSI color escape sequences to highlight
+  text, and Pod::Text::Termcap, which determines the correct control
+  sequences to embolden and underline text from terminal termcap
+  information.
 
-  The output of Pod::SimpleText should be identical to the output of the
+  The output of Pod::PlainText should be identical to the output of the
   original Pod::Text module, except for fixed bugs.  This has been tested
   by comparing the output of both modules when run on perlfunc.pod from
-  the Perl 5.005_02 distribution, and also by comparing output for several
-  other shorter pages.
+  the Perl 5.005_02 distribution, by comparing output for several other
+  shorter pages, and by using the Pod::Parser test suite.
 
   Known bugs fixed relative to Pod::Text:  The first line of text after an
   =item command is wrapped correctly, various problems with L<> text have
@@ -31,6 +33,10 @@ INTRODUCTION
   There are also a number of additional features, mostly finer control of
   the output of the module under a variety of circumstances.  The
   programmatic interface is also cleaner.
+
+  This package has a general name because it will likely eventually
+  include other translators for other output formats.  LaTeX and *roff are
+  the most likely to show up first.
 
 
 INSTALLATION
@@ -57,8 +63,12 @@ THANKS
   output is designed to mimic the output of that module.
 
   To Brad Appleton, for writing Pod::Parser, which made writing this
-  entire package the work of a single Saturday.
+  entire package the work of a single Saturday, and for finding lots of
+  bugs in the first try.
 
+  To Gurusamy Sarathy, for pointing out the need for a pod2text()
+  compatibility interface for older applications, and for being willing to
+  roll this code into the next Perl distribution.
 
                                                 Russ Allbery
                                                 rra@stanford.edu
