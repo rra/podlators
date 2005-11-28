@@ -24,7 +24,7 @@ WriteMakefile (
     PL_FILES      => { script ('pod2text.PL', 'pod2text'),
                        script ('pod2man.PL', 'pod2man') },
     EXE_FILES     => [ script ('pod2text', 'pod2man') ],
-    PREREQ_PM     => { 'File::Spec' => 0.8, 'Pod::Parser' => 1.13 },
+    PREREQ_PM     => { 'File::Spec' => 0.8, 'Pod::Simple' => 3.03 },
     ($] >= 5.005 ?
      (ABSTRACT    => 'Convert POD data to various other formats',
       AUTHOR      => 'Russ Allbery (rra@stanford.edu)') : ()),
