@@ -1,3 +1,116 @@
+2005-11-28  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 2.00 released.
+
+	* Makefile.PL: Require Pod::Simple 3.03.
+
+	* t/termcap.t: Force a particular terminal configuration to get
+	reliable results and update the expected results; I'm not sure
+	what terminal I was testing with before.
+
+2005-03-19  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm: Reorder documentation sections to put SEE ALSO
+	last.
+	(devise_title): Strip vendor_perl as well as site_perl, reported
+	by Alexey Tourbin.
+
+	* lib/Pod/Man.pm (new): Fall back on fullstop_space_harden if
+	preserve_whitespace is not available.
+	* lib/Pod/Text.pm (new): Likewise.
+
+2004-12-31  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Text/Color.pm (wrap): Count text lengths correctly when
+	there are multiple adjacent escape sequences.  Use a temporary
+	variable to make the regex clearer.
+	* lib/Pod/Text/Termcap.pm (wrap): Likewise.
+	* t/color.t: New file.  Test wrapping.
+	* t/termcap.t: New file.  Test wrapping.
+
+	* t/basic.t: Skip the Pod::Text::Color tests if loading the module
+	failed due to a missing Term::ANSIColor.
+
+	* scripts/pod2man.PL: Move SEE ALSO to last in the section
+	ordering and move HISTORY directly after AUTHOR and before
+	COPYRIGHT AND LICENSE, based on discussion on perl5-porters.
+	Remove the obsolete caution against enclosing URLs in L<>.
+
+2004-06-08  Russ Allbery  <rra@stanford.edu>
+
+	* t/basic.txt: C<> without any content now produces quote marks.
+	* t/basic.cap: Likewise.
+	* t/basic.clr: Likewise.
+	* t/basic.ovr: Likewise.
+
+	* t/text-errors.t: Deleted.  These errors are now caught by
+	Pod::Simple instead, which is a better place to test them.
+
+	* t/text-options.t: Add a test suite for the code option.  Undef
+	the formatter after running it to make sure everything is closed
+	correctly.
+
+	* t/basic.t: Use the same interface for invoking all formatters,
+	since they're now all based on Pod::Simple.  Undef the formatter
+	after running it to make sure everything is closed correctly.
+	* t/text.t: Likewise.
+
+	* scripts/pod2man.PL: Change another documentation reference from
+	Pod::Parser to Pod::Simple.
+
+	* scripts/pod2text.PL: Add support for multiple pairs of input and
+	output files, similar to pod2man.  Change documentation references
+	from Pod::Parser to Pod::Simple.
+
+	* lib/Pod/Text.pm: Significantly reworked to use Pod::Simple
+	instead of Pod::Parser.  With the exception of better E<> handling
+	and different handling of C<> without any content, the new
+	formatter produces the same output as the old one.
+	* lib/Pod/Text/Color.pm: Likewise.
+	* lib/Pod/Text/Overstrike.pm: Likewise.
+	* lib/Pod/Text/Termcap.pm: Likewise.
+
+	* lib/Pod/Man.pm (_handle_element_end): Correctly handle the case
+	where a command handler returns only "0" as the result of a
+	command.
+
+2004-05-07  Russ Allbery  <rra@stanford.edu>
+
+	* scripts/pod2man.PL: Make the argument to the --release flag
+	optional.
+
+2004-02-14  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm: Refer to Pod::Simple in SEE ALSO.
+
+	* t/man.t: Destroy the parser after parsing each segment, since
+	this will force Pod::Simple to flush output.  Add many new tests
+	taken from the Pod::Simple work by Sean Burke and update the
+	results of a few tests for the new parser.
+
+	* t/basic.pod: Remove a variety of L<> tests involving extra
+	whitespace and newlines that aren't supported by perlpodspec to
+	avoid unimportant errors.
+	* t/basic.cap: Update.
+	* t/basic.clr: Update.
+	* t/basic.ovr: Update.
+	* t/basic.txt: Update.
+	* t/basic.man: Update and modify for the new results from the
+	Pod::Simple-based Pod::Man.
+
+	* t/basic.t: Destroy the parser after parsing each file, since
+	that will force Pod::Simple to flush output.
+
+	* scripts/pod2man.PL: Create a new parser for each file since
+	Pod::Simple parsers are not reusable.  Update documentation to
+	refer to Pod::Simple rather than Pod::Parser.
+
+	* lib/Pod/Man.pm: Completely rewritten, using input from Sean
+	Burke, to use Pod::Simple as the underlying parser instead of
+	Pod::Parser.  Other than minor and unimportant variations, the new
+	output is identical to the old except for some small bug fixes and
+	better handling of E<>.
+
 2003-07-09  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 1.27 released.

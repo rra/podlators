@@ -11,6 +11,14 @@ Brad Appleton, for writing Pod::Parser, which made writing Pod::Text the
 work of a single Saturday and Pod::Man the work of another single
 Saturday, and for finding lots of bugs in the first try.
 
+Sean Burke, for writing up a detailed specification of the POD language
+that cleaned up a lot of edge cases and for his patience in explaining and
+defending the decisions of that specification.  Thanks also for writing
+detailed instructions on how to parse L<> codes that I just implemented
+nearly verbatim for Pod::ParseLink.  Sean also contributed the initial
+port of Pod::Man to Pod::Simple, so much of the current Pod::Man code is
+heavily based on his work.
+
 Gurusamy Sarathy, for pointing out the need for a pod2text() compatibility
 interface for older applications, and for being willing to roll this code
 into the Perl core distribution.
@@ -81,12 +89,6 @@ Mike Fry, for pointing out that the intuiting of the manual page name from
 the directory path didn't deal with three-component version numbers,
 serving as the impetus to rewrite that code to use File::Spec, and finding
 another bug with the module name intuition on OS/2.
-
-Sean Burke, for writing up a detailed specification of the POD language
-that cleaned up a lot of edge cases and for his patience in explaining and
-defending the decisions of that specification.  Thanks also for writing
-detailed instructions on how to parse L<> codes that I just implemented
-nearly verbatim for Pod::ParseLink.
 
 Craig Berry, for reporting that POSIX::Termios doesn't work on VMS and
 providing the information necessary to add a workaround in

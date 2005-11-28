@@ -14,31 +14,19 @@ any of the following are very much welcome.
    fallbacks should only be used when the output character set is pure
    ASCII.
 
- * The current handling of high-bit characters by Pod::Man is wrong.  E<>
-   escapes should be mapped to the appropriate UTF-8 code point, and then
-   a single transformation should be done on each paragraph right before
-   output, converting all of the UTF-8 code points to something else if
-   the output character set is not UTF-8.  This should probably use
-   Pod::Escapes to provide fallbacks.  This would also allow correct
-   output of high-bit characters found in verbatim paragraphs.
-
- * Pod::Man doesn't support the full HTML entity list, which would be
-   easier to do once the above two points have been addressed.
-
- * perlpodspec says that it should be possible to suppress the output of
-   errors and instead attach them as a closing section of the document.
-   There haven't been any specific requests for this functionality yet,
-   but it shouldn't be too hard to add to Pod::Man and Pod::Text.
-
  * There should be some way to turn off all heuristics when people are
    using POD for some purpose other than Perl or some other programming
-   language with similar needs.  The best way to do this would be via a
-   new Pod::Guesswork module that acts on parse trees before they're
-   expanded, adding additional interior sequences as appropriate.
+   language with similar needs.  The hooks are there in the code but we
+   need an interface to set or unset them.
 
  * The test suite is still fairly basic, and doesn't test all of the
    options to the various modules, the scripts, =for, =over/=back, or the
    guesswork in Pod::Man.
+
+ * Pod::Text::Termcap can leave underlining turned on across a newline,
+   resulting in weird visual artifacts.  Ideally, underlining should be
+   turned off at the end of each line, if still on, and then turned back
+   on at the start of the subsequent line.
 
 The following items require changes to the POD specification and are
 therefore of broader scope than just this code:
