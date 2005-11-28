@@ -24,6 +24,11 @@ END {
     print "not ok 1\n" unless $loaded;
 }
 
+# Hard-code a few values to try to get reproducible results.
+$ENV{COLUMNS} = 80;
+$ENV{TERM} = 'xterm';
+$ENV{TERMCAP} = 'xterm:co=80:do=^J:md=\E[1m:us=\E[4m:me=\E[m';
+
 use Pod::Text::Termcap;
 
 $loaded = 1;
@@ -74,7 +79,7 @@ __DATA__
 
 B<I<Do>> I<B<not>> B<I<include>> B<I<formatting codes when>> B<I<wrapping>>.
 ###
-[1mWRAPPING[m
-    [1m[4mDo[m[m [4m[1mnot[m[m [1m[4minclude[m[m [1m[4mformatting codes when[m[m [1m[4mwrapping[m[m.
+[1mWRAPPING[m
+    [1m[4mDo[m[m [4m[1mnot[m[m [1m[4minclude[m[m [1m[4mformatting codes when[m[m [1m[4mwrapping[m[m.
 
 ###
