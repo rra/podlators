@@ -1,7 +1,8 @@
 # Pod::Text -- Convert POD data to formatted ASCII text.
 # $Id$
 #
-# Copyright 1999, 2000, 2001, 2002, 2004 by Russ Allbery <rra@stanford.edu>
+# Copyright 1999, 2000, 2001, 2002, 2004, 2006
+#     by Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -40,7 +41,7 @@ use Pod::Simple ();
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 3.01;
+$VERSION = 3.02;
 
 ##############################################################################
 # Initialization
@@ -192,7 +193,7 @@ sub _handle_element_end {
         }
     } elsif ($self->can ("end_$method")) {
         my $method = 'end_' . $method;
-        $self->$method;
+        $self->$method ();
     }
 }
 
@@ -573,10 +574,25 @@ sub pod2text {
             return;
         }
         $fhs[0] = \*IN;
-        return $parser->parse_file (@fhs);
+        $parser->output_fh ($fhs[1]);
+        my $retval = $parser->parse_file ($fhs[0]);
+        my $fh = $parser->output_fh ();
+        close $fh;
+        return $retval;
     } else {
         return $parser->parse_file (@_);
     }
+}
+
+# Reset the underlying Pod::Simple object between calls to parse_from_file so
+# that the same object can be reused to convert multiple pages.
+sub parse_from_file {
+    my $self = shift;
+    $self->reinit;
+    my $retval = $self->SUPER::parse_from_file (@_);
+    my $fh = $self->output_fh ();
+    close $fh;
+    return $retval;
 }
 
 ##############################################################################

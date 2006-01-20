@@ -1,7 +1,7 @@
 # Pod::Man -- Convert POD data to formatted *roff input.
 # $Id$
 #
-# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005
+# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006
 #     Russ Allbery <rra@stanford.edu>
 # Substantial contributions by Sean Burke <sburke@cpan.org>
 #
@@ -40,7 +40,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.04;
+$VERSION = 2.05;
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -300,7 +300,7 @@ sub _handle_element_end {
         }
     } elsif ($self->can ("end_$method")) {
         my $method = 'end_' . $method;
-        $self->$method;
+        $self->$method ();
     } else {
         DEBUG > 2 and print "No $method end method, skipping\n";
     }
@@ -1199,6 +1199,21 @@ sub cmd_item_bullet { my $self = shift; $self->item_common ('bullet', @_) }
 sub cmd_item_number { my $self = shift; $self->item_common ('number', @_) }
 sub cmd_item_text   { my $self = shift; $self->item_common ('text',   @_) }
 sub cmd_item_block  { my $self = shift; $self->item_common ('block',  @_) }
+
+##############################################################################
+# Backward compatibility
+##############################################################################
+
+# Reset the underlying Pod::Simple object between calls to parse_from_file so
+# that the same object can be reused to convert multiple pages.
+sub parse_from_file {
+    my $self = shift;
+    $self->reinit;
+    my $retval = $self->SUPER::parse_from_file (@_);
+    my $fh = $self->output_fh ();
+    close $fh;
+    return $retval;
+}
 
 ##############################################################################
 # Translation tables
