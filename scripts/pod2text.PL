@@ -99,11 +99,10 @@ if ($options{color}) {
 delete @options{'color', 'termcap', 'overstrike'};
 
 # Initialize and run the formatter.
+my $parser = $formatter->new (%options);
 do {
-    my $parser = $formatter->new (%options);
     my ($input, $output) = splice (@ARGV, 0, 2);
-    $parser->parse_file ($input, $output);
-    undef $parser;
+    $parser->parse_from_file ($input, $output);
 } while (@ARGV);
 
 __END__

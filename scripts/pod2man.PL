@@ -84,9 +84,9 @@ delete $options{lax};
 
 # Initialize and run the formatter, pulling a pair of input and output off at
 # a time.
+my $parser = Pod::Man->new (%options);
 my @files;
 do {
-    my $parser = Pod::Man->new (%options);
     @files = splice (@ARGV, 0, 2);
     print "  $files[1]\n" if $verbose;
     $parser->parse_from_file (@files);
