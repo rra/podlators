@@ -29,6 +29,7 @@ use Pod::Man;
 $loaded = 1;
 print "ok 1\n";
 
+my $parser = Pod::Man->new or die "Cannot create parser\n";
 my $n = 2;
 while (<DATA>) {
     next until $_ eq "###\n";
@@ -38,9 +39,7 @@ while (<DATA>) {
         print TMP $_;
     }
     close TMP;
-    my $parser = Pod::Man->new or die "Cannot create parser\n";
     $parser->parse_from_file ('tmp.pod', 'out.tmp');
-    undef $parser;
     open (OUT, 'out.tmp') or die "Cannot open out.tmp: $!\n";
     while (<OUT>) { last if /^\.TH/ }
     my $output;

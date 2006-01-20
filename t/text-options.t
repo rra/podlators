@@ -46,7 +46,6 @@ while (<DATA>) {
     close TMP;
     my $parser = Pod::Text->new (%options) or die "Cannot create parser\n";
     $parser->parse_from_file ('tmp.pod', 'out.tmp');
-    undef $parser;
     open (TMP, 'out.tmp') or die "Cannot open out.tmp: $!\n";
     my $output;
     {
