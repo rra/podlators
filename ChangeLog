@@ -1,3 +1,36 @@
+2006-01-20  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 2.0.1 released.
+
+	* Makefile.PL: Require Pod::Simple 3.04.
+
+	* lib/Pod/Man.pm (parse_from_file): New method.  Call reinit
+	before calling the parent parse_from_file method to preserve the
+	previous capability of reusing the same Pod::Man object for
+	multiple documents.  Close the output file handle after
+	Pod::Simple returns to force the output to flush.
+	* lib/Pod/Text.pm (parse_from_file): Likewise.
+
+	* scripts/pod2man.PL: Use a single object for all conversions.
+	* scripts/pod2text.PL: Likewise.  Also use parse_from_file, not
+	parse_file, since we're passing in two options.
+
+	* t/basic.t: Use a single formatting object and don't undef the
+	object after formatting.
+	* t/color.t: Likewise.
+	* t/man.t: Likewise.
+	* t/termcap.t: Likewise.
+	* t/text-options.t: Likewise.
+	* t/text.t: Likewise.
+
+	* lib/Pod/Text.pm (pod2text): Pod::Simple's parse_file method only
+	takes one argument.  Pass the second argument to output_fh
+	instead.
+
+	* lib/Pod/Man.pm (_handle_element_end): Add trailing parens to the
+	end method call to make Perl 5.005 happy.
+	* lib/Pod/Text.pm (_handle_element_end): Likewise.
+
 2005-11-28  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.00 released.

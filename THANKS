@@ -106,3 +106,12 @@ Hugo van der Sanden, for reporting that the anti-quoting regexes thought
 that a period was a number.
 
 Martin Quinson, for finding a bug in the handling of =item 0.
+
+Allison Randal, for taking over maintainership of Pod::Simple and
+providing a fix for reusing the same formatting object for multiple
+pages.
+
+Sergey Skvortsov, for a patch for compatibility with Perl 5.005.
+
+Yitzchak Scott-Thoennes, for diagnosing and providing patches for a few
+incompatibilities with the Pod::Simple calling syntax.
