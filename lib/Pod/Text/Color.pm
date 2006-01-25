@@ -29,7 +29,7 @@ use vars qw(@ISA $VERSION);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.01;
+$VERSION = 2.02;
 
 ##############################################################################
 # Overrides
@@ -69,9 +69,14 @@ sub wrap {
     my $output = '';
     my $spaces = ' ' x $$self{MARGIN};
     my $width = $$self{opt_width} - $$self{MARGIN};
+
+    # We have to do $shortchar and $longchar in variables because the
+    # construct ${char}{0,$width} didn't do the right thing until Perl 5.8.x.
     my $char = '(?:(?:\e\[[\d;]+m)*[^\n])';
+    my $shortchar = $char . "{0,$width}";
+    my $longchar = $char . "{$width}";
     while (length > $width) {
-        if (s/^(${char}{0,$width})\s+// || s/^(${char}{$width})//) {
+        if (s/^($shortchar)\s+// || s/^($longchar)//) {
             $output .= $spaces . $1 . "\n";
         } else {
             last;
