@@ -1211,7 +1211,12 @@ sub parse_from_file {
     $self->reinit;
     my $retval = $self->SUPER::parse_from_file (@_);
     my $fh = $self->output_fh ();
-    close $fh;
+    my $oldfh = select $fh;
+    my $oldflush = $|;
+    $| = 1;
+    print $fh '';
+    $| = $oldflush;
+    select $oldfh;
     return $retval;
 }
 

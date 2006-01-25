@@ -589,9 +589,14 @@ sub pod2text {
 sub parse_from_file {
     my $self = shift;
     $self->reinit;
-    my $retval = $self->SUPER::parse_from_file (@_);
+    my $retval = $self->Pod::Simple::parse_from_file (@_);
     my $fh = $self->output_fh ();
-    close $fh;
+    my $oldfh = select $fh;
+    my $oldflush = $|;
+    $| = 1;
+    print $fh '';
+    $| = $oldflush;
+    select $oldfh;
     return $retval;
 }
 
