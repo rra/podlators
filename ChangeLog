@@ -1,3 +1,21 @@
+2006-01-25  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 2.0.2 released.
+
+	* t/man.t: Use iso-8859-1 encoding when writing out the temporary
+	test file and properly mark the encoding of the test that uses ISO
+	8859-1 characters.
+
+	* lib/Pod/Man.pm (parse_from_file): Flush the output file handle
+	rather than closing it.  Closing it is unexpected and could break
+	callers.
+	* lib/Pod/Text.pm (parse_from_file): Likewise.
+
+	* lib/Pod/Text/Termcap.pm (wrap): Use additional temporary
+	variables to avoid ${char}{0,$width}, which only works in very
+	recent Perls.
+	* lib/Pod/Text/Color.pm (wrap): Likewise.
+
 2006-01-20  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.0.1 released.

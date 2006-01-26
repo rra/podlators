@@ -115,3 +115,10 @@ Sergey Skvortsov, for a patch for compatibility with Perl 5.005.
 
 Yitzchak Scott-Thoennes, for diagnosing and providing patches for a few
 incompatibilities with the Pod::Simple calling syntax.
+
+Ron Savage, for pointing out a problematic regular expression construct in
+Pod::Text::Termcap and Pod::Text::Color that broke in older versions of
+Perl.
+
+Steve Peters, for ongoing work integrating into Perl core and reporting
+problems that crop up when that is done.
