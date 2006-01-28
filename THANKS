@@ -122,3 +122,6 @@ Perl.
 
 Steve Peters, for ongoing work integrating into Perl core and reporting
 problems that crop up when that is done.
+
+Jerry D. Hedden, for finding a test suite problem on Windows with
+Pod::Simple 3.04.

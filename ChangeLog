@@ -1,3 +1,18 @@
+2006-01-28  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 2.0.3 released.
+
+	* t/basic.t: Pass in a file handle for Pod::Simple output and then
+	close it afterwards to work around Pod::Simple leaving file
+	handles open and preventing removal of temporary files on Windows.
+	This is temporary until a new Pod::Simple release offers a better
+	approach.
+	* t/color.t: Likewise.
+	* t/man.t: Likewise.
+	* t/termcap.t: Likewise.
+	* t/text-options.t: Likewise.
+	* t/text.t: Likewise.
+
 2006-01-25  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.0.2 released.
@@ -980,7 +995,7 @@
 1999-09-19  Russ Allbery  <rra@stanford.edu>
 
 	* lib/Pod/Roff.pm: New file.
-	scripts/pod2roff.PL: New file.
+	* scripts/pod2roff.PL: New file.
 
 1999-09-18  Russ Allbery  <rra@stanford.edu>
 
@@ -1004,7 +1019,7 @@
 
 	* lib/Pod/Text/Color.pm: Pod::SimpleText changed to Pod::PlainText
 	everywhere.
-	lib/Pod/Text/Termcap.pm: Likewise.
+	* lib/Pod/Text/Termcap.pm: Likewise.
 
 	* scripts/pod2txt: Pod::SimpleText changed to Pod::PlainText
 	everywhere, added documentation that Pod::Text::Termcap is used by
@@ -1020,7 +1035,7 @@
 
 	* lib/Pod/Text/Termcap.pm: Switch from using Pod::SimpleText to
 	using Pod::PlainText.
-	lib/Pod/Text/Color.pm: Likewise.
+	* lib/Pod/Text/Color.pm: Likewise.
 
 	* lib/Pod/PlainText.pm: Properly wrap multi-line =item tags.
 
@@ -1041,5 +1056,5 @@
 	* scripts/pod2txt: New file.
 
 	* lib/Pod/SimpleText.pm: New file.
-	lib/Pod/Text/Color.pm: New file.
-	lib/Pod/Text/Termcap.pm: New file.
+	* lib/Pod/Text/Color.pm: New file.
+	* lib/Pod/Text/Termcap.pm: New file.
