@@ -45,7 +45,9 @@ while (<DATA>) {
         print TMP $_;
     }
     close TMP;
-    $parser->parse_from_file ('tmp.pod', 'out.tmp');
+    open (OUT, '> out.tmp') or die "Cannot create out.tmp: $!\n";
+    $parser->parse_from_file ('tmp.pod', \*OUT);
+    close OUT;
     open (OUT, 'out.tmp') or die "Cannot open out.tmp: $!\n";
     while (<OUT>) { last if /^\.TH/ }
     my $output;
