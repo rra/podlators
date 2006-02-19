@@ -41,7 +41,7 @@ use Pod::Simple ();
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 3.06;
+$VERSION = 3.07;
 
 ##############################################################################
 # Initialization
@@ -598,6 +598,14 @@ sub parse_from_file {
     $| = $oldflush;
     select $oldfh;
     return $retval;
+}
+
+# Pod::Simple failed to provide this backward compatibility function, so
+# implement it ourselves.  File handles are one of the inputs that
+# parse_from_file supports.
+sub parse_from_filehandle {
+    my $self = shift;
+    $self->parse_from_file (@_);
 }
 
 ##############################################################################
