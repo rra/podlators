@@ -1,4 +1,4 @@
-                          podlators version 2.0.2
+                          podlators version 2.0.4
              (Format POD source into various output formats)
 
   Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006 Russ Allbery
@@ -98,10 +98,12 @@ INSTALLATION
 
   WARNING: For versions of Perl prior to 5.6.0, as mentioned above, this
   will install Pod::Text in a location that won't be seen by Perl by
-  default.  This will also overwrite Perl's pod2text and pod2man with the
-  version that comes with this package, and for Perl 5.6.0 or higher will
-  replace Pod::Man and Pod::Text that came with Perl.  Save backup copies
-  of these files if you do this, and make sure this is what you want.
+  default but overwrite pod2text and pod2man with the versions that come
+  with this package.  For later versions of Perl, this will overwrite
+  Perl's pod2text and pod2man with the versions that come with this
+  package and will replace Pod::Man and Pod::Text that came with Perl.
+  Save backup copies of these files if you do this, and make sure this is
+  what you want.
 
   You'll probably need to do the "make install" as root.  This will also
   install driver scripts named pod2text and pod2man; see their man pages

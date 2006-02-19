@@ -1,3 +1,17 @@
+2006-02-19  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 2.0.4 released.
+
+	* lib/Pod/Man.pm (devise_date): Pod::Simple's source_filename
+	method returns garbage if we're parsing from a file handle, so use
+	the current time if stating the returned input file fails.
+
+	* lib/Pod/Man.pm (parse_from_filehandle): New function for
+	backward compatibility, since Pod::Simple doesn't support the API
+	of Pod::Parser.
+	* lib/Pod/Text.pm (parse_from_filehandle): Likewise.
+	* t/filehandle.t: Test the parse_from_filehandle API.
+
 2006-01-28  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.0.3 released.
