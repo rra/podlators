@@ -40,7 +40,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = 2.09;
+$VERSION = '2.10';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -1303,11 +1303,11 @@ sub preamble_template {
 ..
 .\" Set up some character translations and predefined strings.  \*(-- will
 .\" give an unbreakable dash, \*(PI will give pi, \*(L" will give a left
-.\" double quote, and \*(R" will give a right double quote.  | will give a
-.\" real vertical bar.  \*(C+ will give a nicer C++.  Capital omega is used to
-.\" do unbreakable dashes and therefore won't be available.  \*(C` and \*(C'
-.\" expand to `' in nroff, nothing in troff, for use with C<>.
-.tr \(*W-|\(bv\*(Tr
+.\" double quote, and \*(R" will give a right double quote.  \*(C+ will
+.\" give a nicer C++.  Capital omega is used to do unbreakable dashes and
+.\" therefore won't be available.  \*(C` and \*(C' expand to `' in nroff,
+.\" nothing in troff, for use with C<>.
+.tr \(*W-
 .ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
 .ie n \{\
 .    ds -- \(*W-
