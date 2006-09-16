@@ -1,3 +1,33 @@
+2006-09-16  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 2.0.5 released.
+
+	* lib/Pod/Man.pm (parse_from_file): Accept and mostly ignore a
+	hash of options as the first option to parse_from_file.  Support
+	an option of -cutting and configure Pod::Simple to assume the POD
+	has already started.  This is for backward compatibility with
+	Pod::Parser.
+	* lib/Pod/Text.pm (parse_from_file): Likewise.
+	* t/pod-parser.t: New file to test the above.
+
+	* lib/Pod/Man.pm (guesswork): Recognize more uses of hyphens in
+	regular English text and allow them to be regular hyphens.
+	(preamble): Turn off hyphenation and, for nroff, justification
+	after the .TH macro since that's where groff turns them on.
+	* t/basic.t: Update for the new preamble.
+	* t/filehandle.t: Likewise.
+	* t/man.t: Likewise, and test the new hyphen behavior.
+	* t/basic.man: Adjust for the new hyphen behavior.
+
+	* t/pod.t: Add a new test for POD validity using Test::Pod (if
+	available).
+
+2006-03-08  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm: Stop mapping vertical bar to \(bv, since it
+	produces Unicode characters where they aren't desirable.  Remove
+	the preamble reference to the Tr string, which was never defined.
+
 2006-02-19  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.0.4 released.

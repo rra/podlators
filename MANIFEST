@@ -7,7 +7,7 @@ lib/Pod/Text/Overstrike.pm
 lib/Pod/Text/Termcap.pm
 Makefile.PL
 MANIFEST			This list of files
-META.yml                        Module meta-data (added by MakeMaker)
+META.yml			Module meta-data (added by MakeMaker)
 NOTES
 README
 scripts/pod2man.PL
@@ -23,6 +23,7 @@ t/color.t
 t/filehandle.t
 t/man.t
 t/parselink.t
+t/pod-parser.t
 t/termcap.t
 t/text-options.t
 t/text.t

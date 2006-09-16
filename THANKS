@@ -114,8 +114,10 @@ pages.
 Sergey Skvortsov, for a patch for compatibility with Perl 5.005.
 
 Yitzchak Scott-Thoennes, for diagnosing and providing patches for a few
-incompatibilities with the Pod::Simple calling syntax and pointing out
-that Pod::Simple didn't provide parse_from_filehandle.
+incompatibilities with the Pod::Simple calling syntax, pointing out that
+Pod::Simple didn't provide parse_from_filehandle, and pointing out the
+initial hash of options that parse_from_file and parse_from_filehandle
+accepted with Pod::Parser.
 
 Ron Savage, for pointing out a problematic regular expression construct in
 Pod::Text::Termcap and Pod::Text::Color that broke in older versions of
