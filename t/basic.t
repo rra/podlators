@@ -90,7 +90,7 @@ for (sort keys %translators) {
         open (OUTPUT, "> out.$translators{$_}")
             or die "Cannot create out.$translators{$_}: $!\n";
         local $_;
-        while (<TMP>) { last if /^\.TH/ }
+        while (<TMP>) { last if /^\.nh/ }
         print OUTPUT while <TMP>;
         close OUTPUT;
         close TMP;

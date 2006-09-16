@@ -40,7 +40,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = '2.10';
+$VERSION = '2.11';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -422,17 +422,17 @@ sub guesswork {
     DEBUG > 5 and print "   Guesswork called on [$_]\n";
 
     # By the time we reach this point, all hypens will be escaped by adding a
-    # backslash.  We want to do that escaping if they're part of regular words
-    # and there's only a single dash, since that's a real hyphen that *roff
-    # gets to consider a possible break point.  Make sure that a dash after
-    # the first character of a word stays non-breaking, however.
+    # backslash.  We want to undo that escaping if they're part of regular
+    # words and there's only a single dash, since that's a real hyphen that
+    # *roff gets to consider a possible break point.  Make sure that a dash
+    # after the first character of a word stays non-breaking, however.
     #
     # Note that this is not user-controllable; we pretty much have to do this
     # transformation or *roff will mangle the output in unacceptable ways.
     s{
-        ( (?:\G|^|\s) [a-zA-Z] ) ( \\- )?
-        ( (?: [a-zA-Z]+ \\-)+ )
-        ( [a-zA-Z]+ ) (?=\s|\Z|\\\ )
+        ( (?:\G|^|\s) [\(\"]* [a-zA-Z] ) ( \\- )?
+        ( (?: [a-zA-Z\']+ \\-)+ )
+        ( [a-zA-Z\']+ ) (?= [\)\".?!,;:]* (?:\s|\Z|\\\ ) )
         \b
     } {
         my ($prefix, $hyphen, $main, $suffix) = ($1, $2, $3, $4);
@@ -882,6 +882,11 @@ $preamble
 .\\"
 .IX Title "$index"
 .TH $name $section "$date" "$$self{release}" "$$self{center}"
+.\\"
+.\\" For nroff, turn off justification.  Always turn off hyphenation; it makes
+.\\" way too many mistakes in technical documents.
+.if n .ad l
+.nh
 ----END OF HEADER----
     $self->output (".\\\" [End of preamble]\n") if DEBUG;
 }
@@ -1337,11 +1342,6 @@ sub preamble_template {
 .    nr % 0
 .    rr F
 .\}
-.\"
-.\" For nroff, turn off justification.  Always turn off hyphenation; it makes
-.\" way too many mistakes in technical documents.
-.hy 0
-.if n .na
 .\"
 .\" Accent mark definitions (@(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2).
 .\" Fear.  Run.  Save yourself.  No user-serviceable parts.
