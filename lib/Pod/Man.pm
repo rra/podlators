@@ -40,7 +40,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = '2.11';
+$VERSION = '2.12';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -882,7 +882,6 @@ $preamble
 .\\"
 .IX Title "$index"
 .TH $name $section "$date" "$$self{release}" "$$self{center}"
-.\\"
 .\\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\\" way too many mistakes in technical documents.
 .if n .ad l
@@ -1221,7 +1220,23 @@ sub cmd_item_block  { my $self = shift; $self->item_common ('block',  @_) }
 sub parse_from_file {
     my $self = shift;
     $self->reinit;
+
+    # Fake the old cutting option to Pod::Parser.  This fiddings with internal
+    # Pod::Simple state and is quite ugly; we need a better approach.
+    if (ref ($_[0]) eq 'HASH') {
+        my $opts = shift @_;
+        if (defined ($$opts{-cutting}) && !$$opts{-cutting}) {
+            $$self{in_pod} = 1;
+            $$self{last_was_blank} = 1;
+        }
+    }
+
+    # Do the work.
     my $retval = $self->SUPER::parse_from_file (@_);
+
+    # Flush output, since Pod::Simple doesn't do this.  Ideally we should also
+    # close the file descriptor if we had to open one, but we can't easily
+    # figure this out.
     my $fh = $self->output_fh ();
     my $oldfh = select $fh;
     my $oldflush = $|;
