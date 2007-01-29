@@ -4,6 +4,9 @@ This is a somewhat random and unordered list of things I'd like to see
 fixed or improved, but which I've not yet had a chance to do.  Patches for
 any of the following are very much welcome.
 
+ * Use .SS for subsections in Pod::Man instead of a custom defined .Sh
+   macro.  Everything seems to support this these days.
+
  * The latest version of GNU groff supports both ISO 8859-1 and UTF-8
    characters, but Pod::Man can't deal with them.  It should be possible
    to pass through UTF-8 to the output and let the *roff formatter deal
