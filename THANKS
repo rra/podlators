@@ -128,3 +128,7 @@ problems that crop up when that is done.
 
 Jerry D. Hedden, for finding a test suite problem on Windows with
 Pod::Simple 3.04.
+
+Craig A. Berry, for pointing out a bug in the Pod::Man devise_title logic
+that may cause it to look past the end of the path array and produce Perl
+warnings.

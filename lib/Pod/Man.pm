@@ -1,7 +1,7 @@
 # Pod::Man -- Convert POD data to formatted *roff input.
 # $Id$
 #
-# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006
+# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007
 #     Russ Allbery <rra@stanford.edu>
 # Substantial contributions by Sean Burke <sburke@cpan.org>
 #
@@ -40,7 +40,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = '2.12';
+$VERSION = '2.13';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -791,13 +791,10 @@ sub devise_title {
         my @dirs = File::Spec->splitdir ($dirs);
         my $cut = 0;
         my $i;
-        for ($i = 0; $i < scalar @dirs; $i++) {
-            if ($dirs[$i] eq 'lib' && $dirs[$i + 1] =~ /perl/) {
-                $cut = $i + 2;
-                last;
-            } elsif ($dirs[$i] =~ /perl/) {
+        for ($i = 0; $i < @dirs; $i++) {
+            if ($dirs[$i] =~ /perl/) {
                 $cut = $i + 1;
-                $cut++ if $dirs[$i + 1] eq 'lib';
+                $cut++ if ($dirs[$i + 1] && $dirs[$i + 1] eq 'lib');
                 last;
             }
         }
@@ -1657,7 +1654,7 @@ mine).
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007
 by Russ Allbery <rra@stanford.edu>.
 
 This program is free software; you may redistribute it and/or modify it
