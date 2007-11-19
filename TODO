@@ -7,6 +7,14 @@ any of the following are very much welcome.
  * Use .SS for subsections in Pod::Man instead of a custom defined .Sh
    macro.  Everything seems to support this these days.
 
+ * Investigate escaping single quotes in C<> and verbatim blocks.  Mac OS
+   X apparently otherwise likes turning them into Unicode single quotes,
+   which isn't a feature for Perl code.
+
+ * Set .IX to the empty macro and set empty strings for the strings used
+   around C<> blocks to avoid warnings from groff at higher warning
+   levels.
+
  * The latest version of GNU groff supports both ISO 8859-1 and UTF-8
    characters, but Pod::Man can't deal with them.  It should be possible
    to pass through UTF-8 to the output and let the *roff formatter deal
