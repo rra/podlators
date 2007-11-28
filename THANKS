@@ -135,3 +135,6 @@ warnings.
 
 Brendan O'Dea, for the initial patch to escape apostrophes in C<> and
 verbatim text so that they won't be converted to Unicode single quotes.
+
+Colin Watson, for the preamble change to define the IX macro to an empty
+macro when indexing is not requested, thus suppressing groff warnings.

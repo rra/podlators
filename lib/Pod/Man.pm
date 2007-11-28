@@ -1356,12 +1356,16 @@ sub preamble_template {
 .\" titles (.TH), headers (.SH), subsections (.Sh), items (.Ip), and index
 .\" entries marked with X<> in POD.  Of course, you'll have to process the
 .\" output yourself in some meaningful fashion.
-.if \nF \{\
+.ie \nF \{\
 .    de IX
 .    tm Index:\\$1\t\\n%\t"\\$2"
 ..
 .    nr % 0
 .    rr F
+.\}
+.el \{\
+.    de IX
+..
 .\}
 .\"
 .\" Accent mark definitions (@(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2).
