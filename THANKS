@@ -132,3 +132,6 @@ Pod::Simple 3.04.
 Craig A. Berry, for pointing out a bug in the Pod::Man devise_title logic
 that may cause it to look past the end of the path array and produce Perl
 warnings.
+
+Brendan O'Dea, for the initial patch to escape apostrophes in C<> and
+verbatim text so that they won't be converted to Unicode single quotes.

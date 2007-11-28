@@ -357,8 +357,8 @@ Blorp C<'
 ###
 .SH "Newline C Quote Weirdness"
 .IX Header "Newline C Quote Weirdness"
-Blorp \f(CW'
-\&''\fR. Yes.
+Blorp \f(CW\'
+\&\'\'\fR. Yes.
 ###
 
 ###

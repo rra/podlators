@@ -40,7 +40,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = '2.13';
+$VERSION = '2.14';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -333,6 +333,7 @@ sub formatting {
         $options{cleanup} = 0;
     } elsif ($element eq 'Verbatim' || $element eq 'C') {
         $options{guesswork} = 0;
+        $options{literal} = 1;
     }
     return \%options;
 }
@@ -345,6 +346,7 @@ sub format_text {
     my $guesswork = $$options{guesswork} && !$$self{IN_NAME};
     my $cleanup = $$options{cleanup};
     my $convert = $$options{convert};
+    my $literal = $$options{literal};
 
     # Normally we do character translation, but we won't even do that in
     # <Data> blocks.
@@ -361,6 +363,12 @@ sub format_text {
     if ($cleanup) {
         $text =~ s/-/\\-/g;
         $text =~ s/_(?=_)/_\\|/g;
+    }
+
+    # Ensure that *roff doesn't convert literal quotes to UTF-8 single quotes,
+    # but don't mess up our accept escapes.
+    if ($literal) {
+        $text =~ s/(?<!\\\*)\'/\\\'/g;
     }
 
     # If guesswork is asked for, do that.  This involves more substantial
@@ -391,7 +399,8 @@ sub quote_literal {
       ^\s*
       (?:
          ( [\'\`\"] ) .* \1                             # already quoted
-       | \` .* \'                                       # `quoted'
+       | \\\' .* \\\'                                   # quoted and escaped
+       | \` .* \\?\'                                    # `quoted'
        | \$+ [\#^]? \S $index                           # special ($^Foo, $")
        | [\$\@%&*]+ \#? [:\'\w]+ $index                 # plain var or func
        | [\$\@%&*]* [:\'\w]+ (?: -> )? \(\s*[^\s,]\s*\) # 0/1-arg func call
