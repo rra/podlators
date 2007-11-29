@@ -3,7 +3,7 @@
 #
 # man.t -- Additional specialized tests for Pod::Man.
 #
-# Copyright 2002, 2003, 2004, 2006 by Russ Allbery <rra@stanford.edu>
+# Copyright 2002, 2003, 2004, 2006, 2007 by Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -17,7 +17,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..21\n";
+    print "1..22\n";
 }
 
 END {
@@ -357,8 +357,8 @@ Blorp C<'
 ###
 .SH "Newline C Quote Weirdness"
 .IX Header "Newline C Quote Weirdness"
-Blorp \f(CW\'
-\&\'\'\fR. Yes.
+Blorp \f(CW\*(Aq
+\&\*(Aq\*(Aq\fR. Yes.
 ###
 
 ###
@@ -420,4 +420,14 @@ $-0.13 should have a real hyphen.
 .IX Header "Hyphen in S<>"
 Don't transform\ even-this\ hyphen.  This \*(L"one's-fine!\*(R", as well.  However,
 $\-0.13 should have a real hyphen.
+###
+
+###
+=head1 Quote escaping
+
+Don't escape `this' but do escape C<`this'> (and don't surround it in quotes).
+###
+.SH "Quote escaping"
+.IX Header "Quote escaping"
+Don't escape `this' but do escape \f(CW\`this\*(Aq\fR (and don't surround it in quotes).
 ###

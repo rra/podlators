@@ -134,7 +134,8 @@ that may cause it to look past the end of the path array and produce Perl
 warnings.
 
 Brendan O'Dea, for the initial patch to escape apostrophes in C<> and
-verbatim text so that they won't be converted to Unicode single quotes.
+verbatim text so that they won't be converted to Unicode single quotes and
+the preamble magic to work with non-groff formatters.
 
 Colin Watson, for the preamble change to define the IX macro to an empty
 macro when indexing is not requested, thus suppressing groff warnings.

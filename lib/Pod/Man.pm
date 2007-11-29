@@ -40,7 +40,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = '2.14';
+$VERSION = '2.16';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -368,7 +368,8 @@ sub format_text {
     # Ensure that *roff doesn't convert literal quotes to UTF-8 single quotes,
     # but don't mess up our accept escapes.
     if ($literal) {
-        $text =~ s/(?<!\\\*)\'/\\\'/g;
+        $text =~ s/(?<!\\\*)\'/\\*\(Aq/g;
+        $text =~ s/(?<!\\\*)\`/\\\`/g;
     }
 
     # If guesswork is asked for, do that.  This involves more substantial
@@ -399,8 +400,8 @@ sub quote_literal {
       ^\s*
       (?:
          ( [\'\`\"] ) .* \1                             # already quoted
-       | \\\' .* \\\'                                   # quoted and escaped
-       | \` .* \\?\'                                    # `quoted'
+       | \\\*\(Aq .* \\\*\(Aq                           # quoted and escaped
+       | \\?\` .* ( \' | \\\*\(Aq )                     # `quoted'
        | \$+ [\#^]? \S $index                           # special ($^Foo, $")
        | [\$\@%&*]+ \#? [:\'\w]+ $index                 # plain var or func
        | [\$\@%&*]* [:\'\w]+ (?: -> )? \(\s*[^\s,]\s*\) # 0/1-arg func call
@@ -1351,6 +1352,10 @@ sub preamble_template {
 .    ds L" ``
 .    ds R" ''
 'br\}
+.\"
+.\" Escape single quotes in literal strings from groff's Unicode transform.
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
 .\"
 .\" If the F register is turned on, we'll generate index entries on stderr for
 .\" titles (.TH), headers (.SH), subsections (.Sh), items (.Ip), and index
