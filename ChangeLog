@@ -1,3 +1,29 @@
+2007-11-28  Russ Allbery  <rra@stanford.edu>
+
+	* VERSION: podlators 2.0.6 released.
+
+	* lib/Pod/Man.pm (preamble_template): Define the IX macro to empty
+	rather than leaving it undefined when indexing is not requested to
+	eliminate warnings when groff warnings are enabled.
+
+	* lib/Pod/Man.pm (formatting): Set literal for verbatim and C<>
+	text.
+	(format_text): If literal is set, escape apostrophes and
+	backquotes.
+	(quote_literal): Recognize escaped apostrophes and backquotes.
+	(preamble_template): Define the string used for escaped
+	apostrophes.
+	* t/basic.man: Adjust for escaped apostrophes.
+	* t/man.t: Likewise, and add a new test for quote escaping.
+
+2007-09-11  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (devise_title): Simplify the logic to skip lib
+	directories to avoid Perl warnings and unnecessary checks.
+
+	* t/text.t: Add a test for S<> with all-whitespace contents but
+	skip it for the current Pod::Simple.
+
 2006-09-16  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.0.5 released.
