@@ -1,3 +1,11 @@
+2008-05-12  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (format_text): Escape backslashes separately from
+	processing non-ASCII characters and do that, dash escaping, and
+	underscore adjustment before processing non-ASCII characters.
+	Otherwise, we escape the hyphen in eth characters.
+	* t/man.t: Test for handling of eth.
+
 2007-11-28  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.0.6 released.

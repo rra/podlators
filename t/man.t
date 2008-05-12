@@ -17,7 +17,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..22\n";
+    print "1..23\n";
 }
 
 END {
@@ -430,4 +430,13 @@ Don't escape `this' but do escape C<`this'> (and don't surround it in quotes).
 .SH "Quote escaping"
 .IX Header "Quote escaping"
 Don't escape `this' but do escape \f(CW\`this\*(Aq\fR (and don't surround it in quotes).
+###
+
+###
+=pod
+
+E<eth>
+###
+.PP
+\&\*(d-
 ###

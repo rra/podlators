@@ -1,7 +1,7 @@
 # Pod::Man -- Convert POD data to formatted *roff input.
 # $Id$
 #
-# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007
+# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008
 #     Russ Allbery <rra@stanford.edu>
 # Substantial contributions by Sean Burke <sburke@cpan.org>
 #
@@ -40,7 +40,7 @@ use POSIX qw(strftime);
 # Don't use the CVS revision as the version, since this module is also in Perl
 # core and too many things could munge CVS magic revision strings.  This
 # number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = '2.16';
+$VERSION = '2.17';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -348,21 +348,20 @@ sub format_text {
     my $convert = $$options{convert};
     my $literal = $$options{literal};
 
-    # Normally we do character translation, but we won't even do that in
-    # <Data> blocks.
-    if ($convert) {
-        if (ASCII) {
-            $text =~ s/(\\|[^\x00-\x7F])/$ESCAPES{ord ($1)} || "X"/eg;
-        } else {
-            $text =~ s/(\\)/$ESCAPES{ord ($1)} || "X"/eg;
-        }
-    }
-
     # Cleanup just tidies up a few things, telling *roff that the hyphens are
-    # hard and putting a bit of space between consecutive underscores.
+    # hard, putting a bit of space between consecutive underscores, and
+    # escaping backslashes.  Be careful not to mangle our character
+    # translations by doing this before processing character translation.
     if ($cleanup) {
+        $text =~ s/\\/\\e/g;
         $text =~ s/-/\\-/g;
         $text =~ s/_(?=_)/_\\|/g;
+    }
+
+    # Normally we do character translation, but we won't even do that in
+    # <Data> blocks.
+    if ($convert && ASCII) {
+        $text =~ s/([^\x00-\x7F])/$ESCAPES{ord ($1)} || "X"/eg;
     }
 
     # Ensure that *roff doesn't convert literal quotes to UTF-8 single quotes,
@@ -1293,9 +1292,6 @@ sub parse_from_filehandle {
     "\\*(d-", "n\\*~", "o\\*`", "o\\*'",   "o\\*^", "o\\*~", "o\\*:",  undef,
     "o\\*/" , "u\\*`", "u\\*'", "u\\*^",   "u\\*:", "y\\*'", "\\*(th", "y\\*:",
 ) if ASCII;
-
-# Make sure that at least this works even outside of ASCII.
-$ESCAPES{ord("\\")} = "\\e";
 
 ##############################################################################
 # Premable
