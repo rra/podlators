@@ -1308,7 +1308,7 @@ sub preamble_template {
 .if t .Sp
 .ne 5
 .PP
-\fB\\$1\fR
+\fB\&\\$1\fR
 .PP
 ..
 .de Sp \" Vertical space (when we can't use .PP)

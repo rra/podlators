@@ -1,3 +1,9 @@
+2008-05-14  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (preamble_template): Protect .Sh text against
+	leading *roff control characters since some *roff implementations
+	apparently "look through" font escapes at the beginning of lines.
+
 2008-05-12  Russ Allbery  <rra@stanford.edu>
 
 	* lib/Pod/Man.pm (format_text): Escape backslashes separately from

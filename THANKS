@@ -139,3 +139,7 @@ the preamble magic to work with non-groff formatters.
 
 Colin Watson, for the preamble change to define the IX macro to an empty
 macro when indexing is not requested, thus suppressing groff warnings.
+
+Kevin Ryde, for diagnosing and providing a patch for the =head2 problem
+with some *roff implementations "looking through" the font escapes at the
+beginning of a line and still seeing *roff metacharacters.
