@@ -3,3 +3,5 @@ Makefile
 podlators-*.tar.gz
 blib
 pm_to_blib
+scripts/pod2man
+scripts/pod2text
