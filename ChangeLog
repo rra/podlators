@@ -1,5 +1,8 @@
 2008-06-01  Russ Allbery  <rra@stanford.edu>
 
+	* t/man.t: Be more cautious about passing an encoding to binmode
+	to allow for a Perl without PerlIO.
+
 	* lib/Pod/Man.pm (switchquotes): Match text between \f(CW and \fP
 	or \fR in headings non-greedily to get the fonts right with
 	multiple C<> formatting codes.
