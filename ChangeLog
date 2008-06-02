@@ -1,5 +1,7 @@
 2008-06-01  Russ Allbery  <rra@stanford.edu>
 
+	* Makefile.PL: Add LICENSE.
+
 	* lib/Pod/Man.pm (format_text): If the utf8 option is set, don't
 	convert non-ASCII characters to *roff escapes or X.  Document the
 	utf8 option.
