@@ -358,8 +358,8 @@ sub format_text {
     }
 
     # Normally we do character translation, but we won't even do that in
-    # <Data> blocks.
-    if ($convert && ASCII) {
+    # <Data> blocks or if UTF-8 output is desired.
+    if ($convert && !$$self{utf8} && ASCII) {
         $text =~ s/([^\x00-\x7F])/$ESCAPES{ord ($1)} || "X"/eg;
     }
 
@@ -1577,6 +1577,22 @@ that are reliably consistent are 1, 2, and 3.
 By default, section 1 will be used unless the file ends in .pm in which case
 section 3 will be selected.
 
+=item utf8
+
+By default, Pod::Man produces the most conservative possible *roff output
+to try to ensure that it will work with as many different *roff
+implementations as possible.  Many *roff implementations cannot handle
+non-ASCII characters, so this means all non-ASCII characters are converted
+either to a *roff escape sequence that tries to create a properly accented
+character (at least for troff output) or to C<X>.
+
+If this option is set, Pod::Man will instead output UTF-8.  If your *roff
+implementation can handle it, this is the best output format to use and
+avoids corruption of documents containing non-ASCII characters.  However,
+be warned that *roff source with literal UTF-8 characters is not supported
+by many implementations and may even result in segfaults and other bad
+behavior.
+
 =back
 
 The standard Pod::Simple method parse_file() takes one argument naming the
@@ -1611,15 +1627,6 @@ invalid.  A quote specification must be one, two, or four characters long.
 =back
 
 =head1 BUGS
-
-Eight-bit input data isn't handled at all well at present.  The correct
-approach would be to map EE<lt>E<gt> escapes to the appropriate UTF-8
-characters and then do a translation pass on the output according to the
-user-specified output character set.  Unfortunately, we can't send eight-bit
-data directly to the output unless the user says this is okay, since some
-vendor *roff implementations can't handle eight-bit data.  If the *roff
-implementation can, however, that's far superior to the current hacked
-characters that only work under troff.
 
 There is currently no way to turn off the guesswork that tries to format
 unmarked text appropriately, and sometimes it isn't wanted (particularly

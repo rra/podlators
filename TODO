@@ -7,16 +7,6 @@ any of the following are very much welcome.
  * Use .SS for subsections in Pod::Man instead of a custom defined .Sh
    macro.  Everything seems to support this these days.
 
- * The latest version of GNU groff supports both ISO 8859-1 and UTF-8
-   characters, but Pod::Man can't deal with them.  It should be possible
-   to pass through UTF-8 to the output and let the *roff formatter deal
-   with it, including mapping all E<> escapes to the appropriate code
-   points.  It would also be good to support ISO 8859-1 in the same way
-   because it's widely used.  This probably requires an argument to the
-   module specifying the output character set.  Then, the current
-   fallbacks should only be used when the output character set is pure
-   ASCII.
-
  * There should be some way to turn off all heuristics when people are
    using POD for some purpose other than Perl or some other programming
    language with similar needs.  The hooks are there in the code but we

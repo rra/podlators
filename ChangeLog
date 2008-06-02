@@ -1,5 +1,12 @@
 2008-06-01  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (format_text): If the utf8 option is set, don't
+	convert non-ASCII characters to *roff escapes or X.  Document the
+	utf8 option.
+	* scripts/pod2man.PL: New option -u or --utf8 says to output
+	literal UTF-8 characters rather than pure ASCII.
+	* t/man-options.t: New file.  Test the utf8 option.
+
 	* t/man.t: Be more cautious about passing an encoding to binmode
 	to allow for a Perl without PerlIO.
 
