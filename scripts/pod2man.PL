@@ -36,7 +36,6 @@ $Config{startperl}
 print OUT <<'!NO!SUBS!';
 
 # pod2man -- Convert POD data to formatted *roff input.
-# $Id$
 #
 # Copyright 1999, 2000, 2001, 2004, 2006 by Russ Allbery <rra@stanford.edu>
 #

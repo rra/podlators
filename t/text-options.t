@@ -1,5 +1,4 @@
 #!/usr/bin/perl -w
-# $Id$
 #
 # text-options.t -- Additional tests for Pod::Text options.
 #

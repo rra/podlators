@@ -1,5 +1,4 @@
 #!/usr/bin/perl -w
-# $Id$
 #
 # man.t -- Additional specialized tests for Pod::Man.
 #

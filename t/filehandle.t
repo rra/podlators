@@ -1,5 +1,4 @@
 #!/usr/bin/perl -w
-# $Id$
 #
 # filehandle.t -- Test the parse_from_filehandle interface.
 #

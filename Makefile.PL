@@ -1,5 +1,4 @@
 # Makefile.PL for podlators.
-# $Id$
 
 BEGIN {
     require 5.004;

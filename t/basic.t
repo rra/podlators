@@ -1,5 +1,4 @@
 #!/usr/bin/perl -w
-# $Id$
 #
 # basic.t -- Basic tests for podlators.
 #

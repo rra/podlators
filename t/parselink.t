@@ -1,5 +1,4 @@
 #!/usr/bin/perl -w
-# $Id$
 #
 # parselink.t -- Tests for Pod::ParseLink.
 #

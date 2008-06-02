@@ -1,5 +1,4 @@
 #!/usr/bin/perl -w
-# $Id$
 #
 # text.t -- Additional specialized tests for Pod::Text.
 #

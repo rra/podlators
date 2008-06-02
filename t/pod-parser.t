@@ -1,5 +1,4 @@
 #!/usr/bin/perl -w
-# $Id$
 #
 # pod-parser.t -- Tests for backward compatibility with Pod::Parser.
 #
