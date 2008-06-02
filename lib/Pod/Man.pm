@@ -639,10 +639,10 @@ sub switchquotes {
         # to Roman rather than the actual previous font when used in headings.
         # troff output may still be broken, but at least we can fix nroff by
         # just switching the font changes to the non-fixed versions.
-        $nroff =~ s/\Q$$self{FONTS}{100}\E(.*)\\f[PR]/$1/g;
-        $nroff =~ s/\Q$$self{FONTS}{101}\E(.*)\\f([PR])/\\fI$1\\f$2/g;
-        $nroff =~ s/\Q$$self{FONTS}{110}\E(.*)\\f([PR])/\\fB$1\\f$2/g;
-        $nroff =~ s/\Q$$self{FONTS}{111}\E(.*)\\f([PR])/\\f\(BI$1\\f$2/g;
+        $nroff =~ s/\Q$$self{FONTS}{100}\E(.*?)\\f[PR]/$1/g;
+        $nroff =~ s/\Q$$self{FONTS}{101}\E(.*?)\\f([PR])/\\fI$1\\f$2/g;
+        $nroff =~ s/\Q$$self{FONTS}{110}\E(.*?)\\f([PR])/\\fB$1\\f$2/g;
+        $nroff =~ s/\Q$$self{FONTS}{111}\E(.*?)\\f([PR])/\\f\(BI$1\\f$2/g;
 
         # Now finally output the command.  Bother with .ie only if the nroff
         # and troff output aren't the same.

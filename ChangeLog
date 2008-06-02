@@ -1,3 +1,9 @@
+2008-06-01  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (switchquotes): Match text between \f(CW and \fP
+	or \fR in headings non-greedily to get the fonts right with
+	multiple C<> formatting codes.
+
 2008-05-14  Russ Allbery  <rra@stanford.edu>
 
 	* lib/Pod/Man.pm (preamble_template): Protect .Sh text against

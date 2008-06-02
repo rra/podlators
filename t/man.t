@@ -2,7 +2,8 @@
 #
 # man.t -- Additional specialized tests for Pod::Man.
 #
-# Copyright 2002, 2003, 2004, 2006, 2007 by Russ Allbery <rra@stanford.edu>
+# Copyright 2002, 2003, 2004, 2006, 2007, 2008
+#     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -16,7 +17,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..23\n";
+    print "1..24\n";
 }
 
 END {
@@ -438,4 +439,12 @@ E<eth>
 ###
 .PP
 \&\*(d-
+###
+
+###
+=head1 C<one> and C<two>
+###
+.ie n .SH """one"" and ""two"""
+.el .SH "\f(CWone\fP and \f(CWtwo\fP"
+.IX Header "one and two"
 ###
