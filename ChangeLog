@@ -1,5 +1,7 @@
 2008-06-01  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.1.0 released.
+
 	* Makefile.PL: Add LICENSE.
 
 	* lib/Pod/Man.pm (format_text): If the utf8 option is set, don't
