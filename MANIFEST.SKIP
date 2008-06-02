@@ -1,4 +1,3 @@
-\bCVS\b
 ^MANIFEST\.
 ^Makefile$
 ^podlators-.*\.tar\.gz$
