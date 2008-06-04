@@ -1,3 +1,8 @@
+2008-06-04  Russ Allbery  <rra@stanford.edu>
+
+	* t/text.t: Fix test four (S<> handling with all whitespace) to
+	not give a spurious failure with Pod::Simple 3.06.
+
 2008-06-01  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.1.0 released.

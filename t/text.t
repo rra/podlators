@@ -99,5 +99,6 @@ This is some S<  > whitespace.
 ###
 Test of S<>
     This is some    whitespace.
+
 ###
 ==
