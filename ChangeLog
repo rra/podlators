@@ -1,3 +1,8 @@
+2008-07-03  Russ Allbery  <rra@stanford.edu>
+
+	* Makefile.PL: Make the LICENSE key conditional on Perl 5.10 or
+	later since it wasn't supported in Perl 5.8.
+
 2008-06-04  Russ Allbery  <rra@stanford.edu>
 
 	* t/text.t: Fix test four (S<> handling with all whitespace) to

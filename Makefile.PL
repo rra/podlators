@@ -26,8 +26,9 @@ WriteMakefile (
     PREREQ_PM     => { 'File::Spec' => 0.8, 'Pod::Simple' => 3.04 },
     ($] >= 5.005 ?
      (ABSTRACT    => 'Convert POD data to various other formats',
-      AUTHOR      => 'Russ Allbery (rra@stanford.edu)',
-      LICENSE     => 'perl') : ()),
+      AUTHOR      => 'Russ Allbery (rra@stanford.edu)') : ()),
+    ($] >= 5.010 ?
+     (LICENSE     => 'perl') : ()),
     VERSION_FROM  => 'VERSION',
     realclean     => { FILES => scalar script ('pod2text', 'pod2man') }
 );
