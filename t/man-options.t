@@ -16,7 +16,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..3\n";
+    print "1..5\n";
 }
 
 END {
@@ -112,4 +112,19 @@ Beyoncé!  Beyoncé!  Beyoncé!!
 .Ve
 .PP
 Older versions did not convert Beyoncé in verbatim.
+###
+
+###
+fixed CR
+fixedbold CY
+fixeditalic CW
+fixedbolditalic CX
+###
+=head1 FIXED FONTS
+
+C<foo B<bar I<baz>> I<bay>>
+###
+.SH "FIXED FONTS"
+.IX Header "FIXED FONTS"
+\&\f(CR\*(C`foo \f(CYbar \f(CXbaz\f(CY\f(CR \f(CWbay\f(CR\*(C'\fR
 ###

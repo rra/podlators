@@ -1,5 +1,7 @@
 2008-07-03  Russ Allbery  <rra@stanford.edu>
 
+	* t/man-options.t: Test changing the fixed-width fonts.
+
 	* lib/Pod/Man.pm (preamble): Pass a flag to preamble_template
 	indicating whether the output is in UTF-8.
 	(preamble_template): Don't include the accent mark definitions if
