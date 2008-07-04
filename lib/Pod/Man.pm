@@ -849,7 +849,7 @@ sub devise_date {
 # module, but this order is correct for both Solaris and Linux.
 sub preamble {
     my ($self, $name, $section, $date) = @_;
-    my $preamble = $self->preamble_template;
+    my $preamble = $self->preamble_template (!$$self{utf8});
 
     # Build the index line and make sure that it will be syntactically valid.
     my $index = "$name $section";
@@ -1271,7 +1271,7 @@ sub parse_from_filehandle {
 # results are pretty poor.
 #
 # This only works in an ASCII world.  What to do in a non-ASCII world is very
-# unclear.
+# unclear -- hopefully we can assume UTF-8 and just leave well enough alone.
 @ESCAPES{0xA0 .. 0xFF} = (
     "\\ ", undef, undef, undef,            undef, undef, undef, undef,
     undef, undef, undef, undef,            undef, "\\%", undef, undef,
@@ -1297,11 +1297,13 @@ sub parse_from_filehandle {
 ##############################################################################
 
 # The following is the static preamble which starts all *roff output we
-# generate.  It's completely static except for the font to use as a
-# fixed-width font, which is designed by @CFONT@, and the left and right
-# quotes to use for C<> text, designated by @LQOUTE@ and @RQUOTE@.
+# generate.  Most is static except for the font to use as a fixed-width font,
+# which is designed by @CFONT@, and the left and right quotes to use for C<>
+# text, designated by @LQOUTE@ and @RQUOTE@.  However, the second part, which
+# defines the accent marks, is only used if $escapes is set to true.
 sub preamble_template {
-    return <<'----END OF PREAMBLE----';
+    my ($self, $accents) = @_;
+    my $preamble = <<'----END OF PREAMBLE----';
 .de Sh \" Subsection heading
 .br
 .if t .Sp
@@ -1367,6 +1369,10 @@ sub preamble_template {
 .    de IX
 ..
 .\}
+----END OF PREAMBLE----
+
+    if ($accents) {
+        $preamble .= <<'----END OF PREAMBLE----'
 .\"
 .\" Accent mark definitions (@(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2).
 .\" Fear.  Run.  Save yourself.  No user-serviceable parts.
@@ -1431,6 +1437,8 @@ sub preamble_template {
 .rm #[ #] #H #V #F C
 ----END OF PREAMBLE----
 #`# for cperl-mode
+    }
+    return $preamble;
 }
 
 ##############################################################################

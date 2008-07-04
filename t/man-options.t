@@ -16,7 +16,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..2\n";
+    print "1..3\n";
 }
 
 END {
@@ -47,8 +47,12 @@ while (<DATA>) {
     open (OUT, '> out.tmp') or die "Cannot create out.tmp: $!\n";
     $parser->parse_from_file ('tmp.pod', \*OUT);
     close OUT;
+    my $accents = 0;
     open (TMP, 'out.tmp') or die "Cannot open out.tmp: $!\n";
-    while (<TMP>) { last if /^\.nh/ }
+    while (<TMP>) {
+        $accents = 1 if /Accent mark definitions/;
+        last if /^\.nh/;
+    }
     my $output;
     {
         local $/;
@@ -56,6 +60,14 @@ while (<DATA>) {
     }
     close TMP;
     unlink ('tmp.pod', 'out.tmp');
+    if (($options{utf8} && !$accents) || (!$options{utf8} && $accents)) {
+        print "ok $n\n";
+    } else {
+        print "not ok $n\n";
+        print ($accents ? "Saw accents\n" : "Saw no accents\n");
+        print ($options{utf8} ? "Wanted no accents\n" : "Wanted accents\n");
+    }
+    $n++;
     my $expected = '';
     while (<DATA>) {
         last if $_ eq "###\n";
