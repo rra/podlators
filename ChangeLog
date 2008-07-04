@@ -1,5 +1,7 @@
 2008-07-03  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.1.1 released.
+
 	* t/man-options.t: Test changing the fixed-width fonts.
 
 	* lib/Pod/Man.pm (preamble): Pass a flag to preamble_template
