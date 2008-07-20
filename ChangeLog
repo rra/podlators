@@ -1,5 +1,11 @@
 2008-07-20  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (cmd_head2): Use .SS instead of a local .Sh
+	macro for subheadings.
+	(preamble_template): Don't define .Sh.
+	* t/basic.man: Update output accordingly.
+	* t/man.t: Likewise.
+
 	* lib/Pod/Man.pm (format_text): Remap ISO 8850-1 non-breaking
 	spaces produced by Pod::Simple to the corresponding UTF-8 code
 	point for UTF-8 output.

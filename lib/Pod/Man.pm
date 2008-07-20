@@ -1029,7 +1029,7 @@ sub cmd_head1 {
 sub cmd_head2 {
     my ($self, $attrs, $text) = @_;
     $text = $self->heading_common ($text, $$attrs{start_line});
-    $self->output ($self->switchquotes ('.Sh', $self->mapfonts ($text)));
+    $self->output ($self->switchquotes ('.SS', $self->mapfonts ($text)));
     $self->outindex ('Subsection', $text);
     $$self{NEEDSPACE} = 0;
     return '';
@@ -1310,14 +1310,6 @@ sub parse_from_filehandle {
 sub preamble_template {
     my ($self, $accents) = @_;
     my $preamble = <<'----END OF PREAMBLE----';
-.de Sh \" Subsection heading
-.br
-.if t .Sp
-.ne 5
-.PP
-\fB\&\\$1\fR
-.PP
-..
 .de Sp \" Vertical space (when we can't use .PP)
 .if t .sp .5v
 .if n .sp
@@ -1361,7 +1353,7 @@ sub preamble_template {
 .el       .ds Aq '
 .\"
 .\" If the F register is turned on, we'll generate index entries on stderr for
-.\" titles (.TH), headers (.SH), subsections (.Sh), items (.Ip), and index
+.\" titles (.TH), headers (.SH), subsections (.SS), items (.Ip), and index
 .\" entries marked with X<> in POD.  Of course, you'll have to process the
 .\" output yourself in some meaningful fashion.
 .ie \nF \{\
