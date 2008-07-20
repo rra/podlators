@@ -36,10 +36,7 @@ use POSIX qw(strftime);
 
 @ISA = qw(Pod::Simple);
 
-# Don't use the CVS revision as the version, since this module is also in Perl
-# core and too many things could munge CVS magic revision strings.  This
-# number should ideally be the same as the CVS revision in podlators, however.
-$VERSION = '2.17';
+$VERSION = '2.18';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -72,7 +69,9 @@ sub new {
     my $class = shift;
     my $self = $class->SUPER::new;
 
-    # Tell Pod::Simple to handle S<> by automatically inserting &nbsp;.
+    # Tell Pod::Simple not to handle S<> by automatically inserting &nbsp;.
+    # Note that this messes up Unicode output by embedding explicit ISO 8859-1
+    # non-breaking spaces that we have to clean up later.
     $self->nbsp_for_S (1);
 
     # Tell Pod::Simple to keep whitespace whenever possible.
@@ -361,6 +360,13 @@ sub format_text {
     # <Data> blocks or if UTF-8 output is desired.
     if ($convert && !$$self{utf8} && ASCII) {
         $text =~ s/([^\x00-\x7F])/$ESCAPES{ord ($1)} || "X"/eg;
+    }
+
+    # For Unicode output, unconditionally remap ISO 8859-1 non-breaking spaces
+    # to the correct code point.  This is really a bug in Pod::Simple to be
+    # embedding ISO 8859-1 characters in the output stream that we see.
+    if ($$self{utf8} && ASCII) {
+        $text =~ s/\xA0/\xC2\xA0/g;
     }
 
     # Ensure that *roff doesn't convert literal quotes to UTF-8 single quotes,

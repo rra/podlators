@@ -16,7 +16,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..5\n";
+    print "1..7\n";
 }
 
 END {
@@ -112,6 +112,18 @@ Beyoncé!  Beyoncé!  Beyoncé!!
 .Ve
 .PP
 Older versions did not convert Beyoncé in verbatim.
+###
+
+###
+utf8 1
+###
+=head1 SE<lt>E<gt> output with UTF-8
+
+This is S<non-breaking output>.
+###
+.SH "S<> output with UTF\-8"
+.IX Header "S<> output with UTF-8"
+This is non\-breaking output.
 ###
 
 ###

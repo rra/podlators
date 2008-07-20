@@ -146,3 +146,6 @@ beginning of a line and still seeing *roff metacharacters.
 
 Steve Peters, for finding a problem with font settings in headings with
 multiple C<> formatting codes.
+
+Nicolas François, for finding that Pod::Simple outputs ISO 8859-1
+non-breaking spaces for S<>, which breaks UTF-8 output.

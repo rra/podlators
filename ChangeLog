@@ -1,3 +1,10 @@
+2008-07-20  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (format_text): Remap ISO 8850-1 non-breaking
+	spaces produced by Pod::Simple to the corresponding UTF-8 code
+	point for UTF-8 output.
+	* t/man-options.t: Test S<> output with UTF-8 enabled.
+
 2008-07-03  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.1.1 released.
