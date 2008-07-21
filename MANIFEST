@@ -24,6 +24,7 @@ t/man-options.t
 t/man.t
 t/parselink.t
 t/pod-parser.t
+t/pod-spelling.t
 t/pod.t
 t/termcap.t
 t/text-options.t

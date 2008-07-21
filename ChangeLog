@@ -1,5 +1,7 @@
 2008-07-20  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.1.2 released.
+
 	* t/pod-spelling.t: New check to spell-check all POD
 	documentation using ispell or hunspell with Pod::Spell.
 	* lib/Pod/Man.pm: Fix spelling and markup errors in
