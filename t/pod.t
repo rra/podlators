@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# t/pod.t -- Test POD formatting for Term::ANSIColor.
+# t/pod.t -- Test POD formatting.
 
 eval 'use Test::Pod 1.00';
 if ($@) {
