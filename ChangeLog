@@ -3,7 +3,7 @@
 	* VERSION: podlators 2.1.2 released.
 
 	* t/pod-spelling.t: New check to spell-check all POD
-	documentation using ispell or hunspell with Pod::Spell.
+	documentation using ispell with Pod::Spell.
 	* lib/Pod/Man.pm: Fix spelling and markup errors in
 	documentation and add stop-words where appropriate.
 	* lib/Pod/ParseLink.pm: Likewise.
