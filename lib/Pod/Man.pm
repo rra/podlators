@@ -1450,6 +1450,10 @@ __END__
 
 Pod::Man - Convert POD data to formatted *roff input
 
+=for stopwords
+en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic utf8 UTF-8
+Allbery Sean Burke Ossanna
+
 =head1 SYNOPSIS
 
     use Pod::Man;
@@ -1482,23 +1486,23 @@ section 1 unless the file ended in C<.pm> in which case it defaults to
 section 3, to a centered title of "User Contributed Perl Documentation", to
 a centered footer of the Perl version it is run with, and to a left-hand
 footer of the modification date of its input (or the current date if given
-STDIN for input).
+C<STDIN> for input).
 
 Pod::Man assumes that your *roff formatters have a fixed-width font named
-CW.  If yours is called something else (like CR), use the C<fixed> option to
-specify it.  This generally only matters for troff output for printing.
-Similarly, you can set the fonts used for bold, italic, and bold italic
-fixed-width output.
+C<CW>.  If yours is called something else (like C<CR>), use the C<fixed>
+option to specify it.  This generally only matters for troff output for
+printing.  Similarly, you can set the fonts used for bold, italic, and
+bold italic fixed-width output.
 
-Besides the obvious pod conversions, Pod::Man also takes care of formatting
-func(), func(3), and simple variable references like $foo or @bar so you
-don't have to use code escapes for them; complex expressions like
-C<$fred{'stuff'}> will still need to be escaped, though.  It also translates
-dashes that aren't used as hyphens into en dashes, makes long dashes--like
-this--into proper em dashes, fixes "paired quotes," makes C++ look right,
-puts a little space between double underbars, makes ALLCAPS a teeny bit
-smaller in B<troff>, and escapes stuff that *roff treats as special so that
-you don't have to.
+Besides the obvious pod conversions, Pod::Man also takes care of
+formatting func(), func(3), and simple variable references like $foo or
+@bar so you don't have to use code escapes for them; complex expressions
+like C<$fred{'stuff'}> will still need to be escaped, though.  It also
+translates dashes that aren't used as hyphens into en dashes, makes long
+dashes--like this--into proper em dashes, fixes "paired quotes," makes C++
+look right, puts a little space between double underscores, makes ALLCAPS
+a teeny bit smaller in B<troff>, and escapes stuff that *roff treats as
+special so that you don't have to.
 
 The recognized options to new() are as follows.  All options take a single
 argument.
@@ -1514,31 +1518,32 @@ Documentation".
 
 Sets the left-hand footer.  By default, the modification date of the input
 file will be used, or the current date if stat() can't find that file (the
-case if the input is from STDIN), and the date will be formatted as
-YYYY-MM-DD.
+case if the input is from C<STDIN>), and the date will be formatted as
+C<YYYY-MM-DD>.
 
 =item fixed
 
-The fixed-width font to use for vertabim text and code.  Defaults to CW.
-Some systems may want CR instead.  Only matters for B<troff> output.
+The fixed-width font to use for verbatim text and code.  Defaults to
+C<CW>.  Some systems may want C<CR> instead.  Only matters for B<troff>
+output.
 
 =item fixedbold
 
-Bold version of the fixed-width font.  Defaults to CB.  Only matters for
-B<troff> output.
+Bold version of the fixed-width font.  Defaults to C<CB>.  Only matters
+for B<troff> output.
 
 =item fixeditalic
 
 Italic version of the fixed-width font (actually, something of a misnomer,
 since most fixed-width fonts only have an oblique version, not an italic
-version).  Defaults to CI.  Only matters for B<troff> output.
+version).  Defaults to C<CI>.  Only matters for B<troff> output.
 
 =item fixedbolditalic
 
 Bold italic (probably actually oblique) version of the fixed-width font.
-Pod::Man doesn't assume you have this, and defaults to CB.  Some systems
-(such as Solaris) have this font available as CX.  Only matters for B<troff>
-output.
+Pod::Man doesn't assume you have this, and defaults to C<CB>.  Some
+systems (such as Solaris) have this font available as C<CX>.  Only matters
+for B<troff> output.
 
 =item name
 
@@ -1580,8 +1585,8 @@ formats, 5 for miscellaneous information, and 7 for devices.  Still others
 use 1m instead of 8, or some mix of both.  About the only section numbers
 that are reliably consistent are 1, 2, and 3.
 
-By default, section 1 will be used unless the file ends in .pm in which case
-section 3 will be selected.
+By default, section 1 will be used unless the file ends in C<.pm> in which
+case section 3 will be selected.
 
 =item utf8
 
@@ -1602,8 +1607,8 @@ behavior.
 =back
 
 The standard Pod::Simple method parse_file() takes one argument naming the
-POD file to read from.  By default, the output is sent to STDOUT, but this
-can be changed with the output_fd() method.
+POD file to read from.  By default, the output is sent to C<STDOUT>, but
+this can be changed with the output_fd() method.
 
 The standard Pod::Simple method parse_from_file() takes up to two
 arguments, the first being the input file to read POD from and the second
@@ -1680,8 +1685,8 @@ mine).
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007
-by Russ Allbery <rra@stanford.edu>.
+Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008
+Russ Allbery <rra@stanford.edu>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -57,6 +57,11 @@ REQUIREMENTS
   To use Pod::Text::Color, Term::ANSIColor is required.  It is available
   from CPAN and part of Perl core as of 5.6.0.
 
+  The test suite includes a formatting and spelling check of all of the
+  POD documentation.  To check formatting, Test::Pod is required.  To
+  check spelling, Pod::Spell and ispell with the american dictionary are
+  also required.  The user's path is searched for ispell.
+
 INSTALLATION
 
   WARNING: Installation of this package will replace the pod2text and

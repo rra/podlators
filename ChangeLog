@@ -1,5 +1,17 @@
 2008-07-20  Russ Allbery  <rra@stanford.edu>
 
+	* t/pod-spelling.t: New check to spell-check all POD
+	documentation using ispell or hunspell with Pod::Spell.
+	* lib/Pod/Man.pm: Fix spelling and markup errors in
+	documentation and add stop-words where appropriate.
+	* lib/Pod/ParseLink.pm: Likewise.
+	* lib/Pod/Text.pm: Likewise.
+	* lib/Pod/Text/Color.pm: Likewise.
+	* lib/Pod/Text/Overstrike.pm: Likewise.
+	* lib/Pod/Text/Termcap.pm: Likewise.
+	* scripts/pod2man.PL: Likewise.
+	* scripts/pod2text.PL: Likewise.
+
 	* lib/Pod/Man.pm (cmd_head2): Use .SS instead of a local .Sh
 	macro for subheadings.
 	(preamble_template): Don't define .Sh.
