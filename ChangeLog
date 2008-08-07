@@ -1,3 +1,7 @@
+2008-08-07  Russ Allbery  <rra@stanford.edu>
+
+	* scripts/pod2man.PL: Mention --utf8 in the SYNOPSIS.
+
 2008-07-20  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.1.2 released.

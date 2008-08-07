@@ -106,7 +106,7 @@ pod2man [B<--section>=I<manext>] [B<--release>[=I<version>]]
     [B<--center>=I<string>] [B<--date>=I<string>] [B<--fixed>=I<font>]
     [B<--fixedbold>=I<font>] [B<--fixeditalic>=I<font>]
     [B<--fixedbolditalic>=I<font>] [B<--name>=I<name>] [B<--official>]
-    [B<--lax>] [B<--quotes>=I<quotes>] [B<--verbose>]
+    [B<--lax>] [B<--quotes>=I<quotes>] [B<--utf8>] [B<--verbose>]
     [I<input> [I<output>] ...]
 
 pod2man B<--help>
