@@ -90,11 +90,20 @@ INSTALLATION
   install driver scripts named pod2text and pod2man; see their man pages
   for more information.
 
-SOURCE REPOSITORY
+HOMEPAGE AND SOURCE REPOSITORY
+
+  The podlators web page at:
+
+      http://www.eyrie.org/~eagle/software/podlators/
+
+  will always have the current version of this package, the current
+  documentation, and pointers to any additional resources.
 
   podlators is maintained using Git.  You can access the current source
-  by pointing a Git client at:
+  by cloning the repository at:
 
-      http://archives.eyrie.org/software/git/podlators.git
+      git://git.eyrie.org/perl/podlators.git
 
-  No gitweb interface is available (yet).
+  or view the repository on the web at:
+
+      http://git.eyrie.org/?p=perl/podlators.git
