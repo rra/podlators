@@ -98,7 +98,7 @@ __END__
 pod2man - Convert POD data to formatted *roff input
 
 =for stopwords
-en em --utf8 UTF-8 overdo markup MT-LEVEL Allbery
+en em --utf8 UTF-8 overdo markup MT-LEVEL Allbery Solaris URL
 
 =head1 SYNOPSIS
 

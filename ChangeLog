@@ -1,3 +1,12 @@
+2008-08-08  Russ Allbery  <rra@stanford.edu>
+
+	* t/pod-spelling.t: Suppress the personal ispell dictionary when
+	checking spelling.
+	* lib/Pod/Man.pm: Add additional stopwords that were in my
+	personal dictionary.
+	* lib/Pod/ParseLink.pm: Likewise.
+	* scripts/pod2man.PL: Likewise.
+
 2008-08-07  Russ Allbery  <rra@stanford.edu>
 
 	* scripts/pod2man.PL: Mention --utf8 in the SYNOPSIS.
