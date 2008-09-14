@@ -1,3 +1,11 @@
+2008-09-14  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (format_text): Stop remapping the code point for
+	non-breaking space.  This should not be necessary and was wrong
+	when the string from Pod::Simple was a character string and not a
+	byte string.  It was papering over a bug in setting the encoding
+	of an input POD file.
+
 2008-08-08  Russ Allbery  <rra@stanford.edu>
 
 	* t/pod-spelling.t: Suppress the personal ispell dictionary when

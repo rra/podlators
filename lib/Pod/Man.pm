@@ -362,13 +362,6 @@ sub format_text {
         $text =~ s/([^\x00-\x7F])/$ESCAPES{ord ($1)} || "X"/eg;
     }
 
-    # For Unicode output, unconditionally remap ISO 8859-1 non-breaking spaces
-    # to the correct code point.  This is really a bug in Pod::Simple to be
-    # embedding ISO 8859-1 characters in the output stream that we see.
-    if ($$self{utf8} && ASCII) {
-        $text =~ s/\xA0/\xC2\xA0/g;
-    }
-
     # Ensure that *roff doesn't convert literal quotes to UTF-8 single quotes,
     # but don't mess up our accept escapes.
     if ($literal) {
