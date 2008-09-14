@@ -723,7 +723,7 @@ single space.  Defaults to true.
 =item stderr
 
 Send error messages about invalid POD to standard error instead of
-appending a POD ERRORS section to the generated *roff output.
+appending a POD ERRORS section to the generated output.
 
 =item width
 
