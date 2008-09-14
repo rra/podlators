@@ -1,5 +1,10 @@
 2008-09-14  Russ Allbery  <rra@stanford.edu>
 
+	* t/man-options.t: Properly set encoding on file descriptors and
+	in the POD file so that UTF-8 tests are handled with the correct
+	encoding.  Now that the test file is properly encoded, test that
+	non-breaking spaces doesn't interfere with hyphen detection.
+
 	* lib/Pod/Man.pm (format_text): Stop remapping the code point for
 	non-breaking space.  This should not be necessary and was wrong
 	when the string from Pod::Simple was a character string and not a

@@ -29,6 +29,7 @@ $loaded = 1;
 print "ok 1\n";
 
 my $n = 2;
+eval { binmode (\*DATA, ':encoding(utf-8)') };
 while (<DATA>) {
     my %options;
     next until $_ eq "###\n";
@@ -38,6 +39,8 @@ while (<DATA>) {
         $options{$option} = $value;
     }
     open (TMP, '> tmp.pod') or die "Cannot create tmp.pod: $!\n";
+    eval { binmode (\*TMP, ':encoding(utf-8)') };
+    print TMP "=encoding utf-8\n\n";
     while (<DATA>) {
         last if $_ eq "###\n";
         print TMP $_;
@@ -45,10 +48,12 @@ while (<DATA>) {
     close TMP;
     my $parser = Pod::Man->new (%options) or die "Cannot create parser\n";
     open (OUT, '> out.tmp') or die "Cannot create out.tmp: $!\n";
+    eval { binmode (\*OUT, ':encoding(utf-8)') };
     $parser->parse_from_file ('tmp.pod', \*OUT);
     close OUT;
     my $accents = 0;
     open (TMP, 'out.tmp') or die "Cannot open out.tmp: $!\n";
+    eval { binmode (\*TMP, ':encoding(utf-8)') };
     while (<TMP>) {
         $accents = 1 if /Accent mark definitions/;
         last if /^\.nh/;
@@ -123,7 +128,7 @@ This is S<non-breaking output>.
 ###
 .SH "S<> output with UTF\-8"
 .IX Header "S<> output with UTF-8"
-This is non\-breaking output.
+This is non-breaking output.
 ###
 
 ###
