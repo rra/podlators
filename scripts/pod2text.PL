@@ -205,7 +205,7 @@ is compressed into a single space.
 
 =item B<--stderr>
 
-By default, B<pod2man> puts any errors detected in the POD input in a POD
+By default, B<pod2text> puts any errors detected in the POD input in a POD
 ERRORS section in the output manual page.  If B<--stderr> is given, errors
 are sent to standard error instead and the POD ERRORS section is
 suppressed.
