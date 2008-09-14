@@ -94,6 +94,13 @@ sub new {
     # variables.
     %$self = (%$self, @_);
 
+    # Send errors to stderr if requested.
+    if ($$self{stderr}) {
+        $self->no_errata_section (1);
+        $self->complain_stderr (1);
+        delete $$self{stderr};
+    }
+
     # Initialize various other internal constants based on our arguments.
     $self->init_fonts;
     $self->init_quotes;
@@ -1444,8 +1451,8 @@ __END__
 Pod::Man - Convert POD data to formatted *roff input
 
 =for stopwords
-en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic utf8 UTF-8
-Allbery Sean Burke Ossanna Solaris
+en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8
+UTF-8 Allbery Sean Burke Ossanna Solaris
 
 =head1 SYNOPSIS
 
@@ -1580,6 +1587,11 @@ that are reliably consistent are 1, 2, and 3.
 
 By default, section 1 will be used unless the file ends in C<.pm> in which
 case section 3 will be selected.
+
+=item stderr
+
+Send error messages about invalid POD to standard error instead of
+appending a POD ERRORS section to the generated *roff output.
 
 =item utf8
 

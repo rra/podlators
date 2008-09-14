@@ -85,6 +85,13 @@ sub new {
     my @opts = map { ("opt_$_", $opts{$_}) } keys %opts;
     %$self = (%$self, @opts);
 
+    # Send errors to stderr if requested.
+    if ($$self{opt_stderr}) {
+        $self->no_errata_section (1);
+        $self->complain_stderr (1);
+        delete $$self{opt_stderr};
+    }
+
     # Initialize various things from our parameters.
     $$self{opt_alt}      = 0  unless defined $$self{opt_alt};
     $$self{opt_indent}   = 4  unless defined $$self{opt_indent};
@@ -633,7 +640,7 @@ __END__
 Pod::Text - Convert POD data to formatted ASCII text
 
 =for stopwords
-alt Allbery Sean Burke's
+alt stderr Allbery Sean Burke's
 
 =head1 SYNOPSIS
 
@@ -712,6 +719,11 @@ If set to a true value, Pod::Text will assume that each sentence ends in two
 spaces, and will try to preserve that spacing.  If set to false, all
 consecutive whitespace in non-verbatim paragraphs is compressed into a
 single space.  Defaults to true.
+
+=item stderr
+
+Send error messages about invalid POD to standard error instead of
+appending a POD ERRORS section to the generated *roff output.
 
 =item width
 

@@ -1,5 +1,13 @@
 2008-09-14  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (new): Support a stderr option, saying to send
+	errors to standard error instead of a POD ERRORS section.
+	* lib/Pod/Text.pm (new): Likewise.
+	* scripts/pod2man.PL: New --stderr option.
+	* scripts/pod2text.PL: Likewise.
+	* t/man-options.t: Test POD ERRORS vs. stderr handling.
+	* t/text-options.t: Likewise.
+
 	* t/text-utf8.t: New test for UTF-8 handling in Pod::Text.
 	* lib/Pod/Text.pm (output): Better document why we're doing
 	character transformations on output.
