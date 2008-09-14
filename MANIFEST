@@ -28,6 +28,7 @@ t/pod-spelling.t
 t/pod.t
 t/termcap.t
 t/text-options.t
+t/text-utf8.t
 t/text.t
 THANKS
 TODO
