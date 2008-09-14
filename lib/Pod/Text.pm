@@ -37,7 +37,7 @@ use Pod::Simple ();
 # We have to export pod2text for backward compatibility.
 @EXPORT = qw(pod2text);
 
-$VERSION = 3.09;
+$VERSION = 3.10;
 
 ##############################################################################
 # Initialization
@@ -238,7 +238,8 @@ sub reformat {
     return $self->wrap ($_);
 }
 
-# Output text to the output device.
+# Output text to the output device.  Replace non-breaking spaces with spaces
+# and soft hyphens with nothing.
 sub output {
     my ($self, $text) = @_;
     $text =~ tr/\240\255/ /d;
