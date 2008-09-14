@@ -70,8 +70,6 @@ sub new {
     my $self = $class->SUPER::new;
 
     # Tell Pod::Simple not to handle S<> by automatically inserting &nbsp;.
-    # Note that this messes up Unicode output by embedding explicit ISO 8859-1
-    # non-breaking spaces that we have to clean up later.
     $self->nbsp_for_S (1);
 
     # Tell Pod::Simple to keep whitespace whenever possible.
