@@ -101,4 +101,3 @@ Test of S<>
     This is some    whitespace.
 
 ###
-==
