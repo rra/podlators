@@ -147,5 +147,10 @@ beginning of a line and still seeing *roff metacharacters.
 Steve Peters, for finding a problem with font settings in headings with
 multiple C<> formatting codes.
 
-Nicolas François, for finding that Pod::Simple outputs ISO 8859-1
-non-breaking spaces for S<>, which breaks UTF-8 output.
+H. Merijn Brand and Juerd Waalboer, for explaining the Unicode test suite
+failures, PERL_UNICODE support, and the correct way to handle Unicode
+input and output in Perl.  This resolved several confusions, including a
+bad assumption about how non-breaking spaces should be handled.
+
+Niko Tyni, for lots of helpful bug reports and testing in combination with
+the Perl packages in Debian.

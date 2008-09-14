@@ -1,4 +1,4 @@
-                          podlators version 2.1.2
+                          podlators version 2.1.3
              (Format POD source into various output formats)
 
               Maintained by Russ Allbery <rra@stanford.edu>
@@ -51,8 +51,8 @@ REQUIREMENTS
 
   Both Pod::Man and Pod::Text are built on Pod::Simple, which handles the
   basic POD parsing and character set conversion.  Pod::Simple 3.04 or
-  later is required.  It is available from CPAN and part of Perl core as
-  of 5.10.0.
+  later is required (and Pod::Simple 3.07 is recommended).  It is
+  available from CPAN and part of Perl core as of 5.10.0.
 
   To use Pod::Text::Color, Term::ANSIColor is required.  It is available
   from CPAN and part of Perl core as of 5.6.0.
