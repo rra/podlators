@@ -21,6 +21,7 @@ t/basic.txt
 t/color.t
 t/filehandle.t
 t/man-options.t
+t/man-utf8.t
 t/man.t
 t/parselink.t
 t/pod-parser.t

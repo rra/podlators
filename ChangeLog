@@ -1,5 +1,7 @@
 2008-09-21  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.1.4 released.
+
 	* t/pod-spelling.t: Also support aspell and search for it before
 	ispell.  Red Hat's ispell is actually aspell and doesn't support
 	the same arguments.
