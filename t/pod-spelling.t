@@ -27,7 +27,6 @@ SEARCH: for my $program (qw/aspell ispell/) {
     }
 }
 skip_all "aspell or ispell required to test POD spelling" unless @spell;
-warn @spell, "\n";
 
 # Run the test, one for each POD file.
 $| = 1;
