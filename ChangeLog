@@ -1,3 +1,26 @@
+2008-10-05  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm: Document the PerlIO limitations of the current
+	implementation and the requirement that encodings of input POD
+	source be properly declared.
+	(start_document): If the utf8 option is set, force the encoding of
+	the output file handle to UTF-8.
+	* lib/Pod/Text.pm: Document the PerlIO limitations of the current
+	implementation and the requirement that encodings of input POD
+	source be properly declared.
+	(output): Try to force the encoding of the output file handle to
+	match the encoding of the POD source if the utf8 option is not
+	set, matching the pre-Unicode behavior.
+	(start_document): If the utf8 option is set, force the encoding of
+	the output filel handle to UTF-8.
+	* scripts/pod2man.PL: Document the requirement that encodings of
+	input POD source be properly declared for --utf8 support.
+	* scripts/pod2text.PL: Add --utf8 option.
+	* t/man-utf8.t: Stop forcing the output encoding to UTF-8.
+	* t/text-utf8.t: Likewise.
+	* t/text-encoding.t: New file.  Additional tests for encoding
+	combinations with Pod::Text.
+
 2008-09-21  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.1.4 released.

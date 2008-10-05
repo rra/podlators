@@ -4,6 +4,16 @@ This is a somewhat random and unordered list of things I'd like to see
 fixed or improved, but which I've not yet had a chance to do.  Patches for
 any of the following are very much welcome.
 
+ * Currently, proper encoding handling without PerlIO is not supported.
+   If PerlIO is not available, the code should fall back on encode, since
+   in that case we're guaranteed that there are no strange effects present
+   due to a PERL_UNICODE setting.
+
+ * Output encoding should be handled by using encode after checking
+   whether an encoding is already in place using PerlIO rather than always
+   using PerlIO encoding layers and hence modifying the state of a
+   possibly external file handle.
+
  * There should be some way to turn off all heuristics when people are
    using POD for some purpose other than Perl or some other programming
    language with similar needs.  The hooks are there in the code but we
