@@ -140,8 +140,9 @@ and the section, anchor text, and inferred anchor text may contain any
 formatting codes.  Any double quotes around the section are removed as part
 of the parsing, as is any leading or trailing whitespace.
 
-If the text of the LE<lt>E<gt> escape is entirely enclosed in double quotes,
-it's interpreted as a link to a section for backwards compatibility.
+If the text of the LE<lt>E<gt> escape is entirely enclosed in double
+quotes, it's interpreted as a link to a section for backward
+compatibility.
 
 No attempt is made to resolve formatting codes.  This must be done after
 calling parselink() (since EE<lt>E<gt> formatting codes can be used to

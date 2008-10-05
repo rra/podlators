@@ -1669,7 +1669,7 @@ unless Perl is built with PerlIO support.
 There is currently no way to turn off the guesswork that tries to format
 unmarked text appropriately, and sometimes it isn't wanted (particularly
 when using POD to document something other than Perl).  Most of the work
-towards fixing this has now been done, however, and all that's still needed
+toward fixing this has now been done, however, and all that's still needed
 is a user interface.
 
 The NAME section should be recognized specially and index entries emitted

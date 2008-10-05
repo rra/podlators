@@ -154,3 +154,6 @@ bad assumption about how non-breaking spaces should be handled.
 
 Niko Tyni, for lots of helpful bug reports and testing in combination with
 the Perl packages in Debian.
+
+Jerry D. Hedden, for spelling fixes and pointing out differences in
+aspell's dictionary on different systems.

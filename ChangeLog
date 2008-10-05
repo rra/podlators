@@ -1,5 +1,9 @@
 2008-10-05  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm: Spelling fixes.
+	* lib/Pod/ParseLink.pm: Likewise.
+	* scripts/pod2man.PL: Likewise.
+
 	* lib/Pod/ParseLink.pm: Quote version number to preserve any
 	trailing zeroes.
 	* lib/Pod/Text/Color.pm: Likewise.

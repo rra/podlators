@@ -58,7 +58,7 @@ use vars qw($running_under_some_shell);
 my $stdin;
 @ARGV = map { $_ eq '-' && !$stdin++ ? ('--', $_) : $_ } @ARGV;
 
-# Parse our options, trying to retain backwards compatibility with pod2man but
+# Parse our options, trying to retain backward compatibility with pod2man but
 # allowing short forms as well.  --lax is currently ignored.
 my %options;
 $options{errors} = 'pod';
@@ -78,7 +78,7 @@ if ($options{official} && !defined $options{center}) {
 my $verbose = $options{verbose};
 delete $options{verbose};
 
-# This isn't a valid Pod::Man option and is only accepted for backwards
+# This isn't a valid Pod::Man option and is only accepted for backward
 # compatibility.
 delete $options{lax};
 
@@ -191,9 +191,9 @@ Print out usage information.
 
 =item B<-l>, B<--lax>
 
-No longer used.  B<pod2man> used to check its input for validity as a manual
-page, but this should now be done by L<podchecker(1)> instead.  Accepted for
-backwards compatibility; this option no longer does anything.
+No longer used.  B<pod2man> used to check its input for validity as a
+manual page, but this should now be done by L<podchecker(1)> instead.
+Accepted for backward compatibility; this option no longer does anything.
 
 =item B<-n> I<name>, B<--name>=I<name>
 
