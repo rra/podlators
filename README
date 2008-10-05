@@ -57,6 +57,13 @@ REQUIREMENTS
   To use Pod::Text::Color, Term::ANSIColor is required.  It is available
   from CPAN and part of Perl core as of 5.6.0.
 
+  For the utf8 option to Pod::Man and Pod::Text, PerlIO support in the
+  Perl interpreter is required.  This option currently uses PerlIO
+  encoding layers to handle the output encoding.  PerlIO support is also
+  required for Pod::Text to set the output encoding to match the input
+  encoding; without this, the output will use Perl's internal encoding,
+  which may be surprising and may produce Perl warnings.
+
   The test suite includes a formatting and spelling check of all of the
   POD documentation.  To check formatting, Test::Pod is required.  To
   check spelling, Pod::Spell and either aspell or ispell with the american
