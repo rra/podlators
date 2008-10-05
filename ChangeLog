@@ -1,5 +1,10 @@
 2008-10-05  Russ Allbery  <rra@stanford.edu>
 
+	* t/pod-spelling.t: Skip all tests unless RRA_MAINTAINER_TESTS is
+	set in the environment.  Spelling dictionaries are too different
+	between systems.  Use a comment on the plan line to indicate
+	skipping the entire file.
+
 	* lib/Pod/Man.pm: Spelling fixes.
 	* lib/Pod/ParseLink.pm: Likewise.
 	* scripts/pod2man.PL: Likewise.

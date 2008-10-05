@@ -61,7 +61,9 @@ REQUIREMENTS
   POD documentation.  To check formatting, Test::Pod is required.  To
   check spelling, Pod::Spell and either aspell or ispell with the american
   dictionary are also required.  The user's path is searched for aspell or
-  ispell and aspell is preferred.
+  ispell and aspell is preferred.  Spelling tests are disabled by default
+  since spelling dictionaries differ too much between systems.  To enable
+  those tests, set RRA_MAINTAINER_TESTS to a true value.
 
 INSTALLATION
 
