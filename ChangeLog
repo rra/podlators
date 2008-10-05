@@ -1,5 +1,7 @@
 2008-10-05  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.2.0 released.
+
 	* t/pod-spelling.t: Skip all tests unless RRA_MAINTAINER_TESTS is
 	set in the environment.  Spelling dictionaries are too different
 	between systems.  Use a comment on the plan line to indicate

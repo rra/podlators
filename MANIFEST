@@ -28,6 +28,7 @@ t/pod-parser.t
 t/pod-spelling.t
 t/pod.t
 t/termcap.t
+t/text-encoding.t
 t/text-options.t
 t/text-utf8.t
 t/text.t
