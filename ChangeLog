@@ -1,5 +1,11 @@
 2008-10-05  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/ParseLink.pm: Quote version number to preserve any
+	trailing zeroes.
+	* lib/Pod/Text/Color.pm: Likewise.
+	* lib/Pod/Text/Overstrike.pm: Likewise.
+	* lib/Pod/Text/Termcap.pm: Likewise.
+
 	* lib/Pod/Man.pm: Document the PerlIO limitations of the current
 	implementation and the requirement that encodings of input POD
 	source be properly declared.
