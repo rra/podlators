@@ -1,3 +1,10 @@
+2008-11-03  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Text.pm (pod2text): Properly initialize the output file
+	handle when called with only one argument.  Thanks, Michael G
+	Schwern.
+	* t/pod-parser.t: Test the pod2text function with one argument.
+
 2008-10-05  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.2.0 released.
