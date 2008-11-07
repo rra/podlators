@@ -158,3 +158,5 @@ the Perl packages in Debian.
 
 Jerry D. Hedden, for spelling fixes and pointing out differences in
 aspell's dictionary on different systems.
+
+Steve Hay, for a test suite bug fix on Windows.

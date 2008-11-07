@@ -1,3 +1,9 @@
+2008-11-07  Russ Allbery  <rra@stanford.edu>
+
+	* t/text-encoding.t: Also set raw encoding on the output file
+	handle so that the test works properly on Windows.  Thanks, Steve
+	Hay.
+
 2008-11-03  Russ Allbery  <rra@stanford.edu>
 
 	* lib/Pod/Text.pm (pod2text): Properly initialize the output file
