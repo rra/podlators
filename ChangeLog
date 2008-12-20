@@ -1,5 +1,7 @@
 2008-12-19  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.2.1 released.
+
 	* t/man.t: Add a test of =for.
 	* t/text.t: Likewise.
 
