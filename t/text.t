@@ -16,7 +16,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..5\n";
+    print "1..6\n";
 }
 
 END {
