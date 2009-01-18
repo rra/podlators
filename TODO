@@ -20,7 +20,7 @@ any of the following are very much welcome.
    need an interface to set or unset them.
 
  * The test suite is still fairly basic, and doesn't test all of the
-   options to the various modules, the scripts, =for, =over/=back, or the
+   options to the various modules, the scripts, =over/=back, or the
    guesswork in Pod::Man.
 
  * Pod::Text::Termcap can leave underlining turned on across a newline,
