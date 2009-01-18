@@ -128,3 +128,20 @@ As should this.
     Some more text.
 
 ###
+
+###
+=pod
+
+text
+
+  line1
+  
+  line3
+###
+    text
+
+      line1
+  
+      line3
+
+###
