@@ -1,5 +1,7 @@
 2009-01-17  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.2.2 released.
+
 	* t/man-heading.t: New file testing Pod::Man options for changing
 	the .TH line of the generated man page.
 
