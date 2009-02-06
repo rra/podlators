@@ -259,7 +259,7 @@ sub _handle_element_start {
     # NAME heading.
     if ($self->can ("cmd_$method")) {
         DEBUG > 2 and print "<$element> starts saving a tag\n";
-        $$self{IN_NAME} = 0 if ($element ne 'Para');
+        $$self{IN_NAME} = 0 if ($element ne 'Para' && $element ne 'C');
 
         # How we're going to format embedded text blocks depends on the tag
         # and also depends on our parent tags.  Thankfully, inside tags that
@@ -396,6 +396,11 @@ sub quote_literal {
     # several places in the following regex.
     my $index = '(?: \[.*\] | \{.*\} )?';
 
+    # If in NAME section, just return an ascii quoted string, to avoid 
+    # confusing tools like whatis
+    
+    return qq{"$_"} if $$self{IN_NAME};
+    
     # Check for things that we don't want to quote, and if we find any of
     # them, return the string with just a font change and no quoting.
     m{

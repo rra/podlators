@@ -83,14 +83,14 @@ __DATA__
 ###
 =head1 NAME
 
-gcc - GNU project C and C++ compiler
+gcc - GNU project C<C> and C++ compiler
 
 =head1 C++ NOTES
 
 Other mentions of C++.
 ###
 .SH "NAME"
-gcc \- GNU project C and C++ compiler
+gcc \- GNU project "C" and C++ compiler
 .SH "\*(C+ NOTES"
 .IX Header " NOTES"
 Other mentions of \*(C+.
