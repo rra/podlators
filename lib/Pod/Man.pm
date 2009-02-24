@@ -32,7 +32,6 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 
 use Carp qw(croak);
 use Pod::Simple ();
-use POSIX qw(strftime);
 
 @ISA = qw(Pod::Simple);
 
@@ -857,7 +856,12 @@ sub devise_date {
     } else {
         $time = time;
     }
-    return strftime ('%Y-%m-%d', localtime $time);
+
+    # Can't use POSIX::strftime(), which uses Fcntl, because MakeMaker
+    # uses this and it has to work in the core which can't load dynamic
+    # libraries.
+    my ($year, $month, $day) = (localtime $time)[5,4,3];
+    return sprintf ("%04d-%02d-%02d", $year + 1900, $month + 1, $day);
 }
 
 # Print out the preamble and the title.  The meaning of the arguments to .TH
