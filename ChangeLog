@@ -1,5 +1,12 @@
 2009-02-28  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (devise_date): Avoid POSIX::strftime because
+	POSIX requires Fcntl, which is an XS module, and hence can't build
+	in miniperl.  This allows ExtUtils::MakeMaker to build as a normal
+	module in Perl core.  Thanks, Michael G Schwern.
+	* t/devise-date.t: Test that Pod::Man's devise_date method matches
+	the output of strftime.
+
 	* lib/Pod/Man.pm (_handle_element_start): Don't exit IN_NAME mode
 	because of a C<> block.  Thanks, Niko Tyni.
 	(quote_literal): Return an ASCII quoted string if in the NAME
