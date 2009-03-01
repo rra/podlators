@@ -17,7 +17,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..25\n";
+    print "1..26\n";
 }
 
 END {
@@ -481,4 +481,13 @@ Some raw nroff.
 \&A paragraph.
 .PP
 More text.
+###
+
+###
+=head1 NAME
+
+test - C<test>
+###
+.SH "NAME"
+test \- "test"
 ###

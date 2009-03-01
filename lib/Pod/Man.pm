@@ -36,7 +36,7 @@ use POSIX qw(strftime);
 
 @ISA = qw(Pod::Simple);
 
-$VERSION = '2.22';
+$VERSION = '2.23';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -396,11 +396,10 @@ sub quote_literal {
     # several places in the following regex.
     my $index = '(?: \[.*\] | \{.*\} )?';
 
-    # If in NAME section, just return an ascii quoted string, to avoid 
-    # confusing tools like whatis
-    
+    # If in NAME section, just return an ASCII quoted string to avoid
+    # confusing tools like whatis.
     return qq{"$_"} if $$self{IN_NAME};
-    
+
     # Check for things that we don't want to quote, and if we find any of
     # them, return the string with just a font change and no quoting.
     m{
