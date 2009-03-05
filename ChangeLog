@@ -1,3 +1,8 @@
+2009-03-05  Russ Allbery  <rra@stanford.edu>
+
+	* scripts/pod2man.PL: Clarify that no markup should be used in the
+	NAME section of a manual page.
+
 2009-02-28  Russ Allbery  <rra@stanford.edu>
 
 	* lib/Pod/Man.pm (devise_date): Avoid POSIX::strftime because
