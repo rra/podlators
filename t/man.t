@@ -2,7 +2,7 @@
 #
 # man.t -- Additional specialized tests for Pod::Man.
 #
-# Copyright 2002, 2003, 2004, 2006, 2007, 2008
+# Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009
 #     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -17,7 +17,7 @@ BEGIN {
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..26\n";
+    print "1..27\n";
 }
 
 END {
@@ -490,4 +490,15 @@ test - C<test>
 ###
 .SH "NAME"
 test \- "test"
+###
+
+###
+=head1 INDEX
+
+Index entry matching a whitespace escape.X<\n>
+###
+.SH "INDEX"
+.IX Header "INDEX"
+Index entry matching a whitespace escape.
+.IX Xref "\\n"
 ###

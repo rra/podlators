@@ -1,3 +1,9 @@
+2009-03-29  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (outindex): Escape backslashes in the quoted text
+	of .IX macros generated from X<> formatting code.
+	* t/man.t: Add test case for X<\n>.
+
 2009-03-05  Russ Allbery  <rra@stanford.edu>
 
 	* scripts/pod2man.PL: Clarify that no markup should be used in the
