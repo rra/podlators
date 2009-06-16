@@ -98,5 +98,5 @@ if ($output eq "    Some random text.\n\n") {
     print "Output\n======\n$output\n";
 }
 
-unlink ('tmp.pod', 'out.tmp');
+1 while unlink ('tmp.pod', 'out.tmp');
 exit 0;

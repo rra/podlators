@@ -93,7 +93,7 @@ for (sort keys %translators) {
         print OUTPUT while <TMP>;
         close OUTPUT;
         close TMP;
-        unlink 'out.tmp';
+        1 while unlink 'out.tmp';
     } else {
         rename ('out.tmp', "out.$translators{$_}")
             or die "Cannot rename out.tmp: $!\n";
@@ -117,7 +117,7 @@ for (sort keys %translators) {
 
         if ($master eq $output) {
             print "ok $n\n";
-            unlink "out.$translators{$_}";
+            1 while unlink "out.$translators{$_}";
         } else {
             print "not ok $n\n";
             print "# Non-matching output left in out.$translators{$_}\n";

@@ -69,7 +69,7 @@ while (<DATA>) {
         $output = <TMP>;
     }
     close TMP;
-    unlink ('tmp.pod', 'out.tmp');
+    1 while unlink ('tmp.pod', 'out.tmp');
     my $expected = '';
     while (<DATA>) {
         last if $_ eq "###\n";
@@ -89,7 +89,7 @@ while (<DATA>) {
         $errors = <ERR>;
     }
     close ERR;
-    unlink ('out.err');
+    1 while unlink ('out.err');
     $expected = '';
     while (<DATA>) {
         last if $_ eq "###\n";

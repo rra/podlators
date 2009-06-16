@@ -1,3 +1,19 @@
+2009-06-15  Russ Allbery  <rra@stanford.edu>
+
+	* t/basic.t: Unlink temporary files in a loop to be sure that all
+	versions are deleted on VMS.  Thanks, John E. Malmberg.
+	* t/color.t: Likewise.
+	* t/filehandle.t: Likewise.
+	* t/man-options.t: Likewise.
+	* t/man-utf8.t: Likewise.
+	* t/man.t: Likewise.
+	* t/pod-parser.t: Likewise.
+	* t/termcap.t: Likewise.
+	* t/text-encoding.t: Likewise.
+	* t/text-options.t: Likewise.
+	* t/text-utf8.t: Likewise.
+	* t/text.t: Likewise
+
 2009-03-29  Russ Allbery  <rra@stanford.edu>
 
 	* lib/Pod/Man.pm (outindex): Escape backslashes in the quoted text

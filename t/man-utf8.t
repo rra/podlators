@@ -73,7 +73,7 @@ while (<DATA>) {
         $output = <TMP>;
     }
     close TMP;
-    unlink ('tmp.pod', 'out.tmp');
+    1 while unlink ('tmp.pod', 'out.tmp');
     if (($options{utf8} && !$accents) || (!$options{utf8} && $accents)) {
         print "ok $n\n";
     } else {

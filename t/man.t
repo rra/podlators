@@ -59,7 +59,7 @@ while (<DATA>) {
         $output = <OUT>;
     }
     close OUT;
-    unlink ('tmp.pod', 'out.tmp');
+    1 while unlink ('tmp.pod', 'out.tmp');
     my $expected = '';
     while (<DATA>) {
         last if $_ eq "###\n";

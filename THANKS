@@ -163,3 +163,6 @@ Steve Hay, for a test suite bug fix on Windows.
 
 Renee Baecker, for a patch to fix indentation of verbatim paragraphs that
 contain lines with only whitespace.
+
+John E. Malmberg, for pointing out problems with the test suite leaving
+versions of temporary files behind on VMS.
