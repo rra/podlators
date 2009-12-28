@@ -1,3 +1,25 @@
+2009-12-28  Russ Allbery  <rra@stanford.edu>
+
+	* t/basic.t: Use Test::More for testing.  Remove duplicate
+	addition of ../blib/lib to the library search path.
+	* t/color.t: Likewise.
+	* t/filehandle.t: Likewise.
+	* t/man-heading.t: Likewise.
+	* t/man-options.t: Likewise.
+	* t/man-utf8.t: Likewise.
+	* t/man.t: Likewise.
+	* t/parselink.t: Likewise.
+	* t/pod-parser.t: Likewise.
+	* t/termcap.t: Likewise.
+	* t/text-encoding.t: Likewise.
+	* t/text-options.t: Likewise.
+	* t/text-utf8.t: Likewise.
+	* t/text.t: Likewise.
+
+	* t/pod-spelling.t: Update to the current version of this test
+	from C TAP Harness 1.1, converting it to use Test::More.
+	* t/pod.t: Likewise.
+
 2009-06-15  Russ Allbery  <rra@stanford.edu>
 
 	* t/basic.t: Unlink temporary files in a loop to be sure that all

@@ -11,24 +11,17 @@ BEGIN {
     chdir 't' if -d 't';
     if ($ENV{PERL_CORE}) {
         @INC = '../lib';
-    } else {
-        unshift (@INC, '../blib/lib');
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..4\n";
 }
 
-END {
-    print "not ok 1\n" unless $loaded;
-}
+use strict;
 
-use Pod::Man;
+use Test::More tests => 7;
+BEGIN { use_ok ('Pod::Man') }
 
-$loaded = 1;
-print "ok 1\n";
-
-my $n = 2;
+my $n = 1;
 while (<DATA>) {
     my %options;
     next until $_ eq "###\n";
@@ -41,7 +34,8 @@ while (<DATA>) {
     open (TMP, '> tmp.pod') or die "Cannot create tmp.pod: $!\n";
     print TMP "=head1 NAME\n\ntest - Test man page\n";
     close TMP;
-    my $parser = Pod::Man->new (%options) or die "Cannot create parser\n";
+    my $parser = Pod::Man->new (%options);
+    isa_ok ($parser, 'Pod::Man', 'Parser object');
     open (OUT, '> out.tmp') or die "Cannot create out.tmp: $!\n";
     $parser->parse_from_file ('tmp.pod', \*OUT);
     close OUT;
@@ -60,12 +54,7 @@ while (<DATA>) {
         last if $_ eq "###\n";
         $expected .= $_;
     }
-    if ($heading eq $expected) {
-        print "ok $n\n";
-    } else {
-        print "not ok $n\n";
-        print "Expected\n========\n$expected\nOutput\n======\n$heading\n";
-    }
+    is ($heading, $expected, "Heading is correct for test $n");
     $n++;
 }
 

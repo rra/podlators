@@ -11,26 +11,20 @@ BEGIN {
     chdir 't' if -d 't';
     if ($ENV{PERL_CORE}) {
         @INC = '../lib';
-    } else {
-        unshift (@INC, '../blib/lib');
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..6\n";
 }
 
-END {
-    print "not ok 1\n" unless $loaded;
-}
+use strict;
 
-use Pod::Text;
 use Pod::Simple;
+use Test::More tests => 7;
+BEGIN { use_ok ('Pod::Text') }
 
-$loaded = 1;
-print "ok 1\n";
-
-my $parser = Pod::Text->new or die "Cannot create parser\n";
-my $n = 2;
+my $parser = Pod::Text->new;
+isa_ok ($parser, 'Pod::Text', 'Parser object');
+my $n = 1;
 while (<DATA>) {
     next until $_ eq "###\n";
     open (TMP, '> tmp.pod') or die "Cannot create tmp.pod: $!\n";
@@ -55,13 +49,11 @@ while (<DATA>) {
         last if $_ eq "###\n";
         $expected .= $_;
     }
-    if ($output eq $expected) {
-        print "ok $n\n";
-    } elsif ($n == 4 && $Pod::Simple::VERSION < 3.06) {
-        print "ok $n # skip Pod::Simple S<> parsing bug\n";
-    } else {
-        print "not ok $n\n";
-        print "Expected\n========\n$expected\nOutput\n======\n$output\n";
+  SKIP: {
+        skip 'Pod::Simple S<> parsing bug', 1
+            if ($output ne $expected && $n == 3
+                && $Pod::Simple::VERSION < 3.06);
+        is ($output, $expected, "Output correct for test $n");
     }
     $n++;
 }

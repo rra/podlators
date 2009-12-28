@@ -2,7 +2,7 @@
 #
 # termcap.t -- Additional specialized tests for Pod::Text::Termcap.
 #
-# Copyright 2002, 2004, 2006 by Russ Allbery <rra@stanford.edu>
+# Copyright 2002, 2004, 2006, 2009 by Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -11,30 +11,24 @@ BEGIN {
     chdir 't' if -d 't';
     if ($ENV{PERL_CORE}) {
         @INC = '../lib';
-    } else {
-        unshift (@INC, '../blib/lib');
     }
     unshift (@INC, '../blib/lib');
     $| = 1;
-    print "1..2\n";
 }
 
-END {
-    print "not ok 1\n" unless $loaded;
-}
+use strict;
+
+use Test::More tests => 3;
+BEGIN { use_ok ('Pod::Text::Termcap') }
 
 # Hard-code a few values to try to get reproducible results.
 $ENV{COLUMNS} = 80;
 $ENV{TERM} = 'xterm';
 $ENV{TERMCAP} = 'xterm:co=80:do=^J:md=\E[1m:us=\E[4m:me=\E[m';
 
-use Pod::Text::Termcap;
-
-$loaded = 1;
-print "ok 1\n";
-
-my $parser = Pod::Text::Termcap->new or die "Cannot create parser\n";
-my $n = 2;
+my $parser = Pod::Text::Termcap->new;
+isa_ok ($parser, 'Pod::Text::Termcap', 'Parser module');
+my $n = 1;
 while (<DATA>) {
     next until $_ eq "###\n";
     open (TMP, '> tmp.pod') or die "Cannot create tmp.pod: $!\n";
@@ -59,12 +53,7 @@ while (<DATA>) {
         last if $_ eq "###\n";
         $expected .= $_;
     }
-    if ($output eq $expected) {
-        print "ok $n\n";
-    } else {
-        print "not ok $n\n";
-        print "Expected\n========\n$expected\nOutput\n======\n$output\n";
-    }
+    is ($output, $expected, "Output correct for test $n");
     $n++;
 }
 
