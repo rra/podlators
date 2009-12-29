@@ -869,7 +869,7 @@ how to use Pod::Simple.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008 Russ Allbery
+Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009 Russ Allbery
 <rra@stanford.edu>.
 
 This program is free software; you may redistribute it and/or modify it

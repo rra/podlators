@@ -200,7 +200,7 @@ Joe Smith <Joe.Smith@inwap.com>, using the framework created by Russ Allbery
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 2000 by Joe Smith <Joe.Smith@inwap.com>.
-Copyright 2001, 2004 by Russ Allbery <rra@stanford.edu>.
+Copyright 2001, 2004, 2008 by Russ Allbery <rra@stanford.edu>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
