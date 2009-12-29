@@ -166,3 +166,7 @@ contain lines with only whitespace.
 
 John E. Malmberg, for pointing out problems with the test suite leaving
 versions of temporary files behind on VMS.
+
+David Hull, for pointing out the problem with choosing whether an item tag
+will fit in the margin of the paragraph in Pod::Text subclasses that add
+zero-length formatting codes and providing a patch to fix the problem.

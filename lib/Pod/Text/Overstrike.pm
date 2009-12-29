@@ -34,7 +34,7 @@ use vars qw(@ISA $VERSION);
 
 @ISA = qw(Pod::Text);
 
-$VERSION = '2.03';
+$VERSION = '2.04';
 
 ##############################################################################
 # Overrides
@@ -99,6 +99,15 @@ sub output_code {
     $self->output ($code);
 }
 
+# Strip all of the formatting from a provided string, returning the stripped
+# version.
+sub strip_format {
+    my ($self, $text) = @_;
+    $text =~ s/(.)[\b]\1/$1/g;
+    $text =~ s/_[\b]//g;
+    return $text;
+}
+
 # We unfortunately have to override the wrapping code here, since the normal
 # wrapping code gets really confused by all the backspaces.
 sub wrap {
@@ -122,19 +131,6 @@ sub wrap {
     $output .= $spaces . $_;
     $output =~ s/\s+$/\n\n/;
     return $output;
-}
-
-##############################################################################
-# Utility functions
-##############################################################################
-
-# Strip all of the formatting from a provided string, returning the stripped
-# version.
-sub strip_format {
-    my ($self, $text) = @_;
-    $text =~ s/(.)[\b]\1/$1/g;
-    $text =~ s/_[\b]//g;
-    return $text;
 }
 
 ##############################################################################

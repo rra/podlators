@@ -57,6 +57,15 @@ sub output_code {
     $self->output ($code);
 }
 
+# Strip all of the formatting from a provided string, returning the stripped
+# version.  We will eventually want to use colorstrip() from Term::ANSIColor,
+# but it's fairly new so avoid the tight dependency.
+sub strip_format {
+    my ($self, $text) = @_;
+    $text =~ s/\e\[[\d;]*m//g;
+    return $text;
+}
+
 # We unfortunately have to override the wrapping code here, since the normal
 # wrapping code gets really confused by all the escape sequences.
 sub wrap {

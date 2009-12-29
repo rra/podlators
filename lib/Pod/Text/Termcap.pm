@@ -93,6 +93,16 @@ sub output_code {
     $self->output ($$self{BOLD} . $code . $$self{NORM});
 }
 
+# Strip all of the formatting from a provided string, returning the stripped
+# version.
+sub strip_format {
+    my ($self, $text) = @_;
+    $text =~ s/\Q$$self{BOLD}//g;
+    $text =~ s/\Q$$self{UNDL}//g;
+    $text =~ s/\Q$$self{NORM}//g;
+    return $text;
+}
+
 # Override the wrapping code to igore the special sequences.
 sub wrap {
     my $self = shift;
