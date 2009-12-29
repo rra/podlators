@@ -19,7 +19,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 29;
+use Test::More tests => 30;
 BEGIN { use_ok ('Pod::Man') }
 
 # Test whether we can use binmode to set encoding.
@@ -500,4 +500,13 @@ This is a L<link|http://www.example.com/> to a URL.
 .SH "LINK TO URL"
 .IX Header "LINK TO URL"
 This is a link <http://www.example.com/> to a \s-1URL\s0.
+###
+
+###
+=head1 NAME
+
+test - B<test> I<italics> F<file>
+###
+.SH "NAME"
+test \- test italics file
 ###

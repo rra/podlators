@@ -254,11 +254,11 @@ sub _handle_element_start {
 
     # If we have a command handler, we need to accumulate the contents of the
     # tag before calling it.  Turn off IN_NAME for any command other than
-    # <Para> so that IN_NAME isn't still set for the first heading after the
-    # NAME heading.
+    # <Para> and the formatting codes so that IN_NAME isn't still set for the
+    # first heading after the NAME heading.
     if ($self->can ("cmd_$method")) {
         DEBUG > 2 and print "<$element> starts saving a tag\n";
-        $$self{IN_NAME} = 0 if ($element ne 'Para' && $element ne 'C');
+        $$self{IN_NAME} = 0 if ($element ne 'Para' && length ($element) > 1);
 
         # How we're going to format embedded text blocks depends on the tag
         # and also depends on our parent tags.  Thankfully, inside tags that
@@ -1085,9 +1085,9 @@ sub cmd_head4 {
 
 # All of the formatting codes that aren't handled internally by the parser,
 # other than L<> and X<>.
-sub cmd_b { return '\f(BS' . $_[2] . '\f(BE' }
-sub cmd_i { return '\f(IS' . $_[2] . '\f(IE' }
-sub cmd_f { return '\f(IS' . $_[2] . '\f(IE' }
+sub cmd_b { return $_[0]->{IN_NAME} ? $_[2] : '\f(BS' . $_[2] . '\f(BE' }
+sub cmd_i { return $_[0]->{IN_NAME} ? $_[2] : '\f(IS' . $_[2] . '\f(IE' }
+sub cmd_f { return $_[0]->{IN_NAME} ? $_[2] : '\f(IS' . $_[2] . '\f(IE' }
 sub cmd_c { return $_[0]->quote_literal ($_[2]) }
 
 # Index entries are just added to the pending entries.

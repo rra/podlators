@@ -1,5 +1,13 @@
 2009-12-28  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (_handle_element_start): Do not turn off IN_NAME
+	for any formatting code.
+	(cmd_b): Suppress formatting if in the NAME section to not confuse
+	lexgrog.
+	(cmd_i): Likewise.
+	(cmd_f): Likewise.
+	* t/man.t: Test formatting codes in the NAME section.
+
 	* lib/Pod/ParseLink.pm (parselink): Allow anchor text for URLs as
 	well.  Fix the check of the anchor text to not think no text was
 	provided when the text was "0".
