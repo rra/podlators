@@ -1101,7 +1101,15 @@ sub cmd_x {
 # a URL.
 sub cmd_l {
     my ($self, $attrs, $text) = @_;
-    return $$attrs{type} eq 'url' ? "<$text>" : $text;
+    if ($$attrs{type} eq 'url') {
+        if (not defined($$attrs{to}) or $$attrs{to} eq $text) {
+            return "<$text>";
+        } else {
+            return "$text <$$attrs{to}>";
+        }
+    } else {
+        return $text;
+    }
 }
 
 ##############################################################################

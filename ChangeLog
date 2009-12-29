@@ -1,5 +1,12 @@
 2009-12-28  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (cmd_l): Support anchor text for L<> links of
+	type URL by rendering the anchor text and then the URL in angle
+	brackets.
+	* lib/Pod/Text.pm (cmd_l): Likewise.
+	* t/man.t: Test rendering of L<> URL links with anchor text.
+	* t/text.t: Likewise.
+
 	* lib/Pod/Text.pm (strip_format): New function.
 	(item): When formatting item tags, use the width of the tag
 	without formatting codes.  This does not change the output of

@@ -19,7 +19,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 28;
+use Test::More tests => 29;
 BEGIN { use_ok ('Pod::Man') }
 
 # Test whether we can use binmode to set encoding.
@@ -490,4 +490,14 @@ Index entry matching a whitespace escape.X<\n>
 .IX Header "INDEX"
 Index entry matching a whitespace escape.
 .IX Xref "\\n"
+###
+
+###
+=head1 LINK TO URL
+
+This is a L<link|http://www.example.com/> to a URL.
+###
+.SH "LINK TO URL"
+.IX Header "LINK TO URL"
+This is a link <http://www.example.com/> to a \s-1URL\s0.
 ###

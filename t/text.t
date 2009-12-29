@@ -19,7 +19,7 @@ BEGIN {
 use strict;
 
 use Pod::Simple;
-use Test::More tests => 7;
+use Test::More tests => 8;
 BEGIN { use_ok ('Pod::Text') }
 
 my $parser = Pod::Text->new;
@@ -135,5 +135,15 @@ text
       line1
   
       line3
+
+###
+
+###
+=head1 LINK TO URL
+
+This is a L<link|http://www.example.com/> to a URL.
+###
+LINK TO URL
+    This is a link <http://www.example.com/> to a URL.
 
 ###
