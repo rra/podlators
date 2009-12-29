@@ -51,7 +51,7 @@ DESCRIPTION
 REQUIREMENTS
 
   Both Pod::Man and Pod::Text are built on Pod::Simple, which handles the
-  basic POD parsing and character set conversion.  Pod::Simple 3.04 or
+  basic POD parsing and character set conversion.  Pod::Simple 3.06 or
   later is required (and Pod::Simple 3.07 is recommended).  It is
   available from CPAN and part of Perl core as of 5.10.0.
 
@@ -64,6 +64,9 @@ REQUIREMENTS
   required for Pod::Text to set the output encoding to match the input
   encoding; without this, the output will use Perl's internal encoding,
   which may be surprising and may produce Perl warnings.
+
+  To run the test suite, Test::More is required.  It is available from
+  CPAN and part of Perl core as of 5.6.2.
 
   The test suite includes a formatting and spelling check of all of the
   POD documentation.  To check formatting, Test::Pod is required.  To
