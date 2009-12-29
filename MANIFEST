@@ -19,10 +19,13 @@ t/basic.pod
 t/basic.t
 t/basic.txt
 t/color.t
+t/devise-date.t
 t/filehandle.t
+t/man-heading.t
 t/man-options.t
 t/man-utf8.t
 t/man.t
+t/overstrike.t
 t/parselink.t
 t/pod-parser.t
 t/pod-spelling.t
