@@ -32,7 +32,7 @@
 	(item): When formatting item tags, use the width of the tag
 	without formatting codes.  This does not change the output of
 	Pod::Text but provides a hook for correct formatting in
-	subclasses.
+	subclasses.  Thanks, David Hull.
 	* lib/Pod/Text/Color.pm (strip_format): New function.
 	* lib/Pod/Text/Termcap.pm (strip_format): New function.
 	* t/color.t: Test proper formatting of item tags which have
