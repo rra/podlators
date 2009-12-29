@@ -49,12 +49,7 @@ while (<DATA>) {
         last if $_ eq "###\n";
         $expected .= $_;
     }
-  SKIP: {
-        skip 'Pod::Simple S<> parsing bug', 1
-            if ($output ne $expected && $n == 3
-                && $Pod::Simple::VERSION < 3.06);
-        is ($output, $expected, "Output correct for test $n");
-    }
+    is ($output, $expected, "Output correct for test $n");
     $n++;
 }
 

@@ -1,5 +1,10 @@
 2009-12-28  Russ Allbery  <rra@stanford.edu>
 
+	* Makefile.PL: Require Pod::Simple 3.06 or later for proper
+	handling of L<> tags with anchor text.
+	* t/text.t: Remove logic to skip an S<> test for Pod::Simple
+	versions earlier than 3.06.
+
 	* lib/Pod/Man.pm (cmd_l): Support anchor text for L<> links of
 	type URL by rendering the anchor text and then the URL in angle
 	brackets.
