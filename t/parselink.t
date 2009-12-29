@@ -84,7 +84,16 @@ our @TESTS = (
 
     [ 'news:yld72axzc8.fsf@windlord.stanford.edu',
       undef, 'news:yld72axzc8.fsf@windlord.stanford.edu',
-      'news:yld72axzc8.fsf@windlord.stanford.edu', undef, 'url' ]
+      'news:yld72axzc8.fsf@windlord.stanford.edu', undef, 'url' ],
+
+    [ 'link|http://www.perl.org/',
+      'link', 'link', 'http://www.perl.org/', undef, 'url' ],
+
+    [ '0|http://www.perl.org/',
+      '0', '0', 'http://www.perl.org/', undef, 'url' ],
+
+    [ '0|Pod::Parser',
+      '0', '0', 'Pod::Parser', undef, 'pod' ],
 );
 
 BEGIN {
@@ -95,7 +104,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 25;
+use Test::More tests => 28;
 BEGIN { use_ok ('Pod::ParseLink') }
 
 # Used for reporting test failures.

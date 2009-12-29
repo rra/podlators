@@ -1,5 +1,11 @@
 2009-12-28  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/ParseLink.pm (parselink): Allow anchor text for URLs as
+	well.  Fix the check of the anchor text to not think no text was
+	provided when the text was "0".
+	* t/parselink.t: Test anchor text of "0" and anchor text with
+	URLs.
+
 	* Makefile.PL: Require Pod::Simple 3.06 or later for proper
 	handling of L<> tags with anchor text.
 	* t/text.t: Remove logic to skip an S<> test for Pod::Simple
