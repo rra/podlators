@@ -1,3 +1,8 @@
+2010-02-17  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Text/Color.pm: Update $VERSION for recent changes.
+	* lib/Pod/Text/Termcap.pm: Likewise.
+
 2009-12-28  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.3.0 released.
