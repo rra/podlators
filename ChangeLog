@@ -8,6 +8,7 @@
 	without PerlIO and set a flag indicating whether to encode on the
 	fly on output.
 	* lib/Pod/Text.pm: Likewise.
+	* Makefile.PL: Mark Encode as required.
 	* t/man-perlio.t: Test Pod::Man output to a file handle with a
 	PerlIO encoding layer already applied.
 	* t/text-perlio.t: Likewise for Pod::Text.
