@@ -1,3 +1,17 @@
+2010-10-10  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (output): If the utf8 option is given, encode
+	output in UTF-8 if there is no encoding layer.  Now requires the
+	Encode module.
+	(start_document): Rather than forcibly change the PerlIO encoding
+	layer, probe the PerlIO layers with protection for Perl versions
+	without PerlIO and set a flag indicating whether to encode on the
+	fly on output.
+	* lib/Pod/Text.pm: Likewise.
+	* t/man-perlio.t: Test Pod::Man output to a file handle with a
+	PerlIO encoding layer already applied.
+	* t/text-perlio.t: Likewise for Pod::Text.
+
 2010-02-17  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.3.1 released.

@@ -31,11 +31,12 @@ use subs qw(makespace);
 use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 
 use Carp qw(croak);
+use Encode qw(encode);
 use Pod::Simple ();
 
 @ISA = qw(Pod::Simple);
 
-$VERSION = '2.23';
+$VERSION = '2.24';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -723,7 +724,11 @@ sub outindex {
 # Output some text, without any additional changes.
 sub output {
     my ($self, @text) = @_;
-    print { $$self{output_fh} } @text;
+    if ($$self{ENCODE}) {
+        print { $$self{output_fh} } encode ('UTF-8', join ('', @text));
+    } else {
+        print { $$self{output_fh} } @text;
+    }
 }
 
 ##############################################################################
@@ -740,17 +745,19 @@ sub start_document {
         return;
     }
 
-    # If we were given the utf8 option, set an output encoding on our file
-    # handle.  Wrap in an eval in case we're using a version of Perl too old
-    # to understand this.
-    #
-    # This is evil because it changes the global state of a file handle that
-    # we may not own.  However, we can't just blindly encode all output, since
-    # there may be a pre-applied output encoding (such as from PERL_UNICODE)
-    # and then we would double-encode.  This seems to be the least bad
-    # approach.
+    # When UTF-8 output is set, check whether our output file handle already
+    # has a PerlIO encoding layer set.  If it does not, we'll need to encode
+    # our output before printing it (handled in the output() sub).  Wrap the
+    # check in an eval to handle versions of Perl without PerlIO.
+    $$self{ENCODE} = 0;
     if ($$self{utf8}) {
-        eval { binmode ($$self{output_fh}, ':encoding(UTF-8)') };
+        $$self{ENCODE} = 1;
+        eval {
+            my @layers = PerlIO::get_layers ($$self{output_fh});
+            if (grep { $_ eq 'utf8' } @layers) {
+                $$self{ENCODE} = 0;
+            }
+        }
     }
 
     # Determine information for the preamble and then output it.
