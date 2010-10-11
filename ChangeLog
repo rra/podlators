@@ -1,5 +1,13 @@
 2010-10-10  Russ Allbery  <rra@stanford.edu>
 
+	* scripts/pod2man: Remove the code to generate the #! line and
+	supporting code and instead rely on ExtUtils::MakeMaker to handle
+	that during package build.
+	* scripts/pod2text: Likewise.
+	* scripts/pod2man.PL: Renamed to pod2man.
+	* scripts/pod2text.PL: Renamed to pod2text.
+	* Makefile.PL: Remove PL_FILES section.
+
 	* pod/perlpodstyle.pod: New style guide for POD documentation,
 	split mostly from the NOTES section of the pod2man man page.
 	* scripts/pod2man.PL: Remove NOTES section, now maintained as the

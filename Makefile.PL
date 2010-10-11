@@ -31,8 +31,6 @@ WriteMakefile (
     DISTNAME      => 'podlators',
     ($] >= 5.006 ?
      (INSTALLDIRS => 'perl') : ()),
-    PL_FILES      => { script ('pod2text.PL', 'pod2text'),
-                       script ('pod2man.PL', 'pod2man') },
     EXE_FILES     => [ script ('pod2text', 'pod2man') ],
     MAN1PODS      => { man1pod ('scripts', 'pod2man'),
                        man1pod ('scripts', 'pod2text'),
