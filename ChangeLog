@@ -1,5 +1,11 @@
 2010-10-10  Russ Allbery  <rra@stanford.edu>
 
+	* pod/perlpodstyle.pod: New style guide for POD documentation,
+	split mostly from the NOTES section of the pod2man man page.
+	* scripts/pod2man.PL: Remove NOTES section, now maintained as the
+	separate perlpodstyle document.
+	* Makefile.PL: Add perlpodstyle.1 to the generated man pages.
+
 	* lib/Pod/Man.pm (cmd_para): Do not strip escaped trailing
 	whitespace, such as that created by S<> at the end of a line,
 	since the backslash is then taken by *roff as escaping the

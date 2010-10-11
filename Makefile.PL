@@ -1,5 +1,7 @@
 # Makefile.PL for podlators.
 
+use Config;
+
 BEGIN {
     require 5.004;
     eval { require File::Spec };
@@ -10,6 +12,15 @@ BEGIN {
 sub script {
     my @scripts = map { File::Spec->catfile ('scripts', $_) } @_;
     wantarray ? @scripts : join (' ', @scripts);
+}
+
+sub man1pod {
+    my ($dir, $file) = @_;
+    my $base = $file;
+    $base =~ s/\..*//;
+    my $output = File::Spec->catfile ('blib', 'man1',
+                                      $base . '.' . $Config{man1ext});
+    return File::Spec->catfile ($dir, $file), $output;
 }
 
 # Install the modules into the Perl core directory for versions of Perl at
@@ -23,6 +34,9 @@ WriteMakefile (
     PL_FILES      => { script ('pod2text.PL', 'pod2text'),
                        script ('pod2man.PL', 'pod2man') },
     EXE_FILES     => [ script ('pod2text', 'pod2man') ],
+    MAN1PODS      => { man1pod ('scripts', 'pod2man'),
+                       man1pod ('scripts', 'pod2text'),
+                       man1pod ('pod', 'perlpodstyle.pod') },
     PREREQ_PM     => { 'Encode'      => 0,
                        'File::Spec'  => 0.8,
                        'Pod::Simple' => 3.06 },
