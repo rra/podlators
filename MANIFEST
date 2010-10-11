@@ -9,8 +9,9 @@ Makefile.PL
 MANIFEST
 NOTES
 README
-scripts/pod2man.PL
-scripts/pod2text.PL
+pod/perlpodstyle.pod
+scripts/pod2man
+scripts/pod2text
 t/basic.cap
 t/basic.clr
 t/basic.man
@@ -23,6 +24,7 @@ t/devise-date.t
 t/filehandle.t
 t/man-heading.t
 t/man-options.t
+t/man-perlio.t
 t/man-utf8.t
 t/man.t
 t/overstrike.t
@@ -33,6 +35,7 @@ t/pod.t
 t/termcap.t
 t/text-encoding.t
 t/text-options.t
+t/text-perlio.t
 t/text-utf8.t
 t/text.t
 THANKS
