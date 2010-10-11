@@ -1,8 +1,7 @@
-META.yml
-Makefile
-Makefile.old
-podlators-*.tar.gz
-podlators-*.tar.gz.asc
-podlators-*.tar.gz.md5
-blib
-pm_to_blib
+/META.yml
+/Makefile
+/Makefile.old
+/podlators-*.tar.gz
+/podlators-*.tar.gz.asc
+/blib/
+/pm_to_blib
