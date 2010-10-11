@@ -1,7 +1,7 @@
 # Pod::Man -- Convert POD data to formatted *roff input.
 #
-# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
-#     Russ Allbery <rra@stanford.edu>
+# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
+#     2010 Russ Allbery <rra@stanford.edu>
 # Substantial contributions by Sean Burke <sburke@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -36,7 +36,7 @@ use Pod::Simple ();
 
 @ISA = qw(Pod::Simple);
 
-$VERSION = '2.24';
+$VERSION = '2.25';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -956,8 +956,9 @@ sub cmd_para {
         if defined ($line) && DEBUG && !$$self{IN_NAME};
 
     # Force exactly one newline at the end and strip unwanted trailing
-    # whitespace at the end.
-    $text =~ s/\s*$/\n/;
+    # whitespace at the end, but leave "\ " backslashed space from an S< >
+    # at the end of a line.
+    $text =~ s/((?:\\ )*)\s*$/$1\n/;
 
     # Output the paragraph.
     $self->output ($self->protect ($self->textmapfonts ($text)));
