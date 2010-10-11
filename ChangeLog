@@ -1,5 +1,7 @@
 2010-10-10  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.4.0 released.
+
 	* scripts/pod2man: Remove the code to generate the #! line and
 	supporting code and instead rely on ExtUtils::MakeMaker to handle
 	that during package build.
