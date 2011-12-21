@@ -1,3 +1,8 @@
+2011-12-20  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm: Fix the ASCII fallback string for the AE
+	ligature to use the string that was actually defined.
+
 2010-10-10  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.4.0 released.

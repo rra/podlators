@@ -1321,7 +1321,7 @@ sub parse_from_filehandle {
     undef, undef, undef, undef,            undef, undef, undef, undef,
     undef, undef, undef, undef,            undef, undef, undef, undef,
 
-    "A\\*`",  "A\\*'", "A\\*^", "A\\*~",   "A\\*:", "A\\*o", "\\*(AE", "C\\*,",
+    "A\\*`",  "A\\*'", "A\\*^", "A\\*~",   "A\\*:", "A\\*o", "\\*(Ae", "C\\*,",
     "E\\*`",  "E\\*'", "E\\*^", "E\\*:",   "I\\*`", "I\\*'", "I\\*^",  "I\\*:",
 
     "\\*(D-", "N\\*~", "O\\*`", "O\\*'",   "O\\*^", "O\\*~", "O\\*:",  undef,
