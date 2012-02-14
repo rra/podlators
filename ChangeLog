@@ -1,3 +1,8 @@
+2012-02-14  Russ Allbery  <rra@stanford.edu>
+
+	* Makefile.PL: Stop removing pod2man and pod2text on make
+	realclean, left over from when they were *.PL scripts.  (#74848)
+
 2011-12-20  Russ Allbery  <rra@stanford.edu>
 
 	* lib/Pod/Man.pm: Fix the ASCII fallback string for the AE

@@ -44,5 +44,4 @@ WriteMakefile (
     ($] >= 5.010 ?
      (LICENSE     => 'perl') : ()),
     VERSION_FROM  => 'VERSION',
-    realclean     => { FILES => scalar script ('pod2text', 'pod2man') }
 );
