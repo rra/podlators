@@ -1,5 +1,15 @@
 2012-05-26  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (start_document): Remove CONTENTLESS parser state
+	between documents.
+	* lib/Pod/Text.pm (start_document): Set CONTENTLESS in the parser
+	if the document contained no content.
+	* scripts/pod2man: Report an error and remove the empty output
+	file if the input file had no content (if it did not exist, for
+	example).  Exit with non-zero status if there were any errors.
+	Based on a patch by Dmitry Smirnov.  (#75099)
+	* scripts/pod2text: Likewise.
+
 	* lib/Pod/Man.pm (cmd_l): Format the URL text before comparing it
 	to the anchor when deciding whether to show separate anchor text.
 	This avoids spurious mismatches between the URL target and anchor
