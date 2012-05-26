@@ -4,6 +4,10 @@ This is a somewhat random and unordered list of things I'd like to see
 fixed or improved, but which I've not yet had a chance to do.  Patches for
 any of the following are very much welcome.
 
+ * Suppress the URL for L<|> if the link is just the anchor part of the
+   tag with mailto: added to the front.  Also strip the mailto: part if
+   there is no anchor text.
+
  * There should be some way to turn off all heuristics when people are
    using POD for some purpose other than Perl or some other programming
    language with similar needs.  The hooks are there in the code but we
