@@ -1382,8 +1382,8 @@ sub preamble_template {
 .    ds PI \(*p
 .    ds L" ``
 .    ds R" ''
-.    ds C` "
-.    ds C' "
+.    ds C`
+.    ds C'
 'br\}
 .\"
 .\" Escape single quotes in literal strings from groff's Unicode transform.
@@ -1406,6 +1406,7 @@ sub preamble_template {
 ..
 .\}
 ----END OF PREAMBLE----
+#"# for cperl-mode
 
     if ($accents) {
         $preamble .= <<'----END OF PREAMBLE----'
