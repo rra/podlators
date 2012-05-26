@@ -2,7 +2,8 @@
 #
 # text.t -- Additional specialized tests for Pod::Text.
 #
-# Copyright 2002, 2004, 2006, 2007, 2008, 2009 Russ Allbery <rra@stanford.edu>
+# Copyright 2002, 2004, 2006, 2007, 2008, 2009, 2012
+#     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -19,7 +20,7 @@ BEGIN {
 use strict;
 
 use Pod::Simple;
-use Test::More tests => 8;
+use Test::More tests => 9;
 BEGIN { use_ok ('Pod::Text') }
 
 my $parser = Pod::Text->new;
@@ -140,5 +141,15 @@ This is a L<link|http://www.example.com/> to a URL.
 ###
 LINK TO URL
     This is a link <http://www.example.com/> to a URL.
+
+###
+
+###
+=head1 RT LINK
+
+L<[perl #12345]|https://rt.cpan.org/12345>
+###
+RT LINK
+    [perl #12345] <https://rt.cpan.org/12345>
 
 ###

@@ -2,7 +2,7 @@
 #
 # man.t -- Additional specialized tests for Pod::Man.
 #
-# Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010
+# Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2012
 #     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -19,7 +19,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 32;
+use Test::More tests => 33;
 BEGIN { use_ok ('Pod::Man') }
 
 # Test whether we can use binmode to set encoding.
@@ -539,4 +539,14 @@ L<http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.7.pod>.
 .IX Header "URL LINK"
 The newest version of this document is also available on the World Wide Web at
 <http://pod.tst.eu/http://cvs.schmorp.de/rxvt\-unicode/doc/rxvt.7.pod>.
+###
+
+###
+=head1 RT LINK
+
+L<[perl #12345]|https://rt.cpan.org/12345>
+###
+.SH "RT LINK"
+.IX Header "RT LINK"
+[perl #12345] <https://rt.cpan.org/12345>
 ###

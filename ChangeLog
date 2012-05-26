@@ -1,5 +1,8 @@
 2012-05-26  Russ Allbery  <rra@stanford.edu>
 
+	* t/man.t: Add another test for anchor text based on an RT ticket.
+	* t/text.t: Likewise.
+
 	* lib/Pod/Man.pm (start_document): Request details on PerlIO
 	layers to look for the UTF8 flag, which is not a layer in its own
 	right.  Based on a patch from Leon Timmermans.  (perl #76440)
