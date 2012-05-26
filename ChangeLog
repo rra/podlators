@@ -1,5 +1,11 @@
 2012-05-26  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (preamble_template): Fix handling of the F
+	register when processing multiple documents at once.  .IX will now
+	continue to be defined for documents after the first, and the page
+	number will not be reset at the start of each document.  Thanks to
+	Nicholas Clark for the analysis.  (perl #103202)
+
 	* lib/Pod/Man.pm (start_document): Remove CONTENTLESS parser state
 	between documents.
 	* lib/Pod/Text.pm (start_document): Set CONTENTLESS in the parser

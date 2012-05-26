@@ -49,7 +49,8 @@ between consecutive =item tags in lists and for explaining \fP and how to
 prevent escapes like C<> from breaking the font in headings.
 
 Nicholas Clark, for the original patch to pod2man to allow it to process
-multiple files with one invocation.
+multiple files with one invocation and for the analysis of problems with F
+register handling with roffitall.
 
 Joe Smith, for Pod::Text::Overstrike.
 

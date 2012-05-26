@@ -1408,13 +1408,15 @@ sub preamble_template {
 ..
 .nr rF 0
 .if \n(.g .if rF .nr rF 1
-.if (\n(rF : (\n(.g == 0)) \{
+.if (\n(rF:(\n(.g==0)) \{
 .    if \nF \{
 .        de IX
 .        tm Index:\\$1\t\\n%\t"\\$2"
 ..
-.        nr % 0
-.        rr F
+.        if !\nF==2 \{
+.            nr % 0
+.            nr F 2
+.        \}
 .    \}
 .\}
 .rr rF
