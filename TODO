@@ -8,6 +8,11 @@ any of the following are very much welcome.
    tag with mailto: added to the front.  Also strip the mailto: part if
    there is no anchor text.
 
+ * Add a test suite for the pod2man and pod2text driver programs.  This
+   will probably require restructuring them so that they can be loaded
+   with require, since otherwise it's too difficult to figure out how to
+   run them with Perl.
+
  * There should be some way to turn off all heuristics when people are
    using POD for some purpose other than Perl or some other programming
    language with similar needs.  The hooks are there in the code but we
