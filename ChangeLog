@@ -2,11 +2,9 @@
 
 	* lib/Pod/Man.pm (preamble_template): Define \*(C` and \*(C' to
 	the empty string when processed through troff to avoid groff
-	warnings.  Thanks, Bjarni Ingi Gislason.
-
-	* lib/Pod/Man.pm (preamble_template): Avoid warnings from checking
-	the F register (used to enable index output) when running under
-	groff.  Patch from Bjarni Ingi Gislason.
+	warnings.  Avoid warnings from checking the F register (used to
+	enable index output) when running under groff.  Patch from Bjarni
+	Ingi Gislason.
 
 2012-02-14  Russ Allbery  <rra@stanford.edu>
 
