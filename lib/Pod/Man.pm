@@ -1394,19 +1394,24 @@ sub preamble_template {
 .\" titles (.TH), headers (.SH), subsections (.SS), items (.Ip), and index
 .\" entries marked with X<> in POD.  Of course, you'll have to process the
 .\" output yourself in some meaningful fashion.
-.ie \nF \{\
-.    de IX
-.    tm Index:\\$1\t\\n%\t"\\$2"
+.\"
+.\" Avoid warning from groff about undefined register 'F'.
+.de IX
 ..
-.    nr % 0
-.    rr F
-.\}
-.el \{\
-.    de IX
+.nr rF 0
+.if \n(.g .if rF .nr rF 1
+.if (\n(rF : (\n(.g == 0)) \{
+.    if \nF \{
+.        de IX
+.        tm Index:\\$1\t\\n%\t"\\$2"
 ..
+.        nr % 0
+.        rr F
+.    \}
 .\}
+.rr rF
 ----END OF PREAMBLE----
-#"# for cperl-mode
+#'# for cperl-mode
 
     if ($accents) {
         $preamble .= <<'----END OF PREAMBLE----'
