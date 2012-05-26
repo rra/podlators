@@ -90,7 +90,7 @@ pod2text - Convert POD data to formatted ASCII text
 
 =for stopwords
 -aclostu --alt --stderr Allbery --overstrike overstrike --termcap --utf8
-UTF-8
+UTF-8 subclasses
 
 =head1 SYNOPSIS
 
