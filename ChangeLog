@@ -4,14 +4,14 @@
 	to the anchor when deciding whether to show separate anchor text.
 	This avoids spurious mismatches between the URL target and anchor
 	text because the anchor text was already formatted and has (for
-	example) hyphens escaped.
+	example) hyphens escaped.  (#76396)
 	* t/man.t: Test L<> formatting codes with URLs containing hyphens.
 
 	* lib/Pod/Man.pm (preamble_template): Define \*(C` and \*(C' to
 	the empty string when processed through troff to avoid groff
 	warnings.  Avoid warnings from checking the F register (used to
 	enable index output) when running under groff.  Patch from Bjarni
-	Ingi Gislason.
+	Ingi Gislason.  (#75434)
 
 2012-02-14  Russ Allbery  <rra@stanford.edu>
 
