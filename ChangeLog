@@ -1,5 +1,10 @@
 2012-05-26  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (start_document): Request details on PerlIO
+	layers to look for the UTF8 flag, which is not a layer in its own
+	right.  Based on a patch from Leon Timmermans.  (perl #76440)
+	* lib/Pod/Text.pm (start_document): Likewise.
+
 	* lib/Pod/Man.pm (preamble_template): Fix handling of the F
 	register when processing multiple documents at once.  .IX will now
 	continue to be defined for documents after the first, and the page
