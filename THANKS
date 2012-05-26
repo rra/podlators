@@ -173,3 +173,7 @@ zero-length formatting codes and providing a patch to fix the problem.
 
 Bjarni Ingi Gislason, for help in suppressing groff warnings from
 undefined strings and numeric registers.
+
+James E. Keenan, for reporting an issue with formatting L<> links
+containing only URLs when the URL receives some formatting (such as
+escaping of hyphens).

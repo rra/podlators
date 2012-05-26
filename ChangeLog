@@ -1,5 +1,12 @@
 2012-05-26  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (cmd_l): Format the URL text before comparing it
+	to the anchor when deciding whether to show separate anchor text.
+	This avoids spurious mismatches between the URL target and anchor
+	text because the anchor text was already formatted and has (for
+	example) hyphens escaped.
+	* t/man.t: Test L<> formatting codes with URLs containing hyphens.
+
 	* lib/Pod/Man.pm (preamble_template): Define \*(C` and \*(C' to
 	the empty string when processed through troff to avoid groff
 	warnings.  Avoid warnings from checking the F register (used to

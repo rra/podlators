@@ -1106,11 +1106,17 @@ sub cmd_x {
 }
 
 # Links reduce to the text that we're given, wrapped in angle brackets if it's
-# a URL.
+# a URL.  We need to format the "to" value of the link before comparing it to
+# the text since we may escape hyphens.
 sub cmd_l {
     my ($self, $attrs, $text) = @_;
     if ($$attrs{type} eq 'url') {
-        if (not defined($$attrs{to}) or $$attrs{to} eq $text) {
+        my $to = $$attrs{to};
+        if (defined $to) {
+            my $tag = $$self{PENDING}[-1];
+            $to = $self->format_text ($$tag[1], $to);
+        }
+        if (not defined ($to) or $to eq $text) {
             return "<$text>";
         } else {
             return "$text <$$attrs{to}>";

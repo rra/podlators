@@ -19,7 +19,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 31;
+use Test::More tests => 32;
 BEGIN { use_ok ('Pod::Man') }
 
 # Test whether we can use binmode to set encoding.
@@ -527,4 +527,16 @@ Hello\
 world\ \ \ 
 .PP
 \&.
+###
+
+###
+=head1 URL LINK
+
+The newest version of this document is also available on the World Wide Web at
+L<http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.7.pod>.
+###
+.SH "URL LINK"
+.IX Header "URL LINK"
+The newest version of this document is also available on the World Wide Web at
+<http://pod.tst.eu/http://cvs.schmorp.de/rxvt\-unicode/doc/rxvt.7.pod>.
 ###
