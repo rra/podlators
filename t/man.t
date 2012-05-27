@@ -30,7 +30,7 @@ isa_ok ($parser, 'Pod::Man', 'Parser object');
 my $n = 1;
 while (<DATA>) {
     next until $_ eq "###\n";
-    open (TMP, '> tmp.pod') or die "Cannot create tmp.pod: $!\n";
+    open (TMP, "> tmp$$.pod") or die "Cannot create tmp$$.pod: $!\n";
 
     # We have a test in ISO 8859-1 encoding.  Make sure that nothing strange
     # happens if Perl thinks the world is Unicode.  Wrap this in eval so that
@@ -42,10 +42,10 @@ while (<DATA>) {
         print TMP $_;
     }
     close TMP;
-    open (OUT, '> out.tmp') or die "Cannot create out.tmp: $!\n";
-    $parser->parse_from_file ('tmp.pod', \*OUT);
+    open (OUT, "> out$$.tmp") or die "Cannot create out$$.tmp: $!\n";
+    $parser->parse_from_file ("tmp$$.pod", \*OUT);
     close OUT;
-    open (OUT, 'out.tmp') or die "Cannot open out.tmp: $!\n";
+    open (OUT, "out$$.tmp") or die "Cannot open out$$.tmp: $!\n";
     while (<OUT>) { last if /^\.nh/ }
     my $output;
     {
@@ -53,7 +53,7 @@ while (<DATA>) {
         $output = <OUT>;
     }
     close OUT;
-    1 while unlink ('tmp.pod', 'out.tmp');
+    1 while unlink ("tmp$$.pod", "out$$.tmp");
     my $expected = '';
     while (<DATA>) {
         last if $_ eq "###\n";

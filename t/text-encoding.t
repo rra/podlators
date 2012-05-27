@@ -2,7 +2,7 @@
 #
 # text-encoding.t -- Test Pod::Text with various weird encoding combinations.
 #
-# Copyright 2002, 2004, 2006, 2007, 2008, 2009
+# Copyright 2002, 2004, 2006, 2007, 2008, 2009, 2012
 #     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -44,18 +44,18 @@ while (<DATA>) {
     next until $_ eq "###\n";
     my $parser = Pod::Text->new (%opts);
     isa_ok ($parser, 'Pod::Text', 'Parser object');
-    open (TMP, '> tmp.pod') or die "Cannot create tmp.pod: $!\n";
+    open (TMP, "> tmp$$.pod") or die "Cannot create tmp$$.pod: $!\n";
     eval { binmode (\*TMP, ':raw') };
     while (<DATA>) {
         last if $_ eq "###\n";
         print TMP $_;
     }
     close TMP;
-    open (OUT, '> out.tmp') or die "Cannot create out.tmp: $!\n";
+    open (OUT, "> out$$.tmp") or die "Cannot create out$$.tmp: $!\n";
     eval { binmode (\*OUT, ':raw') };
-    $parser->parse_from_file ('tmp.pod', \*OUT);
+    $parser->parse_from_file ("tmp$$.pod", \*OUT);
     close OUT;
-    open (TMP, 'out.tmp') or die "Cannot open out.tmp: $!\n";
+    open (TMP, "out$$.tmp") or die "Cannot open out$$.tmp: $!\n";
     eval { binmode (\*TMP, ':raw') };
     my $output;
     {
@@ -63,7 +63,7 @@ while (<DATA>) {
         $output = <TMP>;
     }
     close TMP;
-    1 while unlink ('tmp.pod', 'out.tmp');
+    1 while unlink ("tmp$$.pod", "out$$.tmp");
     my $expected = '';
     while (<DATA>) {
         last if $_ eq "###\n";

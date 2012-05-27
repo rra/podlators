@@ -28,23 +28,23 @@ isa_ok ($parser, 'Pod::Text', 'Parser object');
 my $n = 1;
 while (<DATA>) {
     next until $_ eq "###\n";
-    open (TMP, '> tmp.pod') or die "Cannot create tmp.pod: $!\n";
+    open (TMP, "> tmp$$.pod") or die "Cannot create tmp$$.pod: $!\n";
     while (<DATA>) {
         last if $_ eq "###\n";
         print TMP $_;
     }
     close TMP;
-    open (OUT, '> out.tmp') or die "Cannot create out.tmp: $!\n";
-    $parser->parse_from_file ('tmp.pod', \*OUT);
+    open (OUT, "> out$$.tmp") or die "Cannot create out$$.tmp: $!\n";
+    $parser->parse_from_file ("tmp$$.pod", \*OUT);
     close OUT;
-    open (TMP, 'out.tmp') or die "Cannot open out.tmp: $!\n";
+    open (TMP, "out$$.tmp") or die "Cannot open out$$.tmp: $!\n";
     my $output;
     {
         local $/;
         $output = <TMP>;
     }
     close TMP;
-    1 while unlink ('tmp.pod', 'out.tmp');
+    1 while unlink ("tmp$$.pod", "out$$.tmp");
     my $expected = '';
     while (<DATA>) {
         last if $_ eq "###\n";
