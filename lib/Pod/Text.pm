@@ -686,6 +686,17 @@ sub parse_from_filehandle {
     $self->parse_from_file (@_);
 }
 
+# Pod::Simple's parse_file doesn't set output_fh.  Wrap the call and do so
+# ourself unless it was already set by the caller, since our documentation has
+# always said that this should work.
+sub parse_file {
+    my ($self, $in) = @_;
+    unless (defined $$self{output_fh}) {
+        $self->output_fh (\*STDOUT);
+    }
+    return $self->SUPER::parse_file ($in);
+}
+
 ##############################################################################
 # Module return value and documentation
 ##############################################################################

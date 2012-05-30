@@ -1,3 +1,9 @@
+2012-05-30  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (parse_file): Override the Pod::Simple method to
+	set output_fh to STDOUT if it's not already set.  (#77530)
+	* lib/Pod/Text.pm (parse_file): Likewise.
+
 2012-05-26  Russ Allbery  <rra@stanford.edu>
 
 	* t/basic.t: Embed PID in file names to avoid conflicts when
