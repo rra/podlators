@@ -7,7 +7,7 @@
 2012-05-26  Russ Allbery  <rra@stanford.edu>
 
 	* t/basic.t: Embed PID in file names to avoid conflicts when
-	running the test suite in parallel.
+	running the test suite in parallel.  (#62083)
 	* t/color.t: Likewise.
 	* t/filehandle.t: Likewise.
 	* t/man-heading.t: Likewise.
