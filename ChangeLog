@@ -1,5 +1,7 @@
 2012-05-30  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.4.1 released.
+
 	* lib/Pod/Man.pm (parse_file): Override the Pod::Simple method to
 	set output_fh to STDOUT if it's not already set.  (#77530)
 	* lib/Pod/Text.pm (parse_file): Likewise.
