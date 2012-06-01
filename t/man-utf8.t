@@ -97,8 +97,6 @@ __DATA__
 ###
 utf8 1
 ###
-=encoding utf-8
-
 =head1 BEYONCÉ
 
 Beyoncé!  Beyoncé!  Beyoncé!!
@@ -125,8 +123,6 @@ Older versions did not convert Beyoncé in verbatim.
 ###
 utf8 1
 ###
-=encoding utf-8
-
 =head1 SE<lt>E<gt> output with UTF-8
 
 This is S<non-breaking output>.
