@@ -1,5 +1,8 @@
 2012-06-01  Russ Allbery  <rra@stanford.edu>
 
+	* t/man-utf8.t: Explicitly declare UTF-8 encoding for UTF-8 tests.
+	* t/text-utf8.t: Likewise.
+
 	* t/text-encoding.t: Remove the test of a POD document without an
 	encoding.  We previously tested that this interpreted the document
 	as ISO 8859-1, but Pod::Simple behavior has changed so that the

@@ -77,6 +77,8 @@ while (<DATA>) {
 __DATA__
 
 ###
+=encoding utf-8
+
 =head1 Test of SE<lt>E<gt>
 
 This is S<some whitespace>.
@@ -87,6 +89,8 @@ Test of S<>
 ###
 
 ###
+=encoding utf-8
+
 =head1 I can eat glass
 
 =over 4
