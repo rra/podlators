@@ -1,5 +1,7 @@
 2012-06-01  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.4.2 released.
+
 	* t/man-utf8.t: Explicitly declare UTF-8 encoding for UTF-8 tests.
 	* t/text-utf8.t: Likewise.
 
