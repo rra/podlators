@@ -26,7 +26,7 @@ BEGIN {
     if ($] < 5.008) {
         plan skip_all => 'Perl 5.8 required for encoding support';
     } else {
-        plan tests => 7;
+        plan tests => 5;
     }
 }
 BEGIN { use_ok ('Pod::Text') }
@@ -40,7 +40,6 @@ eval { binmode ($builder->failure_output, ':raw') };
 my $n = 1;
 while (<DATA>) {
     my %opts;
-    $opts{utf8} = 1 if $n == 3;
     next until $_ eq "###\n";
     my $parser = Pod::Text->new (%opts);
     isa_ok ($parser, 'Pod::Text', 'Parser object');
@@ -127,10 +126,4 @@ I can eat glass
 
     See <http://www.columbia.edu/kermit/utf8.html>
 
-###
-
-###
-=head1 Beyoncé
-###
-BeyoncÃ©
 ###

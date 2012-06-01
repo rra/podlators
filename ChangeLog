@@ -1,3 +1,11 @@
+2012-06-01  Russ Allbery  <rra@stanford.edu>
+
+	* t/text-encoding.t: Remove the test of a POD document without an
+	encoding.  We previously tested that this interpreted the document
+	as ISO 8859-1, but Pod::Simple behavior has changed so that the
+	test started failing, plus Pod::Simple now warns about a missing
+	=encoding.  (#77553)
+
 2012-05-30  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.4.1 released.
