@@ -6,10 +6,11 @@ lib/Pod/Text/Color.pm
 lib/Pod/Text/Overstrike.pm
 lib/Pod/Text/Termcap.pm
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
+MYMETA.yml
 NOTES
-README
 pod/perlpodstyle.pod
+README
 scripts/pod2man
 scripts/pod2text
 t/basic.cap

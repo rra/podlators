@@ -144,7 +144,8 @@ macro when indexing is not requested, thus suppressing groff warnings.
 
 Kevin Ryde, for diagnosing and providing a patch for the =head2 problem
 with some *roff implementations "looking through" the font escapes at the
-beginning of a line and still seeing *roff metacharacters.
+beginning of a line and still seeing *roff metacharacters, and for finding
+and fixing an issue with X<> formatting codes containing newlines.
 
 Steve Peters, for finding a problem with font settings in headings with
 multiple C<> formatting codes.
