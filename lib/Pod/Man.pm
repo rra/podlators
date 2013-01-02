@@ -493,11 +493,16 @@ sub guesswork {
     # line or following regular punctuation (like quotes) or whitespace (1),
     # and followed by either similar punctuation, an em-dash, or the end of
     # the line (3).
+    #
+    # Allow the text we're changing to small caps to include double quotes,
+    # commas, newlines, and periods as long as it doesn't otherwise interrupt
+    # the string of small caps and still fits the criteria.  This lets us turn
+    # entire warranty disclaimers in man page output into small caps.
     if ($$self{MAGIC_SMALLCAPS}) {
         s{
-            ( ^ | [\s\(\"\'\`\[\{<>] | \\\  )                   # (1)
-            ( [A-Z] [A-Z] (?: [/A-Z+:\d_\$&] | \\- )* )         # (2)
-            (?= [\s>\}\]\(\)\'\".?!,;] | \\*\(-- | \\\  | $ )   # (3)
+            ( ^ | [\s\(\"\'\`\[\{<>] | \\[ ]  )                     # (1)
+            ( [A-Z] [A-Z] (?: [/A-Z+:\d_\$&] | \\- | [.,\"\s] )* )  # (2)
+            (?= [\s>\}\]\(\)\'\".?!,;] | \\*\(-- | \\[ ] | $ )      # (3)
         } {
             $1 . '\s-1' . $2 . '\s0'
         }egx;

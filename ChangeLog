@@ -1,10 +1,17 @@
 2013-01-02  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (guesswork): Extend a small-caps section through
+	the punctuation that commonly appears in license disclaimers so
+	that small caps isn't turned on and off at the boundaries of every
+	word, producing unreadable *roff.
+	* t/man.t: Test the updated small-caps behavior.
+
 	* lib/Pod/Man.pm (new): Support a new errors option with values
 	die, stderr, pod, and none.  Convert the stderr option to the
 	errors option with value stderr.  (#39007)
 	(end_document): Die if errors was set to die and there were POD
 	syntax errors.
+
 	* lib/Pod/Text.pm (new): Likewise.
 	(end_document): Likewise.
 	* scripts/pod2man: Support a new --errors option that sets the
