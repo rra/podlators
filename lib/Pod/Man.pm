@@ -1,12 +1,5 @@
 # Pod::Man -- Convert POD data to formatted *roff input.
 #
-# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-#     2010, 2012, 2013 Russ Allbery <rra@stanford.edu>
-# Substantial contributions by Sean Burke <sburke@cpan.org>
-#
-# This program is free software; you may redistribute it and/or modify it
-# under the same terms as Perl itself.
-#
 # This module translates POD documentation into *roff markup using the man
 # macro set, and is intended for converting POD documents written as Unix
 # manual pages to manual pages that can be read by the man(1) command.  It is
@@ -17,6 +10,13 @@
 # maintained outside of the Perl core as part of the podlators.  Please send
 # me any patches at the address above in addition to sending them to the
 # standard Perl mailing lists.
+#
+# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
+#     2010, 2012, 2013 Russ Allbery <rra@stanford.edu>
+# Substantial contributions by Sean Burke <sburke@cpan.org>
+#
+# This program is free software; you may redistribute it and/or modify it
+# under the same terms as Perl itself.
 
 ##############################################################################
 # Modules and declarations

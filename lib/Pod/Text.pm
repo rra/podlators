@@ -1,11 +1,5 @@
 # Pod::Text -- Convert POD data to formatted ASCII text.
 #
-# Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013
-#     Russ Allbery <rra@stanford.edu>
-#
-# This program is free software; you may redistribute it and/or modify it
-# under the same terms as Perl itself.
-#
 # This module converts POD to formatted text.  It replaces the old Pod::Text
 # module that came with versions of Perl prior to 5.6.0 and attempts to match
 # its output except for some specific circumstances where other decisions
@@ -16,6 +10,12 @@
 # maintained outside of the Perl core as part of the podlators.  Please send
 # me any patches at the address above in addition to sending them to the
 # standard Perl mailing lists.
+#
+# Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013
+#     Russ Allbery <rra@stanford.edu>
+#
+# This program is free software; you may redistribute it and/or modify it
+# under the same terms as Perl itself.
 
 ##############################################################################
 # Modules and declarations
