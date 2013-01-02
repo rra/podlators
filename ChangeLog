@@ -1,7 +1,7 @@
 2013-01-02  Russ Allbery  <rra@stanford.edu>
 
 	* lib/Pod/Man.pm (cmd_l): Add nourls option to suppress the URL
-	from L<> formatting codes that contain anchor text.
+	from L<> formatting codes that contain anchor text.  (#62210)
 	* lib/Pod/Text.pm (cmd_l): Likewise.
 	* scripts/pod2man: New --nourls option to set the corresponding
 	option in Pod::Man.
@@ -15,7 +15,8 @@
 
 2013-01-02  Kevin Ryde  <user42@zip.com.au>
 
-	* lib/Pod/Man.pm (outindex): Remove newlines from index term text.
+	* lib/Pod/Man.pm (outindex): Remove newlines from index term text
+	since *roff quotes don't span lines.  (#82332)
 
 2012-06-01  Russ Allbery  <rra@stanford.edu>
 
