@@ -715,6 +715,7 @@ sub outindex {
     # Print out the .IX commands.
     for (@output) {
         my ($type, $entry) = @$_;
+        $entry =~ s/\n/ /g;
         $entry =~ s/\"/\"\"/g;
         $entry =~ s/\\/\\\\/g;
         $self->output (".IX $type " . '"' . $entry . '"' . "\n");
