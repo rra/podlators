@@ -1,7 +1,7 @@
 # Pod::Man -- Convert POD data to formatted *roff input.
 #
 # Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-#     2010, 2012 Russ Allbery <rra@stanford.edu>
+#     2010, 2012, 2013 Russ Allbery <rra@stanford.edu>
 # Substantial contributions by Sean Burke <sburke@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -36,7 +36,7 @@ use Pod::Simple ();
 
 @ISA = qw(Pod::Simple);
 
-$VERSION = '2.26';
+$VERSION = '2.27';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -715,7 +715,7 @@ sub outindex {
     # Print out the .IX commands.
     for (@output) {
         my ($type, $entry) = @$_;
-        $entry =~ s/\n/ /g;
+        $entry =~ s/\s+/ /g;
         $entry =~ s/\"/\"\"/g;
         $entry =~ s/\\/\\\\/g;
         $self->output (".IX $type " . '"' . $entry . '"' . "\n");

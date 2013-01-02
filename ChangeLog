@@ -1,3 +1,13 @@
+2013-01-02  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (outindex): Also collapse consecutive whitespace
+	in index term text.
+	* t/man.t: Test for handling of index terms containing whitespace.
+
+2013-01-02  Kevin Ryde  <user42@zip.com.au>
+
+	* lib/Pod/Man.pm (outindex): Remove newlines from index term text.
+
 2012-06-01  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.4.2 released.

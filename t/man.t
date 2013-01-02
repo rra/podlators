@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 #
-# man.t -- Additional specialized tests for Pod::Man.
+# Additional specialized tests for Pod::Man.
 #
-# Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2012
+# Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2012, 2013
 #     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -19,7 +19,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 33;
+use Test::More tests => 34;
 BEGIN { use_ok ('Pod::Man') }
 
 # Test whether we can use binmode to set encoding.
@@ -549,4 +549,16 @@ L<[perl #12345]|https://rt.cpan.org/12345>
 .SH "RT LINK"
 .IX Header "RT LINK"
 [perl #12345] <https://rt.cpan.org/12345>
+###
+
+###
+=head1 Multiline XZ<><>
+
+Something something X<this   is
+one index term>
+###
+.SH "Multiline X<>"
+.IX Header "Multiline X<>"
+Something something
+.IX Xref "this is one index term"
 ###
