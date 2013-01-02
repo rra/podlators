@@ -61,7 +61,7 @@
 
 	* lib/Pod/Man.pm (start_document): Request details on PerlIO
 	layers to look for the UTF8 flag, which is not a layer in its own
-	right.  Based on a patch from Leon Timmermans.  (perl #76440)
+	right.  Based on a patch from Leon Timmermans.  (#76440)
 	* lib/Pod/Text.pm (start_document): Likewise.
 
 	* lib/Pod/Man.pm (preamble_template): Fix handling of the F
