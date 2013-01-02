@@ -124,7 +124,7 @@
 	* lib/Pod/Man.pm (cmd_para): Do not strip escaped trailing
 	whitespace, such as that created by S<> at the end of a line,
 	since the backslash is then taken by *roff as escaping the
-	newline.  Thanks, Kevin Ryde.
+	newline.  Thanks, Kevin Ryde.  (#61781)
 	* t/man.t: Test S<> at the end of lines.
 
 	* lib/Pod/Man.pm (output): If the utf8 option is given, encode
