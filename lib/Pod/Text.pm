@@ -1,6 +1,6 @@
 # Pod::Text -- Convert POD data to formatted ASCII text.
 #
-# Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012
+# Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013
 #     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -38,7 +38,7 @@ use Pod::Simple ();
 # We have to export pod2text for backward compatibility.
 @EXPORT = qw(pod2text);
 
-$VERSION = '3.16';
+$VERSION = '3.17';
 
 ##############################################################################
 # Initialization
@@ -590,6 +590,8 @@ sub cmd_l {
     if ($$attrs{type} eq 'url') {
         if (not defined($$attrs{to}) or $$attrs{to} eq $text) {
             return "<$text>";
+        } elsif ($$self{opt_nourls}) {
+            return $text;
         } else {
             return "$text <$$attrs{to}>";
         }
@@ -704,12 +706,12 @@ sub parse_file {
 1;
 __END__
 
+=for stopwords
+alt stderr Allbery Sean Burke's Christiansen UTF-8 pre-Unicode utf8 nourls
+
 =head1 NAME
 
 Pod::Text - Convert POD data to formatted ASCII text
-
-=for stopwords
-alt stderr Allbery Sean Burke's Christiansen UTF-8 pre-Unicode utf8
 
 =head1 SYNOPSIS
 
@@ -770,6 +772,22 @@ The width of the left margin in spaces.  Defaults to 0.  This is the margin
 for all text, including headings, not the amount by which regular text is
 indented; for the latter, see the I<indent> option.  To set the right
 margin, see the I<width> option.
+
+=item nourls
+
+Normally, LZ<><> formatting codes with a URL but anchor text are formatted
+to show both the anchor text and the URL.  In other words:
+
+    L<foo|http://example.com/>
+
+is formatted as:
+
+    foo <http://example.com/>
+
+This option, if set to a true value, suppresses the URL when anchor text
+is given, so this example would be formatted as just C<foo>.  This can
+produce less cluttered output in cases where the URLs are not particularly
+important.
 
 =item quotes
 
@@ -895,7 +913,7 @@ how to use Pod::Simple.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012 Russ
+Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013 Russ
 Allbery <rra@stanford.edu>.
 
 This program is free software; you may redistribute it and/or modify it

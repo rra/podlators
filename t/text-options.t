@@ -1,8 +1,9 @@
 #!/usr/bin/perl -w
 #
-# text-options.t -- Additional tests for Pod::Text options.
+# Additional tests for Pod::Text options.
 #
-# Copyright 2002, 2004, 2006, 2008, 2009, 2012 Russ Allbery <rra@stanford.edu>
+# Copyright 2002, 2004, 2006, 2008, 2009, 2012, 2013
+#     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -18,7 +19,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 19;
+use Test::More tests => 22;
 BEGIN { use_ok ('Pod::Text') }
 
 # Redirect stderr to a file.
@@ -253,4 +254,17 @@ Bar.
 NEXT
 ###
 tmp.pod around line 7: You forgot a '=back' before '=head1'
+###
+
+###
+nourls 1
+###
+=head1 URL suppression
+
+L<anchor|http://www.example.com/>
+###
+URL suppression
+    anchor
+
+###
 ###

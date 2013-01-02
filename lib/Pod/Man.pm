@@ -1110,8 +1110,9 @@ sub cmd_x {
 }
 
 # Links reduce to the text that we're given, wrapped in angle brackets if it's
-# a URL.  We need to format the "to" value of the link before comparing it to
-# the text since we may escape hyphens.
+# a URL, followed by the URL.  We take an option to suppress the URL if anchor
+# text is given.  We need to format the "to" value of the link before
+# comparing it to the text since we may escape hyphens.
 sub cmd_l {
     my ($self, $attrs, $text) = @_;
     if ($$attrs{type} eq 'url') {
@@ -1122,6 +1123,8 @@ sub cmd_l {
         }
         if (not defined ($to) or $to eq $text) {
             return "<$text>";
+        } elsif ($$self{nourls}) {
+            return $text;
         } else {
             return "$text <$$attrs{to}>";
         }
@@ -1513,14 +1516,14 @@ sub preamble_template {
 1;
 __END__
 
-=head1 NAME
-
-Pod::Man - Convert POD data to formatted *roff input
-
 =for stopwords
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8
 UTF-8 Allbery Sean Burke Ossanna Solaris formatters troff uppercased
-Christiansen
+Christiansen nourls
+
+=head1 NAME
+
+Pod::Man - Convert POD data to formatted *roff input
 
 =head1 SYNOPSIS
 
@@ -1621,6 +1624,22 @@ manual section is 3, in which case the path is parsed to see if it is a Perl
 module path.  If it is, a path like C<.../lib/Pod/Man.pm> is converted into
 a name like C<Pod::Man>.  This option, if given, overrides any automatic
 determination of the name.
+
+=item nourls
+
+Normally, LZ<><> formatting codes with a URL but anchor text are formatted
+to show both the anchor text and the URL.  In other words:
+
+    L<foo|http://example.com/>
+
+is formatted as:
+
+    foo <http://example.com/>
+
+This option, if set to a true value, suppresses the URL when anchor text
+is given, so this example would be formatted as just C<foo>.  This can
+produce less cluttered output in cases where the URLs are not particularly
+important.
 
 =item quotes
 
@@ -1775,7 +1794,7 @@ mine).
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-2009, 2010, 2012 Russ Allbery <rra@stanford.edu>.
+2009, 2010, 2012, 2013 Russ Allbery <rra@stanford.edu>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

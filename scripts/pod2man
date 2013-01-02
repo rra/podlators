@@ -2,7 +2,7 @@
 
 # pod2man -- Convert POD data to formatted *roff input.
 #
-# Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012
+# Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012, 2013
 #     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -31,7 +31,7 @@ $options{errors} = 'pod';
 Getopt::Long::config ('bundling_override');
 GetOptions (\%options, 'center|c=s', 'date|d=s', 'fixed=s', 'fixedbold=s',
             'fixeditalic=s', 'fixedbolditalic=s', 'help|h', 'lax|l',
-            'name|n=s', 'official|o', 'quotes|q=s', 'release|r:s',
+            'name|n=s', 'nourls', 'official|o', 'quotes|q=s', 'release|r:s',
             'section|s=s', 'stderr', 'verbose|v', 'utf8|u') or exit 1;
 pod2usage (0) if $options{help};
 
@@ -71,20 +71,20 @@ exit $status;
 
 __END__
 
+=for stopwords
+en em --stderr stderr --utf8 UTF-8 overdo markup MT-LEVEL Allbery Solaris
+URL troff troff-specific formatters uppercased Christiansen --nourls
+
 =head1 NAME
 
 pod2man - Convert POD data to formatted *roff input
-
-=for stopwords
-en em --stderr stderr --utf8 UTF-8 overdo markup MT-LEVEL Allbery Solaris
-URL troff troff-specific formatters uppercased Christiansen
 
 =head1 SYNOPSIS
 
 pod2man [B<--center>=I<string>] [B<--date>=I<string>]
     [B<--fixed>=I<font>] [B<--fixedbold>=I<font>] [B<--fixeditalic>=I<font>]
-    [B<--fixedbolditalic>=I<font>] [B<--name>=I<name>] [B<--official>]
-    [B<--quotes>=I<quotes>] [B<--release>[=I<version>]]
+    [B<--fixedbolditalic>=I<font>] [B<--name>=I<name>] [B<--nourls>]
+    [B<--official>] [B<--quotes>=I<quotes>] [B<--release>[=I<version>]]
     [B<--section>=I<manext>] [B<--stderr>] [B<--utf8>] [B<--verbose>]
     [I<input> [I<output>] ...]
 
@@ -184,6 +184,21 @@ automatic determination of the name.
 Note that this option is probably not useful when converting multiple POD
 files at once.  The convention for Unix man pages for commands is for the
 man page title to be in all-uppercase even if the command isn't.
+
+=item B<--nourls>
+
+Normally, LZ<><> formatting codes with a URL but anchor text are formatted
+to show both the anchor text and the URL.  In other words:
+
+    L<foo|http://example.com/>
+
+is formatted as:
+
+    foo <http://example.com/>
+
+This flag, if given, suppresses the URL when anchor text is given, so this
+example would be formatted as just C<foo>.  This can produce less
+cluttered output in cases where the URLs are not particularly important.
 
 =item B<-o>, B<--official>
 
@@ -317,8 +332,8 @@ B<pod2man> by Larry Wall and Tom Christiansen.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012 Russ Allbery
-<rra@stanford.edu>.
+Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012, 2013 Russ
+Allbery <rra@stanford.edu>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

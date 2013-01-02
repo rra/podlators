@@ -1,8 +1,9 @@
 #!/usr/bin/perl -w
 #
-# man-options.t -- Additional tests for Pod::Man options.
+# Additional tests for Pod::Man options.
 #
-# Copyright 2002, 2004, 2006, 2008, 2009, 2012 Russ Allbery <rra@stanford.edu>
+# Copyright 2002, 2004, 2006, 2008, 2009, 2012, 2013
+#     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -18,7 +19,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 10;
+use Test::More tests => 13;
 BEGIN { use_ok ('Pod::Man') }
 
 # Redirect stderr to a file.
@@ -157,4 +158,17 @@ Bar.
 .IX Header "NEXT"
 ###
 tmp.pod around line 7: You forgot a '=back' before '=head1'
+###
+
+###
+nourls 1
+###
+=head1 URL suppression
+
+L<anchor|http://www.example.com/>
+###
+.SH "URL suppression"
+.IX Header "URL suppression"
+anchor
+###
 ###

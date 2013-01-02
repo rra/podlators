@@ -2,7 +2,7 @@
 
 # pod2text -- Convert POD data to formatted ASCII text.
 #
-# Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012
+# Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012, 2013
 #     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -44,7 +44,7 @@ my %options;
 $options{sentence} = 0;
 Getopt::Long::config ('bundling');
 GetOptions (\%options, 'alt|a', 'code', 'color|c', 'help|h', 'indent|i=i',
-            'loose|l', 'margin|left-margin|m=i', 'overstrike|o',
+            'loose|l', 'margin|left-margin|m=i', 'nourls', 'overstrike|o',
             'quotes|q=s', 'sentence|s', 'stderr', 'termcap|t', 'utf8|u',
             'width|w=i')
     or exit 1;
@@ -84,18 +84,18 @@ exit $status;
 
 __END__
 
+=for stopwords
+-aclostu --alt --stderr Allbery --overstrike overstrike --termcap --utf8
+UTF-8 subclasses --nourls
+
 =head1 NAME
 
 pod2text - Convert POD data to formatted ASCII text
 
-=for stopwords
--aclostu --alt --stderr Allbery --overstrike overstrike --termcap --utf8
-UTF-8 subclasses
-
 =head1 SYNOPSIS
 
 pod2text [B<-aclostu>] [B<--code>] [B<-i> I<indent>] S<[B<-q> I<quotes>]>
-    [B<--stderr>] S<[B<-w> I<width>]> [I<input> [I<output> ...]]
+    [B<--nourls>] [B<--stderr>] S<[B<-w> I<width>]> [I<input> [I<output> ...]]
 
 pod2text B<-h>
 
@@ -154,6 +154,21 @@ formatting arbitrary text documents, using this option is recommended.
 The width of the left margin in spaces.  Defaults to 0.  This is the margin
 for all text, including headings, not the amount by which regular text is
 indented; for the latter, see B<-i> option.
+
+=item B<--nourls>
+
+Normally, LZ<><> formatting codes with a URL but anchor text are formatted
+to show both the anchor text and the URL.  In other words:
+
+    L<foo|http://example.com/>
+
+is formatted as:
+
+    foo <http://example.com/>
+
+This flag, if given, suppresses the URL when anchor text is given, so this
+example would be formatted as just C<foo>.  This can produce less
+cluttered output in cases where the URLs are not particularly important.
 
 =item B<-o>, B<--overstrike>
 
@@ -282,8 +297,8 @@ Russ Allbery <rra@stanford.edu>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012 Russ Allbery
-<rra@stanford.edu>.
+Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012, 2013 Russ
+Allbery <rra@stanford.edu>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
