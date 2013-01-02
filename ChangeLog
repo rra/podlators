@@ -1,5 +1,20 @@
 2013-01-02  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (new): Support a new errors option with values
+	die, stderr, pod, and none.  Convert the stderr option to the
+	errors option with value stderr.  (#39007)
+	(end_document): Die if errors was set to die and there were POD
+	syntax errors.
+	* lib/Pod/Text.pm (new): Likewise.
+	(end_document): Likewise.
+	* scripts/pod2man: Support a new --errors option that sets the
+	underlying errors formatter option and default to dying on POD
+	syntax errors.
+	* scripts/pod2text: Likewise.
+	* t/man-options.t: Add support for catching exceptions during
+	formatting.  Test valid and invalid errors settings.
+	* t/text-options.t: Likewise.
+
 	* lib/Pod/Man.pm (cmd_l): Add nourls option to suppress the URL
 	from L<> formatting codes that contain anchor text.  (#62210)
 	* lib/Pod/Text.pm (cmd_l): Likewise.

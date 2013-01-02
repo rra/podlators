@@ -93,11 +93,30 @@ sub new {
     %$self = (%$self, @_);
 
     # Send errors to stderr if requested.
-    if ($$self{stderr}) {
+    if ($$self{stderr} and not $$self{errors}) {
+        $$self{errors} = 'stderr';
+    }
+    delete $$self{stderr};
+
+    # Validate the errors parameter and act on it.
+    if (not defined $$self{errors}) {
+        $$self{errors} = 'pod';
+    }
+    if ($$self{errors} eq 'stderr' || $$self{errors} eq 'die') {
         $self->no_errata_section (1);
         $self->complain_stderr (1);
-        delete $$self{stderr};
+        if ($$self{errors} eq 'die') {
+            $$self{complain_die} = 1;
+        }
+    } elsif ($$self{errors} eq 'pod') {
+        $self->no_errata_section (0);
+        $self->complain_stderr (0);
+    } elsif ($$self{errors} eq 'none') {
+        $self->no_whining (1);
+    } else {
+        croak (qq(Invalid errors setting: "$$self{errors}"));
     }
+    delete $$self{errors};
 
     # Initialize various other internal constants based on our arguments.
     $self->init_fonts;
@@ -788,10 +807,14 @@ sub start_document {
     $$self{PENDING}   = [[]];   # Pending output.
 }
 
-# Handle the end of the document.  This does nothing but print out a final
-# comment at the end of the document under debugging.
+# Handle the end of the document.  This handles dying on POD errors, since
+# Pod::Parser currently doesn't.  Otherwise, does nothing but print out a
+# final comment at the end of the document under debugging.
 sub end_document {
     my ($self) = @_;
+    if ($$self{complain_die} && $self->errors_seen) {
+        croak ("POD document had syntax errors");
+    }
     return if $self->bare_output;
     return if ($$self{CONTENTLESS} && !$$self{ALWAYS_EMIT_SOMETHING});
     $self->output (q(.\" [End document]) . "\n") if DEBUG;
@@ -1585,6 +1608,16 @@ argument.
 Sets the centered page header to use instead of "User Contributed Perl
 Documentation".
 
+=item errors
+
+How to report errors.  C<die> says to throw an exception on any POD
+formatting error.  C<stderr> says to report errors on standard error, but
+not to throw an exception.  C<pod> says to include a POD ERRORS section
+in the resulting documentation summarizing the errors.  C<none> ignores
+POD errors entirely, as much as possible.
+
+The default is C<output>.
+
 =item date
 
 Sets the left-hand footer.  By default, the modification date of the input
@@ -1678,7 +1711,9 @@ case section 3 will be selected.
 =item stderr
 
 Send error messages about invalid POD to standard error instead of
-appending a POD ERRORS section to the generated *roff output.
+appending a POD ERRORS section to the generated *roff output.  This is
+equivalent to setting C<errors> to C<stderr> if C<errors> is not already
+set.  It is supported for backward compatibility.
 
 =item utf8
 
@@ -1725,13 +1760,23 @@ method.  See L<Pod::Simple> for the specific details.
 
 (F) You specified a *roff font (using C<fixed>, C<fixedbold>, etc.) that
 wasn't either one or two characters.  Pod::Man doesn't support *roff fonts
-longer than two characters, although some *roff extensions do (the canonical
-versions of B<nroff> and B<troff> don't either).
+longer than two characters, although some *roff extensions do (the
+canonical versions of B<nroff> and B<troff> don't either).
+
+=item Invalid errors setting "%s"
+
+(F) The C<errors> parameter to the constructor was set to an unknown value.
 
 =item Invalid quote specification "%s"
 
-(F) The quote specification given (the quotes option to the constructor) was
-invalid.  A quote specification must be one, two, or four characters long.
+(F) The quote specification given (the C<quotes> option to the
+constructor) was invalid.  A quote specification must be one, two, or four
+characters long.
+
+=item POD document had syntax errors
+
+(F) The POD document being formatted had syntax errors and the C<errors>
+option was set to C<die>.
 
 =back
 
