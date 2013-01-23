@@ -335,26 +335,21 @@ sub _handle_element_end {
 # leave it off.  We therefore return a copy of the same formatting
 # instructions but possibly with more things turned off depending on the
 # element.
+
+my %default_formatting = ( guesswork => 1, cleanup => 1, convert => 1 );
+my %override_formatting = (
+    Data => { guesswork => 0, cleanup => 0, convert => 0 },
+    X => { guesswork => 0, cleanup => 0 },
+    Verbatim => { guesswork => 0, literal => 1 },
+    C => { guesswork => 0, literal => 1 },
+);
+
 sub formatting {
-    my ($self, $current, $element) = @_;
-    my %options;
-    if ($current) {
-        %options = %$current;
-    } else {
-        %options = (guesswork => 1, cleanup => 1, convert => 1);
-    }
-    if ($element eq 'Data') {
-        $options{guesswork} = 0;
-        $options{cleanup} = 0;
-        $options{convert} = 0;
-    } elsif ($element eq 'X') {
-        $options{guesswork} = 0;
-        $options{cleanup} = 0;
-    } elsif ($element eq 'Verbatim' || $element eq 'C') {
-        $options{guesswork} = 0;
-        $options{literal} = 1;
-    }
-    return \%options;
+    # my ($self, $current, $element) = @_;
+    return +{
+        %{ $_[1] || \%default_formatting },
+        %{ $override_formatting{$_[2]} || {} },
+    };
 }
 
 # Format a text block.  Takes a hash of formatting options and the text to
