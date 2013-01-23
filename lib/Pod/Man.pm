@@ -73,8 +73,8 @@ sub new {
     $self->nbsp_for_S (1);
 
     # Tell Pod::Simple to keep whitespace whenever possible.
-    if ($self->can ('preserve_whitespace')) {
-        $self->preserve_whitespace (1);
+    if (my $preserve_whitespace = $self->can ('preserve_whitespace')) {
+        $self->$preserve_whitespace (1);
     } else {
         $self->fullstop_space_harden (1);
     }
@@ -288,9 +288,8 @@ sub _handle_element_start {
         $formatting = $self->formatting ($formatting, $element);
         push (@{ $$self{PENDING} }, [ $attrs, $formatting, '' ]);
         DEBUG > 4 and print "Pending: [", pretty ($$self{PENDING}), "]\n";
-    } elsif ($self->can ("start_$method")) {
-        my $method = 'start_' . $method;
-        $self->$method ($attrs, '');
+    } elsif (my $start_method = $self->can ("start_$method")) {
+        $self->$start_method ($attrs, '');
     } else {
         DEBUG > 2 and print "No $method start method, skipping\n";
     }
@@ -306,13 +305,12 @@ sub _handle_element_end {
 
     # If we have a command handler, pull off the pending text and pass it to
     # the handler along with the saved attribute hash.
-    if ($self->can ("cmd_$method")) {
+    if (my $cmd_method = $self->can ("cmd_$method")) {
         DEBUG > 2 and print "</$element> stops saving a tag\n";
         my $tag = pop @{ $$self{PENDING} };
         DEBUG > 4 and print "Popped: [", pretty ($tag), "]\n";
         DEBUG > 4 and print "Pending: [", pretty ($$self{PENDING}), "]\n";
-        my $method = 'cmd_' . $method;
-        my $text = $self->$method ($$tag[0], $$tag[2]);
+        my $text = $self->$cmd_method ($$tag[0], $$tag[2]);
         if (defined $text) {
             if (@{ $$self{PENDING} } > 1) {
                 $$self{PENDING}[-1][2] .= $text;
@@ -320,9 +318,8 @@ sub _handle_element_end {
                 $self->output ($text);
             }
         }
-    } elsif ($self->can ("end_$method")) {
-        my $method = 'end_' . $method;
-        $self->$method ();
+    } elsif (my $end_method = $self->can ("end_$method")) {
+        $self->$end_method ();
     } else {
         DEBUG > 2 and print "No $method end method, skipping\n";
     }
