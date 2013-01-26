@@ -972,7 +972,9 @@ sub cmd_para {
     # Force exactly one newline at the end and strip unwanted trailing
     # whitespace at the end, but leave "\ " backslashed space from an S< >
     # at the end of a line.
-    $text =~ s/((?:\\ )*)\s*$/$1\n/;
+    # Reverse the text first, to avoid having to scan the entire paragraph.
+    ($text = reverse $text) =~ s/\A\s*?(?= \\|\S|\z)/\n/;
+    $text = reverse $text;
 
     # Output the paragraph.
     $self->output ($self->protect ($self->textmapfonts ($text)));
@@ -992,7 +994,9 @@ sub cmd_verbatim {
 
     # Force exactly one newline at the end and strip unwanted trailing
     # whitespace at the end.
-    $text =~ s/\s*$/\n/;
+    # Reverse the text first, to avoid having to scan the entire paragraph.
+    ($text = reverse $text) =~ s/\A\s*/\n/;
+    $text = reverse $text;
 
     # Get a count of the number of lines before the first blank line, which
     # we'll pass to .Vb as its parameter.  This tells *roff to keep that many
