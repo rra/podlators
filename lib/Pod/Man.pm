@@ -263,6 +263,16 @@ sub method_for_element {
     return $element;
 }
 
+# Formatting inherits negatively, in the sense that if the parent has
+# turned off guesswork, all child elements should leave it off.
+my %default_formatting = ( guesswork => 1, cleanup => 1, convert => 1 );
+my %override_formatting = (
+    Data => { guesswork => 0, cleanup => 0, convert => 0 },
+    X => { guesswork => 0, cleanup => 0 },
+    Verbatim => { guesswork => 0, literal => 1 },
+    C => { guesswork => 0, literal => 1 },
+);
+
 # Handle the start of a new element.  If cmd_element is defined, assume that
 # we need to collect the entire tree for this element before passing it to the
 # element method, and create a new tree into which we'll collect blocks of
@@ -284,8 +294,10 @@ sub _handle_element_start {
         # and also depends on our parent tags.  Thankfully, inside tags that
         # turn off guesswork and reformatting, nothing else can turn it back
         # on, so this can be strictly inherited.
-        my $formatting = $$self{PENDING}[-1][1];
-        $formatting = $self->formatting ($formatting, $element);
+        my $formatting = {
+            %{ $$self{PENDING}[-1][1] || \%default_formatting },
+            %{ $override_formatting{$element} || {} },
+        };
         push (@{ $$self{PENDING} }, [ $attrs, $formatting, '' ]);
         DEBUG > 4 and print "Pending: [", pretty ($$self{PENDING}), "]\n";
     } elsif (my $start_method = $self->can ("start_$method")) {
@@ -328,29 +340,6 @@ sub _handle_element_end {
 ##############################################################################
 # General formatting
 ##############################################################################
-
-# Return formatting instructions for a new block.  Takes the current
-# formatting and the new element.  Formatting inherits negatively, in the
-# sense that if the parent has turned off guesswork, all child elements should
-# leave it off.  We therefore return a copy of the same formatting
-# instructions but possibly with more things turned off depending on the
-# element.
-
-my %default_formatting = ( guesswork => 1, cleanup => 1, convert => 1 );
-my %override_formatting = (
-    Data => { guesswork => 0, cleanup => 0, convert => 0 },
-    X => { guesswork => 0, cleanup => 0 },
-    Verbatim => { guesswork => 0, literal => 1 },
-    C => { guesswork => 0, literal => 1 },
-);
-
-sub formatting {
-    # my ($self, $current, $element) = @_;
-    return +{
-        %{ $_[1] || \%default_formatting },
-        %{ $override_formatting{$_[2]} || {} },
-    };
-}
 
 # Format a text block.  Takes a hash of formatting options and the text to
 # format.  Currently, the only formatting options are guesswork, cleanup, and
