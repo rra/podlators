@@ -1,5 +1,7 @@
 2013-02-27  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.5.1 released.
+
 	* t/color.t: Add Z<> to tag width test to avoid triggering the new
 	Pod::Parser warning about numeric items in description lists.
 	* t/overstrike.t: Likewise.
