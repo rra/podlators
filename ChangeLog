@@ -1,3 +1,15 @@
+2013-02-27  Russ Allbery  <rra@stanford.edu>
+
+	* t/color.t: Add Z<> to tag width test to avoid triggering the new
+	Pod::Parser warning about numeric items in description lists.
+	* t/overstrike.t: Likewise.
+	* t/termcap.t: Likewise.
+	* t/man.t: Remove the test for proper handling of lists that start
+	with a non-bullet and then have an item that looks like a bullet.
+	This now triggers a warning in Pod::Simple.  Move it to...
+	* t/man-options.t: ...here, where we can configure the parser to
+	ignore errors and test that the output is correct.
+
 2013-01-02  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.5.0 released.
