@@ -1,17 +1,15 @@
-2013-09-21  Russ Allbery <rra@stanford.edu>
+2013-09-21  Russ Allbery  <rra@stanford.edu>
 
 	* lib/Pod/Man.pm: Fix an output_fh reference in the documentation.
 	Thanks, Andreas Koenig.  (#88723)
 
-2013-09-21  David Steinbrunner <dsteinbrunner@pobox.com>
-
-	* lib/Pod/Man.pm: Fix comment typos.
-	* lib/Pod/Text/Termcap.pm: Fix comment typos.
-
-2013-09-21  Brian Gottreu <gottreu@gmail.com>
+	* lib/Pod/Man.pm: Fix comment typos.  (#85683)  Thanks, David
+	Steinbrunner.
+	* lib/Pod/Text/Termcap.pm: Likewise.
 
 	* pod/perlpodstyle.pod: Wrap verbatim license line in POD that was
-	over 79 characters after the man page indentation.
+	over 79 characters after the man page indentation.  Thanks, Brian
+	Gottreu and Steve Hay.  (#87440)
 
 2013-02-27  Russ Allbery  <rra@stanford.edu>
 
