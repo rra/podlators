@@ -16,7 +16,7 @@
 	* lib/Pod/Man.pm (formatting): Replaced with two hashes that store
 	the default and override formatting options for different blocks.
 	(_handle_element_start): Inline the formatting logic using those
-	hashes and remove the call to formatting.
+	hashes and remove the call to formatting.  (#83253)
 
 	* lib/Pod/Man.pm (new): Save the results of can and use it to make
 	the method call to avoid redoing method lookup.
