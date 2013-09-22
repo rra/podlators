@@ -56,6 +56,27 @@ BEGIN { *ASCII = \&Pod::Simple::ASCII }
 # Pretty-print a data structure.  Only used for debugging.
 BEGIN { *pretty = \&Pod::Simple::pretty }
 
+# Formatting instructions for various types of blocks.  cleanup makes hyphens
+# hard, adds spaces between consecutive underscores, and escapes backslashes.
+# convert translates characters into escapes.  guesswork means to apply the
+# transformations done by the guesswork sub.  literal says to protect literal
+# quotes from being turned into UTF-8 quotes.  By default, all transformations
+# are on except literal, but some elements override.
+#
+# DEFAULT specifies the default settings.  All other elements should list only
+# those settings that they are overriding.  Data indicates =for roff blocks,
+# which should be passed along completely verbatim.
+#
+# Formatting inherits negatively, in the sense that if the parent has turned
+# off guesswork, all child elements should leave it off.
+my %FORMATTING = (
+    DEFAULT  => { cleanup => 1, convert => 1, guesswork => 1, literal => 0 },
+    Data     => { cleanup => 0, convert => 0, guesswork => 0, literal => 0 },
+    Verbatim => {                             guesswork => 0, literal => 1 },
+    C        => {                             guesswork => 0, literal => 1 },
+    X        => { cleanup => 0,               guesswork => 0               },
+);
+
 ##############################################################################
 # Object initialization
 ##############################################################################
@@ -262,16 +283,6 @@ sub method_for_element {
     return $element;
 }
 
-# Formatting inherits negatively, in the sense that if the parent has
-# turned off guesswork, all child elements should leave it off.
-my %default_formatting = ( guesswork => 1, cleanup => 1, convert => 1 );
-my %override_formatting = (
-    Data => { guesswork => 0, cleanup => 0, convert => 0 },
-    X => { guesswork => 0, cleanup => 0 },
-    Verbatim => { guesswork => 0, literal => 1 },
-    C => { guesswork => 0, literal => 1 },
-);
-
 # Handle the start of a new element.  If cmd_element is defined, assume that
 # we need to collect the entire tree for this element before passing it to the
 # element method, and create a new tree into which we'll collect blocks of
@@ -294,8 +305,8 @@ sub _handle_element_start {
         # turn off guesswork and reformatting, nothing else can turn it back
         # on, so this can be strictly inherited.
         my $formatting = {
-            %{ $$self{PENDING}[-1][1] || \%default_formatting },
-            %{ $override_formatting{$element} || {} },
+            %{ $$self{PENDING}[-1][1] || $FORMATTING{DEFAULT} },
+            %{ $FORMATTING{$element} || {} },
         };
         push (@{ $$self{PENDING} }, [ $attrs, $formatting, '' ]);
         DEBUG > 4 and print "Pending: [", pretty ($$self{PENDING}), "]\n";
@@ -970,10 +981,11 @@ sub cmd_para {
         if defined ($line) && DEBUG && !$$self{IN_NAME};
 
     # Force exactly one newline at the end and strip unwanted trailing
-    # whitespace at the end, but leave "\ " backslashed space from an S< >
-    # at the end of a line.
-    # Reverse the text first, to avoid having to scan the entire paragraph.
-    ($text = reverse $text) =~ s/\A\s*?(?= \\|\S|\z)/\n/;
+    # whitespace at the end, but leave "\ " backslashed space from an S< > at
+    # the end of a line.  Reverse the text first, to avoid having to scan the
+    # entire paragraph.
+    $text = reverse $text;
+    $text =~ s/\A\s*?(?= \\|\S|\z)/\n/;
     $text = reverse $text;
 
     # Output the paragraph.
@@ -993,9 +1005,10 @@ sub cmd_verbatim {
     return unless $text =~ /\S/;
 
     # Force exactly one newline at the end and strip unwanted trailing
-    # whitespace at the end.
-    # Reverse the text first, to avoid having to scan the entire paragraph.
-    ($text = reverse $text) =~ s/\A\s*/\n/;
+    # whitespace at the end.  Reverse the text first, to avoid having to scan
+    # the entire paragraph.
+    $text = reverse $text;
+    $text =~ s/\A\s*/\n/;
     $text = reverse $text;
 
     # Get a count of the number of lines before the first blank line, which
