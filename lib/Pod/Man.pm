@@ -36,7 +36,7 @@ use Pod::Simple ();
 
 @ISA = qw(Pod::Simple);
 
-$VERSION = '2.27';
+$VERSION = '2.28';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -456,7 +456,7 @@ sub guesswork {
     local $_ = shift;
     DEBUG > 5 and print "   Guesswork called on [$_]\n";
 
-    # By the time we reach this point, all hypens will be escaped by adding a
+    # By the time we reach this point, all hyphens will be escaped by adding a
     # backslash.  We want to undo that escaping if they're part of regular
     # words and there's only a single dash, since that's a real hyphen that
     # *roff gets to consider a possible break point.  Make sure that a dash
@@ -512,7 +512,7 @@ sub guesswork {
     # strings inserted around things that we've made small-caps if later
     # transforms should work on those strings.
 
-    # Italize functions in the form func(), including functions that are in
+    # Italicize functions in the form func(), including functions that are in
     # all capitals, but don't italize if there's anything between the parens.
     # The function must start with an alphabetic character or underscore and
     # then consist of word characters or colons.
