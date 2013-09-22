@@ -1,10 +1,18 @@
 2013-09-21  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm (parse_lines): Override the Pod::Simple method to
+	set a default output file handle of STDOUT if none was set,
+	matching the behavior of parse_file.
+	(parse_string_document): Likewise.
+	* lib/Pod/Text.pm (parse_lines): Likewise.
+	(parse_string_document): Likewise.
+
 	* lib/Pod/Man.pm: Perform document initialization even if the
 	document is contentless.  Documents with only errors are shown as
 	contentless but then have a POD ERRORS section, and previously
 	this led to internal errors because state variables weren't
 	properly initialized.  Thanks, Andreas Koenig.  (#88724)
+
 	* lib/Pod/Text.pm: Likewise.
 	* t/man-empty.t: New file.  Test error handling with contentless
 	documents.

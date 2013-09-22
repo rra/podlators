@@ -1356,6 +1356,26 @@ sub parse_file {
     return $self->SUPER::parse_file ($in);
 }
 
+# Do the same for parse_lines, just to be polite.  Pod::Simple's man page
+# implies that the caller is responsible for setting this, but I don't see any
+# reason not to set a default.
+sub parse_lines {
+    my ($self, @lines) = @_;
+    unless (defined $$self{output_fh}) {
+        $self->output_fh (\*STDOUT);
+    }
+    return $self->SUPER::parse_lines (@lines);
+}
+
+# Likewise for parse_string_document.
+sub parse_string_document {
+    my ($self, $doc) = @_;
+    unless (defined $$self{output_fh}) {
+        $self->output_fh (\*STDOUT);
+    }
+    return $self->SUPER::parse_string_document ($doc);
+}
+
 ##############################################################################
 # Translation tables
 ##############################################################################
@@ -1549,7 +1569,7 @@ __END__
 =for stopwords
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8
 UTF-8 Allbery Sean Burke Ossanna Solaris formatters troff uppercased
-Christiansen nourls
+Christiansen nourls parsers
 
 =head1 NAME
 
@@ -1755,9 +1775,15 @@ arguments, the first being the input file to read POD from and the second
 being the file to write the formatted output to.
 
 You can also call parse_lines() to parse an array of lines or
-parse_string_document() to parse a document already in memory.  To put the
-output into a string instead of a file handle, call the output_string()
-method.  See L<Pod::Simple> for the specific details.
+parse_string_document() to parse a document already in memory.  As with
+parse_file(), parse_lines() and parse_string_document() default to sending
+their output to C<STDOUT> unless changed with the output_fh() method.
+
+To put the output from any parse method into a string instead of a file
+handle, call the output_string() method instead of output_fh().
+
+See L<Pod::Simple> for more specific details on the methods available to
+all derived parsers.
 
 =head1 DIAGNOSTICS
 
