@@ -4,6 +4,22 @@ This is a somewhat random and unordered list of things I'd like to see
 fixed or improved, but which I've not yet had a chance to do.  Patches for
 any of the following are very much welcome.
 
+ * Revisit the handling of non-ASCII characters.  At this point, it
+   probably makes sense to output UTF-8 by default, which also eliminates
+   all of the frustrations in Pod::Man with turning valid characters into
+   X and would allow massive simplification of the preamble for most
+   pages.  We could also move some of the remaining *roff macros to the
+   accents section and only conditionally output them.
+
+ * Abstract the shared code between Pod::Man and Pod::Text to a new
+   Pod::Simple inheritance layer that both modules can use.
+
+ * Standardize the versions of all included modules to match the version
+   of the podlators release.
+
+ * Change the build process to Module::Build (with a fallback for
+   ExtUtils::MakeMaker so that it can still build as part of core).
+
  * Suppress the URL for L<|> if the link is just the anchor part of the
    tag with mailto: added to the front.  Also strip the mailto: part if
    there is no anchor text.
@@ -20,12 +36,23 @@ any of the following are very much welcome.
 
  * The test suite is still fairly basic, and doesn't test all of the
    options to the various modules, the scripts, =over/=back, or the
-   guesswork in Pod::Man.
+   guesswork in Pod::Man.  The best way forward would be to add coverage
+   testing and then aim for 100% coverage.  That won't guarantee
+   everything is tested, but it will be much closer.
 
  * Pod::Text::Termcap can leave underlining turned on across a newline,
    resulting in weird visual artifacts.  Ideally, underlining should be
    turned off at the end of each line, if still on, and then turned back
    on at the start of the subsequent line.
+
+ * Update coding style and test suite infrastructure to my current
+   standards.
+
+ * Abstract the commonalities between the various test programs into a
+   generic driver for testing POD formatters, and then use it to handle
+   all of the test cases.
+
+ * Document all the standard module interfaces from Pod::Simple.
 
 The following items require changes to the POD specification and are
 therefore of broader scope than just this code:
@@ -82,6 +109,6 @@ post by Tom Christiansen to pod-people@perl.org:
    this into code font.)
 
  * The module version number should be included in the headers/footers
-   where appropriate.  That means that when processing a module, ideally
+   where appropriate.  That means that, when processing a module, ideally
    one wants to pull out the module's $VERSION to use in the footer rather
    than Perl's version.
