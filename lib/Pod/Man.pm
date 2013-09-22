@@ -767,7 +767,6 @@ sub start_document {
     if ($$attrs{contentless} && !$$self{ALWAYS_EMIT_SOMETHING}) {
         DEBUG and print "Document is contentless\n";
         $$self{CONTENTLESS} = 1;
-        return;
     } else {
         delete $$self{CONTENTLESS};
     }
@@ -788,17 +787,20 @@ sub start_document {
         }
     }
 
-    # Determine information for the preamble and then output it.
-    my ($name, $section);
-    if (defined $$self{name}) {
-        $name = $$self{name};
-        $section = $$self{section} || 1;
-    } else {
-        ($name, $section) = $self->devise_title;
+    # Determine information for the preamble and then output it unless the
+    # document was content-free.
+    if (!$$self{CONTENTLESS}) {
+        my ($name, $section);
+        if (defined $$self{name}) {
+            $name = $$self{name};
+            $section = $$self{section} || 1;
+        } else {
+            ($name, $section) = $self->devise_title;
+        }
+        my $date = $$self{date} || $self->devise_date;
+        $self->preamble ($name, $section, $date)
+            unless $self->bare_output or DEBUG > 9;
     }
-    my $date = $$self{date} || $self->devise_date;
-    $self->preamble ($name, $section, $date)
-        unless $self->bare_output or DEBUG > 9;
 
     # Initialize a few per-document variables.
     $$self{INDENT}    = 0;      # Current indentation level.

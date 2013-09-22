@@ -1,5 +1,15 @@
 2013-09-21  Russ Allbery  <rra@stanford.edu>
 
+	* lib/Pod/Man.pm: Perform document initialization even if the
+	document is contentless.  Documents with only errors are shown as
+	contentless but then have a POD ERRORS section, and previously
+	this led to internal errors because state variables weren't
+	properly initialized.  Thanks, Andreas Koenig.  (#88724)
+	* lib/Pod/Text.pm: Likewise.
+	* t/man-empty.t: New file.  Test error handling with contentless
+	documents.
+	* t/text-empty.t: Likewise.
+
 	* lib/Pod/Man.pm: Fix an output_fh reference in the documentation.
 	Thanks, Andreas Koenig.  (#88723)
 

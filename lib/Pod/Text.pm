@@ -38,7 +38,7 @@ use Pod::Simple ();
 # We have to export pod2text for backward compatibility.
 @EXPORT = qw(pod2text);
 
-$VERSION = '3.17';
+$VERSION = '3.18';
 
 ##############################################################################
 # Initialization
@@ -301,7 +301,6 @@ sub start_document {
     my ($self, $attrs) = @_;
     if ($$attrs{contentless} && !$$self{ALWAYS_EMIT_SOMETHING}) {
         $$self{CONTENTLESS} = 1;
-        return;
     } else {
         delete $$self{CONTENTLESS};
     }
