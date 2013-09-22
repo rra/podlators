@@ -7,13 +7,12 @@
 	* lib/Pod/Text.pm (parse_lines): Likewise.
 	(parse_string_document): Likewise.
 
-	* lib/Pod/Man.pm: Perform document initialization even if the
-	document is contentless.  Documents with only errors are shown as
-	contentless but then have a POD ERRORS section, and previously
-	this led to internal errors because state variables weren't
-	properly initialized.  Thanks, Andreas Koenig.  (#88724)
-
-	* lib/Pod/Text.pm: Likewise.
+	* lib/Pod/Man.pm (start_document): Perform document initialization
+	even if the document is contentless.  Documents with only errors
+	are shown as contentless but then have a POD ERRORS section, and
+	previously this led to internal errors because state variables
+	weren't properly initialized.  Thanks, Andreas Koenig.  (#88724)
+	* lib/Pod/Text.pm (start_document): Likewise.
 	* t/man-empty.t: New file.  Test error handling with contentless
 	documents.
 	* t/text-empty.t: Likewise.
@@ -21,9 +20,10 @@
 	* lib/Pod/Man.pm: Fix an output_fh reference in the documentation.
 	Thanks, Andreas Koenig.  (#88723)
 
-	* lib/Pod/Man.pm: Fix comment typos.  (#85683)  Thanks, David
-	Steinbrunner.
-	* lib/Pod/Text/Termcap.pm: Likewise.
+	* lib/Pod/Man.pm (guesswork): Fix comment typos.  Thanks, David
+	Steinbrunner.  (#85683)
+	* lib/Pod/Text/Termcap.pm (strip_format): Likewise.
+	(wrap): Likewise.
 
 	* pod/perlpodstyle.pod: Wrap verbatim license line in POD that was
 	over 79 characters after the man page indentation.  Thanks, Brian
