@@ -1,3 +1,8 @@
+2013-09-21  Russ Allbery <rra@stanford.edu>
+
+	* lib/Pod/Man.pm: Fix an output_fh reference in the documentation.
+	Thanks, Andreas Koenig.  (#88723)
+
 2013-09-21  David Steinbrunner <dsteinbrunner@pobox.com>
 
 	* lib/Pod/Man.pm: Fix comment typos.

@@ -1746,7 +1746,7 @@ L<perlpod(1)> for more information on the C<=encoding> command.
 
 The standard Pod::Simple method parse_file() takes one argument naming the
 POD file to read from.  By default, the output is sent to C<STDOUT>, but
-this can be changed with the output_fd() method.
+this can be changed with the output_fh() method.
 
 The standard Pod::Simple method parse_from_file() takes up to two
 arguments, the first being the input file to read POD from and the second
