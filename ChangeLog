@@ -1,3 +1,28 @@
+2013-09-22  Russ Allbery  <rra@stanford.edu>
+
+	* lib/Pod/Man.pm (_handle_element_start): Merge the two formatting
+	hashes and move the data to the top of the module.
+	(cmd_para): Separate reverse from the substitution.
+	(cmd_verbatim): Likewise.
+
+2013-09-22  Dagfinn Ilmari Mannsåker  <ilmari@ilmari.org>
+
+	* lib/Pod/Man.pm (cmd_para): Reverse the text before fixing
+	trailing whitespace to avoid having to scan the entire paragraph.
+	(cmd_verbatim): Likewise.
+
+	* lib/Pod/Man.pm (method_for_element): Merge two tr expressions.
+
+	* lib/Pod/Man.pm (formatting): Replaced with two hashes that store
+	the default and override formatting options for different blocks.
+	(_handle_element_start): Inline the formatting logic using those
+	hashes and remove the call to formatting.
+
+	* lib/Pod/Man.pm (new): Save the results of can and use it to make
+	the method call to avoid redoing method lookup.
+	(_handle_element_start): Likewise.
+	(_handle_element_end): Likewise.
+
 2013-09-21  Russ Allbery  <rra@stanford.edu>
 
 	* lib/Pod/Man.pm (parse_lines): Override the Pod::Simple method to
