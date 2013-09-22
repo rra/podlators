@@ -1,3 +1,8 @@
+2013-09-21  Brian Gottreu <gottreu@gmail.com>
+
+	* pod/perlpodstyle.pod: Wrap verbatim license line in POD that was
+	over 79 characters after the man page indentation.
+
 2013-02-27  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.5.1 released.
