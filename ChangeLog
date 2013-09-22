@@ -1,5 +1,7 @@
 2013-09-22  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.5.2 released.
+
 	* lib/Pod/Man.pm (_handle_element_start): Merge the two formatting
 	hashes and move the data to the top of the module.
 	(cmd_para): Separate reverse from the substitution.

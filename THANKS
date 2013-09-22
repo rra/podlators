@@ -179,3 +179,12 @@ undefined strings and numeric registers.
 James E. Keenan, for reporting an issue with formatting L<> links
 containing only URLs when the URL receives some formatting (such as
 escaping of hyphens).
+
+Brian Gottreu, for fixing excessively long lines across all of the Perl
+core documentation, including perlpodstyle.
+
+Andreas Koenig, for discovering an error in handling otherwise empty
+documents that have POD syntax errors and a POD ERRORS section.
+
+Dagfinn Ilmari Mannsåker, for multiple performance optimizations after
+profiling all of the modules in Perl core.

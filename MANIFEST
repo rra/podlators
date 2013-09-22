@@ -7,6 +7,7 @@ lib/Pod/Text/Overstrike.pm
 lib/Pod/Text/Termcap.pm
 Makefile.PL
 MANIFEST			This list of files
+MYMETA.json
 MYMETA.yml
 NOTES
 pod/perlpodstyle.pod
@@ -23,6 +24,7 @@ t/basic.txt
 t/color.t
 t/devise-date.t
 t/filehandle.t
+t/man-empty.t
 t/man-heading.t
 t/man-options.t
 t/man-perlio.t
@@ -34,6 +36,7 @@ t/pod-parser.t
 t/pod-spelling.t
 t/pod.t
 t/termcap.t
+t/text-empty.t
 t/text-encoding.t
 t/text-options.t
 t/text-perlio.t
