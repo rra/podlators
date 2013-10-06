@@ -1,5 +1,10 @@
 2013-10-05  Russ Allbery  <rra@stanford.edu>
 
+	* t/man-empty.t: Skip errors test if Pod::Simple didn't produce
+	any errors, which happens with the version shipped with Perl
+	versions prior to 5.18.  Catch warnings as well as exceptions.
+	* t/text-empty.t: Likewise.
+
 	* lib/Pod/Man.pm: Fix documentation of the default for the errors
 	constructor parameter.
 	* lib/Pod/Text.pm: Likewise.
