@@ -1,5 +1,7 @@
 2013-10-05  Russ Allbery  <rra@stanford.edu>
 
+	* VERSION: podlators 2.5.3 released.
+
 	* t/man-empty.t: Skip errors test if Pod::Simple didn't produce
 	any errors, which happens with the version shipped with Perl
 	versions prior to 5.18.  Catch warnings as well as exceptions.
