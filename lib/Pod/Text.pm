@@ -11,7 +11,7 @@
 # me any patches at the address above in addition to sending them to the
 # standard Perl mailing lists.
 #
-# Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013
+# Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2014
 #     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -880,10 +880,10 @@ doesn't encode its output).  If this option is given, the output encoding
 is forced to UTF-8.
 
 Be aware that, when using this option, the input encoding of your POD
-source must be properly declared unless it is US-ASCII or Latin-1.  POD
-input without an C<=encoding> command will be assumed to be in Latin-1,
-and if it's actually in UTF-8, the output will be double-encoded.  See
-L<perlpod(1)> for more information on the C<=encoding> command.
+source should be properly declared unless it's US-ASCII.  Pod::Simple will
+attempt to guess the encoding and may be successful if it's Latin-1 or
+UTF-8, but it will produce warnings.  Use the C<=encoding> command to
+declare the encoding.  See L<perlpod(1)> for more information.
 
 =item width
 
@@ -997,8 +997,8 @@ how to use Pod::Simple.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013 Russ
-Allbery <rra@stanford.edu>.
+Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2014
+Russ Allbery <rra@stanford.edu>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

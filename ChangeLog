@@ -1,3 +1,12 @@
+2014-01-02  Russ Allbery  <eagle@eyrie.org>
+
+	* lib/Pod/Man.pm: Fix utf8 documentation to reflect that
+	Pod::Simple now autodetects Latin-1 and UTF-8 but warns.
+	* lib/Pod/Text.pm: Likewise.
+	* scripts/pod2man: Make the corresponding change for the -u
+	option.
+	* scripts/pod2text: Likewise.
+
 2013-10-05  Russ Allbery  <rra@stanford.edu>
 
 	* VERSION: podlators 2.5.3 released.

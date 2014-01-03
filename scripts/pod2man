@@ -279,10 +279,11 @@ supported by many implementations and may even result in segfaults and
 other bad behavior.
 
 Be aware that, when using this option, the input encoding of your POD
-source must be properly declared unless it is US-ASCII or Latin-1.  POD
-input without an C<=encoding> command will be assumed to be in Latin-1,
-and if it's actually in UTF-8, the output will be double-encoded.  See
-L<perlpod(1)> for more information on the C<=encoding> command.
+source should be properly declared unless it's US-ASCII.  Pod::Simple will
+attempt to guess the encoding and may be successful if it's Latin-1 or
+UTF-8, but it will warn, which by default results in a B<pod2man> failure.
+Use the C<=encoding> command to declare the encoding.  See L<perlpod(1)>
+for more information.
 
 =item B<-v>, B<--verbose>
 
