@@ -2,7 +2,7 @@
 
 # pod2man -- Convert POD data to formatted *roff input.
 #
-# Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012, 2013
+# Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012, 2013, 2014
 #     Russ Allbery <rra@stanford.edu>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -143,7 +143,7 @@ Set the left-hand footer string to this value.  By default, the modification
 date of the input file will be used, or the current date if input comes from
 C<STDIN>.
 
-=item B<-errors>=I<style>
+=item B<--errors>=I<style>
 
 Set the error handling style.  C<die> says to throw an exception on any
 POD formatting error.  C<stderr> says to report errors on standard error,
@@ -348,7 +348,7 @@ B<pod2man> by Larry Wall and Tom Christiansen.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012, 2013 Russ
+Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012, 2013, 2014 Russ
 Allbery <rra@stanford.edu>.
 
 This program is free software; you may redistribute it and/or modify it
