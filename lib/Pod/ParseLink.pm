@@ -1,6 +1,6 @@
 # Pod::ParseLink -- Parse an L<> formatting code in POD text.
 #
-# Copyright 2001, 2008, 2009 by Russ Allbery <rra@stanford.edu>
+# Copyright 2001, 2008, 2009 by Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -180,11 +180,11 @@ L<http://www.eyrie.org/~eagle/software/podlators/>.
 
 =head1 AUTHOR
 
-Russ Allbery <rra@stanford.edu>.
+Russ Allbery <rra@cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2001, 2008, 2009 Russ Allbery <rra@stanford.edu>.
+Copyright 2001, 2008, 2009 Russ Allbery <rra@cpan.org>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

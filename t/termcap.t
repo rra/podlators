@@ -3,7 +3,7 @@
 # termcap.t -- Additional specialized tests for Pod::Text::Termcap.
 #
 # Copyright 2002, 2004, 2006, 2009, 2012, 2013
-#     Russ Allbery <rra@stanford.edu>
+#     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.

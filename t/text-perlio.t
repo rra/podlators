@@ -3,7 +3,7 @@
 # text-perlio.t -- Test Pod::Text with a PerlIO UTF-8 encoding layer.
 #
 # Copyright 2002, 2004, 2006, 2007, 2008, 2009, 2010, 2012
-#     Russ Allbery <rra@stanford.edu>
+#     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.

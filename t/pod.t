@@ -2,7 +2,7 @@
 #
 # Test POD formatting.
 #
-# Copyright 2009 Russ Allbery <rra@stanford.edu>
+# Copyright 2009 Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.

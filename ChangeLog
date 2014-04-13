@@ -7,7 +7,7 @@
 	option.
 	* scripts/pod2text: Likewise.
 
-2013-10-05  Russ Allbery  <rra@stanford.edu>
+2013-10-05  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.5.3 released.
 
@@ -20,7 +20,7 @@
 	constructor parameter.
 	* lib/Pod/Text.pm: Likewise.
 
-2013-09-22  Russ Allbery  <rra@stanford.edu>
+2013-09-22  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.5.2 released.
 
@@ -47,7 +47,7 @@
 	(_handle_element_start): Likewise.
 	(_handle_element_end): Likewise.
 
-2013-09-21  Russ Allbery  <rra@stanford.edu>
+2013-09-21  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (parse_lines): Override the Pod::Simple method to
 	set a default output file handle of STDOUT if none was set,
@@ -78,7 +78,7 @@
 	over 79 characters after the man page indentation.  Thanks, Brian
 	Gottreu and Steve Hay.  (#87440)
 
-2013-02-27  Russ Allbery  <rra@stanford.edu>
+2013-02-27  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.5.1 released.
 
@@ -92,7 +92,7 @@
 	* t/man-options.t: ...here, where we can configure the parser to
 	ignore errors and test that the output is correct.
 
-2013-01-02  Russ Allbery  <rra@stanford.edu>
+2013-01-02  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.5.0 released.
 
@@ -135,7 +135,7 @@
 	* lib/Pod/Man.pm (outindex): Remove newlines from index term text
 	since *roff quotes don't span lines.  (#82332)
 
-2012-06-01  Russ Allbery  <rra@stanford.edu>
+2012-06-01  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.4.2 released.
 
@@ -145,7 +145,7 @@
 	test started failing, plus Pod::Simple now warns about a missing
 	=encoding.  (#77553)
 
-2012-05-30  Russ Allbery  <rra@stanford.edu>
+2012-05-30  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.4.1 released.
 
@@ -153,7 +153,7 @@
 	set output_fh to STDOUT if it's not already set.  (#77530)
 	* lib/Pod/Text.pm (parse_file): Likewise.
 
-2012-05-26  Russ Allbery  <rra@stanford.edu>
+2012-05-26  Russ Allbery  <rra@cpan.org>
 
 	* t/basic.t: Embed PID in file names to avoid conflicts when
 	running the test suite in parallel.  (#62083)
@@ -210,17 +210,17 @@
 	enable index output) when running under groff.  Patch from Bjarni
 	Ingi Gislason.  (#75434)
 
-2012-02-14  Russ Allbery  <rra@stanford.edu>
+2012-02-14  Russ Allbery  <rra@cpan.org>
 
 	* Makefile.PL: Stop removing pod2man and pod2text on make
 	realclean, left over from when they were *.PL scripts.  (#74848)
 
-2011-12-20  Russ Allbery  <rra@stanford.edu>
+2011-12-20  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm: Fix the ASCII fallback string for the AE
 	ligature to use the string that was actually defined.
 
-2010-10-10  Russ Allbery  <rra@stanford.edu>
+2010-10-10  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.4.0 released.
 
@@ -257,14 +257,14 @@
 	PerlIO encoding layer already applied.
 	* t/text-perlio.t: Likewise for Pod::Text.
 
-2010-02-17  Russ Allbery  <rra@stanford.edu>
+2010-02-17  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.3.1 released.
 
 	* lib/Pod/Text/Color.pm: Update $VERSION for recent changes.
 	* lib/Pod/Text/Termcap.pm: Likewise.
 
-2009-12-28  Russ Allbery  <rra@stanford.edu>
+2009-12-28  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.3.0 released.
 
@@ -326,7 +326,7 @@
 	from C TAP Harness 1.1, converting it to use Test::More.
 	* t/pod.t: Likewise.
 
-2009-06-15  Russ Allbery  <rra@stanford.edu>
+2009-06-15  Russ Allbery  <rra@cpan.org>
 
 	* t/basic.t: Unlink temporary files in a loop to be sure that all
 	versions are deleted on VMS.  Thanks, John E. Malmberg.
@@ -342,18 +342,18 @@
 	* t/text-utf8.t: Likewise.
 	* t/text.t: Likewise
 
-2009-03-29  Russ Allbery  <rra@stanford.edu>
+2009-03-29  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (outindex): Escape backslashes in the quoted text
 	of .IX macros generated from X<> formatting code.
 	* t/man.t: Add test case for X<\n>.
 
-2009-03-05  Russ Allbery  <rra@stanford.edu>
+2009-03-05  Russ Allbery  <rra@cpan.org>
 
 	* scripts/pod2man.PL: Clarify that no markup should be used in the
 	NAME section of a manual page.
 
-2009-02-28  Russ Allbery  <rra@stanford.edu>
+2009-02-28  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (devise_date): Avoid POSIX::strftime because
 	POSIX requires Fcntl, which is an XS module, and hence can't build
@@ -368,7 +368,7 @@
 	section to avoid confusing lexgrog.  Thanks, Niko Tyni.
 	* t/man.t: Test C<> in the NAME section.
 
-2009-01-17  Russ Allbery  <rra@stanford.edu>
+2009-01-17  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.2.2 released.
 
@@ -380,27 +380,27 @@
 	Thanks, Renee Baecker.
 	* t/text.t: Test for this fix.
 
-2008-12-19  Russ Allbery  <rra@stanford.edu>
+2008-12-19  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.2.1 released.
 
 	* t/man.t: Add a test of =for.
 	* t/text.t: Likewise.
 
-2008-11-07  Russ Allbery  <rra@stanford.edu>
+2008-11-07  Russ Allbery  <rra@cpan.org>
 
 	* t/text-encoding.t: Also set raw encoding on the output file
 	handle so that the test works properly on Windows.  Thanks, Steve
 	Hay.
 
-2008-11-03  Russ Allbery  <rra@stanford.edu>
+2008-11-03  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Text.pm (pod2text): Properly initialize the output file
 	handle when called with only one argument.  Thanks, Michael G
 	Schwern.
 	* t/pod-parser.t: Test the pod2text function with one argument.
 
-2008-10-05  Russ Allbery  <rra@stanford.edu>
+2008-10-05  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.2.0 released.
 
@@ -440,7 +440,7 @@
 	* t/text-encoding.t: New file.  Additional tests for encoding
 	combinations with Pod::Text.
 
-2008-09-21  Russ Allbery  <rra@stanford.edu>
+2008-09-21  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.1.4 released.
 
@@ -459,7 +459,7 @@
 	* t/text-utf8.t: Skip UTF-8 tests for versions of Perl prior to
 	5.8.
 
-2008-09-14  Russ Allbery  <rra@stanford.edu>
+2008-09-14  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.1.3 released.
 
@@ -486,7 +486,7 @@
 	byte string.  It was papering over a bug in setting the encoding
 	of an input POD file.
 
-2008-08-08  Russ Allbery  <rra@stanford.edu>
+2008-08-08  Russ Allbery  <rra@cpan.org>
 
 	* t/pod-spelling.t: Suppress the personal ispell dictionary when
 	checking spelling.
@@ -495,11 +495,11 @@
 	* lib/Pod/ParseLink.pm: Likewise.
 	* scripts/pod2man.PL: Likewise.
 
-2008-08-07  Russ Allbery  <rra@stanford.edu>
+2008-08-07  Russ Allbery  <rra@cpan.org>
 
 	* scripts/pod2man.PL: Mention --utf8 in the SYNOPSIS.
 
-2008-07-20  Russ Allbery  <rra@stanford.edu>
+2008-07-20  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.1.2 released.
 
@@ -526,7 +526,7 @@
 	point for UTF-8 output.
 	* t/man-options.t: Test S<> output with UTF-8 enabled.
 
-2008-07-03  Russ Allbery  <rra@stanford.edu>
+2008-07-03  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.1.1 released.
 
@@ -542,12 +542,12 @@
 	* Makefile.PL: Make the LICENSE key conditional on Perl 5.10 or
 	later since it wasn't supported in Perl 5.8.
 
-2008-06-04  Russ Allbery  <rra@stanford.edu>
+2008-06-04  Russ Allbery  <rra@cpan.org>
 
 	* t/text.t: Fix test four (S<> handling with all whitespace) to
 	not give a spurious failure with Pod::Simple 3.06.
 
-2008-06-01  Russ Allbery  <rra@stanford.edu>
+2008-06-01  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.1.0 released.
 
@@ -568,13 +568,13 @@
 	multiple C<> formatting codes.
 	* t/man.t: Test =head1 with multiple C<> codes.
 
-2008-05-14  Russ Allbery  <rra@stanford.edu>
+2008-05-14  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (preamble_template): Protect .Sh text against
 	leading *roff control characters since some *roff implementations
 	apparently "look through" font escapes at the beginning of lines.
 
-2008-05-12  Russ Allbery  <rra@stanford.edu>
+2008-05-12  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (format_text): Escape backslashes separately from
 	processing non-ASCII characters and do that, dash escaping, and
@@ -582,7 +582,7 @@
 	Otherwise, we escape the hyphen in eth characters.
 	* t/man.t: Test for handling of eth.
 
-2007-11-28  Russ Allbery  <rra@stanford.edu>
+2007-11-28  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.0.6 released.
 
@@ -600,7 +600,7 @@
 	* t/basic.man: Adjust for escaped apostrophes.
 	* t/man.t: Likewise, and add a new test for quote escaping.
 
-2007-09-11  Russ Allbery  <rra@stanford.edu>
+2007-09-11  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (devise_title): Simplify the logic to skip lib
 	directories to avoid Perl warnings and unnecessary checks.
@@ -608,7 +608,7 @@
 	* t/text.t: Add a test for S<> with all-whitespace contents but
 	skip it for the current Pod::Simple.
 
-2006-09-16  Russ Allbery  <rra@stanford.edu>
+2006-09-16  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.0.5 released.
 
@@ -632,13 +632,13 @@
 	* t/pod.t: Add a new test for POD validity using Test::Pod (if
 	available).
 
-2006-03-08  Russ Allbery  <rra@stanford.edu>
+2006-03-08  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm: Stop mapping vertical bar to \(bv, since it
 	produces Unicode characters where they aren't desirable.  Remove
 	the preamble reference to the Tr string, which was never defined.
 
-2006-02-19  Russ Allbery  <rra@stanford.edu>
+2006-02-19  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.0.4 released.
 
@@ -652,7 +652,7 @@
 	* lib/Pod/Text.pm (parse_from_filehandle): Likewise.
 	* t/filehandle.t: Test the parse_from_filehandle API.
 
-2006-01-28  Russ Allbery  <rra@stanford.edu>
+2006-01-28  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.0.3 released.
 
@@ -667,7 +667,7 @@
 	* t/text-options.t: Likewise.
 	* t/text.t: Likewise.
 
-2006-01-25  Russ Allbery  <rra@stanford.edu>
+2006-01-25  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.0.2 released.
 
@@ -685,7 +685,7 @@
 	recent Perls.
 	* lib/Pod/Text/Color.pm (wrap): Likewise.
 
-2006-01-20  Russ Allbery  <rra@stanford.edu>
+2006-01-20  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.0.1 released.
 
@@ -718,7 +718,7 @@
 	end method call to make Perl 5.005 happy.
 	* lib/Pod/Text.pm (_handle_element_end): Likewise.
 
-2005-11-28  Russ Allbery  <rra@stanford.edu>
+2005-11-28  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 2.00 released.
 
@@ -728,7 +728,7 @@
 	reliable results and update the expected results; I'm not sure
 	what terminal I was testing with before.
 
-2005-03-19  Russ Allbery  <rra@stanford.edu>
+2005-03-19  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm: Reorder documentation sections to put SEE ALSO
 	last.
@@ -739,7 +739,7 @@
 	preserve_whitespace is not available.
 	* lib/Pod/Text.pm (new): Likewise.
 
-2004-12-31  Russ Allbery  <rra@stanford.edu>
+2004-12-31  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Text/Color.pm (wrap): Count text lengths correctly when
 	there are multiple adjacent escape sequences.  Use a temporary
@@ -756,7 +756,7 @@
 	COPYRIGHT AND LICENSE, based on discussion on perl5-porters.
 	Remove the obsolete caution against enclosing URLs in L<>.
 
-2004-06-08  Russ Allbery  <rra@stanford.edu>
+2004-06-08  Russ Allbery  <rra@cpan.org>
 
 	* t/basic.txt: C<> without any content now produces quote marks.
 	* t/basic.cap: Likewise.
@@ -794,12 +794,12 @@
 	where a command handler returns only "0" as the result of a
 	command.
 
-2004-05-07  Russ Allbery  <rra@stanford.edu>
+2004-05-07  Russ Allbery  <rra@cpan.org>
 
 	* scripts/pod2man.PL: Make the argument to the --release flag
 	optional.
 
-2004-02-14  Russ Allbery  <rra@stanford.edu>
+2004-02-14  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm: Refer to Pod::Simple in SEE ALSO.
 
@@ -831,21 +831,21 @@
 	output is identical to the old except for some small bug fixes and
 	better handling of E<>.
 
-2003-07-09  Russ Allbery  <rra@stanford.edu>
+2003-07-09  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.27 released.
 
 	* lib/Pod/Text/Termcap.pm (initialize): Handle the case where the
 	HOME environment variable isn't set, mostly for Windows.
 
-2003-03-30  Russ Allbery  <rra@stanford.edu>
+2003-03-30  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.26 released.
 
 	* lib/Pod/Man.pm: Make sure the module returns 1, to keep Perl
 	5.8.0 happy.
 
-2003-01-04  Russ Allbery  <rra@stanford.edu>
+2003-01-04  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.25 released.
 
@@ -860,7 +860,7 @@
 	as =item.
 	* t/man.t: Add tests for bullet handling with =item.
 
-2002-08-03  Russ Allbery  <rra@stanford.edu>
+2002-08-03  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.24 released.
 
@@ -876,7 +876,7 @@
 	the left margin.
 	* t/text-options.t: New file.  Test margin and alt.
 
-2002-07-14  Russ Allbery  <rra@stanford.edu>
+2002-07-14  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.23 released.
 
@@ -892,7 +892,7 @@
 	to work around bugs in Pod::Man and Pod::Text that have been
 	fixed, and reference Pod::Text::Overstrike.
 
-2002-06-23  Russ Allbery  <rra@stanford.edu>
+2002-06-23  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.22 released.
 
@@ -902,7 +902,7 @@
 	* t/man.t: Add a test for proper quoting of C<.>.
 	* t/text.t: New file.  Likewise.
 
-2002-02-16  Russ Allbery  <rra@stanford.edu>
+2002-02-16  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.21 released.
 
@@ -910,7 +910,7 @@
 	lines to use a non-backtracking section for each character to
 	avoid exponential backtracking on lines with a lot of markup.
 
-2002-01-27  Russ Allbery  <rra@stanford.edu>
+2002-01-27  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.20 released.
 
@@ -924,7 +924,7 @@
 	\b and \cH aren't the same character.
 	(strip_format): Likewise.
 
-2002-01-02  Russ Allbery  <rra@stanford.edu>
+2002-01-02  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.19 released.
 
@@ -941,13 +941,13 @@
 	* t/basic.man: Adjust to reflect lack of guesswork in the NAME
 	section and removal of the .UC request.
 
-2002-01-01  Russ Allbery  <rra@stanford.edu>
+2002-01-01  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Text/Termcap.pm (initialize): Terminal speed should be a
 	number, not a string.  Also fall back on a hard-coded terminal
 	speed if getospeed doesn't work.
 
-2001-12-31  Russ Allbery  <rra@stanford.edu>
+2001-12-31  Russ Allbery  <rra@cpan.org>
 
 	* t/basic.pod: Add a verbatim paragraph right before a heading,
 	which was previously mishandled by Pod::Man.
@@ -971,14 +971,14 @@
 	(interior_sequence): Fix the unknown formatting code warning to
 	match the documentation.
 
-2001-11-30  Russ Allbery  <rra@stanford.edu>
+2001-11-30  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.18 released.
 
 	* lib/Pod/ParseLink.pm: Escape L<> in the NAME section of the
 	documentation.
 
-2001-11-27  Russ Allbery  <rra@stanford.edu>
+2001-11-27  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Text/Termcap.pm (initialize): Fall back on a hard-coded
 	terminal speed if POSIX::Termios doesn't work, such as on VMS.
@@ -1016,7 +1016,7 @@
 	* lib/Pod/Text/Termcap.pm: Fix a documentation typo.  =head should
 	be =head1.
 
-2001-11-26  Russ Allbery  <rra@stanford.edu>
+2001-11-26  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.16 released.
 
@@ -1038,7 +1038,7 @@
 	turning off guesswork and proper 8-bit character handling.  Move
 	some notes about fragile heuristics to a CAVEATS section.
 
-2001-11-25  Russ Allbery  <rra@stanford.edu>
+2001-11-25  Russ Allbery  <rra@cpan.org>
 
 	* t/basic.t: Set TERM and TERMCAP per the Term::Cap documentation
 	to obtain reproducible results for the Pod::Text::Termcap test.
@@ -1049,7 +1049,7 @@
 	than dying if the termcap entry is incomplete.  Note the fallback
 	in the documentation.
 
-2001-11-23  Russ Allbery  <rra@stanford.edu>
+2001-11-23  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.14 released.
 
@@ -1092,7 +1092,7 @@
 	just the simple ones, and don't hard-code the value of any
 	fixed-width font.
 
-2001-11-22  Russ Allbery  <rra@stanford.edu>
+2001-11-22  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/ParseLink.pm (_parse_section): Fix a bug in the handling
 	of link text that's entirely in quotes.
@@ -1125,7 +1125,7 @@
 	a module, also strip $^O by itself as a directory component even
 	when not preceeded or followed by a dash and other text.
 
-2001-11-15  Russ Allbery  <rra@stanford.edu>
+2001-11-15  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.13 released.
 
@@ -1134,7 +1134,7 @@
 
 	* VERSION: podlators 1.12 released.
 
-2001-11-14  Russ Allbery  <rra@stanford.edu>
+2001-11-14  Russ Allbery  <rra@cpan.org>
 
 	* Makefile.PL: Require at least version 0.8 of File::Spec.
 
@@ -1195,7 +1195,7 @@
 	* lib/Pod/Text.pm: Support E<apos> and E<nbsp> and treat E<shy> as
 	an empty string.
 
-2001-11-13  Russ Allbery  <rra@stanford.edu>
+2001-11-13  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (begin_pod): Completely rewrite the name parsing
 	code for modules to use File::Spec.  In the process, fix a bug in
@@ -1203,7 +1203,7 @@
 	Swap the order of date and release in the .TH line to better
 	comply with the man macro documentation.
 
-2001-11-04  Russ Allbery  <rra@stanford.edu>
+2001-11-04  Russ Allbery  <rra@cpan.org>
 
 	* scripts/pod2man.PL: Add the --name option and documentation.
 	* lib/Pod/Man.pm: Add documentation for the name option, which was
@@ -1213,7 +1213,7 @@
 	3.  No longer insert a timestamp into the generated man page; it
 	just causes unnecessary differences and merge conflicts.
 
-2001-10-20  Russ Allbery  <rra@stanford.edu>
+2001-10-20  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.11 released.
 
@@ -1241,7 +1241,7 @@
 	(switchquotes): Must use .ie for if statements containing a .el
 	clause in *roff; .if won't work.
 
-2001-07-19  Russ Allbery  <rra@stanford.edu>
+2001-07-19  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (sequence): Turned carps for unknown escapes and
 	unknown sequences into warnings, suppressed the Perl file and line
@@ -1251,7 +1251,7 @@
 	escapes and unknown sequences.
 	(cmd_back): Likewise for unmatched =back errors.
 
-2001-07-10  Russ Allbery  <rra@stanford.edu>
+2001-07-10  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.10 released.
 
@@ -1295,7 +1295,7 @@
 	confusing some other translators.
 	(cmd_item): Emit .IP instead of .Ip.
 
-2001-04-09  Russ Allbery  <rra@stanford.edu>
+2001-04-09  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.09 released.
 
@@ -1311,7 +1311,7 @@
 	and E<iacute>, and this time for E<Igrave> and E<igrave> too.
 	Reported by Sean Burke.
 
-2001-02-09  Russ Allbery  <rra@stanford.edu>
+2001-02-09  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.08 released.
 
@@ -1319,7 +1319,7 @@
 	verbatim rather than interpreting it as a manual page reference.
 	* lib/Pod/Man.pm (buildlink): Likewise.
 
-2001-01-16  Russ Allbery  <rra@stanford.edu>
+2001-01-16  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.07 released.
 
@@ -1330,7 +1330,7 @@
 	(cmd_head3): Likewise.
 	(cmd_head4): Likewise.
 
-2000-12-25  Russ Allbery  <rra@stanford.edu>
+2000-12-25  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.06 released.
 
@@ -1349,7 +1349,7 @@
 	* lib/Pod/Text/Overstrike.pm: New file.  Contributed by Joe Smith
 	<Joe.Smith@inwap.com>.
 
-2000-11-18  Russ Allbery  <rra@stanford.edu>
+2000-11-18  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.05 released.
 
@@ -1387,7 +1387,7 @@
 	for C<> to be double quotes rather than matched left/right single
 	quotes.
 
-2000-10-09  Russ Allbery  <rra@stanford.edu>
+2000-10-09  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.04 released.
 
@@ -1407,7 +1407,7 @@
 	* lib/Pod/Text.pm: Fix incorrect mappings for E<Iacute> and
 	E<iacute>, reported by Sean Burke.
 
-2000-10-08  Russ Allbery  <rra@stanford.edu>
+2000-10-08  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (initialize): Change the default quote character
 	for C<> to be double quotes rather than matched left/right single
@@ -1416,7 +1416,7 @@
 	* lib/Pod/Text.pm (command): Fixed a shadowed variable warning.
 	* lib/Pod/Man.pm (command): Likewise.
 
-2000-09-03  Russ Allbery  <rra@stanford.edu>
+2000-09-03  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.03 released.
 
@@ -1441,7 +1441,7 @@
 	paragraph command.
 	* lib/Pod/Man.pm (command): Likewise.
 
-2000-09-02  Russ Allbery  <rra@stanford.edu>
+2000-09-02  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Text.pm: Add sol and verbar to the escapes.
 	* lib/Pod/Man.pm: Likewise.
@@ -1452,12 +1452,12 @@
 	* lib/Pod/Man.pm (cmd_item): Fix the regex for stripping bullets
 	from index entries so that it doesn't strip a leading 'o'.
 
-2000-04-30  Russ Allbery  <rra@stanford.edu>
+2000-04-30  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm: In the prelude, terminate the .IX definition
 	with .. instead of ".    ." for groff.
 
-2000-04-25  Russ Allbery  <rra@stanford.edu>
+2000-04-25  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.02 released.
 
@@ -1466,25 +1466,25 @@
 	(collapse): Fix hyphens and underscores for literal C<> block
 	content.
 
-2000-04-09  Russ Allbery  <rra@stanford.edu>
+2000-04-09  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (sequence): Fix hyphens and underscores in only
 	those children of a C<> sequence that haven't already had
 	guesswork applied to them.
 
-2000-03-30  Russ Allbery  <rra@stanford.edu>
+2000-03-30  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.01 released.
 
 	* Makefile.PL: Install the modules in the Perl core area if the
 	Perl version is 5.6.0 or higher.
 
-2000-03-18  Russ Allbery  <rra@stanford.edu>
+2000-03-18  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (begin_pod): Strip a leading lib/ from a file
 	name for module man pages, needed for ExtUtils::MakeMaker.
 
-2000-03-16  Russ Allbery  <rra@stanford.edu>
+2000-03-16  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 1.00 released.
 
@@ -1509,11 +1509,11 @@
 	bundling_override so that options like -center work for backwards
 	compatibility.
 
-2000-03-07  Russ Allbery  <rra@stanford.edu>
+2000-03-07  Russ Allbery  <rra@cpan.org>
 
 	* scripts/pod2man.PL: Change pod2txt to pod2man in SYNOPSIS.
 
-2000-03-06  Russ Allbery  <rra@stanford.edu>
+2000-03-06  Russ Allbery  <rra@cpan.org>
 
 	* scripts/pod2man.PL: Renamed from pod2roff.PL as this has been
 	incorporated in Perl core.  Updated self-references in the
@@ -1533,7 +1533,7 @@
 	(guesswork): $3 no longer used in small-caps regex, remove to
 	avoid warnings under -w.
 
-2000-03-05  Russ Allbery  <rra@stanford.edu>
+2000-03-05  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (protect): Protect leading periods following font
 	escapes as well.
@@ -1548,7 +1548,7 @@
 	correctly with current Perl.
 	(cmd_for): Don't extract the line number when we don't use it.
 
-1999-10-07  Russ Allbery  <rra@stanford.edu>
+1999-10-07  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 0.08 released.
 
@@ -1558,7 +1558,7 @@
 	escapes.
 	* lib/Pod/Man.pm (sequence): Likewise.
 
-1999-09-27  Russ Allbery  <rra@stanford.edu>
+1999-09-27  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Man.pm (buildlink): Links to sections had doubled quote
 	marks.
@@ -1566,7 +1566,7 @@
 	* scripts/pod2roff.PL: Pod::Parser constructors take an expanded
 	hash, not a hash ref.
 
-1999-09-25  Russ Allbery  <rra@stanford.edu>
+1999-09-25  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 0.07 released.
 
@@ -1584,7 +1584,7 @@
 	generation slightly, and fixed a few places that were clobbering
 	the caller's $_.
 
-1999-09-20  Russ Allbery  <rra@stanford.edu>
+1999-09-20  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 0.06 released.
 
@@ -1646,19 +1646,19 @@
 	* Makefile.PL: Add pod2roff to the scripts, improve handling of
 	scripts a little.
 
-1999-09-19  Russ Allbery  <rra@stanford.edu>
+1999-09-19  Russ Allbery  <rra@cpan.org>
 
 	* lib/Pod/Roff.pm: New file.
 	* scripts/pod2roff.PL: New file.
 
-1999-09-18  Russ Allbery  <rra@stanford.edu>
+1999-09-18  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 0.05 released.
 
 	* lib/Pod/Text/Color.pm: Pod::SimpleText changed to Pod::PlainText
 	in one final spot in the documentation.
 
-1999-08-30  Russ Allbery  <rra@stanford.edu>
+1999-08-30  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 0.04 released.
 
@@ -1680,7 +1680,7 @@
 	default if STDOUT is a tty, and clarified the documentation of
 	--loose.
 
-1999-07-29  Russ Allbery  <rra@stanford.edu>
+1999-07-29  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: podlators 0.02 released.
 
@@ -1701,7 +1701,7 @@
 	process sequences for =head headings, and changed the name from
 	SimpleText to PlainText.  Also speeded up some sequences slightly.
 
-1999-06-12  Russ Allbery  <rra@stanford.edu>
+1999-06-12  Russ Allbery  <rra@cpan.org>
 
 	* VERSION: Pod::SimpleText 0.01 released.
 

@@ -2,7 +2,7 @@
 #
 # filehandle.t -- Test the parse_from_filehandle interface.
 #
-# Copyright 2006, 2009, 2012 by Russ Allbery <rra@stanford.edu>
+# Copyright 2006, 2009, 2012 by Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.

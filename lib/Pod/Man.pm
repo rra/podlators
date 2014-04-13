@@ -12,7 +12,7 @@
 # standard Perl mailing lists.
 #
 # Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-#     2010, 2012, 2013, 2014 Russ Allbery <rra@stanford.edu>
+#     2010, 2012, 2013, 2014 Russ Allbery <rra@cpan.org>
 # Substantial contributions by Sean Burke <sburke@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -1860,7 +1860,7 @@ only matters for troff output.
 
 =head1 AUTHOR
 
-Russ Allbery <rra@stanford.edu>, based I<very> heavily on the original
+Russ Allbery <rra@cpan.org>, based I<very> heavily on the original
 B<pod2man> by Tom Christiansen <tchrist@mox.perl.com>.  The modifications to
 work with Pod::Simple instead of Pod::Parser were originally contributed by
 Sean Burke (but I've since hacked them beyond recognition and all bugs are
@@ -1869,7 +1869,7 @@ mine).
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-2009, 2010, 2012, 2013, 2014 Russ Allbery <rra@stanford.edu>.
+2009, 2010, 2012, 2013, 2014 Russ Allbery <rra@cpan.org>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

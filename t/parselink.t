@@ -2,7 +2,7 @@
 #
 # parselink.t -- Tests for Pod::ParseLink.
 #
-# Copyright 2001, 2009 by Russ Allbery <rra@stanford.edu>
+# Copyright 2001, 2009 by Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.

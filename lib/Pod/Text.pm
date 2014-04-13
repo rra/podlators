@@ -12,7 +12,7 @@
 # standard Perl mailing lists.
 #
 # Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2014
-#     Russ Allbery <rra@stanford.edu>
+#     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -989,7 +989,7 @@ Perl core distribution as of 5.6.0.
 
 =head1 AUTHOR
 
-Russ Allbery <rra@stanford.edu>, based I<very> heavily on the original
+Russ Allbery <rra@cpan.org>, based I<very> heavily on the original
 Pod::Text by Tom Christiansen <tchrist@mox.perl.com> and its conversion to
 Pod::Parser by Brad Appleton <bradapp@enteract.com>.  Sean Burke's initial
 conversion of Pod::Man to use Pod::Simple provided much-needed guidance on
@@ -998,7 +998,7 @@ how to use Pod::Simple.
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2014
-Russ Allbery <rra@stanford.edu>.
+Russ Allbery <rra@cpan.org>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

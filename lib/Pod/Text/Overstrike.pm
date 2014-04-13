@@ -12,9 +12,9 @@
 # independent.
 #
 # Created by Joe Smith <Joe.Smith@inwap.com> 30-Nov-2000
-#   (based on Pod::Text::Color by Russ Allbery <rra@stanford.edu>)
+#   (based on Pod::Text::Color by Russ Allbery <rra@cpan.org>)
 # Copyright 2000 Joe Smith <Joe.Smith@inwap.com>.
-# Copyright 2001, 2004, 2008 Russ Allbery <rra@stanford.edu>.
+# Copyright 2001, 2004, 2008 Russ Allbery <rra@cpan.org>.
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -195,12 +195,12 @@ Perl core distribution as of 5.6.0.
 =head1 AUTHOR
 
 Joe Smith <Joe.Smith@inwap.com>, using the framework created by Russ Allbery
-<rra@stanford.edu>.
+<rra@cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 2000 by Joe Smith <Joe.Smith@inwap.com>.
-Copyright 2001, 2004, 2008 by Russ Allbery <rra@stanford.edu>.
+Copyright 2001, 2004, 2008 by Russ Allbery <rra@cpan.org>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
