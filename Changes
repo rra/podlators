@@ -12,6 +12,13 @@ podlators 4.00 (unreleased)
     warnings.  Please report any unexpected or confusing warnings as bugs
     in the bug tracker.
 
+    [Pod::Man] Honor the environment variable POD_MAN_DATE and use its
+    contents, if set, as the value of the left-hand footer if the date
+    option is not set, overriding the timestamp of the input file.  This
+    is primarily useful to ensure reproducible builds of the same output
+    file given the same souce and Pod::Man version, even when file
+    timestamps may not be consistent.  Thanks, Niko Tyni.
+
     Fix documentation of the utf8 option to Pod::Man and Pod::Text, and
     the corresponding -u option to pod2man and pod2text, to reflect that
     Pod::Simple now autodetects Latin-1 and UTF-8 but warns.
