@@ -4,9 +4,9 @@
               Maintained by Russ Allbery <rra@cpan.org>
 
   Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-  2009, 2010, 2012, 2013 Russ Allbery <rra@cpan.org>.  This program is
-  free software; you may redistribute it and/or modify it under the same
-  terms as Perl itself.
+  2009, 2010, 2012, 2013, 2014 Russ Allbery <rra@cpan.org>.  This program
+  is free software; you may redistribute it and/or modify it under the
+  same terms as Perl itself.
 
   I welcome all bug reports and patches for this package (and in
   particular, if you're looking for a project, see TODO).  However, please
@@ -50,19 +50,12 @@ DESCRIPTION
 
 REQUIREMENTS
 
+  Perl 5.6.0 or later and Module::Build are required to build this module.
   Both Pod::Man and Pod::Text are built on Pod::Simple, which handles the
   basic POD parsing and character set conversion.  Pod::Simple 3.06 or
   later is required (and Pod::Simple 3.07 is recommended).  It is
   available from CPAN and part of Perl core as of 5.10.0.  Encode is also
   required (included in Perl core since 5.8.0).
-
-  To use Pod::Text::Color, Term::ANSIColor is required.  It is available
-  from CPAN and part of Perl core as of 5.6.0.
-
-  PerlIO support is required for Pod::Text to set the output encoding to
-  match the input encoding (which it does unless the utf8 option is used).
-  Without this, the output will use Perl's internal encoding, which may be
-  surprising and may produce Perl warnings.
 
   To run the test suite, Test::More is required.  It is available from
   CPAN and part of Perl core as of 5.6.2.
@@ -75,33 +68,38 @@ REQUIREMENTS
   since spelling dictionaries differ too much between systems.  To enable
   those tests, set RRA_MAINTAINER_TESTS to a true value.
 
-INSTALLATION
+BUILDING AND INSTALLATION
 
-  WARNING: Installation of this package will replace the pod2text and
-  pod2man scripts that come with Perl, and for Perl 5.6.0 or later the
-  versions of Pod::Text and Pod::Man installed with Perl.  Make sure that
-  you have a version of this package as new as or newer than the modules
-  that come with Perl.  For older versions of Perl, pod2text and pod2man
-  will still be overwritten, but Pod::Text will not be, making many of the
-  options in pod2text not actually useable unless you overwrite the
-  version that comes with Perl with it (since Perl looks in its own
-  directories before it looks in site_perl).  Note also that the version
-  in this package attempts to be backwards-compatible but is not bug
-  compatible, and some things like the default wrap margin have changed.
-  The version contained in this package is the default version for Perl
-  5.5.560 or thereabouts and higher, but may be slightly newer depending
-  on how updates have been synchronized.
+  Installation of this package will shadow the Pod::Man, Pod::Text, and
+  subclasses that come with Perl.  The ones from Perl will not be
+  overwritten, but the ones installed by this package will generally take
+  precendent.  This may result in different behavior than using the
+  versions in Perl.  It will probably also shadow the perlpodstyle man
+  page.
 
-  Follow the standard installation procedure for Perl modules, which is to
-  type the following commands:
+  Normally, the pod2man and pod2text scripts installed by this package
+  will go into a directory like /usr/local/bin.  Be sure that this
+  directory is earlier in your PATH than the directory containing the
+  modules installed by Perl itself (often /usr/bin).  Otherwise, you will
+  call the new modules with the old driver scripts, which may cause
+  various problems.
 
-      perl Makefile.PL
-      make
-      make install
+  podlators uses Module::Build and can be installed using the same process
+  as any other Module::Build module:
 
-  You'll probably need to do the "make install" as root.  This will also
-  install driver scripts named pod2text and pod2man; see their man pages
-  for more information.
+      perl Build.PL
+      ./Build
+      ./Build test
+      ./Build install
+
+  You'll probably need to do the last step as root.  This will also
+  install driver scripts named pod2text and pod2man and the perlpodstyle
+  man page.
+
+  podlators also includes a Makefile.PL file that can be used with
+  ExtUtils::MakeMaker as an alternate build and installation method.  This
+  is provided for use within Perl core and is not intended for normal use.
+  Outside of Perl core, please use the Build.PL script instead.
 
 HOMEPAGE AND SOURCE REPOSITORY
 
