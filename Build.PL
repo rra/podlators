@@ -19,12 +19,12 @@ my $build = Module::Build->new(
     dist_name            => 'podlators',
     dist_abstract        => 'Format POD source into various output formats',
     dist_author          => 'Russ Allbery <rra@cpan.org>',
-    dist_version         => '4.0.0',
+    dist_version         => '4.00',
     license              => 'perl',
     recursive_test_files => 1,
 
     # module_name must be set to avoid warnings, even though it's not used.
-    module_name => 'Pod::Man',
+    module_name => 'podlators',
 
     # perlpodstyle is another section 1 man page, but not a script.
     #

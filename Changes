@@ -1,6 +1,12 @@
                       User-Visible podlators Changes
 
-podlators 2.5.4 (unreleased)
+podlators 4.00 (unreleased)
+
+    Increase the version number of the package to be larger than any of
+    the previous version numbers of any of the modules, and change all
+    modules to use the same version as the overall podlators package.
+    Switch to a simple decimal version number to avoid complexity with
+    v-strings and portability to old versions of Perl.
 
     Fix documentation of the utf8 option to Pod::Man and Pod::Text, and
     the corresponding -u option to pod2man and pod2text, to reflect that
