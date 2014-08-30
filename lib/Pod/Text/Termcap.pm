@@ -4,7 +4,7 @@
 # output the right termcap escape sequences for formatted text on the current
 # terminal type.
 #
-# Copyright 1999, 2001, 2002, 2004, 2006, 2008, 2009
+# Copyright 1999, 2001, 2002, 2004, 2006, 2008, 2009, 2014
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -16,13 +16,14 @@
 
 package Pod::Text::Termcap;
 
-require 5.004;
+use 5.006;
+use strict;
+use warnings;
 
 use Pod::Text ();
 use POSIX ();
 use Term::Cap;
 
-use strict;
 use vars qw(@ISA $VERSION);
 
 @ISA = qw(Pod::Text);

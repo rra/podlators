@@ -8,6 +8,10 @@ podlators 4.00 (unreleased)
     Switch to a simple decimal version number to avoid complexity with
     v-strings and portability to old versions of Perl.
 
+    podlators now requires Perl 5.006 or later.  All modules enable
+    warnings.  Please report any unexpected or confusing warnings as bugs
+    in the bug tracker.
+
     Fix documentation of the utf8 option to Pod::Man and Pod::Text, and
     the corresponding -u option to pod2man and pod2text, to reflect that
     Pod::Simple now autodetects Latin-1 and UTF-8 but warns.

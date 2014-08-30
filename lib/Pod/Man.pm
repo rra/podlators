@@ -24,9 +24,10 @@
 
 package Pod::Man;
 
-require 5.005;
-
+use 5.006;
 use strict;
+use warnings;
+
 use subs qw(makespace);
 use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 

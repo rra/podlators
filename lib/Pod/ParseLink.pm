@@ -21,9 +21,10 @@
 
 package Pod::ParseLink;
 
-require 5.004;
-
+use 5.006;
 use strict;
+use warnings;
+
 use vars qw(@EXPORT @ISA $VERSION);
 
 use Exporter;

@@ -14,7 +14,7 @@
 # Created by Joe Smith <Joe.Smith@inwap.com> 30-Nov-2000
 #   (based on Pod::Text::Color by Russ Allbery <rra@cpan.org>)
 # Copyright 2000 Joe Smith <Joe.Smith@inwap.com>.
-# Copyright 2001, 2004, 2008 Russ Allbery <rra@cpan.org>.
+# Copyright 2001, 2004, 2008, 2014 Russ Allbery <rra@cpan.org>.
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -25,12 +25,13 @@
 
 package Pod::Text::Overstrike;
 
-require 5.004;
+use 5.006;
+use strict;
+use warnings;
+
+use vars qw(@ISA $VERSION);
 
 use Pod::Text ();
-
-use strict;
-use vars qw(@ISA $VERSION);
 
 @ISA = qw(Pod::Text);
 

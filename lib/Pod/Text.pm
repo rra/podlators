@@ -23,9 +23,10 @@
 
 package Pod::Text;
 
-require 5.004;
-
+use 5.006;
 use strict;
+use warnings;
+
 use vars qw(@ISA @EXPORT %ESCAPES $VERSION);
 
 use Carp qw(carp croak);

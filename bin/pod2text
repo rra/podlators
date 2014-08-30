@@ -11,13 +11,13 @@
 # The driver script for Pod::Text, Pod::Text::Termcap, and Pod::Text::Color,
 # invoked by perldoc -t among other things.
 
-require 5.004;
+use 5.006;
+use strict;
+use warnings;
 
 use Getopt::Long qw(GetOptions);
 use Pod::Text ();
 use Pod::Usage qw(pod2usage);
-
-use strict;
 
 # Clean up $0 for error reporting.
 $0 =~ s%.*/%%;
