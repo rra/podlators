@@ -27,6 +27,8 @@ t/basic.txt
 t/color.t
 t/devise-date.t
 t/filehandle.t
+t/lib/Test/RRA.pm
+t/lib/Test/RRA/Config.pm
 t/man-empty.t
 t/man-heading.t
 t/man-options.t
@@ -38,6 +40,7 @@ t/parselink.t
 t/pod-parser.t
 t/pod-spelling.t
 t/pod.t
+t/style/module-version.t
 t/termcap.t
 t/text-empty.t
 t/text-encoding.t
