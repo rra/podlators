@@ -2,7 +2,7 @@
 #
 # man-perlio.t -- Test Pod::Man with a PerlIO UTF-8 encoding layer.
 #
-# Copyright 2002, 2004, 2006, 2008, 2009, 2010, 2012
+# Copyright 2002, 2004, 2006, 2008, 2009, 2010, 2012, 2014
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -31,13 +31,14 @@ BEGIN {
 }
 BEGIN { use_ok ('Pod::Man') }
 
-# Force UTF-8 on all relevant file handles.  Do this inside eval in case the
-# encoding parameter doesn't work.
-eval { binmode (\*DATA, ':encoding(utf-8)') };
-eval { binmode (\*STDOUT, ':encoding(utf-8)') };
+# Force UTF-8 on all relevant file handles.  Hide this in a string eval so
+# that older versions of Perl don't croak and minimum-version tests still
+# pass.
+eval 'binmode (\*DATA, ":encoding(utf-8)")';
+eval 'binmode (\*STDOUT, ":encoding(utf-8)")';
 my $builder = Test::More->builder;
-eval { binmode ($builder->output, ':encoding(utf-8)') };
-eval { binmode ($builder->failure_output, ':encoding(utf-8)') };
+eval 'binmode ($builder->output, ":encoding(utf-8)")';
+eval 'binmode ($builder->failure_output, ":encoding(utf-8)")';
 
 my $n = 1;
 while (<DATA>) {
@@ -49,7 +50,7 @@ while (<DATA>) {
         $options{$option} = $value;
     }
     open (TMP, "> tmp$$.pod") or die "Cannot create tmp$$.pod: $!\n";
-    eval { binmode (\*TMP, ':encoding(utf-8)') };
+    eval 'binmode (\*TMP, ":encoding(utf-8)")';
     print TMP "=encoding utf-8\n\n";
     while (<DATA>) {
         last if $_ eq "###\n";
@@ -59,12 +60,12 @@ while (<DATA>) {
     my $parser = Pod::Man->new (%options);
     isa_ok ($parser, 'Pod::Man', 'Parser object');
     open (OUT, "> out$$.tmp") or die "Cannot create out$$.tmp: $!\n";
-    eval { binmode (\*OUT, ':encoding(utf-8)') };
+    eval 'binmode (\*OUT, ":encoding(utf-8)")';
     $parser->parse_from_file ("tmp$$.pod", \*OUT);
     close OUT;
     my $accents = 0;
     open (TMP, "out$$.tmp") or die "Cannot open out$$.tmp: $!\n";
-    eval { binmode (\*TMP, ':encoding(utf-8)') };
+    eval 'binmode (\*TMP, ":encoding(utf-8)")';
     while (<TMP>) {
         $accents = 1 if /Accent mark definitions/;
         last if /^\.nh/;

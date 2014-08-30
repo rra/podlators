@@ -2,7 +2,7 @@
 #
 # text-utf8.t -- Test Pod::Text with UTF-8 input.
 #
-# Copyright 2002, 2004, 2006, 2007, 2008, 2009, 2012
+# Copyright 2002, 2004, 2006, 2007, 2008, 2009, 2012, 2014
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -31,18 +31,22 @@ BEGIN {
 }
 BEGIN { use_ok ('Pod::Text') }
 
+# Force UTF-8 on all relevant file handles.  Hide this in a string eval so
+# that older versions of Perl don't croak and minimum-version tests still
+# pass.
+eval 'binmode (\*DATA, ":encoding(utf-8)")';
+eval 'binmode (\*STDOUT, ":encoding(utf-8)")';
+my $builder = Test::More->builder;
+eval 'binmode ($builder->output, ":encoding(utf-8)")';
+eval 'binmode ($builder->failure_output, ":encoding(utf-8)")';
+
 my $parser = Pod::Text->new;
 isa_ok ($parser, 'Pod::Text', 'Parser object');
 my $n = 1;
-eval { binmode (\*DATA, ':encoding(utf-8)') };
-eval { binmode (\*STDOUT, ':encoding(utf-8)') };
-my $builder = Test::More->builder;
-eval { binmode ($builder->output, ':encoding(utf-8)') };
-eval { binmode ($builder->failure_output, ':encoding(utf-8)') };
 while (<DATA>) {
     next until $_ eq "###\n";
     open (TMP, "> tmp$$.pod") or die "Cannot create tmp$$.pod: $!\n";
-    eval { binmode (\*TMP, ':encoding(utf-8)') };
+    eval 'binmode (\*TMP, ":encoding(utf-8)")';
     print TMP "=encoding UTF-8\n\n";
     while (<DATA>) {
         last if $_ eq "###\n";
@@ -53,7 +57,7 @@ while (<DATA>) {
     $parser->parse_from_file ("tmp$$.pod", \*OUT);
     close OUT;
     open (TMP, "out$$.tmp") or die "Cannot open out$$.tmp: $!\n";
-    eval { binmode (\*TMP, ':encoding(utf-8)') };
+    eval 'binmode (\*TMP, ":encoding(utf-8)")';
     my $output;
     {
         local $/;

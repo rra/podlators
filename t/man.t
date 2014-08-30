@@ -2,7 +2,7 @@
 #
 # Additional specialized tests for Pod::Man.
 #
-# Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2012, 2013
+# Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2012, 2013, 2014
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -33,9 +33,10 @@ while (<DATA>) {
     open (TMP, "> tmp$$.pod") or die "Cannot create tmp$$.pod: $!\n";
 
     # We have a test in ISO 8859-1 encoding.  Make sure that nothing strange
-    # happens if Perl thinks the world is Unicode.  Wrap this in eval so that
-    # older versions of Perl don't croak.
-    eval { binmode (\*TMP, ':encoding(iso-8859-1)') if $have_encoding };
+    # happens if Perl thinks the world is Unicode.  Hide this in a string eval
+    # so that older versions of Perl don't croak and minimum-version tests
+    # still pass.
+    eval 'binmode (\*TMP, ":encoding(iso-8859-1)")' if $have_encoding;
 
     while (<DATA>) {
         last if $_ eq "###\n";
