@@ -10,6 +10,11 @@ podlators 2.5.4 (unreleased)
     provide a Makefile.PL file for backward compatibility and for the use
     of Perl core.
 
+    Installation of this package no longer tries to overwrite the Pod::Man
+    and Pod::Text modules that come with Perl core, and instead relies on
+    the normal precedence rules in Perl's module search path that prefer
+    locally-installed modules over core modules.
+
     Rename NEWS to Changes to match the normal Perl convention.
 
 podlators 2.5.3 (2013-10-05)
