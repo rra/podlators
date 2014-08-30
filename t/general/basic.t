@@ -2,7 +2,7 @@
 #
 # basic.t -- Basic tests for podlators.
 #
-# Copyright 2001, 2002, 2004, 2006, 2009, 2012
+# Copyright 2001, 2002, 2004, 2006, 2009, 2012, 2014
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -19,6 +19,7 @@ BEGIN {
 
 use strict;
 
+use File::Spec;
 use Test::More tests => 15;
 
 BEGIN {
@@ -33,12 +34,11 @@ BEGIN {
 sub source_path {
     my $file = shift;
     if ($ENV{PERL_CORE}) {
-        require File::Spec;
         my $updir = File::Spec->updir;
-        my $dir = File::Spec->catdir ($updir, 'lib', 'Pod', 't');
+        my $dir = File::Spec->catdir ($updir, 'lib', 'Pod', 't', 'data');
         return File::Spec->catfile ($dir, $file);
     } else {
-        return $file;
+        return File::Spec->catfile ('data', $file);
     }
 }
 
