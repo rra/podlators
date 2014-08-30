@@ -43,9 +43,10 @@ sub source_path {
 }
 
 # Hard-code a few values to try to get reproducible results.
-$ENV{COLUMNS} = 80;
-$ENV{TERM} = 'xterm';
-$ENV{TERMCAP} = 'xterm:co=80:do=^J:md=\E[1m:us=\E[4m:me=\E[m';
+$ENV{COLUMNS}  = 80;
+$ENV{TERM}     = 'xterm';
+$ENV{TERMPATH} = source_path ('termcap');
+$ENV{TERMCAP}  = 'xterm:co=#80:do=^J:md=\E[1m:us=\E[4m:me=\E[m';
 
 # Map of translators to file extensions to find the formatted output to
 # compare against.

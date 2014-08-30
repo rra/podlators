@@ -2,7 +2,7 @@
 #
 # termcap.t -- Additional specialized tests for Pod::Text::Termcap.
 #
-# Copyright 2002, 2004, 2006, 2009, 2012, 2013
+# Copyright 2002, 2004, 2006, 2009, 2012, 2013, 2014
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -19,13 +19,29 @@ BEGIN {
 
 use strict;
 
+use File::Spec;
 use Test::More tests => 4;
+
 BEGIN { use_ok ('Pod::Text::Termcap') }
 
+# Find the path to the test source files.  This requires some fiddling when
+# these tests are run as part of Perl core.
+sub source_path {
+    my $file = shift;
+    if ($ENV{PERL_CORE}) {
+        my $updir = File::Spec->updir;
+        my $dir = File::Spec->catdir ($updir, 'lib', 'Pod', 't', 'data');
+        return File::Spec->catfile ($dir, $file);
+    } else {
+        return File::Spec->catfile ('data', $file);
+    }
+}
+
 # Hard-code a few values to try to get reproducible results.
-$ENV{COLUMNS} = 80;
-$ENV{TERM} = 'xterm';
-$ENV{TERMCAP} = 'xterm:co=80:do=^J:md=\E[1m:us=\E[4m:me=\E[m';
+$ENV{COLUMNS}  = 80;
+$ENV{TERM}     = 'xterm';
+$ENV{TERMPATH} = source_path ('termcap');
+$ENV{TERMCAP}  = 'xterm:co=#80:do=^J:md=\E[1m:us=\E[4m:me=\E[m';
 
 my $parser = Pod::Text::Termcap->new;
 isa_ok ($parser, 'Pod::Text::Termcap', 'Parser module');

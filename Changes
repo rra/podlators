@@ -27,6 +27,10 @@ podlators 4.00 (unreleased)
 
     Rename NEWS to Changes to match the normal Perl convention.
 
+    Work around a bug in Term::Cap 1.16 that caused the test suite to fail
+    by forcing a setting of TERMPATH to a termcap file provided by the
+    test suite while running tests.  (#98272)
+
 podlators 2.5.3 (2013-10-05)
 
     Fix documentation of the default for the errors constructor parameter.
