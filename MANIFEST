@@ -1,4 +1,3 @@
-ChangeLog
 lib/Pod/Man.pm
 lib/Pod/ParseLink.pm
 lib/Pod/Text.pm
@@ -9,6 +8,7 @@ Makefile.PL
 MANIFEST			This list of files
 MYMETA.json
 MYMETA.yml
+NEWS
 NOTES
 pod/perlpodstyle.pod
 README
