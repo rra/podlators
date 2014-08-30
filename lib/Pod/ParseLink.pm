@@ -1,6 +1,6 @@
 # Pod::ParseLink -- Parse an L<> formatting code in POD text.
 #
-# Copyright 2001, 2008, 2009 by Russ Allbery <rra@cpan.org>
+# Copyright 2001, 2008, 2009, 2014 by Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -123,7 +123,8 @@ markup Allbery URL
 =head1 SYNOPSIS
 
     use Pod::ParseLink;
-    my ($text, $inferred, $name, $section, $type) = parselink ($link);
+    my $link = get_link();
+    my ($text, $inferred, $name, $section, $type) = parselink($link);
 
 =head1 DESCRIPTION
 
