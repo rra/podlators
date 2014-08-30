@@ -25,7 +25,11 @@ t/basic.pod
 t/basic.t
 t/basic.txt
 t/color.t
+t/data/perl.conf
 t/devise-date.t
+t/docs/pod-spelling.t
+t/docs/pod.t
+t/docs/synopsis.t
 t/filehandle.t
 t/lib/Test/RRA.pm
 t/lib/Test/RRA/Config.pm
@@ -40,7 +44,9 @@ t/parselink.t
 t/pod-parser.t
 t/pod-spelling.t
 t/pod.t
+t/style/minimum-version.t
 t/style/module-version.t
+t/style/strict.t
 t/termcap.t
 t/text-empty.t
 t/text-encoding.t
