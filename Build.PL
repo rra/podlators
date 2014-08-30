@@ -21,9 +21,10 @@ my $build = Module::Build->new(
     dist_author          => 'Russ Allbery <rra@cpan.org>',
     dist_version         => '4.0.0',
     license              => 'perl',
-    module_name          => 'podlators',
     recursive_test_files => 1,
-    create_makefile_pl   => 'traditional',
+
+    # module_name must be set to avoid warnings, even though it's not used.
+    module_name => 'Pod::Man',
 
     # perlpodstyle is another section 1 man page, but not a script.
     #

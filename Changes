@@ -6,9 +6,9 @@ podlators 2.5.4 (unreleased)
     the corresponding -u option to pod2man and pod2text, to reflect that
     Pod::Simple now autodetects Latin-1 and UTF-8 but warns.
 
-    Switch the module build system to Module::Build, but still generate a
-    Makefile.PL file for backward compatibility and for the use of Perl
-    core.
+    Switch the preferred module build system to Module::Build, but still
+    provide a Makefile.PL file for backward compatibility and for the use
+    of Perl core.
 
     Rename NEWS to Changes to match the normal Perl convention.
 
