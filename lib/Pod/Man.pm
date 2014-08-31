@@ -1479,7 +1479,7 @@ sub preamble_template {
 .ie \n(.g .ds Aq \(aq
 .el       .ds Aq '
 .\"
-.\" If the F register is turned on, we'll generate index entries on stderr for
+.\" If the F register is >0, we'll generate index entries on stderr for
 .\" titles (.TH), headers (.SH), subsections (.SS), items (.Ip), and index
 .\" entries marked with X<> in POD.  Of course, you'll have to process the
 .\" output yourself in some meaningful fashion.
@@ -1487,20 +1487,16 @@ sub preamble_template {
 .\" Avoid warning from groff about undefined register 'F'.
 .de IX
 ..
-.nr rF 0
-.if \n(.g .if rF .nr rF 1
-.if (\n(rF:(\n(.g==0)) \{
-.    if \nF \{
-.        de IX
-.        tm Index:\\$1\t\\n%\t"\\$2"
+.if !\nF .nr F 0
+.if \nF>0 \{
+.    de IX
+.    tm Index:\\$1\t\\n%\t"\\$2"
 ..
-.        if !\nF==2 \{
-.            nr % 0
-.            nr F 2
-.        \}
+.    if !\nF==2 \{
+.        nr % 0
+.        nr F 2
 .    \}
 .\}
-.rr rF
 ----END OF PREAMBLE----
 #'# for cperl-mode
 

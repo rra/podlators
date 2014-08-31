@@ -19,6 +19,11 @@ podlators 4.00 (unreleased)
     file given the same souce and Pod::Man version, even when file
     timestamps may not be consistent.  Thanks, Niko Tyni.
 
+    [Pod::Man] Simplify the preamble code for handling the F register and
+    index entries.  Hopefully resolves the leading blank page when
+    generated man pages are viewed on HP-UX.  Thanks, Daphne Pfister.
+    (#92979)
+
     Fix documentation of the utf8 option to Pod::Man and Pod::Text, and
     the corresponding -u option to pod2man and pod2text, to reflect that
     Pod::Simple now autodetects Latin-1 and UTF-8 but warns.
