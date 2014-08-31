@@ -14,12 +14,6 @@ any of the following are very much welcome.
  * Abstract the shared code between Pod::Man and Pod::Text to a new
    Pod::Simple inheritance layer that both modules can use.
 
- * Standardize the versions of all included modules to match the version
-   of the podlators release.
-
- * Change the build process to Module::Build (with a fallback for
-   ExtUtils::MakeMaker so that it can still build as part of core).
-
  * Suppress the URL for L<|> if the link is just the anchor part of the
    tag with mailto: added to the front.  Also strip the mailto: part if
    there is no anchor text.
