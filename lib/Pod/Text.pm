@@ -1,4 +1,4 @@
-# Pod::Text -- Convert POD data to formatted ASCII text.
+# Pod::Text -- Convert POD data to formatted text.
 #
 # This module converts POD to formatted text.  It replaces the old Pod::Text
 # module that came with versions of Perl prior to 5.6.0 and attempts to match
@@ -760,7 +760,7 @@ parsers
 
 =head1 NAME
 
-Pod::Text - Convert POD data to formatted ASCII text
+Pod::Text - Convert POD data to formatted text
 
 =head1 SYNOPSIS
 
@@ -775,10 +775,10 @@ Pod::Text - Convert POD data to formatted ASCII text
 
 =head1 DESCRIPTION
 
-Pod::Text is a module that can convert documentation in the POD format (the
-preferred language for documenting Perl) into formatted ASCII.  It uses no
-special formatting controls or codes whatsoever, and its output is therefore
-suitable for nearly any device.
+Pod::Text is a module that can convert documentation in the POD format
+(the preferred language for documenting Perl) into formatted text.  It
+uses no special formatting controls or codes whatsoever, and its output is
+therefore suitable for nearly any device.
 
 As a derived class from Pod::Simple, Pod::Text supports the same methods and
 interfaces.  See L<Pod::Simple> for all the details; briefly, one creates a

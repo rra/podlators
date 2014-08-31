@@ -28,6 +28,9 @@ podlators 4.00 (unreleased)
     the corresponding -u option to pod2man and pod2text, to reflect that
     Pod::Simple now autodetects Latin-1 and UTF-8 but warns.
 
+    [Pod::Text] Change the documentation to not say Pod::Text only
+    generates ASCII text.  (#89355)
+
     Switch the preferred module build system to Module::Build, but still
     provide a Makefile.PL file for backward compatibility and for the use
     of Perl core.
