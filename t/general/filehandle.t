@@ -1,84 +1,134 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
-# filehandle.t -- Test the parse_from_filehandle interface.
+# Test the parse_from_filehandle method.
 #
-# Copyright 2006, 2009, 2012 by Russ Allbery <rra@cpan.org>
+# This backward compatibility interface is not provided by Pod::Simple, so
+# Pod::Man and Pod::Text had to implement it directly.  Test to be sure it's
+# working properly.
+#
+# Copyright 2006, 2009, 2012, 2014 Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
 
-BEGIN {
-    chdir 't' if -d 't';
-    if ($ENV{PERL_CORE}) {
-        @INC = '../lib';
-    }
-    unshift (@INC, '../blib/lib');
-    $| = 1;
-}
-
+use 5.006;
 use strict;
+use warnings;
 
-use Test::More tests => 6;
+use File::Spec;
+use FileHandle;
+use Test::More tests => 4;
 
+# Ensure the modules load properly.
 BEGIN {
-    use_ok ('Pod::Man');
-    use_ok ('Pod::Text');
+    use_ok('Pod::Man');
+    use_ok('Pod::Text');
 }
 
-my $man = Pod::Man->new;
-isa_ok ($man, 'Pod::Man', 'Pod::Man parser object');
-my $text = Pod::Text->new;
-isa_ok ($text, 'Pod::Text', 'Pod::Text parser object');
-while (<DATA>) {
-    next until $_ eq "###\n";
-    open (TMP, "> tmp$$.pod") or die "Cannot create tmp.pod: $!\n";
-    while (<DATA>) {
-        last if $_ eq "###\n";
-        print TMP $_;
+# Read the test data from the bottom of this script and return it.  The data
+# is in three parts: POD source, Pod::Man output (without the header), and
+# Pod::Text output, separated by lines containing only ###.
+#
+# Returns: Array of POD source, Pod::Man output, and Pod::Text output
+sub get_data {
+    while (defined(my $line = <DATA>)) {
+        last if $line eq "###\n";
     }
-    close TMP;
-
-    # Test Pod::Man output.
-    open (IN, "< tmp$$.pod") or die "Cannot open tmp$$.pod: $!\n";
-    open (OUT, "> out$$.tmp") or die "Cannot create out$$.tmp: $!\n";
-    $man->parse_from_filehandle (\*IN, \*OUT);
-    close IN;
-    close OUT;
-    open (OUT, "out$$.tmp") or die "Cannot open out$$.tmp: $!\n";
-    while (<OUT>) { last if /^\.nh/ }
-    my $output;
-    {
-        local $/;
-        $output = <OUT>;
+    my @data = (q{}, q{}, q{});
+    for my $i (0..$#data) {
+        while (defined(my $line = <DATA>)) {
+            last if $line eq "###\n";
+            $data[$i] .= $line;
+        }
     }
-    close OUT;
-    my $expected = '';
-    while (<DATA>) {
-        last if $_ eq "###\n";
-        $expected .= $_;
-    }
-    is ($output, $expected, 'Pod::Man output is correct');
-
-    # Test Pod::Text output.
-    open (IN, "< tmp$$.pod") or die "Cannot open tmp$$.pod: $!\n";
-    open (OUT, "> out$$.tmp") or die "Cannot create out$$.tmp: $!\n";
-    $text->parse_from_filehandle (\*IN, \*OUT);
-    close IN;
-    close OUT;
-    open (OUT, "out$$.tmp") or die "Cannot open out$$.tmp: $!\n";
-    {
-        local $/;
-        $output = <OUT>;
-    }
-    close OUT;
-    1 while unlink ("tmp$$.pod", "out$$.tmp");
-    $expected = '';
-    while (<DATA>) {
-        last if $_ eq "###\n";
-        $expected .= $_;
-    }
-    is ($output, $expected, 'Pod::Text output is correct');
+    return @data;
 }
+
+# Slurp output data back from a file handle.  It would be nice to use
+# Perl6::Slurp, but this is a core module, so we have to implement our own
+# wheels.  BAIL_OUT is called on any failure to read the file.
+#
+# $file  - File to read
+# $strip - If set to "man", strip out the Pod::Man header
+#
+# Returns: Contents of the file, possibly stripped
+sub slurp {
+    my ($file, $strip) = @_;
+    my $fh = FileHandle->new($file, 'r') or BAIL_OUT("cannot open $file: $!");
+
+    # If told to strip the man header, do so.
+    if (defined($strip) && $strip eq 'man') {
+        while (defined(my $line = <$fh>)) {
+            last if $line eq ".nh\n";
+        }
+    }
+
+    # Read the rest of the file and return it.
+    my $data = do { local $/ = undef; <$fh> };
+    $fh->close or BAIL_OUT("cannot read from $file: $!");
+    return $data;
+}
+
+# Create a temporary directory to use for output, but don't fail if it already
+# exists.  If we failed to create it, we'll fail later on.  We unfortunately
+# have to create files on disk to easily create file handles for testing.
+my $tmpdir = File::Spec->catdir('t', 'tmp');
+if (!-d $tmpdir) {
+    mkdir($tmpdir, 0777);
+}
+
+# Get the various data.
+my ($pod, $man, $text) = get_data();
+
+# Write the POD source to a temporary file that will underlie the input file
+# handle.
+my $infile = File::Spec->catdir('t', 'tmp', "tmp$$.pod");
+my $input = FileHandle->new($infile, 'w')
+  or BAIL_OUT("cannot create $infile: $!");
+print {$input} $pod
+  or BAIL_OUT("cannot write to $infile: $!");
+$input->close or BAIL_OUT("cannot write to $infile: $!");
+
+# Write the Pod::Man output to a file.
+my $outfile = File::Spec->catdir('t', 'tmp', "tmp$$.man");
+$input = FileHandle->new($infile,  'r')
+  or BAIL_OUT("cannot open $infile: $!");
+my $output = FileHandle->new($outfile, 'w')
+  or BAIL_OUT("cannot open $outfile: $!");
+my $parser = Pod::Man->new;
+$parser->parse_from_filehandle($input, $output);
+$input->close
+  or BAIL_OUT("cannot read from $infile: $!");
+$output->close
+  or BAIL_OUT("cannot write to $outfile: $!");
+
+# Read the output back in and compare it.
+my $got = slurp($outfile, 'man');
+is($got, $man, 'Pod::Man output');
+
+# Clean up the temporary output file.
+unlink($outfile);
+
+# Now, do the same drill with Pod::Text.  Parse the input to a temporary file.
+$outfile = File::Spec->catdir('t', 'tmp', "tmp$$.txt");
+$input = FileHandle->new($infile,  'r')
+  or BAIL_OUT("cannot open $infile: $!");
+$output = FileHandle->new($outfile, 'w')
+  or BAIL_OUT("cannot open $outfile: $!");
+$parser = Pod::Text->new;
+$parser->parse_from_filehandle($input, $output);
+$input->close
+  or BAIL_OUT("cannot read from $infile: $!");
+$output->close
+  or BAIL_OUT("cannot write to $outfile: $!");
+
+# Read the output back in and compare it.
+$got = slurp($outfile);
+is($got, $text, 'Pod::Text output');
+
+# Clean up temporary files.
+unlink($infile, $outfile);
+rmdir($tmpdir);
 
 # Below the marker are bits of POD, corresponding expected nroff output, and
 # corresponding expected text output.  The input and output are separated by
