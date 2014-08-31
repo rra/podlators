@@ -139,11 +139,6 @@ code left intact.
 Format the output with ANSI color escape sequences.  Using this option
 requires that Term::ANSIColor be installed on your system.
 
-=item B<-i> I<indent>, B<--indent=>I<indent>
-
-Set the number of spaces to indent regular text, and the default indentation
-for C<=over> blocks.  Defaults to 4 spaces if this option isn't given.
-
 =item B<--errors>=I<style>
 
 Set the error handling style.  C<die> says to throw an exception on any
@@ -153,6 +148,11 @@ section in the resulting documentation summarizing the errors.  C<none>
 ignores POD errors entirely, as much as possible.
 
 The default is C<die>.
+
+=item B<-i> I<indent>, B<--indent=>I<indent>
+
+Set the number of spaces to indent regular text, and the default indentation
+for C<=over> blocks.  Defaults to 4 spaces if this option isn't given.
 
 =item B<-h>, B<--help>
 
