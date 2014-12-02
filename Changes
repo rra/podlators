@@ -20,9 +20,10 @@ podlators 4.00 (unreleased)
     timestamps may not be consistent.  Thanks, Niko Tyni.
 
     [Pod::Man] Simplify the preamble code for handling the F register and
-    index entries.  Hopefully resolves the leading blank page when
-    generated man pages are viewed on HP-UX.  Thanks, Daphne Pfister.
-    (#92979)
+    index entries, and add backslashes after the braces in the preamble
+    code for handling the F register to avoid introducing a spurious page
+    break before at the first page with AT&T *roff.  Thanks, Carsten
+    Kunze and Daphne Pfister.  (#92979)
 
     Fix documentation of the utf8 option to Pod::Man and Pod::Text, and
     the corresponding -u option to pod2man and pod2text, to reflect that

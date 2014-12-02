@@ -1488,11 +1488,11 @@ sub preamble_template {
 .de IX
 ..
 .if !\nF .nr F 0
-.if \nF>0 \{
+.if \nF>0 \{\
 .    de IX
 .    tm Index:\\$1\t\\n%\t"\\$2"
 ..
-.    if !\nF==2 \{
+.    if !\nF==2 \{\
 .        nr % 0
 .        nr F 2
 .    \}
