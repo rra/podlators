@@ -1835,7 +1835,7 @@ option was set to C<die>.
 If set, this will be used as the value of the left-hand footer unless the
 C<date> option is explicitly set, overriding the timestamp of the input
 file or the current time.  This is primarily useful to ensure reproducible
-builds of the same output file given the same souce and Pod::Man version,
+builds of the same output file given the same source and Pod::Man version,
 even when file timestamps may not be consistent.
 
 =back
