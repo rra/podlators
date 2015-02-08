@@ -12,7 +12,7 @@
 # standard Perl mailing lists.
 #
 # Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-#     2010, 2012, 2013, 2014 Russ Allbery <rra@cpan.org>
+#     2010, 2012, 2013, 2014, 2015 Russ Allbery <rra@cpan.org>
 # Substantial contributions by Sean Burke <sburke@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -828,6 +828,17 @@ sub devise_title {
     my $section = $$self{section} || 1;
     $section = 3 if (!$$self{section} && $name =~ /\.pm\z/i);
     $name =~ s/\.p(od|[lm])\z//i;
+
+    # If Pod::Parser gave us an IO::File reference as the source file name,
+    # convert that to the empty string as well.  Then, if we don't have a
+    # valid name, emit a warning and convert it to STDIN.
+    if ($name =~ /^IO::File(?:=\w+)\(0x[\da-f]+\)$/i) {
+        $name = '';
+    }
+    if ($name eq '') {
+        $self->whine (1, 'No name given for document');
+        $name = 'STDIN';
+    }
 
     # If the section isn't 3, then the name defaults to just the basename of
     # the file.  Otherwise, assume we're dealing with a module.  We want to
@@ -1698,6 +1709,10 @@ module path.  If it is, a path like C<.../lib/Pod/Man.pm> is converted into
 a name like C<Pod::Man>.  This option, if given, overrides any automatic
 determination of the name.
 
+If generating a manual page from standard input, this option is required,
+since there's otherwise no way for Pod::Man to know what to use for the
+manual page name.
+
 =item nourls
 
 Normally, LZ<><> formatting codes with a URL but anchor text are formatted
@@ -1899,7 +1914,7 @@ mine).
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-2009, 2010, 2012, 2013, 2014 Russ Allbery <rra@cpan.org>.
+2009, 2010, 2012, 2013, 2014, 2015 Russ Allbery <rra@cpan.org>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

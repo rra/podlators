@@ -12,6 +12,12 @@ podlators 4.00 (unreleased)
     warnings.  Please report any unexpected or confusing warnings as bugs
     in the bug tracker.
 
+    [Pod::Man] Attempt to detect if the input came from a pipe and
+    therefore has a completely unhelpful (and nonreproducible) source file
+    name, and diagnose this as an error.  Document that the name option
+    (--name to pod2man) is required when processing POD source from
+    standard input.  (Debian Bug#777405)
+
     [Pod::Man] Honor the environment variable POD_MAN_DATE and use its
     contents, if set, as the value of the left-hand footer if the date
     option is not set, overriding the timestamp of the input file.  This
