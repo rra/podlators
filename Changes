@@ -35,6 +35,12 @@ podlators 4.00 (unreleased)
     the corresponding -u option to pod2man and pod2text, to reflect that
     Pod::Simple now autodetects Latin-1 and UTF-8 but warns.
 
+    [Pod::Text] Fix encoding handling in documents that start without an
+    encoding declaration and then declare an encoding partway through.
+    Previously, this would result in attempts to print wide characters if
+    there were non-ASCII characters in the document.  Thanks, Magnolia K.
+    (#101722)
+
     [Pod::Text] Change the documentation to not say Pod::Text only
     generates ASCII text.  (#89355)
 

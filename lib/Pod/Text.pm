@@ -11,8 +11,8 @@
 # me any patches at the address above in addition to sending them to the
 # standard Perl mailing lists.
 #
-# Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2014
-#     Russ Allbery <rra@cpan.org>
+# Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2014,
+#     2015 Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -274,12 +274,12 @@ sub output {
     my ($self, @text) = @_;
     my $text = join ('', @text);
     $text =~ tr/\240\255/ /d;
-    unless ($$self{opt_utf8} || $$self{CHECKED_ENCODING}) {
+    unless ($$self{opt_utf8}) {
         my $encoding = $$self{encoding} || '';
-        if ($encoding) {
+        if ($encoding && $encoding ne $$self{ENCODING}) {
+            $$self{ENCODING} = $encoding;
             eval { binmode ($$self{output_fh}, ":encoding($encoding)") };
         }
-        $$self{CHECKED_ENCODING} = 1;
     }
     if ($$self{ENCODE}) {
         print { $$self{output_fh} } encode ('UTF-8', $text);
@@ -313,7 +313,7 @@ sub start_document {
     $$self{PENDING} = [[]];     # Pending output.
 
     # We have to redo encoding handling for each document.
-    delete $$self{CHECKED_ENCODING};
+    $$self{ENCODING} = '';
 
     # When UTF-8 output is set, check whether our output file handle already
     # has a PerlIO encoding layer set.  If it does not, we'll need to encode
@@ -327,6 +327,7 @@ sub start_document {
             my $flag = (PerlIO::get_layers ($$self{output_fh}, @options))[-1];
             if ($flag & PerlIO::F_UTF8 ()) {
                 $$self{ENCODE} = 0;
+                $$self{ENCODING} = 'UTF-8';
             }
         };
     }

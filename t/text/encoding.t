@@ -2,7 +2,7 @@
 #
 # text-encoding.t -- Test Pod::Text with various weird encoding combinations.
 #
-# Copyright 2002, 2004, 2006, 2007, 2008, 2009, 2012
+# Copyright 2002, 2004, 2006, 2007, 2008, 2009, 2012, 2015
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -26,7 +26,7 @@ BEGIN {
     if ($] < 5.008) {
         plan skip_all => 'Perl 5.8 required for encoding support';
     } else {
-        plan tests => 5;
+        plan tests => 7;
     }
 }
 BEGIN { use_ok ('Pod::Text') }
@@ -125,5 +125,32 @@ I can eat glass
         à¤ªà¤¹à¥à¤à¤à¤¤à¥.
 
     See <http://www.columbia.edu/kermit/utf8.html>
+
+###
+
+###
+=pod
+
+=head1 NAME
+
+This is the first ascii text
+
+=encoding utf8
+
+=over 4
+
+=item ⇒This is the first non-ascii text⇐
+
+This is the second ascii text
+
+=back
+
+=cut
+###
+NAME
+    This is the first ascii text
+
+    ⇒This is the first non-ascii text⇐
+        This is the second ascii text
 
 ###
