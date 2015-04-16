@@ -6,7 +6,7 @@
 # Pod::Man and Pod::Text had to implement it directly.  Test to be sure it's
 # working properly.
 #
-# Copyright 2006, 2009, 2012, 2014 Russ Allbery <rra@cpan.org>
+# Copyright 2006, 2009, 2012, 2014, 2015 Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -15,9 +15,11 @@ use 5.006;
 use strict;
 use warnings;
 
+use lib 't/lib';
+
 use File::Spec;
-use FileHandle;
 use Test::More tests => 4;
+use Test::Podlators qw(slurp);
 
 # Ensure the modules load properly.
 BEGIN {
@@ -35,38 +37,13 @@ sub get_data {
         last if $line eq "###\n";
     }
     my @data = (q{}, q{}, q{});
-    for my $i (0..$#data) {
+    for my $i (0 .. $#data) {
         while (defined(my $line = <DATA>)) {
             last if $line eq "###\n";
             $data[$i] .= $line;
         }
     }
     return @data;
-}
-
-# Slurp output data back from a file handle.  It would be nice to use
-# Perl6::Slurp, but this is a core module, so we have to implement our own
-# wheels.  BAIL_OUT is called on any failure to read the file.
-#
-# $file  - File to read
-# $strip - If set to "man", strip out the Pod::Man header
-#
-# Returns: Contents of the file, possibly stripped
-sub slurp {
-    my ($file, $strip) = @_;
-    my $fh = FileHandle->new($file, 'r') or BAIL_OUT("cannot open $file: $!");
-
-    # If told to strip the man header, do so.
-    if (defined($strip) && $strip eq 'man') {
-        while (defined(my $line = <$fh>)) {
-            last if $line eq ".nh\n";
-        }
-    }
-
-    # Read the rest of the file and return it.
-    my $data = do { local $/ = undef; <$fh> };
-    $fh->close or BAIL_OUT("cannot read from $file: $!");
-    return $data;
 }
 
 # Create a temporary directory to use for output, but don't fail if it already
@@ -91,7 +68,7 @@ $input->close or BAIL_OUT("cannot write to $infile: $!");
 
 # Write the Pod::Man output to a file.
 my $outfile = File::Spec->catdir('t', 'tmp', "tmp$$.man");
-$input = FileHandle->new($infile,  'r')
+$input = FileHandle->new($infile, 'r')
   or BAIL_OUT("cannot open $infile: $!");
 my $output = FileHandle->new($outfile, 'w')
   or BAIL_OUT("cannot open $outfile: $!");
@@ -111,7 +88,7 @@ unlink($outfile);
 
 # Now, do the same drill with Pod::Text.  Parse the input to a temporary file.
 $outfile = File::Spec->catdir('t', 'tmp', "tmp$$.txt");
-$input = FileHandle->new($infile,  'r')
+$input = FileHandle->new($infile, 'r')
   or BAIL_OUT("cannot open $infile: $!");
 $output = FileHandle->new($outfile, 'w')
   or BAIL_OUT("cannot open $outfile: $!");
@@ -134,6 +111,13 @@ rmdir($tmpdir);
 # corresponding expected text output.  The input and output are separated by
 # lines containing only ###.
 
+# Unconfuse perlcritic.
+
+=for stopwords
+gcc
+
+=cut
+
 __DATA__
 
 ###
@@ -144,6 +128,8 @@ gcc - GNU project C and C++ compiler
 =head1 C++ NOTES
 
 Other mentions of C++.
+
+=cut
 ###
 .SH "NAME"
 gcc \- GNU project C and C++ compiler
