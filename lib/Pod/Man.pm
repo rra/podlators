@@ -922,7 +922,7 @@ sub devise_date {
 
     # Can't use POSIX::strftime(), which uses Fcntl, because MakeMaker uses
     # this and it has to work in the core which can't load dynamic libraries.
-    my ($year, $month, $day) = (localtime($time))[5,4,3];
+    my ($year, $month, $day) = (gmtime($time))[5,4,3];
     return sprintf("%04d-%02d-%02d", $year + 1900, $month + 1, $day);
 }
 
