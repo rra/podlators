@@ -2,105 +2,77 @@
 #
 # Additional tests for Pod::Man options.
 #
-# Copyright 2002, 2004, 2006, 2008, 2009, 2012, 2013
+# Copyright 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2015
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
 
-BEGIN {
-    chdir 't' if -d 't';
-    if ($ENV{PERL_CORE}) {
-        @INC = '../lib';
-    }
-    unshift (@INC, '../blib/lib');
-    $| = 1;
-}
-
+use 5.006;
 use strict;
+use warnings;
+
+use lib 't/lib';
 
 use Test::More tests => 28;
-BEGIN { use_ok ('Pod::Man') }
+use Test::Podlators qw(read_test_data slurp);
 
-# Redirect stderr to a file.
+BEGIN {
+    use_ok ('Pod::Man');
+}
+
+# Redirect stderr to a file.  Return the name of the file that stores standard
+# error.
 sub stderr_save {
-    open (OLDERR, '>&STDERR') or die "Can't dup STDERR: $!\n";
-    open (STDERR, "> out$$.err") or die "Can't redirect STDERR: $!\n";
+    open(OLDERR, '>&STDERR') or die "Can't dup STDERR: $!\n";
+    open(STDERR, "> out$$.err") or die "Can't redirect STDERR: $!\n";
+    return "out$$.err";
 }
 
 # Restore stderr.
 sub stderr_restore {
-    close STDERR;
-    open (STDERR, '>&OLDERR') or die "Can't dup STDERR: $!\n";
-    close OLDERR;
+    close(STDERR);
+    open(STDERR, '>&OLDERR') or die "Can't dup STDERR: $!\n";
+    close(OLDERR);
 }
 
+# Loop through all the test data, generate output, and compare it to the
+# desired output data.
+my %options = (options => 1, errors => 1);
 my $n = 1;
-while (<DATA>) {
-    my %options;
-    next until $_ eq "###\n";
-    while (<DATA>) {
-        last if $_ eq "###\n";
-        my ($option, $value) = split;
-        $options{$option} = $value;
-    }
-    open (TMP, "> tmp$$.pod") or die "Cannot create tmp$$.pod: $!\n";
-    while (<DATA>) {
-        last if $_ eq "###\n";
-        print TMP $_;
-    }
-    close TMP;
-    my $parser = Pod::Man->new (%options);
-    isa_ok ($parser, 'Pod::Man', 'Parser object');
-    open (OUT, "> out$$.tmp") or die "Cannot create out$$.tmp: $!\n";
-    stderr_save;
-    eval { $parser->parse_from_file ("tmp$$.pod", \*OUT) };
+while (defined(my $data_ref = read_test_data(\*DATA, \%options))) {
+    my $parser = Pod::Man->new(%{ $data_ref->{options} }, name => 'TEST');
+    isa_ok($parser, 'Pod::Man', 'Parser object');
+
+    # Save stderr to a temporary file and then run the parser, storing the
+    # output into a Perl variable.
+    my $errors = stderr_save();
+    my $got;
+    $parser->output_string(\$got);
+    eval { $parser->parse_string_document($data_ref->{input}) };
     my $exception = $@;
-    stderr_restore;
-    close OUT;
-    my $accents = 0;
-    open (TMP, "out$$.tmp") or die "Cannot open out$$.tmp: $!\n";
-    while (<TMP>) {
-        last if /^\.nh/;
-    }
-    my $output;
-    {
-        local $/;
-        $output = <TMP>;
-    }
-    close TMP;
-    1 while unlink ("tmp$$.pod", "out$$.tmp");
-    my $expected = '';
-    while (<DATA>) {
-        last if $_ eq "###\n";
-        $expected .= $_;
-    }
-    is ($output, $expected, "Output correct for test $n");
-    open (ERR, "out$$.err") or die "Cannot open out.err: $!\n";
-    my $errors;
-    {
-        local $/;
-        $errors = <ERR>;
-    }
-    close ERR;
-    $errors =~ s/\Qtmp$$.pod/tmp.pod/g;
-    1 while unlink ("out$$.err");
+    stderr_restore();
+
+    # Strip off everything prior to .nh from the output so that we aren't
+    # testing the generated header, and then check the output.
+    $got =~ s{ \A .* \n [.]nh \n }{}xms;
+    is($got, $data_ref->{output}, "Output for test $n");
+
+    # Collect the errors and add any exception, marking it with EXCEPTION.
+    # Then, compare that to the expected errors.  The "1 while" construct is
+    # for VMS, in case there are multiple versions of the file.
+    my $got_errors = slurp($errors);
+    1 while unlink($errors);
     if ($exception) {
-        $exception =~ s/ at .*//;
-        $errors .= "EXCEPTION: $exception";
+        $exception =~ s{ [ ] at [ ] .* }{}xms;
+        $got_errors .= "EXCEPTION: $exception\n";
     }
-    $expected = '';
-    while (<DATA>) {
-        last if $_ eq "###\n";
-        $expected .= $_;
-    }
-    is ($errors, $expected, "Errors are correct for test $n");
+    is($got_errors, $data_ref->{errors}, "Errors for test $n");
     $n++;
 }
 
 # Below the marker are bits of POD and corresponding expected text output and
-# error output.  This is used to test specific features or problems with
-# Pod::Man.  The options, input, output, and errors are separated by lines
+# error output.  The options, input, output, and errors are separated by lines
 # containing only ###.
 
 __DATA__
@@ -162,7 +134,7 @@ Bar.
 .SH "NEXT"
 .IX Header "NEXT"
 ###
-tmp.pod around line 7: You forgot a '=back' before '=head1'
+Pod input around line 7: You forgot a '=back' before '=head1'
 ###
 
 ###
@@ -195,7 +167,7 @@ Bar.
 .SH "NEXT"
 .IX Header "NEXT"
 ###
-tmp.pod around line 7: You forgot a '=back' before '=head1'
+Pod input around line 7: You forgot a '=back' before '=head1'
 ###
 
 ###
@@ -215,7 +187,7 @@ Bar.
 .SH "NEXT"
 .IX Header "NEXT"
 ###
-tmp.pod around line 7: You forgot a '=back' before '=head1'
+Pod input around line 7: You forgot a '=back' before '=head1'
 EXCEPTION: POD document had syntax errors
 ###
 

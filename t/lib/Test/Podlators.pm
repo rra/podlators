@@ -46,11 +46,13 @@ BEGIN {
 #
 # $fh         - File handle to read the data from
 # $format_ref - Reference to a hash of options describing the data
+#   errors  - Set to true to read expected errors after the output section
 #   options - Set to true to read a hash of options as the first data block
 #
 # Returns: Reference to hash of test data with the following keys:
 #            input   - The input block of the test data
 #            output  - The output block of the test data
+#            errors  - Expected errors if errors was set in $format_ref
 #            options - Hash of options if options was set in $format_ref
 #          or returns undef if no more test data is found.
 sub read_test_data {
@@ -82,7 +84,12 @@ sub read_test_data {
     }
 
     # Read the input and output sections.
-    for my $key (qw(input output)) {
+    my @sections = qw(input output);
+    if ($format_ref->{errors}) {
+        push(@sections, 'errors');
+    }
+    for my $key (@sections) {
+        $data{$key} = q{};
         while (defined(my $line = <$fh>)) {
             last if $line eq "###\n";
             $data{$key} .= $line;
