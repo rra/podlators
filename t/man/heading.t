@@ -14,7 +14,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 7;
+use Test::More tests => 9;
 use Test::Podlators qw(read_test_data);
 
 BEGIN {
@@ -79,4 +79,16 @@ center Testing Documentation
 test - Test man page
 ###
 .TH STDIN 1 "2009-01-17" "1.0" "Testing Documentation"
+###
+
+###
+date
+release
+center
+###
+=head1 NAME
+
+test - Test man page
+###
+.TH STDIN 1 "" "" ""
 ###

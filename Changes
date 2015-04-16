@@ -35,6 +35,8 @@ podlators 4.00 (unreleased)
     break before at the first page with AT&T *roff.  Thanks, Carsten
     Kunze and Daphne Pfister.  (#92979)
 
+    [Pod::Man] Support setting the left-hand footer to the empty string.
+
     Fix documentation of the utf8 option to Pod::Man and Pod::Text, and
     the corresponding -u option to pod2man and pod2text, to reflect that
     Pod::Simple now autodetects Latin-1 and UTF-8 but warns.

@@ -789,7 +789,7 @@ sub start_document {
         } else {
             ($name, $section) = $self->devise_title;
         }
-        my $date = $$self{date} || $self->devise_date;
+        my $date = defined($$self{date}) ? $$self{date} : $self->devise_date;
         $self->preamble ($name, $section, $date)
             unless $self->bare_output or DEBUG > 9;
     }
