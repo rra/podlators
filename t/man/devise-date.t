@@ -12,7 +12,7 @@ use warnings;
 use Pod::Man;
 use POSIX qw(strftime);
 
-use Test::More tests => 2;
+use Test::More tests => 3;
 
 # Check that the results of device_date matches strftime.  There is no input
 # file name, so this will use the current time.
@@ -26,3 +26,7 @@ is(
 # Set the override environment variable and ensure that it's honored.
 local $ENV{POD_MAN_DATE} = '2014-01-01';
 is($parser->devise_date, '2014-01-01', 'devise_date honors POD_MAN_DATE');
+
+# Check that an empty environment variable is honored.
+local $ENV{POD_MAN_DATE} = q{};
+is($parser->devise_date, q{}, 'devise_date honors empty POD_MAN_DATE');

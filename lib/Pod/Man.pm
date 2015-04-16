@@ -906,7 +906,7 @@ sub devise_date {
     my ($self) = @_;
 
     # If POD_MAN_DATE is set, always use it.
-    if ($ENV{POD_MAN_DATE}) {
+    if (defined($ENV{POD_MAN_DATE})) {
         return $ENV{POD_MAN_DATE};
     }
 
