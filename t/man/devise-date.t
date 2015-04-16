@@ -19,7 +19,7 @@ use Test::More tests => 2;
 my $parser = Pod::Man->new;
 is(
     $parser->devise_date,
-    strftime('%Y-%m-%d', localtime()),
+    strftime('%Y-%m-%d', gmtime()),
     'devise_date matches strftime'
 );
 

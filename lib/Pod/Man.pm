@@ -922,6 +922,8 @@ sub devise_date {
 
     # Can't use POSIX::strftime(), which uses Fcntl, because MakeMaker uses
     # this and it has to work in the core which can't load dynamic libraries.
+    # Use gmtime instead of localtime so that the generated man page does not
+    # depend on the local time zone setting and is more reproducible
     my ($year, $month, $day) = (gmtime($time))[5,4,3];
     return sprintf("%04d-%02d-%02d", $year + 1900, $month + 1, $day);
 }
@@ -1664,7 +1666,9 @@ environment variable POD_MAN_DATE, if set, will be used.  Failing that,
 the modification date of the input file will be used, or the current time
 if stat() can't find that file (which will be the case if the input is
 from C<STDIN>).  If obtained from the file modification date or the
-current time, he date will be formatted as C<YYYY-MM-DD>.
+current time, the date will be formatted as C<YYYY-MM-DD> and will be based
+on UTC (so that the output will be reproducible regardless of local time
+zone).
 
 =item errors
 

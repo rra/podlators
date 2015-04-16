@@ -25,6 +25,10 @@ podlators 4.00 (unreleased)
     file given the same souce and Pod::Man version, even when file
     timestamps may not be consistent.  Thanks, Niko Tyni.
 
+    [Pod::Man] The default left-hand footer date is now based on UTC
+    rather than the local time zone to make the output more reproducible.
+    Thanks, Chris Lamb.  (Debian Bug#780259)
+
     [Pod::Man] Simplify the preamble code for handling the F register and
     index entries, and add backslashes after the braces in the preamble
     code for handling the F register to avoid introducing a spurious page
