@@ -7,6 +7,18 @@ perl:
   - "5.12"
   - "5.10"
   - "5.8"
+
+env: AUTHOR_TESTING=1
+before_install:
+  - cpanm JSON::PP
+  - cpanm Perl6::Slurp
+  - cpanm Perl::Critic
+  - cpanm Test::MinimumVersion
+  - cpanm Test::Pod
+  - cpanm Test::Spelling
+  - cpanm Test::Strict
+  - cpanm Test::Synopsis
+
 branches:
   only:
     - master
