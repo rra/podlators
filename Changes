@@ -12,6 +12,14 @@ podlators 4.00 (unreleased)
     warnings.  Please report any unexpected or confusing warnings as bugs
     in the bug tracker.
 
+    [pod2man] In previous versions, the -r or --release option could be
+    specified without an argument and was interpreted as setting that
+    value to the empty string.  That never made a great deal of sense, and
+    the original change to Perl was apparently because no one realized one
+    could pass the empty string as the argument value.  The argument is
+    now mandatory, but may be the empty string, which will cause some
+    *roff implementations to use the system default.
+
     Allow any even number of characters to be specified as the quote marks
     for Pod::Text and Pod::Man (and the corresponding --quotes options of
     pod2text and pod2man), rather than being artificially limited to one-
@@ -48,6 +56,10 @@ podlators 4.00 (unreleased)
     Fix documentation of the utf8 option to Pod::Man and Pod::Text, and
     the corresponding -u option to pod2man and pod2text, to reflect that
     Pod::Simple now autodetects Latin-1 and UTF-8 but warns.
+
+    More clearly document the options that set values in the .TH header in
+    the pod2man and Pod::Man documentation.  Thanks, Guillem Jover.
+    (#103297)
 
     [Pod::Text] Fix encoding handling in documents that start without an
     encoding declaration and then declare an encoding partway through.

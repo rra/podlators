@@ -1656,8 +1656,8 @@ argument.
 
 =item center
 
-Sets the centered page header to use for the C<.TH> macro instead of "User
-Contributed Perl Documentation".
+Sets the centered page header for the C<.TH> macro.  The default, if this
+option is not specified, is "User Contributed Perl Documentation".
 
 =item date
 
@@ -1746,12 +1746,16 @@ output).
 
 =item release
 
-Set the centered footer for the C<.TH> macro.  By default, this is the
-version of Perl you run Pod::Man under.  Note that some system an macro
-sets assume that the centered footer will be a modification date and will
-prepend something like "Last modified: "; if this is the case, you may
-want to set C<release> to the last modified date and C<date> to the
-version number.
+Set the centered footer for the C<.TH> macro.  By default, this is set to
+the version of Perl you run Pod::Man under.  Setting this to the empty
+string will cause some *roff implementations to use the system default
+value.
+
+Note that some system C<an> macro sets assume that the centered footer
+will be a modification date and will prepend something like "Last
+modified: ".  If this is the case for your target system, you may want to
+set C<release> to the last modified date and C<date> to the version
+number.
 
 =item section
 
