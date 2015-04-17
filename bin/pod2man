@@ -136,15 +136,16 @@ complete information.
 
 =item B<-c> I<string>, B<--center>=I<string>
 
-Sets the centered page header to I<string>.  The default is "User
-Contributed Perl Documentation", but also see B<--official> below.
+Sets the centered page header for the C<.TH> macro to I<string>.  The
+default is "User Contributed Perl Documentation", but also see
+B<--official> below.
 
 =item B<-d> I<string>, B<--date>=I<string>
 
-Set the left-hand footer string to this value.  By default, the
-modification date of the input file will be used, or the current date if
-input comes from C<STDIN>, and will be based on UTC (so that the output
-will be reproducible regardless of local time zone).
+Set the left-hand footer string for the C<.TH> macro to I<string>.  By
+default, the modification date of the input file will be used, or the
+current date if input comes from C<STDIN>, and will be based on UTC (so
+that the output will be reproducible regardless of local time zone).
 
 =item B<--errors>=I<style>
 
@@ -192,12 +193,12 @@ Accepted for backward compatibility; this option no longer does anything.
 
 =item B<-n> I<name>, B<--name>=I<name>
 
-Set the name of the manual page to I<name>.  Without this option, the manual
-name is set to the uppercased base name of the file being converted unless
-the manual section is 3, in which case the path is parsed to see if it is a
-Perl module path.  If it is, a path like C<.../lib/Pod/Man.pm> is converted
-into a name like C<Pod::Man>.  This option, if given, overrides any
-automatic determination of the name.
+Set the name of the manual page for the C<.TH> macro to I<name>.  Without
+this option, the manual name is set to the uppercased base name of the
+file being converted unless the manual section is 3, in which case the
+path is parsed to see if it is a Perl module path.  If it is, a path like
+C<.../lib/Pod/Man.pm> is converted into a name like C<Pod::Man>.  This
+option, if given, overrides any automatic determination of the name.
 
 Note that this option is probably not useful when converting multiple POD
 files at once.  The convention for Unix man pages for commands is for the
@@ -238,15 +239,17 @@ I<quotes> may also be set to the special value C<none>, in which case no
 quote marks are added around CE<lt>> text (but the font is still changed for
 troff output).
 
-=item B<-r>, B<--release>
+=item B<-r> [I<version>], B<--release>[=I<version>]
 
-Set the centered footer.  By default, this is the version of Perl you run
-B<pod2man> under.  Note that some system an macro sets assume that the
-centered footer will be a modification date and will prepend something like
-"Last modified: "; if this is the case, you may want to set B<--release> to
-the last modified date and B<--date> to the version number.
+Set the centered footer for the C<.TH> macro.  By default, this is the
+version of Perl you run B<pod2man> under.  If I<version> is not specified
+then it will default to the empty string.  Note that some system C<an>
+macro sets assume that the centered footer will be a modification date and
+will prepend something like "Last modified: "; if this is the case, you
+may want to set B<--release> to the last modified date and B<--date> to
+the version number.
 
-=item B<-s>, B<--section>
+=item B<-s> I<string>, B<--section>=I<string>
 
 Set the section for the C<.TH> macro.  The standard section numbering
 convention is to use 1 for user commands, 2 for system calls, 3 for

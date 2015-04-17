@@ -1656,19 +1656,19 @@ argument.
 
 =item center
 
-Sets the centered page header to use instead of "User Contributed Perl
-Documentation".
+Sets the centered page header to use for the C<.TH> macro instead of "User
+Contributed Perl Documentation".
 
 =item date
 
-Sets the left-hand footer.  If this option is not set, the contents of the
-environment variable POD_MAN_DATE, if set, will be used.  Failing that,
-the modification date of the input file will be used, or the current time
-if stat() can't find that file (which will be the case if the input is
-from C<STDIN>).  If obtained from the file modification date or the
-current time, the date will be formatted as C<YYYY-MM-DD> and will be based
-on UTC (so that the output will be reproducible regardless of local time
-zone).
+Sets the left-hand footer for the C<.TH> macro.  If this option is not
+set, the contents of the environment variable POD_MAN_DATE, if set, will
+be used.  Failing that, the modification date of the input file will be
+used, or the current time if stat() can't find that file (which will be
+the case if the input is from C<STDIN>).  If obtained from the file
+modification date or the current time, the date will be formatted as
+C<YYYY-MM-DD> and will be based on UTC (so that the output will be
+reproducible regardless of local time zone).
 
 =item errors
 
@@ -1706,12 +1706,12 @@ for B<troff> output.
 
 =item name
 
-Set the name of the manual page.  Without this option, the manual name is
-set to the uppercased base name of the file being converted unless the
-manual section is 3, in which case the path is parsed to see if it is a Perl
-module path.  If it is, a path like C<.../lib/Pod/Man.pm> is converted into
-a name like C<Pod::Man>.  This option, if given, overrides any automatic
-determination of the name.
+Set the name of the manual page for the C<.TH> macro.  Without this
+option, the manual name is set to the uppercased base name of the file
+being converted unless the manual section is 3, in which case the path is
+parsed to see if it is a Perl module path.  If it is, a path like
+C<.../lib/Pod/Man.pm> is converted into a name like C<Pod::Man>.  This
+option, if given, overrides any automatic determination of the name.
 
 If generating a manual page from standard input, this option is required,
 since there's otherwise no way for Pod::Man to know what to use for the
@@ -1746,11 +1746,12 @@ output).
 
 =item release
 
-Set the centered footer.  By default, this is the version of Perl you run
-Pod::Man under.  Note that some system an macro sets assume that the
-centered footer will be a modification date and will prepend something like
-"Last modified: "; if this is the case, you may want to set C<release> to
-the last modified date and C<date> to the version number.
+Set the centered footer for the C<.TH> macro.  By default, this is the
+version of Perl you run Pod::Man under.  Note that some system an macro
+sets assume that the centered footer will be a modification date and will
+prepend something like "Last modified: "; if this is the case, you may
+want to set C<release> to the last modified date and C<date> to the
+version number.
 
 =item section
 
