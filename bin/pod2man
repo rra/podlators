@@ -231,10 +231,8 @@ Perl release, if B<--center> is not also given.
 
 Sets the quote marks used to surround CE<lt>> text to I<quotes>.  If
 I<quotes> is a single character, it is used as both the left and right
-quote; if I<quotes> is two characters, the first character is used as the
-left quote and the second as the right quoted; and if I<quotes> is four
-characters, the first two are used as the left quote and the second two as
-the right quote.
+quote.  Otherwise, it is split in half, and the first half of the string
+is used as the left quote and the second is used as the right quote.
 
 I<quotes> may also be set to the special value C<none>, in which case no
 quote marks are added around CE<lt>> text (but the font is still changed for

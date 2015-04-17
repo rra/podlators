@@ -127,10 +127,10 @@ sub new {
         $$self{LQUOTE} = $$self{RQUOTE} = '';
     } elsif (length ($$self{opt_quotes}) == 1) {
         $$self{LQUOTE} = $$self{RQUOTE} = $$self{opt_quotes};
-    } elsif ($$self{opt_quotes} =~ /^(.)(.)$/
-             || $$self{opt_quotes} =~ /^(..)(..)$/) {
-        $$self{LQUOTE} = $1;
-        $$self{RQUOTE} = $2;
+    } elsif (length ($$self{opt_quotes}) % 2 == 0) {
+        my $length = length ($$self{opt_quotes}) / 2;
+        $$self{LQUOTE} = substr ($$self{opt_quotes}, 0, $length);
+        $$self{RQUOTE} = substr ($$self{opt_quotes}, $length);
     } else {
         croak qq(Invalid quote specification "$$self{opt_quotes}");
     }
@@ -852,10 +852,9 @@ important.
 =item quotes
 
 Sets the quote marks used to surround CE<lt>> text.  If the value is a
-single character, it is used as both the left and right quote; if it is two
-characters, the first character is used as the left quote and the second as
-the right quoted; and if it is four characters, the first two are used as
-the left quote and the second two as the right quote.
+single character, it is used as both the left and right quote.  Otherwise,
+it is split in half, and the first half of the string is used as the left
+quote and the second is used as the right quote.
 
 This may also be set to the special value C<none>, in which case no quote
 marks are added around CE<lt>> text.
@@ -935,8 +934,8 @@ and the input file it was given could not be opened.
 =item Invalid quote specification "%s"
 
 (F) The quote specification given (the C<quotes> option to the
-constructor) was invalid.  A quote specification must be one, two, or four
-characters long.
+constructor) was invalid.  A quote specification must be either one
+character long or an even number (greater than one) characters long.
 
 =item POD document had syntax errors
 
@@ -999,8 +998,8 @@ how to use Pod::Simple.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2014
-Russ Allbery <rra@cpan.org>.
+Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2014,
+2015 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

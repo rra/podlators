@@ -12,6 +12,14 @@ podlators 4.00 (unreleased)
     warnings.  Please report any unexpected or confusing warnings as bugs
     in the bug tracker.
 
+    Allow any even number of characters to be specified as the quote marks
+    for Pod::Text and Pod::Man (and the corresponding --quotes options of
+    pod2text and pod2man), rather than being artificially limited to one-
+    or two-character quotes.  The first half of the string will be used as
+    the left quote and the second half as the right quote.  This allows
+    Unicode characters or groff escapes like \(lq and \(rq to be used.
+    (Partly addresses #103298)
+
     [Pod::Man] Attempt to detect if the input came from a pipe and
     therefore has a completely unhelpful (and nonreproducible) source file
     name, and diagnose this as an error.  Document that the name option

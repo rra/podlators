@@ -2,7 +2,7 @@
 #
 # Additional tests for Pod::Text options.
 #
-# Copyright 2002, 2004, 2006, 2008, 2009, 2012, 2013
+# Copyright 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2015
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -19,7 +19,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 34;
+use Test::More tests => 37;
 BEGIN { use_ok ('Pod::Text') }
 
 # Redirect stderr to a file.
@@ -349,5 +349,18 @@ Bar.
     Foo Bar.
 
 NEXT
+###
+###
+
+###
+quotes <<<>>>
+###
+=head1 FOO C<BAR> BAZ
+
+Foo C<bar> baz.
+###
+FOO <<<BAR>>> BAZ
+    Foo <<<bar>>> baz.
+
 ###
 ###

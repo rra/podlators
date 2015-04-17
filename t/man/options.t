@@ -14,7 +14,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 28;
+use Test::More tests => 31;
 use Test::Podlators qw(read_test_data slurp);
 
 BEGIN {
@@ -255,4 +255,19 @@ Also not a bullet.
 Not a bullet.
 .IP "*" 4
 Also not a bullet.
+###
+###
+
+###
+quotes \(lq"\(rq"
+###
+=head1 FOO C<BAR> BAZ
+
+Foo C<bar> baz.
+###
+.ie n .SH "FOO \(lq""BAR\(rq"" BAZ"
+.el .SH "FOO \f(CWBAR\fP BAZ"
+.IX Header "FOO BAR BAZ"
+Foo \f(CW\*(C`bar\*(C'\fR baz.
+###
 ###
