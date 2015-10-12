@@ -894,6 +894,10 @@ sub devise_title {
 # reproducible generation of the same file even if the input file timestamps
 # are unpredictable or the POD coms from standard input.
 #
+# Otherwise, if SOURCE_DATE_EPOCH is set and can be parsed as seconds
+# since the UNIX epoch, base the timestamp on that.
+# See <https://reproducible-builds.org/specs/source-date-epoch/>
+#
 # Otherwise, use the modification date of the input if we can stat it.  Be
 # aware that Pod::Simple returns the stringification of the file handle as
 # source_filename for input from a file handle, so we'll stat some random ref
@@ -910,14 +914,22 @@ sub devise_date {
         return $ENV{POD_MAN_DATE};
     }
 
+    # If SOURCE_DATE_EPOCH is set and can be parsed, use that.
+    my $time;
+    if (defined($ENV{SOURCE_DATE_EPOCH}) &&
+        $ENV{SOURCE_DATE_EPOCH} !~ /\D/) {
+        $time = $ENV{SOURCE_DATE_EPOCH};
+    }
+
     # Otherwise, get the input filename and try to stat it.  If that fails,
     # use the current time.
-    my $input = $self->source_filename;
-    my $time;
-    if ($input) {
-        $time = (stat($input))[9] || time();
-    } else {
-        $time = time();
+    if (!defined $time) {
+        my $input = $self->source_filename;
+        if ($input) {
+            $time = (stat($input))[9] || time();
+        } else {
+            $time = time();
+        }
     }
 
     # Can't use POSIX::strftime(), which uses Fcntl, because MakeMaker uses
