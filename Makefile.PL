@@ -80,4 +80,10 @@ WriteMakefile (
 
     # For Perl 5.10 and later, we can specify the license.
     ($] >= 5.010 ? (LICENSE => 'perl') : ()),
+
+
+    # Run tests of the deep directory.
+    test => {
+        TESTS => 't/*/*.t',
+    },
 );
