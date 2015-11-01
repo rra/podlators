@@ -9,7 +9,7 @@
 # For a normal build, do not use this file; use Build.PL instead.  This is
 # here solely to support Perl core.
 #
-# Copyright 1999, 2000, 2001, 2008, 2010, 2012, 2014
+# Copyright 1999, 2000, 2001, 2008, 2010, 2012, 2014, 2015
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -78,12 +78,9 @@ WriteMakefile (
         'Pod::Simple' => 3.06,
     },
 
+    # ExtUtils::MakeMaker doesn't pick up nested test directories by default.
+    test => { TESTS => 't/*/*.t' },
+
     # For Perl 5.10 and later, we can specify the license.
     ($] >= 5.010 ? (LICENSE => 'perl') : ()),
-
-
-    # Run tests of the deep directory.
-    test => {
-        TESTS => 't/*/*.t',
-    },
 );
