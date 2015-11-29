@@ -1,4 +1,5 @@
 .gitignore
+.travis.yml
 bin/pod2man
 bin/pod2text
 Build.PL
@@ -22,16 +23,20 @@ t/data/basic.ovr
 t/data/basic.pod
 t/data/basic.txt
 t/data/perl.conf
+t/data/snippets/README
+t/data/termcap
 t/docs/pod-spelling.t
 t/docs/pod.t
 t/docs/synopsis.t
 t/general/basic.t
 t/general/filehandle.t
 t/general/pod-parser.t
+t/lib/Test/Podlators.pm
 t/lib/Test/RRA.pm
 t/lib/Test/RRA/Config.pm
 t/man/basic.t
 t/man/devise-date.t
+t/man/devise-title.t
 t/man/empty.t
 t/man/heading.t
 t/man/options.t
