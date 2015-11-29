@@ -34,12 +34,19 @@ podlators 4.00 (unreleased)
     (--name to pod2man) is required when processing POD source from
     standard input.  (Debian Bug#777405)
 
-    [Pod::Man] Honor the environment variable POD_MAN_DATE and use its
-    contents, if set, as the value of the left-hand footer if the date
+    [Pod::Man] Honor the environment variable SOURCE_DATE_EPOCH and use it
+    as the timestamp from which to derive the left-hand footer if the date
     option is not set, overriding the timestamp of the input file.  This
     is primarily useful to ensure reproducible builds of the same output
     file given the same souce and Pod::Man version, even when file
     timestamps may not be consistent.  Thanks, Niko Tyni.
+
+    [Pod::Man] Honor the environment variable POD_MAN_DATE and use its
+    contents, if set, as the value of the left-hand footer if the date
+    option is not set, overriding the timestamp of the input file.  This
+    was an earlier version of SOURCE_DATE_EPOCH, but has been supported in
+    Debian for a while and doesn't serve exactly the same purpose, so both
+    continue to be supported.  Thanks, Niko Tyni.
 
     [Pod::Man] The default left-hand footer date is now based on UTC
     rather than the local time zone to make the output more reproducible.

@@ -37,9 +37,10 @@ local $ENV{SOURCE_DATE_EPOCH} = 1439390140;
 is($parser->devise_date, '2015-08-12', 'devise_date honors SOURCE_DATE_EPOCH');
 
 # Check that POD_MAN_DATE overrides SOURCE_DATE_EPOCH
-local $ENV{POD_MAN_DATE} = '2013-01-01';
+local $ENV{POD_MAN_DATE}      = '2013-01-01';
 local $ENV{SOURCE_DATE_EPOCH} = 1482676620;
-is($parser->devise_date, '2013-01-01', 'devise_date honors POD_MAN_DATE over SOURCE_DATE_EPOCH');
+is($parser->devise_date, '2013-01-01',
+   'devise_date honors POD_MAN_DATE over SOURCE_DATE_EPOCH');
 
 # Check that an invalid SOURCE_DATE_EPOCH is not accepted
 local $ENV{POD_MAN_DATE};

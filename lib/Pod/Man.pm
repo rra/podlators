@@ -894,9 +894,9 @@ sub devise_title {
 # reproducible generation of the same file even if the input file timestamps
 # are unpredictable or the POD coms from standard input.
 #
-# Otherwise, if SOURCE_DATE_EPOCH is set and can be parsed as seconds
-# since the UNIX epoch, base the timestamp on that.
-# See <https://reproducible-builds.org/specs/source-date-epoch/>
+# Otherwise, if SOURCE_DATE_EPOCH is set and can be parsed as seconds since
+# the UNIX epoch, base the timestamp on that.  See
+# <https://reproducible-builds.org/specs/source-date-epoch/>
 #
 # Otherwise, use the modification date of the input if we can stat it.  Be
 # aware that Pod::Simple returns the stringification of the file handle as
@@ -916,8 +916,7 @@ sub devise_date {
 
     # If SOURCE_DATE_EPOCH is set and can be parsed, use that.
     my $time;
-    if (defined($ENV{SOURCE_DATE_EPOCH}) &&
-        $ENV{SOURCE_DATE_EPOCH} !~ /\D/) {
+    if (defined($ENV{SOURCE_DATE_EPOCH}) && $ENV{SOURCE_DATE_EPOCH} !~ /\D/) {
         $time = $ENV{SOURCE_DATE_EPOCH};
     }
 
@@ -1673,12 +1672,12 @@ option is not specified, is "User Contributed Perl Documentation".
 
 =item date
 
-Sets the left-hand footer for the C<.TH> macro.  If this option is not
-set, the contents of the environment variable POD_MAN_DATE, if set, will
-be used.  Failing that, the modification date of the input file will be
-used, or the current time if stat() can't find that file (which will be
-the case if the input is from C<STDIN>).  If obtained from the file
-modification date or the current time, the date will be formatted as
+Sets the left-hand footer for the C<.TH> macro.  If this option is not set,
+the contents of the environment variable POD_MAN_DATE, if set, will be used.
+Failing that, the value of SOURCE_DATE_EPOCH, the modification date of the
+input file, or the current time if stat() can't find that file (which will be
+the case if the input is from C<STDIN>) will be used.  If obtained from the
+file modification date or the current time, the date will be formatted as
 C<YYYY-MM-DD> and will be based on UTC (so that the output will be
 reproducible regardless of local time zone).
 
@@ -1873,6 +1872,22 @@ file or the current time.  This is primarily useful to ensure reproducible
 builds of the same output file given the same source and Pod::Man version,
 even when file timestamps may not be consistent.
 
+=item SOURCE_DATE_EPOCH
+
+If set, and POD_MAN_DATE and the C<date> options are not set, this will be
+used as the modification time of the source file, overriding the timestamp of
+the input file or the current time.  It should be set to the desired time in
+seconds since UNIX epoch.  This is primarily useful to ensure reproducible
+builds of the same output file given the same source and Pod::Man version,
+even when file timestamps may not be consistent.  See
+L<https://reproducible-builds.org/specs/source-date-epoch/> for the full
+specification.
+
+(Arguably, according to the specification, this variable should be used only
+if the timestamp of the input file is not available and Pod::Man uses the
+current time.  However, for reproducible builds in Debian, results were more
+reliable if this variable overrode the timestamp of the input file.)
+
 =back
 
 =head1 BUGS
@@ -1934,7 +1949,7 @@ mine).
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-2009, 2010, 2012, 2013, 2014, 2015 Russ Allbery <rra@cpan.org>.
+2009, 2010, 2012, 2013, 2014, 2015 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
