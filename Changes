@@ -1,6 +1,6 @@
                       User-Visible podlators Changes
 
-podlators 4.00 (unreleased)
+podlators 4.00 (2015-11-28)
 
     Increase the version number of the package to be larger than any of
     the previous version numbers of any of the modules, and change all
@@ -39,7 +39,8 @@ podlators 4.00 (unreleased)
     option is not set, overriding the timestamp of the input file.  This
     is primarily useful to ensure reproducible builds of the same output
     file given the same souce and Pod::Man version, even when file
-    timestamps may not be consistent.  Thanks, Niko Tyni.
+    timestamps may not be consistent.  Thanks, Niko Tyni.  (Debian
+    Bug#801621)
 
     [Pod::Man] Honor the environment variable POD_MAN_DATE and use its
     contents, if set, as the value of the left-hand footer if the date
@@ -79,7 +80,7 @@ podlators 4.00 (unreleased)
 
     Switch the preferred module build system to Module::Build, but still
     provide a Makefile.PL file for backward compatibility and for the use
-    of Perl core.
+    of Perl core.  (#108714)
 
     Installation of this package no longer tries to overwrite the Pod::Man
     and Pod::Text modules that come with Perl core, and instead relies on

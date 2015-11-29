@@ -58,3 +58,5 @@ t/text/utf8.t
 THANKS
 TODO
 VERSION
+META.yml
+META.json
