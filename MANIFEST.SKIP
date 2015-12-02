@@ -8,14 +8,6 @@
 \bblib/
 ^pm_to_blib$
 
-# Avoid Module::Build generated and utility files.
-\bBuild$
-\b_build/
-\bBuild.bat$
-\bBuild.COM$
-\bBUILD.COM$
-\bbuild.com$
-
 # Avoid temp and backup files.
 ~$
 \.old$

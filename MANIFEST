@@ -2,7 +2,6 @@
 .travis.yml
 bin/pod2man
 bin/pod2text
-Build.PL
 Changes
 lib/Pod/Man.pm
 lib/Pod/ParseLink.pm
@@ -58,5 +57,3 @@ t/text/utf8.t
 THANKS
 TODO
 VERSION
-META.yml
-META.json

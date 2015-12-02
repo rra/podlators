@@ -84,22 +84,17 @@ BUILDING AND INSTALLATION
   call the new modules with the old driver scripts, which may cause
   various problems.
 
-  podlators uses Module::Build and can be installed using the same process
-  as any other Module::Build module:
+  Follow the standard installation procedure for Perl modules using
+  ExtUtils::MakeMaker, which is to type the following commands:
 
-      perl Build.PL
-      ./Build
-      ./Build test
-      ./Build install
+      perl Makefile.PL
+      make
+      make test
+      make install
 
   You'll probably need to do the last step as root.  This will also
   install driver scripts named pod2text and pod2man and the perlpodstyle
   man page.
-
-  podlators also includes a Makefile.PL file that can be used with
-  ExtUtils::MakeMaker as an alternate build and installation method.  This
-  is provided for use within Perl core and is not intended for normal use.
-  Outside of Perl core, please use the Build.PL script instead.
 
 HOMEPAGE AND SOURCE REPOSITORY
 

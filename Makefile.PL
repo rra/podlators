@@ -57,7 +57,7 @@ sub man1pod {
 
 # Generate the actual Makefile.  Pick an arbitrary module to pull the version
 # from, since they should all have the same version.
-WriteMakefile (
+WriteMakefile(
     NAME         => 'Pod',
     DISTNAME     => 'podlators',
     ABSTRACT     => 'Convert POD data to various other formats',
@@ -81,6 +81,26 @@ WriteMakefile (
     # ExtUtils::MakeMaker doesn't pick up nested test directories by default.
     test => { TESTS => 't/*/*.t' },
 
-    # For Perl 5.10 and later, we can specify the license.
-    ($] >= 5.010 ? (LICENSE => 'perl') : ()),
+    # For ExtUtils::MakeMaker 6.31 and later, we can specify the license.
+    ($ExtUtils::MakeMaker::VERSION >= 6.31 ? (
+        LICENSE => 'perl',
+    ) : ()),
+
+    # For ExtUtils::MakeMaker 6.46 or later, we can provide some additional
+    # metadata.
+    ($ExtUtils::MakeMaker::VERSION >= 6.46 ? (
+        META_ADD => {
+            resources => {
+                repository => 'git://git.eyrie.org/perl/podlators.git',
+                bugtracker =>
+                  'https://rt.cpan.org/Public/Dist/Display.html?Name=podlators',
+            },
+        },
+    ) : ()),
+
+    # For ExtUtils::MakeMaker 6.48 and later, we can specify the minimum Perl
+    # version required.
+    ($ExtUtils::MakeMaker::VERSION >= 6.48 ? (
+        MIN_PERL_VERSION => '5.006',
+    ) : ()),
 );

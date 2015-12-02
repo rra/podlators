@@ -7,6 +7,12 @@ podlators 4.01 (unreleased)
     1.16 (which has a bug in termcap handling if TERMPATH doesn't point to
     a valid file).  Also document the manipulation of TERMPATH.
 
+    Revert the switch to Module::Build as the build system.  This creates
+    a circular dependency with Module::Build, since it wants a newer
+    version of Pod::Man than in Perl versions prior to 5.10.1.  Instead,
+    add the new metadata to Makefile.PL and stick with a single build
+    system that will also work inside Perl core.
+
 podlators 4.00 (2015-11-28)
 
     Increase the version number of the package to be larger than any of
