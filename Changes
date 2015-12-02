@@ -1,6 +1,6 @@
                       User-Visible podlators Changes
 
-podlators 4.01 (unreleased)
+podlators 4.01 (2015-12-01)
 
     [Pod::Text::Termcap] Do not override the TERMPATH environment variable
     if it's already set.  This should fix the test suite with Term::Cap
