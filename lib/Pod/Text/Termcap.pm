@@ -4,7 +4,7 @@
 # output the right termcap escape sequences for formatted text on the current
 # terminal type.
 #
-# Copyright 1999, 2001, 2002, 2004, 2006, 2008, 2009, 2014
+# Copyright 1999, 2001, 2002, 2004, 2006, 2008, 2009, 2014, 2015
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -43,9 +43,11 @@ sub new {
 
     # $ENV{HOME} is usually not set on Windows.  The default Term::Cap path
     # may not work on Solaris.
-    my $home = exists $ENV{HOME} ? "$ENV{HOME}/.termcap:" : '';
-    $ENV{TERMPATH} = $home . '/etc/termcap:/usr/share/misc/termcap'
-                           . ':/usr/share/lib/termcap';
+    unless (exists $ENV{TERMPATH}) {
+        my $home = exists $ENV{HOME} ? "$ENV{HOME}/.termcap:" : '';
+        $ENV{TERMPATH} =
+          "${home}/etc/termcap:/usr/share/misc/termcap:/usr/share/lib/termcap";
+    }
 
     # Fall back on a hard-coded terminal speed if POSIX::Termios isn't
     # available (such as on VMS).
@@ -165,6 +167,18 @@ text using the correct termcap escape sequences for the current terminal.
 Apart from the format codes, it in all ways functions like Pod::Text.  See
 L<Pod::Text> for details and available options.
 
+=head1 ENVIRONMENT
+
+This module sets the TERMPATH environment variable globally to:
+
+    $HOME/.termcap:/etc/termcap:/usr/share/misc/termcap:/usr/share/lib/termcap
+
+if it isn't already set.  (The first entry is omitted if the HOME
+environment variable isn't set.)  This is a (very old) workaround for
+problems finding termcap information on older versions of Solaris, and is
+not good module behavior.  Please do not rely on this behavior; it may be
+dropped in a future release.
+
 =head1 NOTES
 
 This module uses Term::Cap to retrieve the formatting escape sequences for
@@ -187,8 +201,8 @@ Russ Allbery <rra@cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2001, 2002, 2004, 2006, 2008, 2009 Russ Allbery
-<rra@cpan.org>.
+Copyright 1999, 2001, 2002, 2004, 2006, 2008, 2009, 2014, 2015 Russ Allbery
+<rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
