@@ -147,7 +147,7 @@ __END__
 Pod::Text::Termcap - Convert POD data to ASCII text with format escapes
 
 =for stopwords
-ECMA-48 VT100 Allbery
+ECMA-48 VT100 Allbery Solaris TERMPATH
 
 =head1 SYNOPSIS
 
