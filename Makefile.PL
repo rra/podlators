@@ -1,13 +1,8 @@
-# Backwards-compatibility Makefile.PL for podlators.
+# Build instructions for podlators.
 #
-# The default build system for podlators is a Module::Build Build.PL, but it
-# is also part of Perl core, where it is built with ExtUtils::MakeMaker.
-# Mostly due to perlpodstyle, the build rules are too complex for
-# Module::Build's support for generating Makefile.PL files, so this file is
-# maintained by hand.
-#
-# For a normal build, do not use this file; use Build.PL instead.  This is
-# here solely to support Perl core.
+# We need to use ExtUtils::MakeMaker since this module is part of Perl core,
+# which only supports that build method, and because it is a dependency of
+# other build systems like Module::Build.
 #
 # Copyright 1999, 2000, 2001, 2008, 2010, 2012, 2014, 2015
 #     Russ Allbery <rra@cpan.org>
