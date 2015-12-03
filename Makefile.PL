@@ -76,6 +76,11 @@ WriteMakefile(
     # ExtUtils::MakeMaker doesn't pick up nested test directories by default.
     test => { TESTS => 't/*/*.t' },
 
+    # For older versions of Perl, we have to force installation into the Perl
+    # module directories since site modules did not take precedence over core
+    # modules.
+    INSTALLDIRS => $] lt '5.011' ? 'perl' : 'site',
+
     # For ExtUtils::MakeMaker 6.31 and later, we can specify the license.
     ($ExtUtils::MakeMaker::VERSION >= 6.31 ? (
         LICENSE => 'perl',

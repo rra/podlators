@@ -1,5 +1,12 @@
                       User-Visible podlators Changes
 
+podlators 4.02 (2015-12-02)
+
+    For versions of Perl prior to 5.11, install the modules into the Perl
+    core module directories, since in those versions site modules did not
+    take precedence over Perl core modules.  Thanks, Peter Rabbitson.
+    (#110024)
+
 podlators 4.01 (2015-12-01)
 
     [Pod::Text::Termcap] Do not override the TERMPATH environment variable

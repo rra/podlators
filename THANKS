@@ -189,3 +189,7 @@ documents that have POD syntax errors and a POD ERRORS section.
 
 Dagfinn Ilmari Mannsåker, for multiple performance optimizations after
 profiling all of the modules in Perl core.
+
+Peter Rabbitson, for lots of assistance in getting the right build
+configuration for a dual-life module included in Perl core, including
+correct installation with old versions of Perl.
