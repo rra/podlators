@@ -14,6 +14,7 @@ use POSIX qw(strftime);
 
 use Test::More tests => 6;
 
+# Start with environment variables affecting the date stripped.
 local $ENV{SOURCE_DATE_EPOCH};
 local $ENV{POD_MAN_DATE};
 
