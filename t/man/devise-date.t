@@ -14,6 +14,9 @@ use POSIX qw(strftime);
 
 use Test::More tests => 6;
 
+local $ENV{SOURCE_DATE_EPOCH};
+local $ENV{POD_MAN_DATE};
+
 # Check that the results of device_date matches strftime.  There is no input
 # file name, so this will use the current time.
 my $parser = Pod::Man->new;
