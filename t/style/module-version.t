@@ -86,7 +86,7 @@ sub module_files {
             $File::Find::prune = 1;
             return;
         }
-        if ($_ =~ m{ [.] pm \z }xms) {
+        if (m{ [.] pm \z }xms) {
             push(@files, $File::Find::name);
         }
         return;
@@ -105,8 +105,9 @@ sub module_version {
     my ($file) = @_;
     open(my $data, q{<}, $file) or die "$0: cannot open $file: $!\n";
     while (defined(my $line = <$data>)) {
-        if ($line =~ $REGEX_VERSION_PACKAGE
-              || $line =~ $REGEX_VERSION_OLD) {
+        if (   $line =~ $REGEX_VERSION_PACKAGE
+            || $line =~ $REGEX_VERSION_OLD)
+        {
             my ($prefix, $version, $suffix) = ($1, $2, $3);
             close($data) or die "$0: error reading from $file: $!\n";
             return $version;
@@ -155,8 +156,9 @@ sub update_module_version {
     # Scan for the version and replace it.
   SCAN:
     while (defined(my $line = <$in>)) {
-        if ($line =~ s{ $REGEX_VERSION_PACKAGE }{$1$version$3}xms
-              || $line =~ s{ $REGEX_VERSION_OLD }{$1$version$3}xms) {
+        if (   $line =~ s{ $REGEX_VERSION_PACKAGE }{$1$version$3}xms
+            || $line =~ s{ $REGEX_VERSION_OLD     }{$1$version$3}xms)
+        {
             print {$out} $line or die "$0: cannot write to $file.new: $!\n";
             last SCAN;
         }
@@ -278,14 +280,14 @@ from the C<MYMETA.json> file.
 
 =head1 AUTHOR
 
-Russ Allbery <rra@cpan.org>
+Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 2013, 2014 The Board of Trustees of the Leland Stanford Junior
 University
 
-Copyright 2014 Russ Allbery <rra@cpan.org>
+Copyright 2014, 2015 Russ Allbery <eagle@eyrie.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
