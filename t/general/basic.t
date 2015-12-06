@@ -22,9 +22,11 @@ use 5.006;
 use strict;
 use warnings;
 
+use lib 't/lib';
+
 use File::Spec;
-use FileHandle;
 use Test::More tests => 15;
+use Test::Podlators qw(slurp);
 
 # Check that all the modules can be loaded.
 BEGIN {
@@ -66,11 +68,10 @@ for my $module (sort keys %OUTPUT) {
     my $parser = $module->new(@OPTIONS);
     isa_ok($parser, $module, 'parser object');
 
-    # Store the output into a Perl variable instead of a file.
+    # Run the formatting module.  Store the output into a Perl variable
+    # instead of a file.
     my $got;
     $parser->output_string(\$got);
-
-    # Run the formatting module.
     $parser->parse_file($INPUT);
 
     # If the test module is Pod::Man, strip off the header.  This test does
@@ -80,12 +81,6 @@ for my $module (sort keys %OUTPUT) {
         $got =~ s{ \A .* \n [.]nh \n }{}xms;
     }
 
-    # Slurp in the expected output.
-    my $output = FileHandle->new($OUTPUT{$module}, 'r')
-      or BAIL_OUT("cannot open $OUTPUT{$module}: $!");
-    my $expected = do { local $/ = undef; <$output> };
-    $output->close or BAIL_OUT("cannot read $OUTPUT{$module}: $!");
-
     # OS/390 is EBCDIC, which apparently uses a different character for ESC.
     # Try to convert so that the test still works.
     if ($^O eq 'os390' && $module eq 'Pod::Text::Termcap') {
@@ -94,19 +89,20 @@ for my $module (sort keys %OUTPUT) {
 
     # Check the output.  If it doesn't match, save the erroneous output in a
     # file for later inspection.
+    my $expected = slurp($OUTPUT{$module});
     if (!ok($got eq $expected, "$module output is correct")) {
         my ($suffix) = ($OUTPUT{$module} =~ m{ [.] ([^.]+) \z }xms);
         my $tmpdir = File::Spec->catdir('t', 'tmp');
-        my $outfile = File::Spec->catfile('t', 'tmp', "out$$.$suffix");
         if (!-d $tmpdir) {
             mkdir($tmpdir, 0777);
         }
-        $output = FileHandle->new($outfile, 'w')
-          or die "Cannot create $outfile for failed output: $!\n";
+        my $outfile = File::Spec->catfile('t', 'tmp', "out$$.$suffix");
+        open(my $output, '>', $outfile)
+          or BAIL_OUT("cannot create $outfile for failed output: $!");
         print {$output} $got
-          or die "Cannot write failed output to $outfile: $!\n";
-        $output->close
-          or die "Cannot write failed output to $outfile: $!\n";
+          or BAIL_OUT("cannot write failed output to $outfile: $!");
+        close($output)
+          or BAIL_OUT("cannot write failed output to $outfile: $!");
         diag("Non-matching output left in $outfile");
     }
 }
