@@ -9,6 +9,7 @@ lib/Pod/Text.pm
 lib/Pod/Text/Color.pm
 lib/Pod/Text/Overstrike.pm
 lib/Pod/Text/Termcap.pm
+LICENSE
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
@@ -22,7 +23,11 @@ t/data/basic.ovr
 t/data/basic.pod
 t/data/basic.txt
 t/data/perl.conf
+t/data/snippets/man/cpp
+t/data/snippets/man/utf8-nonbreaking
+t/data/snippets/man/utf8-verbatim
 t/data/snippets/README
+t/data/snippets/text/cpp
 t/data/termcap
 t/docs/pod-spelling.t
 t/docs/pod.t
@@ -39,8 +44,7 @@ t/man/devise-title.t
 t/man/empty.t
 t/man/heading.t
 t/man/options.t
-t/man/perlio.t
-t/man/utf8.t
+t/man/utf8-io.t
 t/parselink/basic.t
 t/style/minimum-version.t
 t/style/module-version.t
