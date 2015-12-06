@@ -71,7 +71,7 @@ sub _stderr_save {
     my $path = File::Spec->catfile($tmpdir, "out$$.err");
 
     ## no critic(InputOutput::RequireBriefOpen)
-    open($OLD_STDERR, '>&', \*STDERR) or BAIL_OUT("cannot dup STDERR: $!");
+    open($OLD_STDERR, '>&', STDERR) or BAIL_OUT("cannot dup STDERR: $!");
     open(STDERR, '>', $path) or BAIL_OUT("cannot redirect STDERR: $!");
     ## use critic
 
