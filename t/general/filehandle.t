@@ -60,24 +60,18 @@ my ($pod, $man, $text) = get_data();
 # Write the POD source to a temporary file that will underlie the input file
 # handle.
 my $infile = File::Spec->catdir('t', 'tmp', "tmp$$.pod");
-my $input = FileHandle->new($infile, 'w')
-  or BAIL_OUT("cannot create $infile: $!");
-print {$input} $pod
-  or BAIL_OUT("cannot write to $infile: $!");
-$input->close or BAIL_OUT("cannot write to $infile: $!");
+open(my $input, '>', $infile) or BAIL_OUT("cannot create $infile: $!");
+print {$input} $pod or BAIL_OUT("cannot write to $infile: $!");
+close($input) or BAIL_OUT("cannot write to $infile: $!");
 
 # Write the Pod::Man output to a file.
 my $outfile = File::Spec->catdir('t', 'tmp', "tmp$$.man");
-$input = FileHandle->new($infile, 'r')
-  or BAIL_OUT("cannot open $infile: $!");
-my $output = FileHandle->new($outfile, 'w')
-  or BAIL_OUT("cannot open $outfile: $!");
+open($input, '<', $infile) or BAIL_OUT("cannot open $infile: $!");
+open(my $output, '>', $outfile) or BAIL_OUT("cannot open $outfile: $!");
 my $parser = Pod::Man->new;
 $parser->parse_from_filehandle($input, $output);
-$input->close
-  or BAIL_OUT("cannot read from $infile: $!");
-$output->close
-  or BAIL_OUT("cannot write to $outfile: $!");
+close($input) or BAIL_OUT("cannot read from $infile: $!");
+close($output) or BAIL_OUT("cannot write to $outfile: $!");
 
 # Read the output back in and compare it.
 my $got = slurp($outfile, 'man');
@@ -88,16 +82,12 @@ unlink($outfile);
 
 # Now, do the same drill with Pod::Text.  Parse the input to a temporary file.
 $outfile = File::Spec->catdir('t', 'tmp', "tmp$$.txt");
-$input = FileHandle->new($infile, 'r')
-  or BAIL_OUT("cannot open $infile: $!");
-$output = FileHandle->new($outfile, 'w')
-  or BAIL_OUT("cannot open $outfile: $!");
+open($input, '<', $infile) or BAIL_OUT("cannot open $infile: $!");
+open($output, '>', $outfile) or BAIL_OUT("cannot open $outfile: $!");
 $parser = Pod::Text->new;
 $parser->parse_from_filehandle($input, $output);
-$input->close
-  or BAIL_OUT("cannot read from $infile: $!");
-$output->close
-  or BAIL_OUT("cannot write to $outfile: $!");
+close($input) or BAIL_OUT("cannot read from $infile: $!");
+close($output) or BAIL_OUT("cannot write to $outfile: $!");
 
 # Read the output back in and compare it.
 $got = slurp($outfile);
