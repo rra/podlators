@@ -12,7 +12,7 @@
 # the machinery to run small POD snippets through the specific formatter being
 # tested should probably be used instead.
 #
-# Copyright 2001, 2002, 2004, 2006, 2009, 2012, 2014
+# Copyright 2001, 2002, 2004, 2006, 2009, 2012, 2014, 2015
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -41,20 +41,20 @@ local $| = 1;
 # Hard-code configuration for Term::Cap to get predictable results.
 local $ENV{COLUMNS}  = 80;
 local $ENV{TERM}     = 'xterm';
-local $ENV{TERMPATH} = File::Spec->catdir('t', 'data', 'termcap');
+local $ENV{TERMPATH} = File::Spec->catfile('t', 'data', 'termcap');
 local $ENV{TERMCAP}  = 'xterm:co=#80:do=^J:md=\\E[1m:us=\\E[4m:me=\\E[m';
 
 # Find the source of the test file.
-my $INPUT = File::Spec->catdir('t', 'data', 'basic.pod');
+my $INPUT = File::Spec->catfile('t', 'data', 'basic.pod');
 
 # Map of translators to the file containing the formatted output to compare
 # against.
 my %OUTPUT = (
-    'Pod::Man'              => File::Spec->catdir('t', 'data', 'basic.man'),
-    'Pod::Text'             => File::Spec->catdir('t', 'data', 'basic.txt'),
-    'Pod::Text::Color'      => File::Spec->catdir('t', 'data', 'basic.clr'),
-    'Pod::Text::Overstrike' => File::Spec->catdir('t', 'data', 'basic.ovr'),
-    'Pod::Text::Termcap'    => File::Spec->catdir('t', 'data', 'basic.cap'),
+    'Pod::Man'              => File::Spec->catfile('t', 'data', 'basic.man'),
+    'Pod::Text'             => File::Spec->catfile('t', 'data', 'basic.txt'),
+    'Pod::Text::Color'      => File::Spec->catfile('t', 'data', 'basic.clr'),
+    'Pod::Text::Overstrike' => File::Spec->catfile('t', 'data', 'basic.ovr'),
+    'Pod::Text::Termcap'    => File::Spec->catfile('t', 'data', 'basic.cap'),
 );
 
 # Options to pass to all formatting modules.  Match the pod2text default.
@@ -97,7 +97,7 @@ for my $module (sort keys %OUTPUT) {
     if (!ok($got eq $expected, "$module output is correct")) {
         my ($suffix) = ($OUTPUT{$module} =~ m{ [.] ([^.]+) \z }xms);
         my $tmpdir = File::Spec->catdir('t', 'tmp');
-        my $outfile = File::Spec->catdir('t', 'tmp', "out$$.$suffix");
+        my $outfile = File::Spec->catfile('t', 'tmp', "out$$.$suffix");
         if (!-d $tmpdir) {
             mkdir($tmpdir, 0777);
         }

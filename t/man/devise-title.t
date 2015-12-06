@@ -18,7 +18,7 @@ BEGIN {
 # Create a parser and set it up with an input source.  There isn't a way to do
 # this in Pod::Simple without actually parsing the document, so send the
 # output to a string that we'll ignore.
-my $path = File::Spec->catdir('t', 'data', 'basic.pod');
+my $path = File::Spec->catfile('t', 'data', 'basic.pod');
 my $handle = IO::File->new($path, 'r');
 my $parser = Pod::Man->new(errors => 'pod');
 my $output;

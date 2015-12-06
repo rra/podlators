@@ -59,13 +59,13 @@ my ($pod, $man, $text) = get_data();
 
 # Write the POD source to a temporary file that will underlie the input file
 # handle.
-my $infile = File::Spec->catdir('t', 'tmp', "tmp$$.pod");
+my $infile = File::Spec->catfile('t', 'tmp', "tmp$$.pod");
 open(my $input, '>', $infile) or BAIL_OUT("cannot create $infile: $!");
 print {$input} $pod or BAIL_OUT("cannot write to $infile: $!");
 close($input) or BAIL_OUT("cannot write to $infile: $!");
 
 # Write the Pod::Man output to a file.
-my $outfile = File::Spec->catdir('t', 'tmp', "tmp$$.man");
+my $outfile = File::Spec->catfile('t', 'tmp', "tmp$$.man");
 open($input, '<', $infile) or BAIL_OUT("cannot open $infile: $!");
 open(my $output, '>', $outfile) or BAIL_OUT("cannot open $outfile: $!");
 my $parser = Pod::Man->new;
@@ -81,7 +81,7 @@ is($got, $man, 'Pod::Man output');
 unlink($outfile);
 
 # Now, do the same drill with Pod::Text.  Parse the input to a temporary file.
-$outfile = File::Spec->catdir('t', 'tmp', "tmp$$.txt");
+$outfile = File::Spec->catfile('t', 'tmp', "tmp$$.txt");
 open($input, '<', $infile) or BAIL_OUT("cannot open $infile: $!");
 open($output, '>', $outfile) or BAIL_OUT("cannot open $outfile: $!");
 $parser = Pod::Text->new;
