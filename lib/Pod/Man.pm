@@ -11,9 +11,10 @@
 # me any patches at the address above in addition to sending them to the
 # standard Perl mailing lists.
 #
+# Written by Russ Allbery <rra@cpan.org>
+# Substantial contributions by Sean Burke <sburke@cpan.org>
 # Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
 #     2010, 2012, 2013, 2014, 2015 Russ Allbery <rra@cpan.org>
-# Substantial contributions by Sean Burke <sburke@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.

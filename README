@@ -8,12 +8,6 @@
   program is free software; you may redistribute it and/or modify it under
   the same terms as Perl itself.
 
-  I welcome all bug reports and patches for this package (and in
-  particular, if you're looking for a project, see TODO).  However, please
-  be aware that I tend to be extremely busy and to get a lot of mail.
-  I'll save your mail and get to it as soon as I can, but depending on how
-  busy I am it may take me a couple of months.
-
 BLURB
 
   podlators contains Pod::Man and Pod::Text modules which convert POD
@@ -60,13 +54,22 @@ REQUIREMENTS
   To run the test suite, Test::More is required.  It is available from
   CPAN and part of Perl core as of 5.6.2.
 
-  The test suite includes a formatting and spelling check of all of the
-  POD documentation.  To check formatting, Test::Pod is required.  To
-  check spelling, Pod::Spell and either aspell or ispell with the american
-  dictionary are also required.  The user's path is searched for aspell or
-  ispell and aspell is preferred.  Spelling tests are disabled by default
-  since spelling dictionaries differ too much between systems.  To enable
-  those tests, set RRA_MAINTAINER_TESTS to a true value.
+  To enable tests that don't detect functionality problems but are used to
+  sanity-check the release, set the environment variable RELEASE_TESTING
+  to a true value.  To enable tests that may be sensitive to the local
+  environment or that produce a lot of false positives without uncovering
+  many problems, set the environment variable AUTHOR_TESTING to a true
+  value.  For these tests, the additional Perl modules:
+
+      Test::MinimumVersion
+      Test::Pod
+      Test::Spelling
+      Test::Strict
+      Test::Synopsis
+
+  and their dependencies as well as a spell-checking program (several are
+  supported by Test::Spelling) are required.  These modules are all
+  available from CPAN.
 
 BUILDING AND INSTALLATION
 
@@ -96,7 +99,7 @@ BUILDING AND INSTALLATION
   install driver scripts named pod2text and pod2man and the perlpodstyle
   man page.
 
-HOMEPAGE AND SOURCE REPOSITORY
+SUPPORT
 
   The podlators web page at:
 
@@ -104,6 +107,18 @@ HOMEPAGE AND SOURCE REPOSITORY
 
   will always have the current version of this package, the current
   documentation, and pointers to any additional resources.
+
+  For bug tracking, this package uses the CPAN bug tracker at:
+
+      https://rt.cpan.org/Public/Dist/Display.html?Name=podlators
+
+  I welcome bug reports and patches for this package at rra@cpan.org
+  or via the CPAN bug tracker.  However, please be aware that I tend to be
+  extremely busy and work projects often take priority.  I'll save your
+  mail and get to it as soon as I can, but it may take me a couple of
+  months.
+
+SOURCE REPOSITORY
 
   podlators is maintained using Git.  You can access the current source
   by cloning the repository at:
@@ -114,8 +129,36 @@ HOMEPAGE AND SOURCE REPOSITORY
 
       http://git.eyrie.org/?p=perl/podlators.git
 
-  You can file bug reports for this package in RT at:
+  You can also use GitHub via:
 
-      https://rt.cpan.org/Public/Dist/Display.html?Name=podlators
+      http://github.com/rra/podlators
 
-  or send me mail directly at rra@cpan.org.
+  The eyrie.org repository is the canonical one, maintained by the author,
+  but using GitHub is probably more convenient for most purposes.  Pull
+  requests are gratefully reviewed and normally accepted.  It's probably
+  better to use the CPAN bug tracker than GitHub issues, though, to keep
+  all Perl module issues in the same place.
+
+LICENSE
+
+  The podlators package as a whole covered by the following copyright
+  statement and license:
+
+    Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
+        2009, 2010, 2012, 2013, 2014, 2015 Russ Allbery <rra@cpan.org>
+
+    This program is free software; you may redistribute it and/or modify
+    it under the same terms as Perl itself.  This means that you may
+    choose between the two licenses that Perl is released under: the GNU
+    GPL and the Artistic License.  Please see your Perl distribution for
+    the details and copies of the licenses.
+
+  All individual files without an explicit exception below are released
+  under this license.  Some files may have additional copyright holders as
+  noted in those files.  There is detailed information about the licensing
+  of each file in the LICENSE file in this distribution.
+
+  Some files in this distribution are individually released under
+  different licenses, all of which are compatible with the above general
+  package license but which may require preservation of additional
+  notices.  All required notices are preserved in the LICENSE file.
