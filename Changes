@@ -1,5 +1,13 @@
                       User-Visible podlators Changes
 
+podlators 4.03 (2015-12-06)
+
+    Fix tests when POD_MAN_DATE or SOURCE_DATE_EPOCH are already set in
+    the environment.  Thanks, Niko Tyni.  (Debian Bug#807086)
+
+    Continue general improvements and refactoring of the test suite to
+    make it more maintainable and clean out duplicate or unnecessary code.
+
 podlators 4.02 (2015-12-02)
 
     For versions of Perl prior to 5.11, install the modules into the Perl
