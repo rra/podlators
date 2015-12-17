@@ -33,3 +33,5 @@
 
 # Avoid archives of this distribution
 \bpodlators-[\d\.\_]+
+
+^\.travis\.yml$

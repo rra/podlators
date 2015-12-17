@@ -1,5 +1,4 @@
 .gitignore
-.travis.yml
 bin/pod2man
 bin/pod2text
 Changes
