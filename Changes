@@ -6,6 +6,9 @@ podlators 4.04 (unreleased)
     assuming UNIX path delimiters when filtering out files it didn't
     intend to test.
 
+    Don't include .travis.yml in the distribution so that it isn't picked
+    up by Perl core.  Thanks, Karen Etheridge.  (#110385)
+
 podlators 4.03 (2015-12-06)
 
     Fix tests when POD_MAN_DATE or SOURCE_DATE_EPOCH are already set in
