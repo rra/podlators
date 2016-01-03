@@ -1,6 +1,6 @@
                       User-Visible podlators Changes
 
-podlators 4.04 (unreleased)
+podlators 4.04 (2016-01-02)
 
     Fix portability of the t/docs/synopsis.t test to Windows.  It was
     assuming UNIX path delimiters when filtering out files it didn't
