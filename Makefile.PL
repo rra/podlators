@@ -57,7 +57,7 @@ my %metadata = (
     DISTNAME         => 'podlators',
     ABSTRACT         => 'Convert POD data to various other formats',
     AUTHOR           => 'Russ Allbery <rra@cpan.org>',
-    LICENSE          => 'perl',
+    LICENSE          => 'perl_5',
     EXE_FILES        => [scripts('pod2text', 'pod2man')],
     VERSION_FROM     => 'lib/Pod/Man.pm',
     MIN_PERL_VERSION => '5.006',
@@ -75,7 +75,8 @@ my %metadata = (
         'Pod::Simple' => 3.06,
     },
 
-    # ExtUtils::MakeMaker doesn't pick up nested test directories by default.
+    # Older versions of ExtUtils::MakeMaker don't pick up nested test
+    # directories by default.
     test => { TESTS => 't/*/*.t' },
 
     # For older versions of Perl, we have to force installation into the Perl
@@ -87,8 +88,10 @@ my %metadata = (
     META_ADD => {
         'meta-spec' => { version => 2 },
         resources   => {
-            bugtracker =>
-              'https://rt.cpan.org/Public/Dist/Display.html?Name=podlators',
+            bugtracker => {
+                mailto => 'bug-podlators@rt.cpan.org',
+                web => 'https://rt.cpan.org/Dist/Display.html?Name=podlators',
+            },
             homepage   => 'http://www.eyrie.org/~eagle/software/podlators/',
             repository => {
                 url  => 'git://github.com/rra/podlators.git',

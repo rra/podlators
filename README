@@ -110,7 +110,7 @@ SUPPORT
 
   For bug tracking, this package uses the CPAN bug tracker at:
 
-      https://rt.cpan.org/Public/Dist/Display.html?Name=podlators
+      https://rt.cpan.org/Dist/Display.html?Name=podlators
 
   I welcome bug reports and patches for this package at rra@cpan.org
   or via the CPAN bug tracker.  However, please be aware that I tend to be
