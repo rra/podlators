@@ -4,7 +4,7 @@
 # which only supports that build method, and because it is a dependency of
 # other build systems like Module::Build.
 #
-# Copyright 1999, 2000, 2001, 2008, 2010, 2012, 2014, 2015
+# Copyright 1999, 2000, 2001, 2008, 2010, 2012, 2014, 2015, 2016
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -50,15 +50,17 @@ sub man1pod {
     return (File::Spec->catfile($directory, $file), $outpath);
 }
 
-# Generate the actual Makefile.  Pick an arbitrary module to pull the version
-# from, since they should all have the same version.
-WriteMakefile(
-    NAME         => 'Pod',
-    DISTNAME     => 'podlators',
-    ABSTRACT     => 'Convert POD data to various other formats',
-    AUTHOR       => 'Russ Allbery <rra@cpan.org>',
-    EXE_FILES    => [ scripts('pod2text', 'pod2man') ],
-    VERSION_FROM => 'lib/Pod/Man.pm',
+# The hash of all the metadata.  This will be modified before WriteMakefile to
+# remove keys not supported by the local version of ExtUtils::MakeMaker.
+my %metadata = (
+    NAME             => 'Pod',
+    DISTNAME         => 'podlators',
+    ABSTRACT         => 'Convert POD data to various other formats',
+    AUTHOR           => 'Russ Allbery <rra@cpan.org>',
+    LICENSE          => 'perl',
+    EXE_FILES        => [scripts('pod2text', 'pod2man')],
+    VERSION_FROM     => 'lib/Pod/Man.pm',
+    MIN_PERL_VERSION => '5.006',
 
     # Override the files that generate section 1 man pages.
     MAN1PODS => {
@@ -81,26 +83,35 @@ WriteMakefile(
     # modules.
     INSTALLDIRS => $] lt '5.011' ? 'perl' : 'site',
 
-    # For ExtUtils::MakeMaker 6.31 and later, we can specify the license.
-    ($ExtUtils::MakeMaker::VERSION >= 6.31 ? (
-        LICENSE => 'perl',
-    ) : ()),
-
-    # For ExtUtils::MakeMaker 6.46 or later, we can provide some additional
-    # metadata.
-    ($ExtUtils::MakeMaker::VERSION >= 6.46 ? (
-        META_ADD => {
-            resources => {
-                repository => 'git://git.eyrie.org/perl/podlators.git',
-                bugtracker =>
-                  'https://rt.cpan.org/Public/Dist/Display.html?Name=podlators',
+    # Additional metadata.
+    META_ADD => {
+        'meta-spec' => { version => 2 },
+        resources   => {
+            bugtracker =>
+              'https://rt.cpan.org/Public/Dist/Display.html?Name=podlators',
+            homepage   => 'http://www.eyrie.org/~eagle/software/podlators/',
+            repository => {
+                url  => 'git://github.com/rra/podlators.git',
+                web  => 'https://github.com/rra/podlators',
+                type => 'git',
             },
         },
-    ) : ()),
-
-    # For ExtUtils::MakeMaker 6.48 and later, we can specify the minimum Perl
-    # version required.
-    ($ExtUtils::MakeMaker::VERSION >= 6.48 ? (
-        MIN_PERL_VERSION => '5.006',
-    ) : ()),
+    },
 );
+
+# Remove keys that aren't supported by this version of ExtUtils::MakeMaker.
+# This hash maps keys to the minimum supported version.
+my %supported = (
+    LICENSE          => 6.31,
+    META_ADD         => 6.46,
+    MIN_PERL_VERSION => 6.48,
+);
+for my $key (keys(%supported)) {
+    if ($ExtUtils::MakeMaker::VERSION < $supported{$key}) {
+        delete $metadata{$key};
+    }
+}
+
+# Generate the actual Makefile.  Pick an arbitrary module to pull the version
+# from, since they should all have the same version.
+WriteMakefile(%metadata);
