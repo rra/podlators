@@ -22,10 +22,12 @@ use File::Spec;
 #
 # @scripts - List of script names
 #
-# Returns: List of relative paths from top of distribution
+# Returns: (Array) List of relative paths from top of distribution
+#          (Scalar) Space-separated relative paths from top of distribution
 sub scripts {
     my (@scripts) = @_;
-    return map { File::Spec->catfile('bin', $_) } @scripts;
+    my @paths = map { File::Spec->catfile('scripts', $_) } @scripts;
+    return wantarray ? @paths : join(q{ }, @paths);
 }
 
 # Generate an association between a source file and a destination man page for
@@ -62,12 +64,21 @@ my %metadata = (
     VERSION_FROM     => 'lib/Pod/Man.pm',
     MIN_PERL_VERSION => '5.006',
 
+    # Use *.PL files to generate the driver scripts so that we get the correct
+    # invocation of Perl on non-UNIX platforms.
+    PL_FILES => {
+        scripts('pod2man.PL',  'pod2man'), scripts('pod2text.PL', 'pod2text'),
+    },
+
     # Override the files that generate section 1 man pages.
     MAN1PODS => {
-        man1pod('bin', 'pod2man'),
-        man1pod('bin', 'pod2text'),
-        man1pod('pod', 'perlpodstyle'),
+        man1pod('scripts', 'pod2man'),
+        man1pod('scripts', 'pod2text'),
+        man1pod('pod',     'perlpodstyle'),
     },
+
+    # Clean some additional files.
+    realclean => { FILES => scalar(scripts('pod2text', 'pod2man')) },
 
     # Dependencies on other modules.
     PREREQ_PM => {

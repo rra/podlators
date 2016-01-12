@@ -16,6 +16,8 @@
 /podlators-*/
 /podlators-*.tar.gz
 /podlators-*.tar.gz.asc
+/scripts/pod2man
+/scripts/pod2text
 /t/out.cap
 /t/out.clr
 /t/out.man

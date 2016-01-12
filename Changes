@@ -2,6 +2,12 @@
 
 podlators 4.05 (unreleased)
 
+    Switch back to generating pod2man and pod2text from *.PL files.  While
+    ExtUtils::MakeMaker can fix the #! line, it can't handle all non-UNIX
+    operating systems, and the *.PL script generation code can.  This will
+    hopefully remove the need for Perl core to maintain a separate copy of
+    the *.PL wrapper scripts as well.  Thanks, Craig A. Berry.
+
     Provide a mailto address in bug tracking metadata, use the shorter
     form of the RT bug tracker URL, and fix the license value to match the
     new metadata specification.
