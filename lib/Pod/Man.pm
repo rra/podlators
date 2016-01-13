@@ -32,8 +32,14 @@ use warnings;
 use subs qw(makespace);
 use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 
-use Carp qw(croak);
-use Encode qw(encode);
+use Carp qw(carp croak);
+
+my $has_encode;
+
+BEGIN {
+    $has_encode = eval { require Encode; Encode->import('encode'); 1 };
+}
+
 use Pod::Simple ();
 
 @ISA = qw(Pod::Simple);
@@ -140,6 +146,12 @@ sub new {
         croak (qq(Invalid errors setting: "$$self{errors}"));
     }
     delete $$self{errors};
+
+    # degrade back to non-utf8 if Encode is not available
+    if ($$self{utf8} and !$has_encode) {
+        carp "utf8 mode requested but Encode::encode() not available, falling back to non-utf8";
+        delete $$self{utf8};
+    }
 
     # Initialize various other internal constants based on our arguments.
     $self->init_fonts;
