@@ -67,7 +67,7 @@ my %metadata = (
     # Use *.PL files to generate the driver scripts so that we get the correct
     # invocation of Perl on non-UNIX platforms.
     PL_FILES => {
-        scripts('pod2man.PL',  'pod2man'), scripts('pod2text.PL', 'pod2text'),
+        scripts('pod2man.PL', 'pod2man'), scripts('pod2text.PL', 'pod2text'),
     },
 
     # Override the files that generate section 1 man pages.
@@ -78,6 +78,7 @@ my %metadata = (
     },
 
     # Clean some additional files.
+    clean     => { FILES => File::Spec->catdir('t',    'tmp') },
     realclean => { FILES => scalar(scripts('pod2text', 'pod2man')) },
 
     # Dependencies on other modules.

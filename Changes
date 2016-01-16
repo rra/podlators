@@ -8,6 +8,10 @@ podlators 4.05 (unreleased)
     hopefully remove the need for Perl core to maintain a separate copy of
     the *.PL wrapper scripts as well.  Thanks, Craig A. Berry.
 
+    Don't try to remove the temporary directory used by tests in the tests
+    themselves, since this races with other tests run in parallel.
+    Instead, just remove it on make clean.
+
     Provide a mailto address in bug tracking metadata, use the shorter
     form of the RT bug tracker URL, and fix the license value to match the
     new metadata specification.
