@@ -60,4 +60,3 @@ t/text/termcap.t
 t/text/utf8.t
 THANKS
 TODO
-VERSION
