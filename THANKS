@@ -156,8 +156,9 @@ input and output in Perl.  This resolved several confusions, including a
 bad assumption about how non-breaking spaces should be handled.
 
 Niko Tyni, for lots of helpful bug reports and testing in combination with
-the Perl packages in Debian, and for the proposal and implementation of
-POD_MAN_DATE and SOURCE_DATE_EPOCH to support reproducible builds.
+the Perl packages in Debian, for the proposal and implementation of
+POD_MAN_DATE and SOURCE_DATE_EPOCH to support reproducible builds, and for
+Pod::Man graceful fallback from a missing Encode module.
 
 Jerry D. Hedden, for spelling fixes and pointing out differences in
 aspell's dictionary on different systems.

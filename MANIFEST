@@ -1,6 +1,4 @@
 .gitignore
-bin/pod2man
-bin/pod2text
 Changes
 lib/Pod/Man.pm
 lib/Pod/ParseLink.pm
@@ -15,6 +13,8 @@ MANIFEST.SKIP
 NOTES
 pod/perlpodstyle
 README
+scripts/pod2man.PL
+scripts/pod2text.PL
 t/data/basic.cap
 t/data/basic.clr
 t/data/basic.man
@@ -42,6 +42,7 @@ t/man/devise-date.t
 t/man/devise-title.t
 t/man/empty.t
 t/man/heading.t
+t/man/no-encode.t
 t/man/options.t
 t/man/utf8-io.t
 t/parselink/basic.t
