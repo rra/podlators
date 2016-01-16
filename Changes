@@ -8,6 +8,10 @@ podlators 4.05 (2016-01-16)
     hopefully remove the need for Perl core to maintain a separate copy of
     the *.PL wrapper scripts as well.  Thanks, Craig A. Berry.
 
+    [Pod::Man] Fall back (with a warning) to non-utf8 behavior if the utf8
+    option is specified but the Encode module is not available.  This is
+    useful in some cross-compilation situations.  Thanks, Niko Tyni.
+
     Don't try to remove the temporary directory used by tests in the tests
     themselves, since this races with other tests run in parallel.
     Instead, just remove it on make clean.
