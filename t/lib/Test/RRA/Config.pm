@@ -78,7 +78,7 @@ __END__
 
 =for stopwords
 Allbery rra-c-util Automake perlcritic .libs namespace subdirectory sublicense
-MERCHANTABILITY NONINFRINGEMENT regexes schemas
+MERCHANTABILITY NONINFRINGEMENT regexes
 
 =head1 NAME
 
@@ -151,8 +151,8 @@ minimum Perl version constraint imposed instead of $MINIMUM_VERSION.
 
 File names to ignore when checking that all modules in a distribution have the
 same version.  Sometimes, some specific modules need separate, special version
-handling, such as modules defining database schemas for DBIx::Class, and can't
-follow the version of the larger package.
+handling, such as modules defining database schemata for DBIx::Class, and
+can't follow the version of the larger package.
 
 =item @POD_COVERAGE_EXCLUDE
 
