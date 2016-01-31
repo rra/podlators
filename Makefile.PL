@@ -81,7 +81,7 @@ my %metadata = (
         man1pod('scripts', 'pod2text.PL'),
 
         # Perl core uses a separate copy in the top-level pod directory.
-        ($ENV{PERL_CORE} ? () : man1pod('pod', 'perlpodstyle')),
+        ($ENV{PERL_CORE} ? () : man1pod('pod', 'perlpodstyle.pod')),
     },
 
     # Clean some additional files.
