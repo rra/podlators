@@ -1,5 +1,13 @@
                       User-Visible podlators Changes
 
+podlators 4.06 (unreleased)
+
+    Handle scripts ending in .com on VMS systems and don't generate the
+    man page for perlpodstyle when built as part of Perl core.  These are
+    hopefully the last two changes required to fully merge with Perl core
+    without core having to maintain a separate build system.  Thanks,
+    Craig A. Berry.
+
 podlators 4.05 (2016-01-16)
 
     Switch back to generating pod2man and pod2text from *.PL files.  While

@@ -18,7 +18,9 @@ use Config;
 use ExtUtils::MakeMaker;
 use File::Spec;
 
-# Generate full paths for scripts distributed in the bin directory.
+# Generate full paths for scripts distributed in the bin directory.  Appends
+# the .com extension to scripts on VMS, unless they already have the .PL
+# extension.
 #
 # @scripts - List of script names
 #
@@ -27,6 +29,9 @@ use File::Spec;
 sub scripts {
     my (@scripts) = @_;
     my @paths = map { File::Spec->catfile('scripts', $_) } @scripts;
+    if ($^O eq 'VMS') {
+        @paths = map { m{ [.] PL \z }xms ? $_ : $_ . '.com' } @paths;
+    }
     return wantarray ? @paths : join(q{ }, @paths);
 }
 
@@ -74,7 +79,9 @@ my %metadata = (
     MAN1PODS => {
         man1pod('scripts', 'pod2man'),
         man1pod('scripts', 'pod2text'),
-        man1pod('pod',     'perlpodstyle'),
+
+        # Perl core uses a separate copy in the top-level pod directory.
+        ($ENV{PERL_CORE} ? () : man1pod('pod', 'perlpodstyle')),
     },
 
     # Clean some additional files.
