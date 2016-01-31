@@ -8,6 +8,10 @@ podlators 4.06 (unreleased)
     without core having to maintain a separate build system.  Thanks,
     Craig A. Berry.
 
+    During build, generate the pod2text and pod2man man pages from the
+    *.PL files rather than the generated scripts.  This may be required
+    due to the different script extensions on VMS hosts.
+
 podlators 4.05 (2016-01-16)
 
     Switch back to generating pod2man and pod2text from *.PL files.  While

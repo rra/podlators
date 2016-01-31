@@ -47,9 +47,9 @@ sub scripts {
 sub man1pod {
     my ($directory, $file) = @_;
 
-    # Determine the base name of the file by stripping any *.pod suffix.
+    # Build the base name of the file by stripping any *.pod or *.PL suffix.
     my $basename = $file;
-    $basename =~ s{ [.]pod }{}xms;
+    $basename =~ s{ [.] (?: pod | PL ) \z }{}xms;
 
     # Determine the output file name for the generated man page.
     my $outname = $basename . q{.} . $Config{man1ext};
@@ -77,8 +77,8 @@ my %metadata = (
 
     # Override the files that generate section 1 man pages.
     MAN1PODS => {
-        man1pod('scripts', 'pod2man'),
-        man1pod('scripts', 'pod2text'),
+        man1pod('scripts', 'pod2man.PL'),
+        man1pod('scripts', 'pod2text.PL'),
 
         # Perl core uses a separate copy in the top-level pod directory.
         ($ENV{PERL_CORE} ? () : man1pod('pod', 'perlpodstyle')),
