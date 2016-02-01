@@ -1,6 +1,6 @@
                       User-Visible podlators Changes
 
-podlators 4.06 (unreleased)
+podlators 4.06 (2016-01-31)
 
     Handle scripts ending in .com on VMS systems and don't generate the
     man page for perlpodstyle when built as part of Perl core.  These are

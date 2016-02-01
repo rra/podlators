@@ -37,6 +37,7 @@ t/general/pod-parser.t
 t/lib/Test/Podlators.pm
 t/lib/Test/RRA.pm
 t/lib/Test/RRA/Config.pm
+t/lib/Test/RRA/ModuleVersion.pm
 t/man/basic.t
 t/man/devise-date.t
 t/man/devise-title.t

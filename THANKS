@@ -92,9 +92,10 @@ the directory path didn't deal with three-component version numbers,
 serving as the impetus to rewrite that code to use File::Spec, and finding
 another bug with the module name intuition on OS/2.
 
-Craig Berry, for reporting that POSIX::Termios doesn't work on VMS and
+Craig A. Berry, for reporting that POSIX::Termios doesn't work on VMS and
 providing the information necessary to add a workaround in
-Pod::Text::Termcap.
+Pod::Text::Termcap, and for lots of help with build system changes for the
+merge with Perl core.
 
 Autrijus Tang, for finding a bug in error reporting in Pod::Text and
 providing a couple of test cases that became the beginning of the error
