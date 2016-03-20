@@ -1,5 +1,11 @@
                       User-Visible podlators Changes
 
+podlators 4.07 (unreleased)
+
+    [Pod::Man] Avoid undefined variable warnings when determining the
+    title for a Perl module at the top level of a distribution.  Thanks,
+    Dave Mitchell.  (#112625)
+
 podlators 4.06 (2016-01-31)
 
     Handle scripts ending in .com on VMS systems and don't generate the

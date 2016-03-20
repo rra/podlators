@@ -854,44 +854,49 @@ sub devise_title {
     }
 
     # If the section isn't 3, then the name defaults to just the basename of
-    # the file.  Otherwise, assume we're dealing with a module.  We want to
-    # figure out the full module name from the path to the file, but we don't
-    # want to include too much of the path into the module name.  Lose
-    # anything up to the first off:
-    #
-    #     */lib/*perl*/         standard or site_perl module
-    #     */*perl*/lib/         from -Dprefix=/opt/perl
-    #     */*perl*/             random module hierarchy
-    #
-    # which works.  Also strip off a leading site, site_perl, or vendor_perl
-    # component, any OS-specific component, and any version number component,
-    # and strip off an initial component of "lib" or "blib/lib" since that's
-    # what ExtUtils::MakeMaker creates.  splitdir requires at least File::Spec
-    # 0.8.
+    # the file.
     if ($section !~ /^3/) {
         require File::Basename;
         $name = uc File::Basename::basename ($name);
     } else {
         require File::Spec;
         my ($volume, $dirs, $file) = File::Spec->splitpath ($name);
+
+        # Otherwise, assume we're dealing with a module.  We want to figure
+        # out the full module name from the path to the file, but we don't
+        # want to include too much of the path into the module name.  Lose
+        # anything up to the first of:
+        #
+        #     */lib/*perl*/         standard or site_perl module
+        #     */*perl*/lib/         from -Dprefix=/opt/perl
+        #     */*perl*/             random module hierarchy
+        #
+        # Also strip off a leading site, site_perl, or vendor_perl component,
+        # any OS-specific component, and any version number component, and
+        # strip off an initial component of "lib" or "blib/lib" since that's
+        # what ExtUtils::MakeMaker creates.
+        #
+        # splitdir requires at least File::Spec 0.8.
         my @dirs = File::Spec->splitdir ($dirs);
-        my $cut = 0;
-        my $i;
-        for ($i = 0; $i < @dirs; $i++) {
-            if ($dirs[$i] =~ /perl/) {
-                $cut = $i + 1;
-                $cut++ if ($dirs[$i + 1] && $dirs[$i + 1] eq 'lib');
-                last;
+        if (@dirs) {
+            my $cut = 0;
+            my $i;
+            for ($i = 0; $i < @dirs; $i++) {
+                if ($dirs[$i] =~ /perl/) {
+                    $cut = $i + 1;
+                    $cut++ if ($dirs[$i + 1] && $dirs[$i + 1] eq 'lib');
+                    last;
+                }
             }
+            if ($cut > 0) {
+                splice (@dirs, 0, $cut);
+                shift @dirs if ($dirs[0] =~ /^(site|vendor)(_perl)?$/);
+                shift @dirs if ($dirs[0] =~ /^[\d.]+$/);
+                shift @dirs if ($dirs[0] =~ /^(.*-$^O|$^O-.*|$^O)$/);
+            }
+            shift @dirs if $dirs[0] eq 'lib';
+            splice (@dirs, 0, 2) if ($dirs[0] eq 'blib' && $dirs[1] eq 'lib');
         }
-        if ($cut > 0) {
-            splice (@dirs, 0, $cut);
-            shift @dirs if ($dirs[0] =~ /^(site|vendor)(_perl)?$/);
-            shift @dirs if ($dirs[0] =~ /^[\d.]+$/);
-            shift @dirs if ($dirs[0] =~ /^(.*-$^O|$^O-.*|$^O)$/);
-        }
-        shift @dirs if $dirs[0] eq 'lib';
-        splice (@dirs, 0, 2) if ($dirs[0] eq 'blib' && $dirs[1] eq 'lib');
 
         # Remove empty directories when building the module name; they
         # occur too easily on Unix by doubling slashes.
@@ -1962,7 +1967,7 @@ mine).
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-2009, 2010, 2012, 2013, 2014, 2015 Russ Allbery <rra@cpan.org>
+2009, 2010, 2012, 2013, 2014, 2015, 2016 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
