@@ -6,6 +6,12 @@ podlators 4.07 (unreleased)
     title for a Perl module at the top level of a distribution.  Thanks,
     Dave Mitchell.  (#112625)
 
+    [Pod::Man] Fix font resets with nroff when fixed-width fonts are used
+    in the label for an =item.  Previously, italic was being ended with
+    \f(CW even in nroff mode, which, with groff, only changes the font to
+    fixed-width and doesn't reset to a non-italic font.  Thanks, Paul
+    Townsend.  (#98199)
+
     [Pod::Man] Suppress warnings about a missing Encode module if
     PERL_CORE is set in the environment.  Due to build ordering during
     Perl core builds, Encode is expected to not yet be available during
