@@ -195,3 +195,7 @@ profiling all of the modules in Perl core.
 Peter Rabbitson, for lots of assistance in getting the right build
 configuration for a dual-life module included in Perl core, including
 correct installation with old versions of Perl.
+
+Dave Mitchell, for a bug fix for warnings when determining the man page
+title of a simple module and for how best to suppress Encode warnings
+during Perl core builds.

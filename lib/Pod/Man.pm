@@ -147,9 +147,18 @@ sub new {
     delete $$self{errors};
 
     # Degrade back to non-utf8 if Encode is not available.
+    #
+    # Suppress the warning message when PERL_CORE is set, indicating this is
+    # running as part of the core Perl build.  Perl builds podlators (and all
+    # pure Perl modules) before Encode and other XS modules, so Encode won't
+    # yet be available.  Rely on the Perl core build to generate man pages
+    # later, after all the modules are available, so that UTF-8 handling will
+    # be correct.
     if ($$self{utf8} and !$HAS_ENCODE) {
-        carp ('utf8 mode requested but Encode module not available,'
-              . ' falling back to non-utf8');
+        if (!$ENV{PERL_CORE}) {
+            carp ('utf8 mode requested but Encode module not available,'
+                    . ' falling back to non-utf8');
+        }
         delete $$self{utf8};
     }
 
@@ -1881,6 +1890,13 @@ option was set to C<die>.
 =head1 ENVIRONMENT
 
 =over 4
+
+=item PERL_CORE
+
+If set and Encode is not available, silently fall back to non-UTF-8 mode
+without complaining to standard error.  This environment variable is set
+during Perl core builds, which build Encode after podlators.  Encode is
+expected to not (yet) be available in that case.
 
 =item POD_MAN_DATE
 

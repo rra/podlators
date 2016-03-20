@@ -6,6 +6,11 @@ podlators 4.07 (unreleased)
     title for a Perl module at the top level of a distribution.  Thanks,
     Dave Mitchell.  (#112625)
 
+    [Pod::Man] Suppress warnings about a missing Encode module if
+    PERL_CORE is set in the environment.  Due to build ordering during
+    Perl core builds, Encode is expected to not yet be available during
+    the build step that sets PERL_CORE.  Thanks, Dave Mitchell.
+
 podlators 4.06 (2016-01-31)
 
     Handle scripts ending in .com on VMS systems and don't generate the
