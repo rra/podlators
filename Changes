@@ -1,6 +1,6 @@
                       User-Visible podlators Changes
 
-podlators 4.07 (unreleased)
+podlators 4.07 (2016-03-20)
 
     [Pod::Man] Avoid undefined variable warnings when determining the
     title for a Perl module at the top level of a distribution.  Thanks,
