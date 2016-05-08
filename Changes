@@ -1,5 +1,10 @@
                       User-Visible podlators Changes
 
+podlators 4.08 (unreleased)
+
+    Remove test for nested L<> markup, since an upcoming version of
+    Pod::Simple will drop support for this.  (#114075)
+
 podlators 4.07 (2016-03-20)
 
     [Pod::Man] Avoid undefined variable warnings when determining the
