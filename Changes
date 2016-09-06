@@ -10,6 +10,9 @@ podlators 4.08 (unreleased)
     resulting in escaped nroff.  (Found by Dan Jacobson with the
     XML::LibXML::Element man page.)
 
+    [Pod::Man] Fix rendering bug causing "\s0(1)" to be mistakenly marked
+    as a man page reference, later confusing backslash escaping.
+
 podlators 4.07 (2016-03-20)
 
     [Pod::Man] Avoid undefined variable warnings when determining the

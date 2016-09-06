@@ -19,7 +19,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 36;
+use Test::More tests => 37;
 BEGIN { use_ok ('Pod::Man') }
 
 # Test whether we can use binmode to set encoding.
@@ -605,4 +605,13 @@ code and got it wrong.
 podlators prior to 4.08 misrendered \s-1TRUE\s0 (1) and \s-1FALSE\s0 (0) with escaped nroff
 in the output because it tried to apply both small caps and man page reference
 code and got it wrong.
+###
+
+###
+=pod
+
+Not a man page reference: \s0(1)
+###
+.PP
+Not a man page reference: \es0(1)
 ###

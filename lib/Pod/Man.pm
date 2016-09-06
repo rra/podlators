@@ -549,6 +549,7 @@ sub guesswork {
     if ($$self{MAGIC_MANREF}) {
         s{
             ( \b | \\s-1 )
+            (?<! \\ )                                   # rule out \s0(1)
             ( [A-Za-z_] (?:[.:\w] | \\- | \\s-?[01])+ )
             ( \( \d [a-z]* \) )
         } {
