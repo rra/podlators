@@ -5,6 +5,11 @@ podlators 4.08 (unreleased)
     Remove test for nested L<> markup, since an upcoming version of
     Pod::Simple will drop support for this.  (#114075)
 
+    [Pod::Man] Fix rendering bug for "TRUE (1)", which was recognized as
+    needing small caps and then erroneously as a man page reference,
+    resulting in escaped nroff.  (Found by Dan Jacobson with the
+    XML::LibXML::Element man page.)
+
 podlators 4.07 (2016-03-20)
 
     [Pod::Man] Avoid undefined variable warnings when determining the
