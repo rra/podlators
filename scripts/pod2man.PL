@@ -126,7 +126,7 @@ __END__
 =for stopwords
 en em --stderr stderr --utf8 UTF-8 overdo markup MT-LEVEL Allbery Solaris
 URL troff troff-specific formatters uppercased Christiansen --nourls UTC
-prepend
+prepend lquote rquote
 
 =head1 NAME
 
@@ -138,7 +138,7 @@ pod2man [B<--center>=I<string>] [B<--date>=I<string>] [B<--errors>=I<style>]
     [B<--fixed>=I<font>] [B<--fixedbold>=I<font>] [B<--fixeditalic>=I<font>]
     [B<--fixedbolditalic>=I<font>] [B<--name>=I<name>] [B<--nourls>]
     [B<--official>] [B<--release>=I<version>] [B<--section>=I<manext>]
-    [B<--quotes>=I<quotes>] [B<--lquote>=I<quote>] [B<--rquote=I<quote>]
+    [B<--quotes>=I<quotes>] [B<--lquote>=I<quote>] [B<--rquote>=I<quote>]
     [B<--stderr>] [B<--utf8>] [B<--verbose>] [I<input> [I<output>] ...]
 
 pod2man B<--help>
@@ -237,9 +237,9 @@ No longer used.  B<pod2man> used to check its input for validity as a
 manual page, but this should now be done by L<podchecker(1)> instead.
 Accepted for backward compatibility; this option no longer does anything.
 
-=item I<--lquote>=I<quote>
+=item B<--lquote>=I<quote>
 
-=item I<--rquote>=I<quote>
+=item B<--rquote>=I<quote>
 
 Sets the quote marks used to surround CE<lt>> text.  B<--lquote> sets the
 left quote mark and B<--rquote> sets the right quote mark.  Either may also

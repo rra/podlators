@@ -1646,7 +1646,7 @@ __END__
 =for stopwords
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8
 UTF-8 Allbery Sean Burke Ossanna Solaris formatters troff uppercased
-Christiansen nourls parsers Kernighan
+Christiansen nourls parsers Kernighan lquote rquote
 
 =head1 NAME
 
