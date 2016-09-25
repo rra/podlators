@@ -14,7 +14,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 25;
+use Test::More tests => 31;
 use Test::Podlators qw(test_snippet);
 
 # Load the module.
@@ -24,9 +24,9 @@ BEGIN {
 
 # List of snippets run by this test.
 my @snippets = qw(
-  bullet-after-nonbullet  error-die  error-none  error-normal
-  error-pod  error-stderr  error-stderr-opt  fixed-font  long-quote
-  nourls
+  bullet-after-nonbullet error-die error-none error-normal
+  error-pod error-stderr error-stderr-opt fixed-font long-quote
+  lquote-and-quote lquote-rquote nourls rquote-none
 );
 
 # Run all the tests.

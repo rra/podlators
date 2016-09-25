@@ -216,12 +216,13 @@ sub init_fonts {
 }
 
 # Initialize the quotes that we'll be using for C<> text.  This requires some
-# special handling, both to parse the user parameter if given and to make sure
-# that the quotes will be safe against *roff.  Sets the internal hash keys
-# LQUOTE and RQUOTE.
+# special handling, both to parse the user parameters if given and to make
+# sure that the quotes will be safe against *roff.  Sets the internal hash
+# keys LQUOTE and RQUOTE.
 sub init_quotes {
     my ($self) = (@_);
 
+    # Handle the quotes option first, which sets both quotes at once.
     $$self{quotes} ||= '"';
     if ($$self{quotes} eq 'none') {
         $$self{LQUOTE} = $$self{RQUOTE} = '';
@@ -233,6 +234,14 @@ sub init_quotes {
         $$self{RQUOTE} = substr ($$self{quotes}, $length);
     } else {
         croak(qq(Invalid quote specification "$$self{quotes}"))
+    }
+
+    # Now handle the lquote and rquote options.
+    if (defined $$self{lquote}) {
+        $$self{LQUOTE} = $$self{lquote} eq 'none' ? q{} : $$self{lquote};
+    }
+    if (defined $$self{rquote}) {
+        $$self{RQUOTE} = $$self{rquote} eq 'none' ? q{} : $$self{rquote};
     }
 
     # Double the first quote; note that this should not be s///g as two double
@@ -1748,6 +1757,20 @@ Pod::Man doesn't assume you have this, and defaults to C<CB>.  Some
 systems (such as Solaris) have this font available as C<CX>.  Only matters
 for B<troff> output.
 
+=item lquote
+
+=item rquote
+
+Sets the quote marks used to surround CE<lt>> text.  C<lquote> sets the
+left quote mark and C<rquote> sets the right quote mark.  Either may also
+be set to the special value C<none>, in which case no quote mark is added
+on that side of CE<lt>> text (but the font is still changed for troff
+output).
+
+Also see the C<quotes> option, which can be used to set both quotes at once.
+If both C<quotes> and one of the other options is set, C<lquote> or C<rquote>
+overrides C<quotes>.
+
 =item name
 
 Set the name of the manual page for the C<.TH> macro.  Without this
@@ -1787,6 +1810,10 @@ quote and the second is used as the right quote.
 This may also be set to the special value C<none>, in which case no quote
 marks are added around CE<lt>> text (but the font is still changed for troff
 output).
+
+Also see the C<lquote> and C<rquote> options, which can be used to set the
+left and right quotes independently.  If both C<quotes> and one of the other
+options is set, C<lquote> or C<rquote> overrides C<quotes>.
 
 =item release
 

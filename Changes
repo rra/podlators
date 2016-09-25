@@ -17,6 +17,10 @@ podlators 4.08 (unreleased)
     [Pod::Man] Fix rendering bug causing "\s0(1)" to be mistakenly marked
     as a man page reference, later confusing backslash escaping.
 
+    [Pod::Man] Add new lquote and rquote options (and corresponding
+    --lquote and --rquote flags to pod2man) to set the left and right
+    quotes for C<> text independently.  (#103298)
+
     Remove test for nested L<> markup, since an upcoming version of
     Pod::Simple will drop support for this.  (#114075)
 
