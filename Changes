@@ -12,7 +12,7 @@ podlators 4.08 (unreleased)
     [Pod::Man] Fix rendering bug for "TRUE (1)", which was recognized as
     needing small caps and then erroneously as a man page reference,
     resulting in escaped nroff.  (Found by Dan Jacobson with the
-    XML::LibXML::Element man page.)
+    XML::LibXML::Element man page.)  (Debian Bug#836831)
 
     [Pod::Man] Fix rendering bug causing "\s0(1)" to be mistakenly marked
     as a man page reference, later confusing backslash escaping.
