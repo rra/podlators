@@ -2,8 +2,12 @@
 
 podlators 4.08 (unreleased)
 
-    Remove test for nested L<> markup, since an upcoming version of
-    Pod::Simple will drop support for this.  (#114075)
+    [Pod::Man] Partially revert change in 4.00 to require the name option
+    (--name to pod2man) when generating man pages from standard input.
+    Historically, pod2man silently tolerated this, and there turned out to
+    be a lot of software that depended on this, making the change too
+    disruptive.  Instead, silently set the man page title to STDIN in this
+    case, but warn about it in the documentation.  (#117990)
 
     [Pod::Man] Fix rendering bug for "TRUE (1)", which was recognized as
     needing small caps and then erroneously as a man page reference,
@@ -12,6 +16,9 @@ podlators 4.08 (unreleased)
 
     [Pod::Man] Fix rendering bug causing "\s0(1)" to be mistakenly marked
     as a man page reference, later confusing backslash escaping.
+
+    Remove test for nested L<> markup, since an upcoming version of
+    Pod::Simple will drop support for this.  (#114075)
 
 podlators 4.07 (2016-03-20)
 

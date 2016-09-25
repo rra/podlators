@@ -855,12 +855,16 @@ sub devise_title {
 
     # If Pod::Parser gave us an IO::File reference as the source file name,
     # convert that to the empty string as well.  Then, if we don't have a
-    # valid name, emit a warning and convert it to STDIN.
+    # valid name, convert it to STDIN.
+    #
+    # In podlators 4.00 through 4.07, this also produced a warning, but that
+    # was surprising to a lot of programs that had expected to be able to pipe
+    # POD through pod2man without specifying the name.  In the name of
+    # backward compatibility, just quietly set STDIN as the page title.
     if ($name =~ /^IO::File(?:=\w+)\(0x[\da-f]+\)$/i) {
         $name = '';
     }
     if ($name eq '') {
-        $self->whine (1, 'No name given for document');
         $name = 'STDIN';
     }
 
@@ -1753,9 +1757,9 @@ parsed to see if it is a Perl module path.  If it is, a path like
 C<.../lib/Pod/Man.pm> is converted into a name like C<Pod::Man>.  This
 option, if given, overrides any automatic determination of the name.
 
-If generating a manual page from standard input, this option is required,
-since there's otherwise no way for Pod::Man to know what to use for the
-manual page name.
+If generating a manual page from standard input, the name will be set to
+C<STDIN> if this option is not provided.  Providing this option is strongly
+recommended to set a meaningful manual page name.
 
 =item nourls
 
