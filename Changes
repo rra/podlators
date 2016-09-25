@@ -1,6 +1,6 @@
                       User-Visible podlators Changes
 
-podlators 4.08 (unreleased)
+podlators 4.08 (2016-09-24)
 
     [Pod::Man] Partially revert change in 4.00 to require the name option
     (--name to pod2man) when generating man pages from standard input.
