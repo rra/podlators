@@ -5,7 +5,7 @@ podlators 4.09 (unreleased)
     [Pod::Text] Use Pod::Simple's logic to determine the native code
     points for NO BREAK SPACE and SOFT HYPHEN instead of hard-coding the
     ASCII values.  Hopefully fixes the case of mysterious disappearing
-    open braces on EBCDIC systems.  (#118240)
+    open brackets on EBCDIC systems.  (#118240)
 
 podlators 4.08 (2016-09-24)
 
