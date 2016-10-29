@@ -1,5 +1,10 @@
 .gitignore
 Changes
+docs/metadata/blurb
+docs/metadata/description
+docs/metadata/metadata.json
+docs/metadata/quote
+docs/metadata/requirements
 lib/Pod/Man.pm
 lib/Pod/ParseLink.pm
 lib/Pod/Text.pm
@@ -13,6 +18,7 @@ MANIFEST.SKIP
 NOTES
 pod/perlpodstyle.pod
 README
+README.md
 scripts/pod2man.PL
 scripts/pod2text.PL
 t/data/basic.cap
