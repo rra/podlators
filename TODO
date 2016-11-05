@@ -14,10 +14,6 @@ any of the following are very much welcome.
  * Abstract the shared code between Pod::Man and Pod::Text to a new
    Pod::Simple inheritance layer that both modules can use.
 
- * Add lquote and rquote options to control the left and right quote marks
-   independently, rather than requiring one provide an even-length string
-   and dividing it in half.
-
  * Suppress the URL for L<|> if the link is just the anchor part of the
    tag with mailto: added to the front.  Also strip the mailto: part if
    there is no anchor text.
@@ -43,12 +39,12 @@ any of the following are very much welcome.
    turned off at the end of each line, if still on, and then turned back
    on at the start of the subsequent line.
 
- * Update coding style and test suite infrastructure to my current
-   standards.
+ * Update coding style to my current standards.
 
  * Abstract the commonalities between the various test programs into a
    generic driver for testing POD formatters, and then use it to handle
-   all of the test cases.
+   all of the test cases.  (This is mostly done, but the Pod::Text tests
+   still have to be converted.)
 
  * Document all the standard module interfaces from Pod::Simple.
 
