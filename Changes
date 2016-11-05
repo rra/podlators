@@ -1,6 +1,6 @@
                       User-Visible podlators Changes
 
-podlators 4.09 (unreleased)
+podlators 4.09 (2016-11-05)
 
     [Pod::Text] Use Pod::Simple's logic to determine the native code
     points for NO BREAK SPACE and SOFT HYPHEN instead of hard-coding the
