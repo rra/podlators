@@ -9,7 +9,23 @@ any of the following are very much welcome.
    all of the frustrations in Pod::Man with turning valid characters into
    X and would allow massive simplification of the preamble for most
    pages.  We could also move some of the remaining *roff macros to the
-   accents section and only conditionally output them.
+   accents section and only conditionally output them.  Unfortunately, it
+   looks like all non-man-db, non-groff *roff implementations still don't
+   support Unicode characters, though, and even some groff setups may not
+   support them properly.  So this is still a portability issue.
+
+ * Support an output mode that uses groff escapes for all Unicode
+   characters.  We might be able to just use \[uNNNN] for all Unicode
+   code points.  This would work portably on any system that uses groff,
+   and may make sense as the default output format on Linux.
+
+ * Escape all hyphens in the text of L<some-command> links.
+
+ * Linux man page style now says foo(3) should be in .BR format, not .IR
+   as Pod::Man currently renders it.
+
+ * Add a =for license stanza that takes license text and embeds it as a
+   *roff comment.
 
  * Abstract the shared code between Pod::Man and Pod::Text to a new
    Pod::Simple inheritance layer that both modules can use.
