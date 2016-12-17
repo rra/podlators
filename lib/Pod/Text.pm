@@ -39,7 +39,7 @@ use Pod::Simple ();
 # We have to export pod2text for backward compatibility.
 @EXPORT = qw(pod2text);
 
-$VERSION = '4.09';
+$VERSION = '4.10';
 
 # Ensure that $Pod::Simple::nbsp and $Pod::Simple::shy are available.  Code
 # taken from Pod::Simple 3.32, but was only added in 3.30.

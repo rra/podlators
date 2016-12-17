@@ -1,5 +1,12 @@
                       User-Visible podlators Changes
 
+podlators 4.10 (unreleased)
+
+    [Pod::Man] Revert the .IX handling code to the earlier version from
+    Bjarni Ingi Gislason but add the trailing backslashes that should
+    hopefully avoid blank page issues on HP-UX.  This fixes a warning
+    regression when man is run with warnings enabled.  (Debian Bug#847972)
+
 podlators 4.09 (2016-11-05)
 
     [Pod::Text] Use Pod::Simple's logic to determine the native code

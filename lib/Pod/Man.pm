@@ -43,7 +43,7 @@ BEGIN {
 
 @ISA = qw(Pod::Simple);
 
-$VERSION = '4.09';
+$VERSION = '4.10';
 
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
@@ -1553,14 +1553,16 @@ sub preamble_template {
 .\" Avoid warning from groff about undefined register 'F'.
 .de IX
 ..
-.if !\nF .nr F 0
-.if \nF>0 \{\
-.    de IX
-.    tm Index:\\$1\t\\n%\t"\\$2"
+.nr rF 0
+.if \n(.g .if rF .nr rF 1
+.if (\n(rF:(\n(.g==0)) \{\
+.    if \nF \{\
+.        de IX
+.        tm Index:\\$1\t\\n%\t"\\$2"
 ..
-.    if !\nF==2 \{\
-.        nr % 0
-.        nr F 2
+.        if !\nF==2 \{\
+.            nr % 0
+.            nr F 2
 .    \}
 .\}
 ----END OF PREAMBLE----
