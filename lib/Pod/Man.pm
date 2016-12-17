@@ -1565,6 +1565,7 @@ sub preamble_template {
 .            nr F 2
 .    \}
 .\}
+.rr rF
 ----END OF PREAMBLE----
 #'# for cperl-mode
 
