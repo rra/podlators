@@ -34,10 +34,7 @@ any of the following are very much welcome.
    tag with mailto: added to the front.  Also strip the mailto: part if
    there is no anchor text.
 
- * Add a test suite for the pod2man and pod2text driver programs.  This
-   will probably require restructuring them so that they can be loaded
-   with require, since otherwise it's too difficult to figure out how to
-   run them with Perl.
+ * Add a test suite for the pod2man and pod2text driver programs.
 
  * There should be some way to turn off all heuristics when people are
    using POD for some purpose other than Perl or some other programming
@@ -63,6 +60,8 @@ any of the following are very much welcome.
    still have to be converted.)
 
  * Document all the standard module interfaces from Pod::Simple.
+
+ * Optionally suppress the generation of empty man pages in Pod::Man.
 
 The following items require changes to the POD specification and are
 therefore of broader scope than just this code:
