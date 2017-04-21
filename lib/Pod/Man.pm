@@ -14,7 +14,7 @@
 # Written by Russ Allbery <rra@cpan.org>
 # Substantial contributions by Sean Burke <sburke@cpan.org>
 # Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-#     2010, 2012, 2013, 2014, 2015, 2016 Russ Allbery <rra@cpan.org>
+#     2010, 2012, 2013, 2014, 2015, 2016, 2017 Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -1563,6 +1563,7 @@ sub preamble_template {
 .        if !\nF==2 \{\
 .            nr % 0
 .            nr F 2
+.        \}
 .    \}
 .\}
 .rr rF
@@ -2019,7 +2020,7 @@ mine).
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-2009, 2010, 2012, 2013, 2014, 2015, 2016 Russ Allbery <rra@cpan.org>
+2009, 2010, 2012, 2013, 2014, 2015, 2016, 2017 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
