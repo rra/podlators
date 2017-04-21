@@ -535,8 +535,8 @@ sub guesswork {
     # strings inserted around things that we've made small-caps if later
     # transforms should work on those strings.
 
-    # Italicize functions in the form func(), including functions that are in
-    # all capitals, but don't italize if there's anything between the parens.
+    # Embolden functions in the form func(), including functions that are in
+    # all capitals, but don't embolden if there's anything between the parens.
     # The function must start with an alphabetic character or underscore and
     # then consist of word characters or colons.
     if ($$self{MAGIC_FUNC}) {
@@ -544,11 +544,11 @@ sub guesswork {
             ( \b | \\s-1 )
             ( [A-Za-z_] ([:\w] | \\s-?[01])+ \(\) )
         } {
-            $1 . '\f(IS' . $2 . '\f(IE'
+            $1 . '\f(BS' . $2 . '\f(BE'
         }egx;
     }
 
-    # Change references to manual pages to put the page name in italics but
+    # Change references to manual pages to put the page name in bold but
     # the number in the regular font, with a thin space between the name and
     # the number.  Only recognize func(n) where func starts with an alphabetic
     # character or underscore and contains only word characters, periods (for
@@ -562,7 +562,7 @@ sub guesswork {
             ( [A-Za-z_] (?:[.:\w] | \\- | \\s-?[01])+ )
             ( \( \d [a-z]* \) )
         } {
-            $1 . '\f(IS' . $2 . '\f(IE\|' . $3
+            $1 . '\f(BS' . $2 . '\f(BE\|' . $3
         }egx;
     }
 
