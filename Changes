@@ -7,6 +7,10 @@ podlators 4.10 (unreleased)
     hopefully avoid blank page issues on HP-UX.  This fixes a warning
     regression when man is run with warnings enabled.  (Debian Bug#847972)
 
+    Produce a proper diagnostic when given empty input on standard input
+    with no other arguments to pod2man or pod2text.  Reported by Guillem
+    Jover.
+
 podlators 4.09 (2016-11-05)
 
     [Pod::Text] Use Pod::Simple's logic to determine the native code
