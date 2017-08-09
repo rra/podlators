@@ -2033,8 +2033,7 @@ L<man(1)>, L<man(7)>
 Ossanna, Joseph F., and Brian W. Kernighan.  "Troff User's Manual,"
 Computing Science Technical Report No. 54, AT&T Bell Laboratories.  This is
 the best documentation of standard B<nroff> and B<troff>.  At the time of
-this writing, it's available at
-L<http://www.cs.bell-labs.com/cm/cs/cstr.html>.
+this writing, it's available at L<http://www.troff.org/54.pdf>.
 
 The man page documenting the man macro set may be L<man(5)> instead of
 L<man(7)> on your system.  Also, please see L<pod2man(1)> for extensive
