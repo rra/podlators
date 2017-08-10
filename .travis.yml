@@ -13,12 +13,12 @@ env: AUTHOR_TESTING=1
 before_install:
   - cpanm JSON::PP
   - cpanm Perl6::Slurp
-  - cpanm Test::MinimumVersion
   - cpanm Test::Pod
   - cpanm Test::Strict
   - cpanm Test::Synopsis
 # This is currently erroring out on Travis.
 #  - cpanm Perl::Critic
+#  - cpanm Test::MinimumVersion
 
 branches:
   only:
