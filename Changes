@@ -7,6 +7,9 @@ podlators 4.10 (unreleased)
     hopefully avoid blank page issues on HP-UX.  This fixes a warning
     regression when man is run with warnings enabled.  (Debian Bug#847972)
 
+    [Pod::Man] Handle the output file descriptor not having any PerlIO
+    layers without throwing a warning.  Thanks, Zefram.  (#122521)
+
     Produce a proper diagnostic when given empty input on standard input
     with no other arguments to pod2man or pod2text.  Reported by Guillem
     Jover.
