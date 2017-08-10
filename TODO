@@ -21,9 +21,6 @@ any of the following are very much welcome.
 
  * Escape all hyphens in the text of L<some-command> links.
 
- * Linux man page style now says foo(3) should be in .BR format, not .IR
-   as Pod::Man currently renders it.
-
  * Add a =for license stanza that takes license text and embeds it as a
    *roff comment.
 
