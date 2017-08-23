@@ -41,7 +41,7 @@ $VERSION = '4.10';
 # Overrides
 ##############################################################################
 
-# Make level one headings bold, overridding any existing formatting.
+# Make level one headings bold, overriding any existing formatting.
 sub cmd_head1 {
     my ($self, $attrs, $text) = @_;
     $text =~ s/\s+$//;

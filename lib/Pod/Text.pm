@@ -707,7 +707,7 @@ sub parse_from_file {
     my $self = shift;
     $self->reinit;
 
-    # Fake the old cutting option to Pod::Parser.  This fiddings with internal
+    # Fake the old cutting option to Pod::Parser.  This fiddles with internal
     # Pod::Simple state and is quite ugly; we need a better approach.
     if (ref ($_[0]) eq 'HASH') {
         my $opts = shift @_;
