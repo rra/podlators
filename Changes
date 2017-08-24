@@ -181,7 +181,7 @@ podlators 4.00 (2015-11-28)
     as the timestamp from which to derive the left-hand footer if the date
     option is not set, overriding the timestamp of the input file.  This
     is primarily useful to ensure reproducible builds of the same output
-    file given the same souce and Pod::Man version, even when file
+    file given the same source and Pod::Man version, even when file
     timestamps may not be consistent.  Thanks, Niko Tyni.  (Debian
     Bug#801621)
 
@@ -710,7 +710,7 @@ podlators 1.14 (2001-11-23)
     [Pod::Man] Improve and simplify the handling of indentation shifts.
 
     [Pod::Man] When intuiting the man page name for a module, also strip
-    $^O by itself as a directory component even when not preceeded or
+    $^O by itself as a directory component even when not preceded or
     followed by a dash and other text.
 
     [Pod::Text] Fix handling of =for or =begin/=end in =item paragraphs.
