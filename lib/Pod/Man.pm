@@ -805,8 +805,7 @@ sub start_document {
         $$self{ENCODE} = 1;
         eval {
             my @options = (output => 1, details => 1);
-            my @layers = PerlIO::get_layers ($$self{output_fh}, @options);
-            my $flag = $layers[-1] || 0;
+            my $flag = (PerlIO::get_layers ($$self{output_fh}, @options))[-1];
             if ($flag & PerlIO::F_UTF8 ()) {
                 $$self{ENCODE} = 0;
             }
