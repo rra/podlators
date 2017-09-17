@@ -800,13 +800,16 @@ sub start_document {
     # has a PerlIO encoding layer set.  If it does not, we'll need to encode
     # our output before printing it (handled in the output() sub).  Wrap the
     # check in an eval to handle versions of Perl without PerlIO.
+    #
+    # PerlIO::get_layers still requires its argument be a glob, so coerce the
+    # file handle to a glob.
     $$self{ENCODE} = 0;
     if ($$self{utf8}) {
         $$self{ENCODE} = 1;
         eval {
             my @options = (output => 1, details => 1);
-            my $flag = (PerlIO::get_layers ($$self{output_fh}, @options))[-1];
-            if ($flag & PerlIO::F_UTF8 ()) {
+            my @layers = PerlIO::get_layers (*{$$self{output_fh}}, @options);
+            if ($layers[-1] & PerlIO::F_UTF8 ()) {
                 $$self{ENCODE} = 0;
             }
         }

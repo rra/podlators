@@ -13,6 +13,12 @@ podlators 4.10 (unreleased)
     hopefully avoid blank page issues on HP-UX.  This fixes a warning
     regression when man is run with warnings enabled.  (Debian Bug#847972)
 
+    [Pod::Man] Wrap the output file descriptor in a glob before passing it
+    to PerlIO::get_layers so that the layer check works properly.
+    Previously, this code would throw a warning if given a scalar not
+    wrapped in a glob and not detect layers properly.  Patch from Zefram.
+    (#122521)
+
     Produce a proper diagnostic when given empty input on standard input
     with no other arguments to pod2man or pod2text.  Reported by Guillem
     Jover.
