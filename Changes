@@ -1,6 +1,6 @@
                       User-Visible podlators Changes
 
-podlators 4.10 (unreleased)
+podlators 4.10 (2017-12-25)
 
     [Pod::Man] Change man page references and function names to bold
     instead of italic, following the current Linux man page standard.  The
