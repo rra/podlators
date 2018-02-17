@@ -3,12 +3,6 @@
 # This is a simple subclass of Pod::Text that overrides a few key methods to
 # output the right termcap escape sequences for formatted text on the current
 # terminal type.
-#
-# Copyright 1999, 2001, 2002, 2004, 2006, 2008, 2009, 2014, 2015
-#     Russ Allbery <rra@cpan.org>
-#
-# This program is free software; you may redistribute it and/or modify it
-# under the same terms as Perl itself.
 
 ##############################################################################
 # Modules and declarations
@@ -65,7 +59,7 @@ sub new {
     $$self{UNDL} = $$term{_us} || "\e[4m";
     $$self{NORM} = $$term{_me} || "\e[m";
 
-    unless (defined $$self{width}) {
+    unless (defined $$self{opt_width}) {
         $$self{opt_width} = $ENV{COLUMNS} || $$term{_co} || 80;
         $$self{opt_width} -= 2;
     }
@@ -201,10 +195,14 @@ Russ Allbery <rra@cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2001, 2002, 2004, 2006, 2008, 2009, 2014, 2015 Russ Allbery
+Copyright 1999, 2001-2002, 2004, 2006, 2008-2009, 2014-2015, 2018 Russ Allbery
 <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
+
+# Local Variables:
+# copyright-at-end-flag: t
+# End:

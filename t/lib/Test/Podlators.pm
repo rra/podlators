@@ -3,11 +3,6 @@
 # This module is an internal implementation detail of the podlators test
 # suite.  It provides some supporting functions to make it easier to write
 # tests.
-#
-# Copyright 2015, 2016 Russ Allbery <rra@cpan.org>
-#
-# This program is free software; you may redistribute it and/or modify it
-# under the same terms as Perl itself.
 
 package Test::Podlators;
 
@@ -276,6 +271,9 @@ sub test_snippet {
         $got =~ s{ \A .* \n [.]nh \n }{}xms;
     }
 
+    # Strip any trailing blank lines (Pod::Text likes to add them).
+    $got =~ s{ \n\s+ \z }{\n}xms;
+
     # Check the output, errors, and any exception.
     is($got, $data_ref->{output}, "$data_ref->{name}: output");
     if ($data_ref->{errors}) {
@@ -509,9 +507,13 @@ Russ Allbery <rra@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2015, 2016 Russ Allbery <rra@cpan.org>
+Copyright 2015, 2016, 2018 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
+
+# Local Variables:
+# copyright-at-end-flag: t
+# End:
