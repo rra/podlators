@@ -31,9 +31,21 @@ $VERSION = '4.10';
 # In the initialization method, grab our terminal characteristics as well as
 # do all the stuff we normally do.
 sub new {
-    my ($self, @args) = @_;
+    my ($self, %args) = @_;
     my ($ospeed, $term, $termios);
-    $self = $self->SUPER::new (@args);
+
+    # Figure out the terminal width before calling the Pod::Text constructor,
+    # since it will otherwise force 76 characters.  Pod::Text::Termcap has
+    # historically used 2 characters less than the width of the screen, while
+    # the other Pod::Text classes have used 76.  This is weirdly inconsistent,
+    # but there's probably no good reason to change it now.
+    unless (defined $args{width}) {
+        $args{width} = $ENV{COLUMNS} || $$term{_co} || 80;
+        $args{width} -= 2;
+    }
+
+    # Initialize Pod::Text.
+    $self = $self->SUPER::new (%args);
 
     # $ENV{HOME} is usually not set on Windows.  The default Term::Cap path
     # may not work on Solaris.
@@ -58,11 +70,6 @@ sub new {
     $$self{BOLD} = $$term{_md} || "\e[1m";
     $$self{UNDL} = $$term{_us} || "\e[4m";
     $$self{NORM} = $$term{_me} || "\e[m";
-
-    unless (defined $$self{opt_width}) {
-        $$self{opt_width} = $ENV{COLUMNS} || $$term{_co} || 80;
-        $$self{opt_width} -= 2;
-    }
 
     return $self;
 }
