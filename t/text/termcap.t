@@ -14,7 +14,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 7;
+use Test::More tests => 9;
 use Test::Podlators qw(test_snippet);
 
 # Load the module.
@@ -29,7 +29,7 @@ $ENV{TERMPATH} = File::Spec->catfile('t', 'data', 'termcap');
 $ENV{TERMCAP}  = 'xterm:co=#80:do=^J:md=\E[1m:us=\E[4m:me=\E[m';
 
 # List of snippets run by this test.
-my @snippets = qw(tag-width width wrapping);
+my @snippets = qw(tag-width tag-wrapping width wrapping);
 
 # Run all the tests.
 for my $snippet (@snippets) {

@@ -10,6 +10,10 @@ podlators 4.11 (unreleased)
     ignored due to a bug in interpreting user-supplied options.  Thanks,
     eponymous alias.  (#124447)
 
+    [Pod::Text::Termcap] Fix a subtle wrapping bug with long =item text
+    that would cause lines to be wrapped when they didn't need to be.
+    Thanks, eponymous alias.
+
 podlators 4.10 (2017-12-25)
 
     [Pod::Man] Change man page references and function names to bold

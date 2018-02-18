@@ -118,14 +118,18 @@ sub wrap {
 
     # $codes matches a single special sequence.  $char matches any number of
     # special sequences preceding a single character other than a newline.
-    # We have to do $shortchar and $longchar in variables because the
+    # $shortchar matches some sequence of $char ending in codes followed by
+    # whitespace or the end of the string.  $longchar matches exactly $width
+    # $chars, used when we have to truncate and hard wrap.
+    #
+    # $shortchar and $longchar are created in a slightly odd way because the
     # construct ${char}{0,$width} didn't do the right thing until Perl 5.8.x.
     my $codes = "(?:\Q$$self{BOLD}\E|\Q$$self{UNDL}\E|\Q$$self{NORM}\E)";
-    my $char = "(?:$codes*[^\\n])";
-    my $shortchar = $char . "{0,$width}";
-    my $longchar = $char . "{$width}";
+    my $char = "(?>$codes*[^\\n])";
+    my $shortchar = '^(' . $char . "{0,$width}(?>$codes*)" . ')(?:\s|\z)';
+    my $longchar = '^(' . $char . "{$width})";
     while (length > $width) {
-        if (s/^($shortchar)\s+// || s/^($longchar)//) {
+        if (s/$shortchar// || s/$longchar//) {
             $output .= $spaces . $1 . "\n";
         } else {
             last;
