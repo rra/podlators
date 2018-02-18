@@ -2,6 +2,10 @@
 
 podlators 4.11 (unreleased)
 
+    [Pod::Text] The default value of the sentence option is false, not
+    true, and has been since at least 2.0.0.  Fix the documentation to
+    match.  Thanks, eponymous alias.  (#124461)
+
     [Pod::Text::Termcap] Correctly honor the width option, which was being
     ignored due to a bug in interpreting user-supplied options.  Thanks,
     eponymous alias.  (#124447)

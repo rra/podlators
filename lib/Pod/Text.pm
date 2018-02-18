@@ -10,12 +10,6 @@
 # maintained outside of the Perl core as part of the podlators.  Please send
 # me any patches at the address above in addition to sending them to the
 # standard Perl mailing lists.
-#
-# Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2014,
-#     2015, 2016 Russ Allbery <rra@cpan.org>
-#
-# This program is free software; you may redistribute it and/or modify it
-# under the same terms as Perl itself.
 
 ##############################################################################
 # Modules and declarations
@@ -790,7 +784,7 @@ Pod::Text - Convert POD data to formatted text
 =head1 SYNOPSIS
 
     use Pod::Text;
-    my $parser = Pod::Text->new (sentence => 0, width => 78);
+    my $parser = Pod::Text->new (sentence => 1, width => 78);
 
     # Read POD from STDIN and write to STDOUT.
     $parser->parse_from_filehandle;
@@ -888,7 +882,7 @@ marks are added around CE<lt>> text.
 If set to a true value, Pod::Text will assume that each sentence ends in two
 spaces, and will try to preserve that spacing.  If set to false, all
 consecutive whitespace in non-verbatim paragraphs is compressed into a
-single space.  Defaults to true.
+single space.  Defaults to false.
 
 =item stderr
 
@@ -1022,10 +1016,14 @@ how to use Pod::Simple.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2002, 2004, 2006, 2008, 2009, 2012, 2013, 2014,
-2015, 2016 Russ Allbery <rra@cpan.org>
+Copyright 1999-2002, 2004, 2006, 2008-2009, 2012-2016, 2018 Russ Allbery
+<rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
+
+# Local Variables:
+# copyright-at-end-flag: t
+# End:
