@@ -116,7 +116,7 @@ sub wrap {
     my $spaces = ' ' x $$self{MARGIN};
     my $width = $$self{opt_width} - $$self{MARGIN};
 
-    # $codes matches a single special sequence.  $char matches any number of
+    # $code matches a single special sequence.  $char matches any number of
     # special sequences preceding a single character other than a newline.
     # $shortchar matches some sequence of $char ending in codes followed by
     # whitespace or the end of the string.  $longchar matches exactly $width
@@ -124,9 +124,9 @@ sub wrap {
     #
     # $shortchar and $longchar are created in a slightly odd way because the
     # construct ${char}{0,$width} didn't do the right thing until Perl 5.8.x.
-    my $codes = "(?:\Q$$self{BOLD}\E|\Q$$self{UNDL}\E|\Q$$self{NORM}\E)";
-    my $char = "(?>$codes*[^\\n])";
-    my $shortchar = '^(' . $char . "{0,$width}(?>$codes*)" . ')(?:\s|\z)';
+    my $code = "(?:\Q$$self{BOLD}\E|\Q$$self{UNDL}\E|\Q$$self{NORM}\E)";
+    my $char = "(?>$code*[^\\n])";
+    my $shortchar = '^(' . $char . "{0,$width}(?>$code*)" . ')(?:\s+|\z)';
     my $longchar = '^(' . $char . "{$width})";
     while (length > $width) {
         if (s/$shortchar// || s/$longchar//) {

@@ -3,12 +3,6 @@
 # This is just a basic proof of concept.  It should later be modified to make
 # better use of color, take options changing what colors are used for what
 # text, and the like.
-#
-# Copyright 1999, 2001, 2004, 2006, 2008, 2009, 2014
-#     Russ Allbery <rra@cpan.org>
-#
-# This program is free software; you may redistribute it and/or modify it
-# under the same terms as Perl itself.
 
 ##############################################################################
 # Modules and declarations
@@ -77,13 +71,20 @@ sub wrap {
     my $spaces = ' ' x $$self{MARGIN};
     my $width = $$self{opt_width} - $$self{MARGIN};
 
-    # We have to do $shortchar and $longchar in variables because the
+    # $codes matches a single special sequence.  $char matches any number of
+    # special sequences preceding a single character other than a newline.
+    # $shortchar matches some sequence of $char ending in codes followed by
+    # whitespace or the end of the string.  $longchar matches exactly $width
+    # $chars, used when we have to truncate and hard wrap.
+    #
+    # $shortchar and $longchar are created in a slightly odd way because the
     # construct ${char}{0,$width} didn't do the right thing until Perl 5.8.x.
-    my $char = '(?:(?:\e\[[\d;]+m)*[^\n])';
-    my $shortchar = $char . "{0,$width}";
-    my $longchar = $char . "{$width}";
+    my $code = '(?:\e\[[\d;]+m)';
+    my $char = "(?>$code*[^\\n])";
+    my $shortchar = '^(' . $char . "{0,$width}(?>$code*)" . ')(?:\s+|\z)';
+    my $longchar = '^(' . $char . "{$width})";
     while (length > $width) {
-        if (s/^($shortchar)\s+// || s/^($longchar)//) {
+        if (s/$shortchar// || s/$longchar//) {
             $output .= $spaces . $1 . "\n";
         } else {
             last;
@@ -149,9 +150,13 @@ Russ Allbery <rra@cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2001, 2004, 2006, 2008, 2009 Russ Allbery <rra@cpan.org>.
+Copyright 1999, 2001, 2004, 2006, 2008, 2009, 2018 Russ Allbery <rra@cpan.org>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
+
+# Local Variables:
+# copyright-at-end-flag: t
+# End:
