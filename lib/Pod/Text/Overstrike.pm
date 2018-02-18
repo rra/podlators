@@ -1,4 +1,4 @@
-# Pod::Text::Overstrike -- Convert POD data to formatted overstrike text
+# Convert POD data to formatted overstrike text
 #
 # This was written because the output from:
 #
@@ -10,14 +10,6 @@
 #
 # and because both Pod::Text::Color and Pod::Text::Termcap are not device
 # independent.
-#
-# Created by Joe Smith <Joe.Smith@inwap.com> 30-Nov-2000
-#   (based on Pod::Text::Color by Russ Allbery <rra@cpan.org>)
-# Copyright 2000 Joe Smith <Joe.Smith@inwap.com>.
-# Copyright 2001, 2004, 2008, 2014 Russ Allbery <rra@cpan.org>.
-#
-# This program is free software; you may redistribute it and/or modify it
-# under the same terms as Perl itself.
 
 ##############################################################################
 # Modules and declarations
@@ -141,15 +133,13 @@ sub wrap {
 1;
 __END__
 
+=for stopwords
+overstrike overstruck Overstruck Allbery terminal's SPDX-License-Identifier
+GPL-1.0-or-later
+
 =head1 NAME
 
-=for stopwords
-overstrike
-
 Pod::Text::Overstrike - Convert POD data to formatted overstrike text
-
-=for stopwords
-overstruck Overstruck Allbery terminal's
 
 =head1 SYNOPSIS
 
@@ -195,15 +185,22 @@ Perl core distribution as of 5.6.0.
 
 =head1 AUTHOR
 
-Joe Smith <Joe.Smith@inwap.com>, using the framework created by Russ Allbery
-<rra@cpan.org>.
+Originally written by Joe Smith <Joe.Smith@inwap.com>, using the framework
+created by Russ Allbery <rra@cpan.org>.  Subsequently updated by Russ Allbery.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2000 by Joe Smith <Joe.Smith@inwap.com>.
-Copyright 2001, 2004, 2008 by Russ Allbery <rra@cpan.org>.
+Copyright 2000 by Joe Smith <Joe.Smith@inwap.com>
+
+Copyright 2001, 2004, 2008, 2014, 2018 by Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
+SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
+
 =cut
+
+# Local Variables:
+# copyright-at-end-flag: t
+# End:

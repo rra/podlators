@@ -12,11 +12,13 @@
 # the machinery to run small POD snippets through the specific formatter being
 # tested should probably be used instead.
 #
-# Copyright 2001, 2002, 2004, 2006, 2009, 2012, 2014, 2015
+# Copyright 2001-2002, 2004, 2006, 2009, 2012, 2014-2015, 2018
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
+#
+# SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 use 5.006;
 use strict;

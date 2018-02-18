@@ -1,4 +1,4 @@
-# Pod::Text::Color -- Convert POD data to formatted color ASCII text
+# Convert POD data to formatted color ASCII text
 #
 # This is just a basic proof of concept.  It should later be modified to make
 # better use of color, take options changing what colors are used for what
@@ -102,12 +102,12 @@ sub wrap {
 1;
 __END__
 
+=for stopwords
+Allbery SPDX-License-Identifier GPL-1.0-or-later
+
 =head1 NAME
 
 Pod::Text::Color - Convert POD data to formatted color ASCII text
-
-=for stopwords
-Allbery
 
 =head1 SYNOPSIS
 
@@ -150,10 +150,13 @@ Russ Allbery <rra@cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2001, 2004, 2006, 2008, 2009, 2018 Russ Allbery <rra@cpan.org>.
+Copyright 1999, 2001, 2004, 2006, 2008, 2009, 2018 Russ Allbery
+<rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
+
+SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 =cut
 

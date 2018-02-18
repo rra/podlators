@@ -1,23 +1,10 @@
-# Pod::Man -- Convert POD data to formatted *roff input.
+# Convert POD data to formatted *roff input.
 #
 # This module translates POD documentation into *roff markup using the man
 # macro set, and is intended for converting POD documents written as Unix
 # manual pages to manual pages that can be read by the man(1) command.  It is
 # a replacement for the pod2man command distributed with versions of Perl
 # prior to 5.6.
-#
-# Perl core hackers, please note that this module is also separately
-# maintained outside of the Perl core as part of the podlators.  Please send
-# me any patches at the address above in addition to sending them to the
-# standard Perl mailing lists.
-#
-# Written by Russ Allbery <rra@cpan.org>
-# Substantial contributions by Sean Burke <sburke@cpan.org>
-# Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-#     2010, 2012, 2013, 2014, 2015, 2016, 2017 Russ Allbery <rra@cpan.org>
-#
-# This program is free software; you may redistribute it and/or modify it
-# under the same terms as Perl itself.
 
 ##############################################################################
 # Modules and declarations
@@ -1651,9 +1638,10 @@ sub preamble_template {
 __END__
 
 =for stopwords
-en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8
-UTF-8 Allbery Sean Burke Ossanna Solaris formatters troff uppercased
-Christiansen nourls parsers Kernighan lquote rquote
+en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8 UTF-8
+Allbery Sean Burke Ossanna Solaris formatters troff uppercased Christiansen
+nourls parsers Kernighan lquote rquote SPDX-License-Identifier
+GPL-1.0-or-later
 
 =head1 NAME
 
@@ -2014,19 +2002,22 @@ only matters for troff output.
 
 =head1 AUTHOR
 
-Russ Allbery <rra@cpan.org>, based I<very> heavily on the original
-B<pod2man> by Tom Christiansen <tchrist@mox.perl.com>.  The modifications to
-work with Pod::Simple instead of Pod::Parser were originally contributed by
-Sean Burke (but I've since hacked them beyond recognition and all bugs are
-mine).
+Russ Allbery <rra@cpan.org>, based I<very> heavily on the original B<pod2man>
+by Tom Christiansen <tchrist@mox.perl.com>.  The modifications to work with
+Pod::Simple instead of Pod::Parser were originally contributed by Sean Burke
+<sburke@cpan.org> (but I've since hacked them beyond recognition and all bugs
+are mine).
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-2009, 2010, 2012, 2013, 2014, 2015, 2016, 2017 Russ Allbery <rra@cpan.org>
+Copyright 1999-2010, 2012-2018 Russ Allbery <rra@cpan.org>
+
+Substantial contributions by Sean Burke <sburke@cpan.org>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
+
+SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 =head1 SEE ALSO
 
@@ -2048,3 +2039,7 @@ L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
 Perl core distribution as of 5.6.0.
 
 =cut
+
+# Local Variables:
+# copyright-at-end-flag: t
+# End:

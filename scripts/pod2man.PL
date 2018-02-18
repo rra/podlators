@@ -44,13 +44,9 @@ PREAMBLE
 # In the following, Perl variables are not expanded during extraction.
 print {$out} <<'SCRIPT_BODY' or die "Cannot write to $file: $!\n";
 
-# pod2man -- Convert POD data to formatted *roff input.
+# Convert POD data to formatted *roff input.
 #
-# Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012, 2013, 2014, 2015,
-#     2016, 2017 Russ Allbery <rra@cpan.org>
-#
-# This program is free software; you may redistribute it and/or modify it
-# under the same terms as Perl itself.
+# The driver script for Pod::Man.
 
 use 5.006;
 use strict;
@@ -128,9 +124,9 @@ exit $status;
 __END__
 
 =for stopwords
-en em --stderr stderr --utf8 UTF-8 overdo markup MT-LEVEL Allbery Solaris
-URL troff troff-specific formatters uppercased Christiansen --nourls UTC
-prepend lquote rquote
+en em --stderr stderr --utf8 UTF-8 overdo markup MT-LEVEL Allbery Solaris URL
+troff troff-specific formatters uppercased Christiansen --nourls UTC prepend
+lquote rquote SPDX-License-Identifier GPL-1.0-or-later
 
 =head1 NAME
 
@@ -431,11 +427,13 @@ B<pod2man> by Larry Wall and Tom Christiansen.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2000, 2001, 2004, 2006, 2008, 2010, 2012, 2013, 2014,
-2015, 2016, 2017 Russ Allbery <rra@cpan.org>
+Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2018 Russ Allbery
+<rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
+
+SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 =cut
 SCRIPT_BODY
@@ -446,3 +444,7 @@ chmod(0755, $file) or die "Cannot reset permissions for $file: $!\n";
 if ($Config{'eunicefix'} ne q{:}) {
     exec("$Config{'eunicefix'} $file");
 }
+
+# Local Variables:
+# copyright-at-end-flag: t
+# End:

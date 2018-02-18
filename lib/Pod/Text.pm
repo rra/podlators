@@ -775,7 +775,7 @@ __END__
 
 =for stopwords
 alt stderr Allbery Sean Burke's Christiansen UTF-8 pre-Unicode utf8 nourls
-parsers
+parsers SPDX-License-Identifier GPL-1.0-or-later
 
 =head1 NAME
 
@@ -998,14 +998,6 @@ sequences, although it wasn't turned on by default and it was problematic to
 get it to work at all.  This rewrite doesn't even try to do that, but a
 subclass of it does.  Look for L<Pod::Text::Termcap>.
 
-=head1 SEE ALSO
-
-L<Pod::Simple>, L<Pod::Text::Termcap>, L<perlpod(1)>, L<pod2text(1)>
-
-The current version of this module is always available from its web site at
-L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
-Perl core distribution as of 5.6.0.
-
 =head1 AUTHOR
 
 Russ Allbery <rra@cpan.org>, based I<very> heavily on the original
@@ -1021,6 +1013,16 @@ Copyright 1999-2002, 2004, 2006, 2008-2009, 2012-2016, 2018 Russ Allbery
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
+
+SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
+
+=head1 SEE ALSO
+
+L<Pod::Simple>, L<Pod::Text::Termcap>, L<perlpod(1)>, L<pod2text(1)>
+
+The current version of this module is always available from its web site at
+L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
+Perl core distribution as of 5.6.0.
 
 =cut
 

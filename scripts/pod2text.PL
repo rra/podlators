@@ -131,7 +131,7 @@ __END__
 
 =for stopwords
 -aclostu --alt --stderr Allbery --overstrike overstrike --termcap --utf8
-UTF-8 subclasses --nourls
+UTF-8 subclasses --nourls SPDX-License-Identifier GPL-1.0-or-later
 
 =head1 NAME
 
@@ -358,6 +358,8 @@ Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2018 Russ Allbery
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
+
+SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 =cut
 SCRIPT_BODY

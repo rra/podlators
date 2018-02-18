@@ -1,9 +1,4 @@
-# Pod::ParseLink -- Parse an L<> formatting code in POD text.
-#
-# Copyright 2001, 2008, 2009, 2014 by Russ Allbery <rra@cpan.org>
-#
-# This program is free software; you may redistribute it and/or modify it
-# under the same terms as Perl itself.
+# Parse an L<> formatting code in POD text.
 #
 # This module implements parsing of the text of an L<> formatting code as
 # defined in perlpodspec.  It should be suitable for any POD formatter.  It
@@ -114,12 +109,12 @@ sub parselink {
 1;
 __END__
 
+=for stopwords
+markup Allbery URL SPDX-License-Identifier GPL-1.0-or-later
+
 =head1 NAME
 
 Pod::ParseLink - Parse an LE<lt>E<gt> formatting code in POD text
-
-=for stopwords
-markup Allbery URL
 
 =head1 SYNOPSIS
 
@@ -186,9 +181,15 @@ Russ Allbery <rra@cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2001, 2008, 2009 Russ Allbery <rra@cpan.org>.
+Copyright 2001, 2008, 2009, 2014, 2018 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
+SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
+
 =cut
+
+# Local Variables:
+# copyright-at-end-flag: t
+# End:

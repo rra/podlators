@@ -1,4 +1,4 @@
-# Pod::Text::Termcap -- Convert POD data to ASCII text with format escapes.
+# Convert POD data to ASCII text with format escapes.
 #
 # This is a simple subclass of Pod::Text that overrides a few key methods to
 # output the right termcap escape sequences for formatted text on the current
@@ -152,7 +152,8 @@ __END__
 Pod::Text::Termcap - Convert POD data to ASCII text with format escapes
 
 =for stopwords
-ECMA-48 VT100 Allbery Solaris TERMPATH
+ECMA-48 VT100 Allbery Solaris TERMPATH SPDX-License-Identifier
+GPL-1.0-or-later
 
 =head1 SYNOPSIS
 
@@ -211,6 +212,8 @@ Copyright 1999, 2001-2002, 2004, 2006, 2008-2009, 2014-2015, 2018 Russ Allbery
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
+
+SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 =cut
 
