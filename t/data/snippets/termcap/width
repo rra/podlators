@@ -3,7 +3,6 @@ Explicit width setting for Pod::Text::Termcap
 
 [options]
 width 40
-termcap
 
 [input]
 =head1 WIDTH
