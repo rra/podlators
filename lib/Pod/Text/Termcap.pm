@@ -34,19 +34,6 @@ sub new {
     my ($self, %args) = @_;
     my ($ospeed, $term, $termios);
 
-    # Figure out the terminal width before calling the Pod::Text constructor,
-    # since it will otherwise force 76 characters.  Pod::Text::Termcap has
-    # historically used 2 characters less than the width of the screen, while
-    # the other Pod::Text classes have used 76.  This is weirdly inconsistent,
-    # but there's probably no good reason to change it now.
-    unless (defined $args{width}) {
-        $args{width} = $ENV{COLUMNS} || $$term{_co} || 80;
-        $args{width} -= 2;
-    }
-
-    # Initialize Pod::Text.
-    $self = $self->SUPER::new (%args);
-
     # $ENV{HOME} is usually not set on Windows.  The default Term::Cap path
     # may not work on Solaris.
     unless (exists $ENV{TERMPATH}) {
@@ -65,11 +52,36 @@ sub new {
         $ospeed = $termios->getospeed || 9600;
     }
 
+    # Get data from Term::Cap if possible.
+    my ($bold, $undl, $norm, $width);
+    eval {
+        my $term = Tgetent Term::Cap { TERM => undef, OSPEED => $ospeed };
+        $bold = $term->Tputs('md');
+        $undl = $term->Tputs('us');
+        $norm = $term->Tputs('me');
+        if (defined $$term{_co}) {
+            $width = $$term{_co};
+            $width =~ s/^\#//;
+        }
+    };
+
+    # Figure out the terminal width before calling the Pod::Text constructor,
+    # since it will otherwise force 76 characters.  Pod::Text::Termcap has
+    # historically used 2 characters less than the width of the screen, while
+    # the other Pod::Text classes have used 76.  This is weirdly inconsistent,
+    # but there's probably no good reason to change it now.
+    unless (defined $args{width}) {
+        $args{width} = $ENV{COLUMNS} || $width || 80;
+        $args{width} -= 2;
+    }
+
+    # Initialize Pod::Text.
+    $self = $self->SUPER::new (%args);
+
     # Fall back on the ANSI escape sequences if Term::Cap doesn't work.
-    eval { $term = Tgetent Term::Cap { TERM => undef, OSPEED => $ospeed } };
-    $$self{BOLD} = $$term{_md} || "\e[1m";
-    $$self{UNDL} = $$term{_us} || "\e[4m";
-    $$self{NORM} = $$term{_me} || "\e[m";
+    $$self{BOLD} = $bold || "\e[1m";
+    $$self{UNDL} = $undl || "\e[4m";
+    $$self{NORM} = $norm || "\e[m";
 
     return $self;
 }

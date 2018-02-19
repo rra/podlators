@@ -14,6 +14,10 @@ podlators 4.11 (unreleased)
     long =item text that would cause lines to be wrapped when they didn't
     need to be.  Thanks, eponymous alias.
 
+    [Pod::Text::Termcap] Correctly get the terminal width from Term::Cap
+    information when COLUMNS isn't set, instead of getting a string value
+    that later cannot be used numerically.
+
     Add SPDX-License-Identifier headers to all substantial source files.
 
 podlators 4.10 (2017-12-25)
