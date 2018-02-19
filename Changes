@@ -21,6 +21,8 @@ podlators 4.11 (unreleased)
     Fix order of SEE ALSO section in manual pages to match the
     recommendation of perlpodstyle.
 
+    Use https for all eyrie.org URLs.
+
     Add SPDX-License-Identifier headers to all substantial source files.
 
 podlators 4.10 (2017-12-25)

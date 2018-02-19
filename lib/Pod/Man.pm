@@ -2034,7 +2034,7 @@ documentation on writing manual pages if you've not done it before and
 aren't familiar with the conventions.
 
 The current version of this module is always available from its web site at
-L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
+L<https://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
 Perl core distribution as of 5.6.0.
 
 =cut

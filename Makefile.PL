@@ -4,7 +4,8 @@
 # which only supports that build method, and because it is a dependency of
 # other build systems like Module::Build.
 #
-# Copyright 1999-2001, 2008, 2010, 2012, 2014-2016 Russ Allbery <rra@cpan.org>
+# Copyright 1999-2001, 2008, 2010, 2012, 2014-2016, 2018
+#     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -112,9 +113,9 @@ my %metadata = (
                 mailto => 'bug-podlators@rt.cpan.org',
                 web => 'https://rt.cpan.org/Dist/Display.html?Name=podlators',
             },
-            homepage   => 'http://www.eyrie.org/~eagle/software/podlators/',
+            homepage   => 'https://www.eyrie.org/~eagle/software/podlators/',
             repository => {
-                url  => 'git://github.com/rra/podlators.git',
+                url  => 'https://github.com/rra/podlators.git',
                 web  => 'https://github.com/rra/podlators',
                 type => 'git',
             },

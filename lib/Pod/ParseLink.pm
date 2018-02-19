@@ -181,7 +181,7 @@ under the same terms as Perl itself.
 L<Pod::Parser>
 
 The current version of this module is always available from its web site at
-L<http://www.eyrie.org/~eagle/software/podlators/>.
+L<https://www.eyrie.org/~eagle/software/podlators/>.
 
 =cut
 

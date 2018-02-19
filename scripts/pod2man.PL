@@ -432,7 +432,7 @@ The man page documenting the an macro set may be L<man(5)> instead of
 L<man(7)> on your system.
 
 The current version of this script is always available from its web site at
-L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
+L<https://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
 Perl core distribution as of 5.6.0.
 
 =cut

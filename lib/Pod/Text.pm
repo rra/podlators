@@ -1016,7 +1016,7 @@ under the same terms as Perl itself.
 L<Pod::Simple>, L<Pod::Text::Termcap>, L<perlpod(1)>, L<pod2text(1)>
 
 The current version of this module is always available from its web site at
-L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
+L<https://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
 Perl core distribution as of 5.6.0.
 
 =cut
