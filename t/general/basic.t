@@ -61,13 +61,10 @@ my %OUTPUT = (
     'Pod::Text::Termcap'    => File::Spec->catfile('t', 'data', 'basic.cap'),
 );
 
-# Options to pass to all formatting modules.  Match the pod2text default.
-my @OPTIONS = (sentence => 0);
-
 # Walk through teach of the modules and format the sample file, checking to
 # ensure the results match the pre-generated file.
 for my $module (sort keys %OUTPUT) {
-    my $parser = $module->new(@OPTIONS);
+    my $parser = $module->new();
     isa_ok($parser, $module, 'parser object');
 
     # Run the formatting module.  Store the output into a Perl variable
