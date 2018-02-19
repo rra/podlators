@@ -6,10 +6,7 @@
 # seemed to produce better output.  It uses Pod::Parser and is designed to be
 # very easy to subclass.
 #
-# Perl core hackers, please note that this module is also separately
-# maintained outside of the Perl core as part of the podlators.  Please send
-# me any patches at the address above in addition to sending them to the
-# standard Perl mailing lists.
+# SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 ##############################################################################
 # Modules and declarations
@@ -775,7 +772,7 @@ __END__
 
 =for stopwords
 alt stderr Allbery Sean Burke's Christiansen UTF-8 pre-Unicode utf8 nourls
-parsers SPDX-License-Identifier GPL-1.0-or-later
+parsers
 
 =head1 NAME
 
@@ -1013,8 +1010,6 @@ Copyright 1999-2002, 2004, 2006, 2008-2009, 2012-2016, 2018 Russ Allbery
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
-
-SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 =head1 SEE ALSO
 

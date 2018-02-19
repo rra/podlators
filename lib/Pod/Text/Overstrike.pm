@@ -10,6 +10,8 @@
 #
 # and because both Pod::Text::Color and Pod::Text::Termcap are not device
 # independent.
+#
+# SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 ##############################################################################
 # Modules and declarations
@@ -134,8 +136,7 @@ sub wrap {
 __END__
 
 =for stopwords
-overstrike overstruck Overstruck Allbery terminal's SPDX-License-Identifier
-GPL-1.0-or-later
+overstrike overstruck Overstruck Allbery terminal's
 
 =head1 NAME
 
@@ -175,14 +176,6 @@ Currently, the outermost formatting instruction wins, so for example
 underlined text inside a region of bold text is displayed as simply bold.
 There may be some better approach possible.
 
-=head1 SEE ALSO
-
-L<Pod::Text>, L<Pod::Simple>
-
-The current version of this module is always available from its web site at
-L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
-Perl core distribution as of 5.6.0.
-
 =head1 AUTHOR
 
 Originally written by Joe Smith <Joe.Smith@inwap.com>, using the framework
@@ -197,7 +190,13 @@ Copyright 2001, 2004, 2008, 2014, 2018 by Russ Allbery <rra@cpan.org>
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
-SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
+=head1 SEE ALSO
+
+L<Pod::Text>, L<Pod::Simple>
+
+The current version of this module is always available from its web site at
+L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
+Perl core distribution as of 5.6.0.
 
 =cut
 

@@ -3,6 +3,8 @@
 # This is a simple subclass of Pod::Text that overrides a few key methods to
 # output the right termcap escape sequences for formatted text on the current
 # terminal type.
+#
+# SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 ##############################################################################
 # Modules and declarations
@@ -164,8 +166,7 @@ __END__
 Pod::Text::Termcap - Convert POD data to ASCII text with format escapes
 
 =for stopwords
-ECMA-48 VT100 Allbery Solaris TERMPATH SPDX-License-Identifier
-GPL-1.0-or-later
+ECMA-48 VT100 Allbery Solaris TERMPATH
 
 =head1 SYNOPSIS
 
@@ -205,14 +206,6 @@ regard as ANSI X3.64 and ISO 6429, the escape codes also used by DEC VT100
 terminals) if the bold, underline, and reset codes aren't set in the
 termcap information.
 
-=head1 SEE ALSO
-
-L<Pod::Text>, L<Pod::Simple>, L<Term::Cap>
-
-The current version of this module is always available from its web site at
-L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
-Perl core distribution as of 5.6.0.
-
 =head1 AUTHOR
 
 Russ Allbery <rra@cpan.org>.
@@ -225,7 +218,13 @@ Copyright 1999, 2001-2002, 2004, 2006, 2008-2009, 2014-2015, 2018 Russ Allbery
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
-SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
+=head1 SEE ALSO
+
+L<Pod::Text>, L<Pod::Simple>, L<Term::Cap>
+
+The current version of this module is always available from its web site at
+L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
+Perl core distribution as of 5.6.0.
 
 =cut
 

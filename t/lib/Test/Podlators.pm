@@ -3,6 +3,8 @@
 # This module is an internal implementation detail of the podlators test
 # suite.  It provides some supporting functions to make it easier to write
 # tests.
+#
+# SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 package Test::Podlators;
 
@@ -511,8 +513,6 @@ Copyright 2015, 2016, 2018 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
-
-SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 =cut
 

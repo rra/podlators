@@ -5,6 +5,8 @@
 # manual pages to manual pages that can be read by the man(1) command.  It is
 # a replacement for the pod2man command distributed with versions of Perl
 # prior to 5.6.
+#
+# SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 ##############################################################################
 # Modules and declarations
@@ -1640,8 +1642,7 @@ __END__
 =for stopwords
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8 UTF-8
 Allbery Sean Burke Ossanna Solaris formatters troff uppercased Christiansen
-nourls parsers Kernighan lquote rquote SPDX-License-Identifier
-GPL-1.0-or-later
+nourls parsers Kernighan lquote rquote
 
 =head1 NAME
 
@@ -2016,8 +2017,6 @@ Substantial contributions by Sean Burke <sburke@cpan.org>.
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
-
-SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 =head1 SEE ALSO
 

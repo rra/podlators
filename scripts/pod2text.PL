@@ -48,6 +48,8 @@ print {$out} <<'SCRIPT_BODY' or die "Cannot write to $file: $!\n";
 #
 # The driver script for Pod::Text, Pod::Text::Termcap, and Pod::Text::Color,
 # invoked by perldoc -t among other things.
+#
+# SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 use 5.006;
 use strict;
@@ -131,7 +133,7 @@ __END__
 
 =for stopwords
 -aclostu --alt --stderr Allbery --overstrike overstrike --termcap --utf8
-UTF-8 subclasses --nourls SPDX-License-Identifier GPL-1.0-or-later
+UTF-8 subclasses --nourls
 
 =head1 NAME
 
@@ -338,15 +340,6 @@ current terminal device.
 
 =back
 
-=head1 SEE ALSO
-
-L<Pod::Text>, L<Pod::Text::Color>, L<Pod::Text::Overstrike>,
-L<Pod::Text::Termcap>, L<Pod::Simple>, L<perlpod(1)>
-
-The current version of this script is always available from its web site at
-L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
-Perl core distribution as of 5.6.0.
-
 =head1 AUTHOR
 
 Russ Allbery <rra@cpan.org>.
@@ -359,7 +352,14 @@ Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2018 Russ Allbery
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
-SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
+=head1 SEE ALSO
+
+L<Pod::Text>, L<Pod::Text::Color>, L<Pod::Text::Overstrike>,
+L<Pod::Text::Termcap>, L<Pod::Simple>, L<perlpod(1)>
+
+The current version of this script is always available from its web site at
+L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
+Perl core distribution as of 5.6.0.
 
 =cut
 SCRIPT_BODY

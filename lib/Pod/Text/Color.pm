@@ -3,6 +3,8 @@
 # This is just a basic proof of concept.  It should later be modified to make
 # better use of color, take options changing what colors are used for what
 # text, and the like.
+#
+# SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 ##############################################################################
 # Modules and declarations
@@ -103,7 +105,7 @@ sub wrap {
 __END__
 
 =for stopwords
-Allbery SPDX-License-Identifier GPL-1.0-or-later
+Allbery
 
 =head1 NAME
 
@@ -136,14 +138,6 @@ This is just a basic proof of concept.  It should be seriously expanded to
 support configurable coloration via options passed to the constructor, and
 B<pod2text> should be taught about those.
 
-=head1 SEE ALSO
-
-L<Pod::Text>, L<Pod::Simple>
-
-The current version of this module is always available from its web site at
-L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
-Perl core distribution as of 5.6.0.
-
 =head1 AUTHOR
 
 Russ Allbery <rra@cpan.org>.
@@ -156,7 +150,13 @@ Copyright 1999, 2001, 2004, 2006, 2008, 2009, 2018 Russ Allbery
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
-SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
+=head1 SEE ALSO
+
+L<Pod::Text>, L<Pod::Simple>
+
+The current version of this module is always available from its web site at
+L<http://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
+Perl core distribution as of 5.6.0.
 
 =cut
 
