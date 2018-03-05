@@ -18,10 +18,9 @@ podlators 4.11 (unreleased)
     information when COLUMNS isn't set, instead of getting a string value
     that later cannot be used numerically.
 
-    Specifying 'none' for the errors option of Pod::Man and Pod::Text no
+    Specifying "none" for the errors option of Pod::Man and Pod::Text no
     longer results in an errata section in the generated documentation,
-    which better matches the documented behaviour that '"none" ignores POD
-    errors entirely, as much as possible.'
+    matching the documented behavior.
 
     Fix order of SEE ALSO section in manual pages to match the
     recommendation of perlpodstyle.
