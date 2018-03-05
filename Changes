@@ -20,7 +20,7 @@ podlators 4.11 (unreleased)
 
     Specifying "none" for the errors option of Pod::Man and Pod::Text no
     longer results in an errata section in the generated documentation,
-    matching the documented behavior.
+    matching the documented behavior.  Thanks, Olly Betts.
 
     Fix order of SEE ALSO section in manual pages to match the
     recommendation of perlpodstyle.

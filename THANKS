@@ -212,6 +212,10 @@ eponymous alias, for finding a bug in honoring the width option in
 Pod::Text::Termcap and a bug in the Pod::Text sentence option
 documentation.
 
+Olly Betts, for fixing errors=none behavior to fully suppress the POD
+errata section, even with unusual errors that still trigger with no
+whining set.
+
 
 Copyright 2001-2003, 2005-2009, 2012-2018 Russ Allbery <rra@cpan.org>
 
