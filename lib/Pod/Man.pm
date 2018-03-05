@@ -129,6 +129,7 @@ sub new {
         $self->no_errata_section (0);
         $self->complain_stderr (0);
     } elsif ($$self{errors} eq 'none') {
+        $self->no_errata_section (0);
         $self->no_whining (1);
     } else {
         croak (qq(Invalid errors setting: "$$self{errors}"));
