@@ -17,7 +17,7 @@ use strict;
 use warnings;
 
 use Pod::Text ();
-use Term::ANSIColor qw(colored);
+use Term::ANSIColor qw(color colored);
 
 use vars qw(@ISA $VERSION);
 
@@ -33,6 +33,7 @@ $VERSION = '4.10';
 sub cmd_head1 {
     my ($self, $attrs, $text) = @_;
     $text =~ s/\s+$//;
+    local $Term::ANSIColor::EACHLINE = "\n";
     $self->SUPER::cmd_head1 ($attrs, colored ($text, 'bold'));
 }
 
@@ -48,9 +49,27 @@ sub cmd_b { return colored ($_[2], 'bold')   }
 sub cmd_f { return colored ($_[2], 'cyan')   }
 sub cmd_i { return colored ($_[2], 'yellow') }
 
+# Analyze a single line and return any formatting codes in effect at the end
+# of that line.
+sub end_format {
+    my ($self, $line) = @_;
+    my $reset = color ('reset');
+    my $current;
+    while ($line =~ /(\e\[[\d;]+m)/g) {
+        my $code = $1;
+        if ($code eq $reset) {
+            undef $current;
+        } else {
+            $current .= $code;
+        }
+    }
+    return $current;
+}
+
 # Output any included code in green.
 sub output_code {
     my ($self, $code) = @_;
+    local $Term::ANSIColor::EACHLINE = "\n";
     $code = colored ($code, 'green');
     $self->output ($code);
 }
@@ -93,6 +112,28 @@ sub wrap {
         }
     }
     $output .= $spaces . $_;
+
+    # less -R always resets terminal attributes at the end of each line, so we
+    # need to clear attributes at the end of lines and then set them again at
+    # the start of the next line.  This requires a second pass through the
+    # wrapped string, accumulating any attributes we see, remembering them,
+    # and then inserting the appropriate sequences at the newline.
+    if ($output =~ /\n/) {
+        my @lines = split (/\n/, $output);
+        my $start_format;
+        for my $line (@lines) {
+            if ($start_format && $line =~ /\S/) {
+                $line =~ s/^(\s*)(\S)/$1$start_format$2/;
+            }
+            $start_format = $self->end_format ($line);
+            if ($start_format) {
+                $line .= color ('reset');
+            }
+        }
+        $output = join ("\n", @lines);
+    }
+
+    # Fix up trailing whitespace and return the results.
     $output =~ s/\s+$/\n\n/;
     $output;
 }

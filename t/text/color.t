@@ -14,7 +14,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 9;
+use Test::More tests => 11;
 use Test::Podlators qw(test_snippet);
 
 # Load the module.
@@ -23,7 +23,7 @@ BEGIN {
 }
 
 # List of snippets run by this test.
-my @snippets = qw(tag-width tag-wrapping width wrapping);
+my @snippets = qw(escape-wrapping tag-width tag-wrapping width wrapping);
 
 # Run all the tests.
 for my $snippet (@snippets) {

@@ -106,6 +106,23 @@ sub cmd_head2 {
 sub cmd_b { my $self = shift; return "$$self{BOLD}$_[1]$$self{NORM}" }
 sub cmd_i { my $self = shift; return "$$self{UNDL}$_[1]$$self{NORM}" }
 
+# Analyze a single line and return any formatting codes in effect at the end
+# of that line.
+sub end_format {
+    my ($self, $line) = @_;
+    my $pattern = "(\Q$$self{BOLD}\E|\Q$$self{UNDL}\E|\Q$$self{NORM}\E)";
+    my $current;
+    while ($line =~ /$pattern/g) {
+        my $code = $1;
+        if ($code eq $$self{NORM}) {
+            undef $current;
+        } else {
+            $current .= $code;
+        }
+    }
+    return $current;
+}
+
 # Output any included code in bold.
 sub output_code {
     my ($self, $code) = @_;
@@ -150,6 +167,28 @@ sub wrap {
         }
     }
     $output .= $spaces . $_;
+
+    # less -R always resets terminal attributes at the end of each line, so we
+    # need to clear attributes at the end of lines and then set them again at
+    # the start of the next line.  This requires a second pass through the
+    # wrapped string, accumulating any attributes we see, remembering them,
+    # and then inserting the appropriate sequences at the newline.
+    if ($output =~ /\n/) {
+        my @lines = split (/\n/, $output);
+        my $start_format;
+        for my $line (@lines) {
+            if ($start_format && $line =~ /\S/) {
+                $line =~ s/^(\s*)(\S)/$1$start_format$2/;
+            }
+            $start_format = $self->end_format ($line);
+            if ($start_format) {
+                $line .= $$self{NORM};
+            }
+        }
+        $output = join ("\n", @lines);
+    }
+
+    # Fix up trailing whitespace and return the results.
     $output =~ s/\s+$/\n\n/;
     return $output;
 }
