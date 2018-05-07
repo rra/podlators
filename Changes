@@ -1,6 +1,6 @@
                       User-Visible podlators Changes
 
-podlators 4.11 (unreleased)
+podlators 4.11 (2018-05-07)
 
     [Pod::Text] The default value of the sentence option is false, not
     true, and has been since at least 2.0.0.  Fix the documentation to
