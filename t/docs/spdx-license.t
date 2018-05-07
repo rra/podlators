@@ -45,9 +45,10 @@ use Test::RRA qw(skip_unless_automated);
 # skip for this check.
 ## no critic (RegularExpressions::ProhibitFixedStringMatches)
 my @IGNORE = (
-    qr{ \A Build \z }xms,                   # Generated file from Build.PL
+    qr{ \A Build ( [.] .* )? \z }ixms,      # Generated file from Build.PL
     qr{ \A LICENSE \z }xms,                 # Generated file, no license itself
-    qr{ \A (Changes|NEWS|TODO) \z }xms,     # Package license should be fine
+    qr{ \A (Changes|NEWS|THANKS) \z }xms,   # Package license should be fine
+    qr{ \A TODO \z }xms,                    # Package license should be fine
     qr{ \A MANIFEST ( [.] .* )? \z }xms,    # Package license should be fine
     qr{ \A Makefile \z }xms,                # Generated file, no license itself
     qr{ \A (MY)? META [.] .* }xms,          # Generated file, no license itself
@@ -68,7 +69,7 @@ my @IGNORE_PATHS = (
 
 # Only run this test during automated testing, since failure doesn't indicate
 # any user-noticable flaw in the package itself.
-skip_unless_automated('SPDX license identifier tests');
+skip_unless_automated('SPDX identifier tests');
 
 # Check a single file for an occurrence of the string.
 #
