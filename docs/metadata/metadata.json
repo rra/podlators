@@ -25,6 +25,7 @@
         "browse": "https://git.eyrie.org/?p=perl/podlators.git",
         "github": "rra/podlators",
         "openhub": "https://www.openhub.net/p/podlators",
+        "travis": "rra/podlators",
     },
     "quote": {
         "author": "Robert Fripp",
@@ -34,6 +35,7 @@
         "section": "perl",
         "tarname": "podlators",
         "version": "podlators",
+        "cpan": "podlators",
     },
     "docs": {
         "user": [
