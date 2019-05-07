@@ -14,14 +14,15 @@ use 5.006;
 use strict;
 use warnings;
 
-use Test::More;
+# Recent versions of Test::More pull in Encode, so avoid it.
+use Test;
 
-# Force the Encode module to be impossible to import.  Sometimes Encode is
-# already loaded before the test suite runs (this seems common for CPAN
-# Testers tests for some reason), so skip the test if that's the case.
+# Force the Encode module to be impossible to import.
+# If Encode is already loaded for some reason, skip all tests.
 BEGIN {
     if ($INC{'Encode.pm'}) {
-        plan skip_all => 'Encode is already loaded';
+        print "1..0 # SKIP Encode is already loaded\n";
+        exit 0;
     } else {
         plan tests => 5;
     }
@@ -31,12 +32,12 @@ BEGIN {
         }
     };
     unshift(@INC, $reject_encode);
-    ok(!eval { require Encode }, 'Cannot load Encode any more');
+    ok(!eval { require Encode }, !0, 'Cannot load Encode any more');
 }
 
 # Load the module.
 BEGIN {
-    use_ok('Pod::Man');
+    ok(eval { require Pod::Man; Pod::Man->import(); 1 }, 1, 'use Pod::Man');
 }
 
 # Ensure we don't get warnings by throwing an exception if we see any.  This
@@ -53,9 +54,9 @@ my $parser = Pod::Man->new(utf8 => 0, name => 'test');
 my $output;
 $parser->output_string(\$output);
 $parser->parse_string_document($pod);
-like(
-    $output,
-    qr{ Beyonce\\[*]\' }xms,
+ok(
+    $output =~ m{ Beyonce\\[*]\' }xms,
+    !0,
     'Works without Encode for non-utf8 output'
 );
 
@@ -63,9 +64,9 @@ like(
 # falling back to non-utf8 output.
 {
     local $SIG{__WARN__} = sub {
-        like(
-            $_[0],
-            qr{ falling [ ] back [ ] to [ ] non-utf8 }xms,
+        ok(
+            $_[0] =~ m{ falling [ ] back [ ] to [ ] non-utf8 }xms,
+            !0,
             'Pod::Man warns on utf8 option with no Encode module'
         );
     };
@@ -74,4 +75,4 @@ like(
 my $output_fallback;
 $parser->output_string(\$output_fallback);
 $parser->parse_string_document($pod);
-is($output_fallback, $output, 'Degraded gracefully to non-utf8 output');
+ok($output_fallback, $output, 'Degraded gracefully to non-utf8 output');
