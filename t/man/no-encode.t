@@ -16,7 +16,10 @@ use warnings;
 
 use Test::More tests => 5;
 
-# Simulate the Encode module not to be present nor loadable.
+# Remove the record of the Encode module being loaded if it already was (it
+# may have been loaded before the test suite runs), and then make it
+# impossible to load it.  This should be enough to trigger the fallback code
+# in Pod::Man.
 BEGIN {
     delete $INC{'Encode.pm'};
     my $reject_encode = sub {
