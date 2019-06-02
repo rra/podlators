@@ -1,5 +1,10 @@
                       User-Visible podlators Changes
 
+podlators 4.13 (unreleased)
+
+    Further improve the man/no-encode.t test to not care whether Encode
+    was already loaded or not.  Thanks, Martin Becker.
+
 podlators 4.12 (2019-05-31)
 
     Skip the man/no-encode.t test if Encode is already loaded while
