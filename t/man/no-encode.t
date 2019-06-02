@@ -14,17 +14,11 @@ use 5.006;
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 5;
 
-# Force the Encode module to be impossible to import.  Sometimes Encode is
-# already loaded before the test suite runs (this seems common for CPAN
-# Testers tests for some reason), so skip the test if that's the case.
+# Simulate the Encode module not to be present nor loadable.
 BEGIN {
-    if ($INC{'Encode.pm'}) {
-        plan skip_all => 'Encode is already loaded';
-    } else {
-        plan tests => 5;
-    }
+    delete $INC{'Encode.pm'};
     my $reject_encode = sub {
         if ($_[1] eq 'Encode.pm') {
             die "refusing to load Encode\n";
