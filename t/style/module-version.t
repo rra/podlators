@@ -11,7 +11,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-use 5.006;
+use 5.008;
 use strict;
 use warnings;
 
@@ -121,7 +121,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2014-2016 Russ Allbery <eagle@eyrie.org>
+Copyright 2014-2016, 2019 Russ Allbery <eagle@eyrie.org>
 
 Copyright 2013-2014 The Board of Trustees of the Leland Stanford Junior
 University
