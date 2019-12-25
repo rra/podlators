@@ -36,14 +36,6 @@ sub new {
     my ($self, %args) = @_;
     my ($ospeed, $term, $termios);
 
-    # $ENV{HOME} is usually not set on Windows.  The default Term::Cap path
-    # may not work on Solaris.
-    unless (exists $ENV{TERMPATH}) {
-        my $home = exists $ENV{HOME} ? "$ENV{HOME}/.termcap:" : '';
-        $ENV{TERMPATH} =
-          "${home}/etc/termcap:/usr/share/misc/termcap:/usr/share/lib/termcap";
-    }
-
     # Fall back on a hard-coded terminal speed if POSIX::Termios isn't
     # available (such as on VMS).
     eval { $termios = POSIX::Termios->new };
@@ -240,29 +232,15 @@ text using the correct termcap escape sequences for the current terminal.
 Apart from the format codes, it in all ways functions like Pod::Text.  See
 L<Pod::Text> for details and available options.
 
-=head1 ENVIRONMENT
-
-This module sets the TERMPATH environment variable globally to:
-
-    $HOME/.termcap:/etc/termcap:/usr/share/misc/termcap:/usr/share/lib/termcap
-
-if it isn't already set.  (The first entry is omitted if the HOME
-environment variable isn't set.)  This is a (very old) workaround for
-problems finding termcap information on older versions of Solaris, and is
-not good module behavior.  Please do not rely on this behavior; it may be
-dropped in a future release.
-
-=head1 NOTES
-
-This module uses Term::Cap to retrieve the formatting escape sequences for
-the current terminal, and falls back on the ECMA-48 (the same in this
-regard as ANSI X3.64 and ISO 6429, the escape codes also used by DEC VT100
-terminals) if the bold, underline, and reset codes aren't set in the
-termcap information.
+This module uses L<Term::Cap> to find the correct terminal settings.  See the
+documentation of that module for how it finds terminal database information
+and how to override that behavior if necessary.  If unable to find control
+strings for bold and underscore formatting, that formatting is skipped,
+resulting in the same output as Pod::Text.
 
 =head1 AUTHOR
 
-Russ Allbery <rra@cpan.org>.
+Russ Allbery <rra@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

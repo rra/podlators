@@ -2,6 +2,13 @@
 
 podlators 4.13 (unreleased)
 
+    [Pod::Text::Termcap] Remove an ancient workaround that set the
+    TERMPATH environment variable whenever a Pod::Text::Termcap object was
+    created in order to add /usr/share/lib/termcap, necessary on some
+    ancient Solaris systems.  Setting environment variables is bad
+    behavior for a module, and the Solaris systems requiring this
+    workaround are long obsolete.
+
     [Pod::Text::Termcap] Remove the fallback to VT100 escape sequences if
     Term::Cap was not able to find sequences for bold, underline, or
     normal text, and instead skip that part of the formatting.  This will

@@ -7,6 +7,8 @@
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
+#
+# SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 use 5.006;
 use strict;
