@@ -12,7 +12,7 @@
 
 package Pod::Text::Termcap;
 
-use 5.006;
+use 5.008;
 use strict;
 use warnings;
 
@@ -159,9 +159,6 @@ sub wrap {
     # $shortchar matches some sequence of $char ending in codes followed by
     # whitespace or the end of the string.  $longchar matches exactly $width
     # $chars, used when we have to truncate and hard wrap.
-    #
-    # $shortchar and $longchar are created in a slightly odd way because the
-    # construct ${char}{0,$width} didn't do the right thing until Perl 5.8.x.
     my $code = "(?:" . $self->format_regex() . ")";
     my $char = "(?>$code*[^\\n])";
     my $shortchar = '^(' . $char . "{0,$width}(?>$code*)" . ')(?:\s+|\z)';

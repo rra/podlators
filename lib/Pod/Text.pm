@@ -14,7 +14,7 @@
 
 package Pod::Text;
 
-use 5.006;
+use 5.008;
 use strict;
 use warnings;
 
@@ -39,16 +39,8 @@ if ($Pod::Simple::VERSION ge 3.30) {
     $NBSP = $Pod::Simple::nbsp;
     $SHY  = $Pod::Simple::shy;
 } else {
-    if ($] ge 5.007_003) {
-        $NBSP = chr utf8::unicode_to_native(0xA0);
-        $SHY  = chr utf8::unicode_to_native(0xAD);
-    } elsif (Pod::Simple::ASCII) {
-        $NBSP = "\xA0";
-        $SHY  = "\xAD";
-    } else {
-        $NBSP = "\x41";
-        $SHY  = "\xCA";
-    }
+    $NBSP = chr utf8::unicode_to_native(0xA0);
+    $SHY  = chr utf8::unicode_to_native(0xAD);
 }
 
 ##############################################################################
@@ -1006,7 +998,7 @@ how to use Pod::Simple.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2002, 2004, 2006, 2008-2009, 2012-2016, 2018 Russ Allbery
+Copyright 1999-2002, 2004, 2006, 2008-2009, 2012-2016, 2018-2019 Russ Allbery
 <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it

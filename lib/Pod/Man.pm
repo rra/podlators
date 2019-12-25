@@ -14,7 +14,7 @@
 
 package Pod::Man;
 
-use 5.006;
+use 5.008;
 use strict;
 use warnings;
 
@@ -24,7 +24,9 @@ use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
 use Carp qw(carp croak);
 use Pod::Simple ();
 
-# Conditionally import Encode and set $HAS_ENCODE if it is available.
+# Conditionally import Encode and set $HAS_ENCODE if it is available.  This is
+# required to support building as part of Perl core, since podlators is built
+# before Encode is.
 our $HAS_ENCODE;
 BEGIN {
     $HAS_ENCODE = eval { require Encode };
@@ -245,13 +247,8 @@ sub init_quotes {
 sub init_page {
     my ($self) = @_;
 
-    # We used to try first to get the version number from a local binary, but
-    # we shouldn't need that any more.  Get the version from the running Perl.
-    # Work a little magic to handle subversions correctly under both the
-    # pre-5.6 and the post-5.6 version numbering schemes.
-    my @version = ($] =~ /^(\d+)\.(\d{3})(\d{0,3})$/);
-    $version[2] ||= 0;
-    $version[2] *= 10 ** (3 - length $version[2]);
+    # Get the version from the running Perl.
+    my @version = ($] =~ /^(\d+)\.(\d{3})(\d+)$/);
     for (@version) { $_ += 0 }
     my $version = join ('.', @version);
 
@@ -2012,7 +2009,7 @@ are mine).
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2010, 2012-2018 Russ Allbery <rra@cpan.org>
+Copyright 1999-2010, 2012-2019 Russ Allbery <rra@cpan.org>
 
 Substantial contributions by Sean Burke <sburke@cpan.org>.
 

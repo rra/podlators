@@ -8,7 +8,7 @@
 
 package Test::Podlators;
 
-use 5.006;
+use 5.008;
 use strict;
 use warnings;
 
@@ -509,7 +509,7 @@ Russ Allbery <rra@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2015, 2016, 2018 Russ Allbery <rra@cpan.org>
+Copyright 2015-2016, 2018-2019 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
