@@ -2,6 +2,13 @@
 
 podlators 4.13 (unreleased)
 
+    [Pod::Text::Termcap] Remove the fallback to VT100 escape sequences if
+    Term::Cap was not able to find sequences for bold, underline, or
+    normal text, and instead skip that part of the formatting.  This will
+    produce more correct behavior on dumb terminals at the possible cost
+    of losing formatting on systems with malfunctioning terminal
+    databases, which seems like an improvement.  Thanks, Zenin.  (#131124)
+
     Further improve the man/no-encode.t test to not care whether Encode
     was already loaded or not.  Thanks, Martin Becker.
 
