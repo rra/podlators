@@ -7,6 +7,11 @@ podlators 4.13 (unreleased)
     and isn't supported by Travis-CI, so true support is dubious.
     Dropping that version allows cleaning up some old compatibility code.
 
+    [Pod::Text] Fix behavior of S<> with Unicode input to be consistent
+    with behavior with a default encoding, namely treat all whitespace
+    inside S<> as non-space characters and do not collapse it with
+    adjacent whitespace.
+
     [Pod::Text::Termcap] Remove an ancient workaround that set the
     TERMPATH environment variable whenever a Pod::Text::Termcap object was
     created in order to add /usr/share/lib/termcap, necessary on some

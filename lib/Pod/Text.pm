@@ -239,7 +239,7 @@ sub wrap {
     my $spaces = ' ' x $$self{MARGIN};
     my $width = $$self{opt_width} - $$self{MARGIN};
     while (length > $width) {
-        if (s/^([^\n]{0,$width})\s+// || s/^([^\n]{$width})//) {
+        if (s/^([^\n]{0,$width})[ \t\n]+// || s/^([^\n]{$width})//) {
             $output .= $spaces . $1 . "\n";
         } else {
             last;
@@ -257,14 +257,16 @@ sub reformat {
     local $_ = shift;
 
     # If we're trying to preserve two spaces after sentences, do some munging
-    # to support that.  Otherwise, smash all repeated whitespace.
+    # to support that.  Otherwise, smash all repeated whitespace.  Be careful
+    # not to use \s here, which in Unicode input may match non-breaking spaces
+    # that we don't want to smash.
     if ($$self{opt_sentence}) {
         s/ +$//mg;
         s/\.\n/. \n/g;
         s/\n/ /g;
         s/   +/  /g;
     } else {
-        s/\s+/ /g;
+        s/[ \t\n]+/ /g;
     }
     return $self->wrap ($_);
 }
