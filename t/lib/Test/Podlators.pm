@@ -278,8 +278,8 @@ sub test_snippet {
 
     # Check the output, errors, and any exception.
     is($got, $data_ref->{output}, "$data_ref->{name}: output");
-    if ($data_ref->{errors}) {
-        is($stderr, $data_ref->{errors}, "$data_ref->{name}: errors");
+    if ($data_ref->{errors} || $stderr) {
+        is($stderr, $data_ref->{errors} || q{}, "$data_ref->{name}: errors");
     }
     if ($data_ref->{exception} || $exception) {
         if ($exception) {
