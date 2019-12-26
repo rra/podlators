@@ -327,15 +327,14 @@ sub start_document {
 
     # When UTF-8 output is set, check whether our output file handle already
     # has a PerlIO encoding layer set.  If it does not, we'll need to encode
-    # our output before printing it (handled in the output() sub).  Wrap the
-    # check in an eval to handle versions of Perl without PerlIO.
+    # our output before printing it (handled in the output() sub).
     $$self{ENCODE} = 0;
     if ($$self{opt_utf8}) {
         $$self{ENCODE} = 1;
         eval {
             my @options = (output => 1, details => 1);
             my $flag = (PerlIO::get_layers ($$self{output_fh}, @options))[-1];
-            if ($flag & PerlIO::F_UTF8 ()) {
+            if ($flag && ($flag & PerlIO::F_UTF8 ())) {
                 $$self{ENCODE} = 0;
                 $$self{ENCODING} = 'UTF-8';
             }

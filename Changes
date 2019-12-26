@@ -7,6 +7,9 @@ podlators 4.13 (unreleased)
     and isn't supported by Travis-CI, so true support is dubious.
     Dropping that version allows cleaning up some old compatibility code.
 
+    Fix a warning when outputing to something without a PerlIO layer, such
+    as when output_string is used.
+
     [Pod::Text] Fix behavior of S<> with Unicode input to be consistent
     with behavior with a default encoding, namely treat all whitespace
     inside S<> as non-space characters and do not collapse it with
