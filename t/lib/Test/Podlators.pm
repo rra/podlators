@@ -110,8 +110,8 @@ sub read_snippet {
     while (defined($line = <$fh>)) {
         if ($line =~ m{ \A \s* \[ (\S+) \] \s* \z }xms) {
             $section = $1;
+            $data{$section} = q{};
         } elsif ($section) {
-            $data{$section} ||= q{};
             $data{$section} .= $line;
         }
     }
@@ -514,7 +514,7 @@ Russ Allbery <rra@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2015-2016, 2018-2019 Russ Allbery <rra@cpan.org>
+Copyright 2015-2016, 2018-2020 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
