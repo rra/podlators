@@ -303,10 +303,18 @@ sub test_snippet {
 # $class       - Class name of the formatter, as a string
 # $snippet     - Path to the snippet file defining the test
 # $options_ref - Hash of options with the following keys:
+#   encoding    - Expect the snippet to be in this non-standard encoding
 #   perlio_utf8 - Set to 1 to set a PerlIO UTF-8 encoding on the output file
 sub test_snippet_with_io {
     my ($class, $snippet, $options_ref) = @_;
     my $data_ref = read_snippet($snippet);
+
+    # Determine the encoding to expect for the output portion of the snippet.
+    my $encoding;
+    if (defined($options_ref)) {
+        $encoding = $options_ref->{encoding};
+    }
+    $encoding ||= 'UTF-8';
 
     # Create the formatter object.
     my $parser = $class->new(%{ $data_ref->{options} }, name => 'TEST');
@@ -340,20 +348,23 @@ sub test_snippet_with_io {
     $parser->parse_from_file($input_file, $output);
     close($output) or BAIL_OUT("cannot flush output to $output_file: $!");
 
-    # Read back in the results, checking to ensure that we didn't output the
-    # accent definitions if we wrote UTF-8 output.
+    # Read back in the results.  For Pod::Man, also ensure that we didn't
+    # output the accent definitions if we wrote UTF-8 output.
     open(my $results, '<', $output_file)
       or BAIL_OUT("cannot open $output_file: $!");
     my ($line, $saw_accents);
-    while (defined($line = <$results>)) {
-        $line = decode('UTF-8', $line);
-        if ($line =~ m{ Accent [ ] mark [ ] definitions }xms) {
-            $saw_accents = 1;
+    if ($class eq 'Pod::Man') {
+        while (defined($line = <$results>)) {
+            $line = decode('UTF-8', $line);
+            if ($line =~ m{ Accent [ ] mark [ ] definitions }xms) {
+                $saw_accents = 1;
+            }
+            last if $line =~ m{ \A [.]nh }xms;
         }
-        last if $line =~ m{ \A [.]nh }xms;
     }
     my $saw = do { local $/ = undef; <$results> };
     $saw = decode('UTF-8', $saw);
+    $saw =~ s{ \n\s+ \z }{\n}xms;
     close($results) or BAIL_OUT("cannot close output file: $!");
 
     # Clean up.
@@ -361,14 +372,16 @@ sub test_snippet_with_io {
 
     # Check the accent definitions and the output.
     my $perlio = $options_ref->{perlio_utf8} ? ' (PerlIO)' : q{};
-    is(
-        $saw_accents,
-        $data_ref->{options}{utf8} ? undef : 1,
-        "$data_ref->{name}: accent definitions$perlio"
-    );
+    if ($class eq 'Pod::Man') {
+        is(
+            $saw_accents,
+            $data_ref->{options}{utf8} ? undef : 1,
+            "$data_ref->{name}: accent definitions$perlio"
+        );
+    }
     is(
         $saw,
-        decode('UTF-8', $data_ref->{output}),
+        decode($encoding, $data_ref->{output}),
         "$data_ref->{name}: output$perlio"
     );
     return;
