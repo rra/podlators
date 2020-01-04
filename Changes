@@ -1,6 +1,6 @@
                       User-Visible podlators Changes
 
-podlators 4.14 (unreleased)
+podlators 4.14 (2020-01-04)
 
     Document that parse_lines and parse_string_document expect raw bytes,
     not decoded characters.
