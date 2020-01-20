@@ -3,7 +3,8 @@
 [![Build
 status](https://travis-ci.org/rra/podlators.svg?branch=master)](https://travis-ci.org/rra/podlators)
 [![CPAN
-version](https://img.shields.io/cpan/v/podlators.svg)](https://metacpan.org/release/podlators)
+version](https://img.shields.io/cpan/v/podlators)](https://metacpan.org/release/podlators)
+[![License](https://img.shields.io/cpan/l/podlators)](https://github.com/rra/podlators/blob/master/LICENSE)
 
 Copyright 1999-2010, 2012-2020 Russ Allbery <rra@cpan.org>.  This software
 is distributed under the same terms as Perl itself.  Please see the
