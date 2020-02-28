@@ -511,7 +511,14 @@ sub guesswork {
     if ($$self{MAGIC_SMALLCAPS}) {
         s{
             ( ^ | [\s\(\"\'\`\[\{<>] | \\[ ]  )                           # (1)
-            ( [A-Z] [A-Z] (?: \s? [/A-Z+:\d_\$&] | \\- | \s? [.,\"] )* )  # (2)
+            (                                                             # (2)
+                [A-Z] [A-Z]
+                (?:
+                    [A-Z\d]+ \"? [.,]? \"?
+                    | \s* \"? [A-Z]
+                    | [/:_\$&-] [A-Z] [A-Z]
+                )*
+            )
             (?= [\s>\}\]\(\)\'\".?!,;] | \\*\(-- | \\[ ] | $ )            # (3)
         } {
             $1 . '\s-1' . $2 . '\s0'
@@ -528,6 +535,7 @@ sub guesswork {
     # then consist of word characters or colons.
     if ($$self{MAGIC_FUNC}) {
         s{
+            (?<! \\ )
             ( \b | \\s-1 )
             ( [A-Za-z_] ([:\w] | \\s-?[01])+ \(\) )
         } {
@@ -2011,7 +2019,7 @@ are mine).
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2010, 2012-2019 Russ Allbery <rra@cpan.org>
+Copyright 1999-2010, 2012-2020 Russ Allbery <rra@cpan.org>
 
 Substantial contributions by Sean Burke <sburke@cpan.org>.
 

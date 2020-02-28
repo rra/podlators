@@ -1,5 +1,11 @@
                       User-Visible podlators Changes
 
+podlators 4.15 (unreleased)
+
+    [Pod::Man] Fix another instance of bad interaction between making
+    functions bold and marking all-capital strings as small caps.  Thanks,
+    Dima Kogan.  (#132007)
+
 podlators 4.14 (2020-01-04)
 
     Document that parse_lines and parse_string_document expect raw bytes,
