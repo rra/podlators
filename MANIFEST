@@ -1,5 +1,6 @@
 .gitignore
 Changes
+cpanfile
 docs/metadata/blurb
 docs/metadata/description
 docs/metadata/metadata.json
@@ -73,6 +74,7 @@ t/data/snippets/man/periods
 t/data/snippets/man/quote-escaping
 t/data/snippets/man/rquote-none
 t/data/snippets/man/small-caps-magic
+t/data/snippets/man/small-caps-magic-function
 t/data/snippets/man/soft-hyphens
 t/data/snippets/man/trailing-space
 t/data/snippets/man/true-false
