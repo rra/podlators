@@ -1,7 +1,7 @@
 # podlators 4.14
 
 [![Build
-status](https://github.com/rra/podlators/workflows/Build/badge.svg)](https://github.com/rra/podlators/actions)
+status](https://github.com/rra/podlators/workflows/build/badge.svg)](https://github.com/rra/podlators/actions)
 [![CPAN
 version](https://img.shields.io/cpan/v/podlators)](https://metacpan.org/release/podlators)
 [![License](https://img.shields.io/cpan/l/podlators)](https://github.com/rra/podlators/blob/master/LICENSE)
