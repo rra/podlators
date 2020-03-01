@@ -25,7 +25,7 @@
         "browse": "https://git.eyrie.org/?p=perl/podlators.git",
         "github": "rra/podlators",
         "openhub": "https://www.openhub.net/p/podlators",
-        "travis": "rra/podlators",
+        "workflows": true,
     },
     "quote": {
         "author": "Robert Fripp",
