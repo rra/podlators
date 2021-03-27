@@ -280,8 +280,7 @@ sub test_snippet {
     $got =~ s{ \n\s+ \z }{\n}xms;
 
     # Check the output, errors, and any exception.
-    my $expected = decode($encoding, $data_ref->{output});
-    is($got, $expected, "$data_ref->{name}: output");
+    is($got, $data_ref->{output}, "$data_ref->{name}: output");
     if ($data_ref->{errors} || $stderr) {
         is($stderr, $data_ref->{errors} || q{}, "$data_ref->{name}: errors");
     }

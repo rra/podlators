@@ -284,15 +284,13 @@ sub output {
     if ($SHY) {
         $text =~ s/$SHY//g;
     }
-    unless ($$self{opt_utf8}) {
-        my $encoding = $$self{encoding} || '';
-        if ($encoding && $encoding ne $$self{ENCODING}) {
-            $$self{ENCODING} = $encoding;
-            eval { binmode ($$self{output_fh}, ":encoding($encoding)") };
-        }
-    }
     if ($$self{ENCODE}) {
-        print { $$self{output_fh} } encode ('UTF-8', $text);
+        my $encoding = $$self{opt_utf8} ? 'UTF-8' : $self->encoding();
+        if ($encoding) {
+            print { $$self{output_fh} } encode ($encoding, $text);
+        } else {
+            print { $$self{output_fh} } $text;
+        }
     } else {
         print { $$self{output_fh} } $text;
     }
@@ -322,24 +320,17 @@ sub start_document {
     $$self{MARGIN}  = $margin;  # Default left margin.
     $$self{PENDING} = [[]];     # Pending output.
 
-    # We have to redo encoding handling for each document.
-    $$self{ENCODING} = '';
-
-    # When UTF-8 output is set, check whether our output file handle already
-    # has a PerlIO encoding layer set.  If it does not, we'll need to encode
-    # our output before printing it (handled in the output() sub).
-    $$self{ENCODE} = 0;
-    if ($$self{opt_utf8}) {
-        $$self{ENCODE} = 1;
-        eval {
-            my @options = (output => 1, details => 1);
-            my $flag = (PerlIO::get_layers ($$self{output_fh}, @options))[-1];
-            if ($flag && ($flag & PerlIO::F_UTF8 ())) {
-                $$self{ENCODE} = 0;
-                $$self{ENCODING} = 'UTF-8';
-            }
-        };
-    }
+    # We have to redo encoding handling for each document.  Check whether the
+    # output file handle already has a PerlIO encoding layer set and, if so,
+    # disable encoding.  Otherwise, enable encoding if UTF-8 output is forced.
+    $$self{ENCODE} = 1;
+    eval {
+        my @options = (output => 1, details => 1);
+        my $flag = (PerlIO::get_layers ($$self{output_fh}, @options))[-1];
+        if ($flag && ($flag & PerlIO::F_UTF8 ())) {
+            $$self{ENCODE} = 0;
+        }
+    };
 
     return '';
 }
@@ -884,10 +875,7 @@ set.  It is supported for backward compatibility.
 
 =item utf8
 
-By default, Pod::Text uses the same output encoding as the input encoding
-of the POD source (provided that Perl was built with PerlIO; otherwise, it
-doesn't encode its output).  If this option is given, the output encoding
-is forced to UTF-8.
+If this option is given, the output encoding is forced to UTF-8.
 
 Be aware that, when using this option, the input encoding of your POD
 source should be properly declared unless it's US-ASCII.  Pod::Simple will
@@ -900,6 +888,10 @@ declare the encoding.  See L<perlpod(1)> for more information.
 The column at which to wrap text on the right-hand side.  Defaults to 76.
 
 =back
+
+By default, Pod::Text uses the same output encoding as the input encoding of
+the POD source.  However, if a PerlIO layer with UTF-8 encoding is set on the
+output file handle, the output will always be in UTF-8.
 
 The standard Pod::Simple method parse_file() takes one argument naming the
 POD file to read from.  By default, the output is sent to C<STDOUT>, but
@@ -916,8 +908,11 @@ their output to C<STDOUT> unless changed with the output_fh() method.  Be
 aware that parse_lines() and parse_string_document() both expect raw bytes,
 not decoded characters.
 
-To put the output from any parse method into a string instead of a file
-handle, call the output_string() method instead of output_fh().
+To put the output from any parse method into a scalar variable instead of a
+file handle, call the output_string() method instead of output_fh().  Be aware
+that the output stored in that scalar variable will be already encoded (in
+UTF-8 if the C<utf8> option was set, or the encoding of the input document
+otherwise).
 
 See L<Pod::Simple> for more specific details on the methods available to
 all derived parsers.

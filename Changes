@@ -6,6 +6,14 @@ podlators 4.15 (unreleased)
     functions bold and marking all-capital strings as small caps.  Thanks,
     Dima Kogan.  (#132007)
 
+    [Pod::Text] When UTF-8 output was not forced, output to a string
+    (instead of a file handle) was not properly encoded because the
+    encoding was done with a PerlIO layer.  Overhaul and simplify the
+    encoding code to use the following logic: If a PerlIO UTF-8 encoding
+    layer is set on the output file, trust it and do nothing further.
+    Otherwise, if UTF-8 output is requested, always encode in UTF-8.
+    Otherwise, encode the output in the same encoding as the input file.
+
 podlators 4.14 (2020-01-04)
 
     Document that parse_lines and parse_string_document expect raw bytes,
