@@ -2,7 +2,7 @@
              (format POD source into various output formats)
                 Maintained by Russ Allbery <rra@cpan.org>
 
-  Copyright 1999-2010, 2012-2020 Russ Allbery <rra@cpan.org>.  This
+  Copyright 1999-2010, 2012-2021 Russ Allbery <rra@cpan.org>.  This
   software is distributed under the same terms as Perl itself.  Please see
   the section LICENSE below for more information.
 
@@ -67,18 +67,6 @@ REQUIREMENTS
   variety of implementations and Pod::Man is used to generate all of
   Perl's own manual pages, so most of the bugs have been weeded out.
 
-  The following additional Perl modules will be used by the test suite if
-  present:
-
-  * Test::MinimumVersion
-  * Test::Pod
-  * Test::Spelling
-  * Test::Strict
-  * Test::Synopsis
-
-  All are available on CPAN.  Those tests will be skipped if the modules
-  are not available.
-
 BUILDING AND INSTALLATION
 
   podlators uses ExtUtils::MakeMaker and can be installed using the same
@@ -102,6 +90,18 @@ TESTING
 
       prove -vb <path-to-test>
 
+  The following additional Perl modules will be used by the test suite if
+  present:
+
+  * Test::MinimumVersion
+  * Test::Pod
+  * Test::Spelling
+  * Test::Strict
+  * Test::Synopsis
+
+  All are available on CPAN.  Those tests will be skipped if the modules
+  are not available.
+
   To enable tests that don't detect functionality problems but are used to
   sanity-check the release, set the environment variable RELEASE_TESTING
   to a true value.  To enable tests that may be sensitive to the local
@@ -118,9 +118,9 @@ SUPPORT
   will always have the current version of this package, the current
   documentation, and pointers to any additional resources.
 
-  For bug tracking, use the CPAN bug tracker at:
+  For bug tracking, use the issue tracker on GitHub:
 
-      https://rt.cpan.org/Dist/Display.html?Name=podlators
+      https://github.com/rra/podlators/issues
 
   However, please be aware that I tend to be extremely busy and work
   projects often take priority.  I'll save your report and get to it as
@@ -143,16 +143,14 @@ SOURCE REPOSITORY
 
   The eyrie.org repository is the canonical one, maintained by the author,
   but using GitHub is probably more convenient for most purposes.  Pull
-  requests are gratefully reviewed and normally accepted.  It's probably
-  better to use the CPAN bug tracker than GitHub issues, though, to keep
-  all Perl module issues in the same place.
+  requests are gratefully reviewed and normally accepted.
 
 LICENSE
 
   The podlators package as a whole is covered by the following copyright
   statement and license:
 
-    Copyright 1999-2010, 2012-2020 Russ Allbery <rra@cpan.org>
+    Copyright 1999-2010, 2012-2021 Russ Allbery <rra@cpan.org>
 
     This program is free software; you may redistribute it and/or modify
     it under the same terms as Perl itself.  This means that you may

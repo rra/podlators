@@ -1,4 +1,4 @@
-# podlators 4.14
+# podlators
 
 [![Build
 status](https://github.com/rra/podlators/workflows/build/badge.svg)](https://github.com/rra/podlators/actions)
@@ -6,7 +6,7 @@ status](https://github.com/rra/podlators/workflows/build/badge.svg)](https://git
 version](https://img.shields.io/cpan/v/podlators)](https://metacpan.org/release/podlators)
 [![License](https://img.shields.io/cpan/l/podlators)](https://github.com/rra/podlators/blob/master/LICENSE)
 
-Copyright 1999-2010, 2012-2020 Russ Allbery <rra@cpan.org>.  This software
+Copyright 1999-2010, 2012-2021 Russ Allbery <rra@cpan.org>.  This software
 is distributed under the same terms as Perl itself.  Please see the
 section [License](#license) below for more information.
 
@@ -71,18 +71,6 @@ by me under GNU groff, but Perl users send bug reports for a wide variety
 of implementations and Pod::Man is used to generate all of Perl's own
 manual pages, so most of the bugs have been weeded out.
 
-The following additional Perl modules will be used by the test suite if
-present:
-
-* Test::MinimumVersion
-* Test::Pod
-* Test::Spelling
-* Test::Strict
-* Test::Synopsis
-
-All are available on CPAN.  Those tests will be skipped if the modules are
-not available.
-
 ## Building and Installation
 
 podlators uses ExtUtils::MakeMaker and can be installed using the same
@@ -111,6 +99,18 @@ If a test vails, you can run a single test with verbose output via:
     prove -vb <path-to-test>
 ```
 
+The following additional Perl modules will be used by the test suite if
+present:
+
+* Test::MinimumVersion
+* Test::Pod
+* Test::Spelling
+* Test::Strict
+* Test::Synopsis
+
+All are available on CPAN.  Those tests will be skipped if the modules are
+not available.
+
 To enable tests that don't detect functionality problems but are used to
 sanity-check the release, set the environment variable `RELEASE_TESTING`
 to a true value.  To enable tests that may be sensitive to the local
@@ -124,11 +124,11 @@ The [podlators web page](https://www.eyrie.org/~eagle/software/podlators/)
 will always have the current version of this package, the current
 documentation, and pointers to any additional resources.
 
-For bug tracking, use the [CPAN bug
-tracker](https://rt.cpan.org/Dist/Display.html?Name=podlators).  However,
-please be aware that I tend to be extremely busy and work projects often
-take priority.  I'll save your report and get to it as soon as I can, but
-it may take me a couple of months.
+For bug tracking, use the [issue tracker on
+GitHub](https://github.com/rra/podlators/issues).  However, please be
+aware that I tend to be extremely busy and work projects often take
+priority.  I'll save your report and get to it as soon as I can, but it
+may take me a couple of months.
 
 ## Source Repository
 
@@ -143,16 +143,14 @@ web](https://git.eyrie.org/?p=perl/podlators.git).
 
 The eyrie.org repository is the canonical one, maintained by the author,
 but using GitHub is probably more convenient for most purposes.  Pull
-requests are gratefully reviewed and normally accepted.  It's probably
-better to use the CPAN bug tracker than GitHub issues, though, to keep all
-Perl module issues in the same place.
+requests are gratefully reviewed and normally accepted.
 
 ## License
 
 The podlators package as a whole is covered by the following copyright
 statement and license:
 
-> Copyright 1999-2010, 2012-2020
+> Copyright 1999-2010, 2012-2021
 >     Russ Allbery <rra@cpan.org>
 >
 > This program is free software; you may redistribute it and/or modify it
