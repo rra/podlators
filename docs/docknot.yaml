@@ -139,6 +139,7 @@ test:
     The following additional Perl modules will be used by the test suite if
     present:
 
+    * Test::CPAN::Changes (part of CPAN-Changes)
     * Test::MinimumVersion
     * Test::Pod
     * Test::Spelling

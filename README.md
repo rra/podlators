@@ -102,6 +102,7 @@ If a test vails, you can run a single test with verbose output via:
 The following additional Perl modules will be used by the test suite if
 present:
 
+* Test::CPAN::Changes (part of CPAN-Changes)
 * Test::MinimumVersion
 * Test::Pod
 * Test::Spelling
