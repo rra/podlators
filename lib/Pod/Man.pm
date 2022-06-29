@@ -1598,7 +1598,7 @@ sub preamble_template {
 .    ds /
 .\}
 .if t \{\
-.    ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h"|\\n:u"
+.    ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h'|\\n:u'
 .    ds ` \\k:\h'-(\\n(.wu*8/10-\*(#H)'\`\h'|\\n:u'
 .    ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'^\h'|\\n:u'
 .    ds , \\k:\h'-(\\n(.wu*8/10)',\h'|\\n:u'
@@ -2019,7 +2019,7 @@ are mine).
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2010, 2012-2020 Russ Allbery <rra@cpan.org>
+Copyright 1999-2010, 2012-2020, 2022 Russ Allbery <rra@cpan.org>
 
 Substantial contributions by Sean Burke <sburke@cpan.org>.
 
