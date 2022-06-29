@@ -3,7 +3,7 @@
 # Test for graceful degradation to non-utf8 output without Encode module.
 #
 # Copyright 2016 Niko Tyni <ntyni@iki.fi>
-# Copyright 2016, 2018-2019 Russ Allbery <rra@cpan.org>
+# Copyright 2016, 2018-2019, 2022 Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -38,18 +38,16 @@ BEGIN {
 
 # Ensure we don't get warnings by throwing an exception if we see any.  This
 # is overridden below when we enable utf8 and do expect a warning.
-local $SIG{__WARN__} = sub { die join("\n",
-                                      "No warnings expected; instead got:",
-                                      @_);
-                           };
+local $SIG{__WARN__} = sub {
+    my @warnings = @_;
+    die join("\n", "No warnings expected; instead got:", @warnings);
+};
+
 # First, check that everything works properly when utf8 isn't set.  We expect
 # to get accent-mangled ASCII output.  Don't use Test::Podlators, since it
 # wants to import Encode.
-#
-## no critic (ValuesAndExpressions::ProhibitEscapedCharacters)
-my $pod = "=encoding latin1\n\n=head1 NAME\n\nBeyonc"
-        . chr(utf8::unicode_to_native(0xE9))
-        . "!";
+my $invalid_char = chr(utf8::unicode_to_native(0xE9));
+my $pod = "=encoding latin1\n\n=head1 NAME\n\nBeyonc${invalid_char}!";
 my $parser = Pod::Man->new(utf8 => 0, name => 'test');
 my $output;
 $parser->output_string(\$output);

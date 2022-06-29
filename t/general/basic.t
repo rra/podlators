@@ -12,7 +12,7 @@
 # the machinery to run small POD snippets through the specific formatter being
 # tested should probably be used instead.
 #
-# Copyright 2001-2002, 2004, 2006, 2009, 2012, 2014-2015, 2018-2019
+# Copyright 2001-2002, 2004, 2006, 2009, 2012, 2014-2015, 2018-2019, 2022
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -81,7 +81,7 @@ for my $module (sort keys %OUTPUT) {
     }
 
     # Try to convert on EBCDIC boxes so that the test still works.
-    if (ord "A" == 193 && $module eq 'Pod::Text::Termcap') {
+    if (ord('A') == 193 && $module eq 'Pod::Text::Termcap') {
         $got =~ tr{\033}{\047};
     }
 
