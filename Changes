@@ -16,10 +16,10 @@
    (-u or --utf8 to pod2man) is still supported and is equivalent to
    setting encoding to UTF-8.
 
- - Pod::Text now supports an encoding option, and pod2text supports a -e
-   or --encoding option, to force the output encoding, similar to
-   Pod::Man.  The utf8 option (-u or --utf8 to pod2text) is still
-   supported and is equivalent to setting encoding to UTF-8.
+ - Pod::Text now supports an encoding option (-e or --encoding to
+   pod2text) to force the output encoding, similar to Pod::Man.  The utf8
+   option (-u or --utf8 to pod2text) is still supported and is equivalent
+   to setting encoding to UTF-8.
 
  - Pod::Text now defaults to UTF-8 encoding if it sees a non-ASCII
    character on a non-EBCDIC system and the input encoding is not
@@ -28,7 +28,7 @@
    cost of assuming UTF-8 output.  Pod::Text also now commits to an
    encoding the first time it outputs a non-ASCII character and sticks
    with that encoding for the rest of the file, even if the detected or
-   declared input encoding changes.
+   declared input encoding changes.  (#102631)
 
  - Stop using a PerlIO encoding layer for Pod::Text output and instead
    use Encode.  If a PerlIO encoding layer is already set, trust it and do
