@@ -75,6 +75,41 @@ my %FORMATTING = (
     X        => { cleanup => 0,               guesswork => 0               },
 );
 
+# Try to map an encoding as understood by Perl Encode to an encoding
+# understood by groff's preconv.  Encode doesn't care about hyphens are
+# capitalization, but preconv does.  The key is the canonicalized Encode
+# encoding, and the value is something preconv might understand.
+#
+# FreeBSD mandoc only understands utf-8 and iso-latin-1 as of 2022-09-24.
+# groff preconv prefers iso-8859-1, but also understands iso-latin-1, so
+# convert ISO-8859-1 to iso-latin-1 for FreeBSD.
+our %ENCODINGS = (
+    ascii     => 'us-ascii',
+    big5      => 'big5',
+    big5eten  => 'big5',
+    cp950     => 'big5',
+    cp1047    => 'cp1047',
+    euccn     => 'gb2312',
+    eucjp     => 'euc-jp',
+    euckr     => 'euc-kr',
+    gb2312    => 'gb2312',
+    gb2312raw => 'gb2312',
+    iso88591  => 'iso-latin-1',
+    iso88592  => 'iso-8859-2',
+    iso88595  => 'iso-8859-5',
+    iso88597  => 'iso-8859-7',
+    iso88599  => 'iso-8859-9',
+    iso885913 => 'iso-8859-13',
+    iso885915 => 'iso-8859-15',
+    koi8r     => 'koi8-r',
+    latin1    => 'iso-8859-1',
+    usascii   => 'us-ascii',
+    utf8      => 'utf-8',
+    utf16     => 'utf-16',
+    utf16be   => 'utf-16be',
+    utf16le   => 'utf-16le',
+);
+
 ##############################################################################
 # Object initialization
 ##############################################################################
@@ -1013,8 +1048,7 @@ sub devise_date {
 # module, but this order is correct for both Solaris and Linux.
 sub preamble {
     my ($self, $name, $section, $date) = @_;
-    my $accents = $$self{ENCODING} eq 'roff';
-    my $preamble = $self->preamble_template ($accents);
+    my $preamble = $self->preamble_template();
 
     # Build the index line and make sure that it will be syntactically valid.
     my $index = "$name $section";
@@ -1040,6 +1074,23 @@ sub preamble {
 
     # Get the version information.
     my $version = $self->version_report;
+
+    # groff's preconv script will use this line to correctly determine the
+    # input encoding if the encoding is one of the ones it recognizes.  It
+    # must be the first or second line.
+    #
+    # If the output encoding is some version of Unicode, we could also add a
+    # Unicode Byte Order Mark to the start of the file, but I am concerned
+    # that may break a *roff implementation that might otherwise cope with
+    # Unicode.  Revisit this if someone files a bug report about it.
+    if ($$self{ENCODING} ne 'roff') {
+        my $normalized = lc($$self{ENCODING});
+        $normalized =~ s{-}{}g;
+        my $coding = $ENCODINGS{$normalized} || lc($$self{ENCODING});
+        if ($coding ne 'us-ascii') {
+            $self->output (qq{.\\\" -*- mode: troff; coding: $coding -*-\n});
+        }
+    }
 
     # Finally output everything.
     $self->output (<<"----END OF HEADER----");
@@ -1516,11 +1567,10 @@ sub parse_string_document {
 # Premable
 ##############################################################################
 
-# The following is the static preamble which starts all *roff output we
-# generate.  Most is static except for the font to use as a fixed-width font,
-# which is designed by @CFONT@, and the left and right quotes to use for C<>
-# text, designated by @LQOUTE@ and @RQUOTE@.  However, the second part, which
-# defines the accent marks, is only used if $escapes is set to true.
+# The preamble which starts all *roff output we generate.  Most is static
+# except for the font to use as a fixed-width font (designed by @CFONT@), and
+# the left and right quotes to use for C<> text (designated by @LQOUTE@ and
+# @RQUOTE@).  Accent marks are only defined if the output encoding is roff.
 sub preamble_template {
     my ($self, $accents) = @_;
     my $preamble = <<'----END OF PREAMBLE----';
@@ -1593,7 +1643,7 @@ sub preamble_template {
 ----END OF PREAMBLE----
 #'# for cperl-mode
 
-    if ($accents) {
+    if ($$self{ENCODING} eq 'roff') {
         $preamble .= <<'----END OF PREAMBLE----'
 .\"
 .\" Accent mark definitions (@(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2).

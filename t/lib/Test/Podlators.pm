@@ -324,6 +324,12 @@ sub test_snippet_with_io {
     }
     $outencoding ||= 'UTF-8';
 
+    # Additional test output based on whether we're using PerlIO.
+    my $perlio = q{};
+    if ($options_ref->{perlio_utf8} || $options_ref->{perlio_iso}) {
+        $perlio = ' (PerlIO)';
+    }
+
     # Create the formatter object.
     my $parser = $class->new(%{ $data_ref->{options} }, name => 'TEST');
     isa_ok($parser, $class, 'Parser object');
@@ -361,12 +367,27 @@ sub test_snippet_with_io {
     $parser->parse_from_file($input_file, $output);
     close($output) or BAIL_OUT("cannot flush output to $output_file: $!");
 
-    # Read back in the results.  For Pod::Man, also ensure that we didn't
-    # output the accent definitions if we wrote UTF-8 output.
+    # Read back in the results.  For Pod::Man, also check the coding line, and
+    # ensure that we didn't output the accent definitions if we wrote UTF-8
+    # output.
     open(my $results, '<', $output_file)
       or BAIL_OUT("cannot open $output_file: $!");
     my ($line, $saw_accents);
     if ($class eq 'Pod::Man') {
+        $line = <$results>;
+        my $coding = lc($outencoding);
+        if ($outencoding eq 'ascii') {
+            unlike(
+                $line, qr{ mode: [ ] troff }xms,
+                "$data_ref->{name}: no preconv coding line$perlio"
+            );
+        } else {
+            is(
+                $line,
+                qq{.\\\" -*- mode: troff; coding: $coding -*-\n},
+                "$data_ref->{name}: preconv coding line$perlio"
+            );
+        }
         while (defined($line = <$results>)) {
             $line = decode($outencoding, $line);
             if ($line =~ m{ Accent [ ] mark [ ] definitions }xms) {
@@ -384,10 +405,6 @@ sub test_snippet_with_io {
     unlink($input_file, $output_file);
 
     # Check the accent definitions and the output.
-    my $perlio = q{};
-    if ($options_ref->{perlio_utf8} || $options_ref->{perlio_iso}) {
-        $perlio = ' (PerlIO)';
-    }
     if ($class eq 'Pod::Man') {
         is(
             $saw_accents,
@@ -529,7 +546,8 @@ the output portion of the snippet.
 
 The same as test_snippet(), except, rather than parsing the input into a
 string buffer, this function uses real, temporary input and output files.
-This can be used to test I/O layer handling and proper encoding.
+This can be used to test I/O layer handling and proper encoding.  It also
+does additional tests for the preamble to the *roff output.
 
 OPTIONS, if present, is a reference to a hash of options chosen from the
 following:

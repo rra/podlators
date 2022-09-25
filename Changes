@@ -10,6 +10,10 @@
    substitutions and *roff escapes to generate ASCII-only output.  The
    utf8 and -u options no longer do anything and are ignored.  (#68741)
 
+ - Add a coding tag comment to the start of Pod::Man output if the output
+   encoding is not ASCII.  groff's preconv program and FreeBSD's mandoc
+   will use this line to determine the input encoding.
+
  - Fix another Pod::Man instance of bad interaction between making
    functions bold and marking all-capital strings as small caps.  Thanks,
    Dima Kogan.  (#132007)

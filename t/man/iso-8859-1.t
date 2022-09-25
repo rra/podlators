@@ -15,7 +15,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 16;
+use Test::More tests => 19;
 use Test::Podlators qw(test_snippet test_snippet_with_io);
 
 # Load the module.
@@ -25,7 +25,7 @@ BEGIN {
 
 # Test the snippet with the old-school roff encoding.  Use _with_io to check
 # that we correctly add the accents preamble.
-test_snippet_with_io('Pod::Man', 'man/iso-8859-1-roff');
+test_snippet_with_io('Pod::Man', 'man/iso-8859-1-roff', { output => 'ascii' });
 
 # Test error handling when there are characters that cannot be represented in
 # the output character set.
