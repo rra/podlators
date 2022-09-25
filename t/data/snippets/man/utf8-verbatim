@@ -1,6 +1,9 @@
 [name]
 UTF-8 handling in verbatim text
 
+[options]
+utf8 1
+
 [input]
 =encoding utf-8
 

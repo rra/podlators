@@ -111,6 +111,16 @@ our %ENCODINGS = (
 );
 
 ##############################################################################
+# Utility functions
+##############################################################################
+
+# Returns whether the given encoding needs a call to Encode::encode.
+sub _needs_encode {
+    my ($encoding) = @_;
+    return $encoding ne 'roff' && $encoding ne 'groff';
+}
+
+##############################################################################
 # Object initialization
 ##############################################################################
 
@@ -152,17 +162,21 @@ sub new {
     # later, after all the modules are available, so that UTF-8 handling will
     # be correct.
     my %options = @_;
-    if (($options{encoding} || 'UTF-8') ne 'roff' && !$HAS_ENCODE) {
+    if (defined $options{encoding}) {
+        $$self{ENCODING} = $options{encoding};
+    } elsif ($options{utf8}) {
+        $$self{ENCODING} = 'UTF-8';
+    } else {
+        $$self{ENCODING} = 'groff';
+    }
+    if (_needs_encode($$self{ENCODING}) && !$HAS_ENCODE) {
         if (!$ENV{PERL_CORE}) {
             carp ('encoding requested but Encode module not available,'
-                    . ' falling back to *roff escapes');
+                    . ' falling back to groff escapes');
         }
-        $$self{ENCODING} = 'roff';
-    } elsif (exists $options{encoding}) {
-        $options{ENCODING} = $options{encoding};
-    } else {
-        $options{ENCODING} = 'UTF-8';
+        $$self{ENCODING} = 'groff';
     }
+    delete $options{utf8};
     delete $options{encoding};
 
     # Pod::Simple doesn't do anything useful with our arguments, but we want
@@ -435,14 +449,20 @@ sub format_text {
     }
 
     # Except in <Data> blocks, always convert non-breaking spaces and soft
-    # hyphens, since *roff has native escapes for those.  If *roff encoding is
-    # requested, also do that (but not if we're in a non-ASCII environment,
-    # since our character translation tables only support ASCII).
+    # hyphens, since *roff has native escapes for those.  If groff or roff
+    # encoding is requested and we're in an ASCII environment, also do that.
+    # For EBCDIC, we just write what we get and hope for the best.
     if ($convert) {
         $text =~ s{\xA0}{\\ }g;
         $text =~ s{\xAD}{\\%}g;
-        if ($$self{ENCODING} eq 'roff' && ASCII) {
-            $text =~ s/([^\x00-\x7F])/$ESCAPES{ord ($1)} || "X"/eg;
+        if (ASCII) {
+            if ($$self{ENCODING} eq 'groff') {
+                $text =~ s{ ([^\x00-\x7F]) }{
+                    '\\[u' . sprintf('%04X', ord($1)) . ']'
+                }xmsge;
+            } elsif ($$self{ENCODING} eq 'roff') {
+                $text =~ s/([^\x00-\x7F])/$ESCAPES{ord ($1)} || "X"/eg;
+            }
         }
     }
 
@@ -819,7 +839,7 @@ sub outindex {
 # Output some text, without any additional changes.
 sub output {
     my ($self, @text) = @_;
-    if ($$self{ENCODE} && $$self{ENCODING} ne 'roff') {
+    if ($$self{ENCODE} && _needs_encode($$self{ENCODING})) {
         my $check = sub {
             my ($char) = @_;
             my $display = '"\x{' . hex($char) . '}"';
@@ -1083,7 +1103,7 @@ sub preamble {
     # Unicode Byte Order Mark to the start of the file, but I am concerned
     # that may break a *roff implementation that might otherwise cope with
     # Unicode.  Revisit this if someone files a bug report about it.
-    if ($$self{ENCODING} ne 'roff') {
+    if (_needs_encode($$self{ENCODING})) {
         my $normalized = lc($$self{ENCODING});
         $normalized =~ s{-}{}g;
         my $coding = $ENCODINGS{$normalized} || lc($$self{ENCODING});
@@ -1723,7 +1743,7 @@ __END__
 =for stopwords
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8 UTF-8
 Allbery Sean Burke Ossanna Solaris formatters troff uppercased Christiansen
-nourls parsers Kernighan lquote rquote unrepresentable
+nourls parsers Kernighan lquote rquote unrepresentable mandoc
 
 =head1 NAME
 
@@ -1803,27 +1823,32 @@ reproducible regardless of local time zone).
 =item encoding
 
 Specifies the encoding of the output.  The value must be an encoding
-recognized by the L<Encode> module (see L<Encode::Supported>).  The default is
-UTF-8.  If the output contains characters that cannot be represented in this
-encoding, that is an error that will be reported as configured by the
-C<errors> option.  If error handling is other than C<die>, the unrepresentable
-character will be replaced with the Encode substitution character (normally
-C<?>).
+recognized by the L<Encode> module (see L<Encode::Supported>).  If the output
+contains characters that cannot be represented in this encoding, that is an
+error that will be reported as configured by the C<errors> option.  If error
+handling is other than C<die>, the unrepresentable character will be replaced
+with the Encode substitution character (normally C<?>).
 
-If the C<encoding> option is set to the special value C<roff>, or if the
-Encode module is not available, Pod::Man will do its historic transformation
-of (some) ISO 8859-1 characters into *roff escapes that may be adequate in
-troff and may be readable (if ugly) in nroff.  With this encoding, all other
-non-ASCII characters will be replaced with C<X>.  This was the default
-behavior of versions of Pod::Man before 5.00.  It may be required for very old
-troff and nroff implementations that do not support UTF-8, but its
-representation of any non-ASCII character is very poor and often specific to
-European languages.  Its use is discouraged.
+If the C<encoding> option is set to the special value C<groff> (the default),
+or if the Encode module is not available and the encoding is set to anything
+other than C<roff> (see below), Pod::Man will translate all non-ASCII
+characters to C<\[uNNNN]> Unicode escapes.  These are not traditionally part
+of the *roff language, but are supported by B<groff> and B<mandoc> and thus by
+the majority of manual page processors in use today.
 
-If the output file handle has a PerlIO encoding layer set, this parameter will
-be ignored and no encoding will be done by Pod::Man.  It will instead rely on
-the encoding layer to make whatever output encoding transformations are
-desired.
+If the C<encoding> option is set to the special value C<roff>, Pod::Man will
+do its historic transformation of (some) ISO 8859-1 characters into *roff
+escapes that may be adequate in troff and may be readable (if ugly) in nroff.
+This was the default behavior of versions of Pod::Man before 5.00.  With this
+encoding, all other non-ASCII characters will be replaced with C<X>.  It may
+be required for very old troff and nroff implementations that do not support
+UTF-8, but its representation of any non-ASCII character is very poor and
+often specific to European languages.  Its use is discouraged.
+
+If the output file handle has a PerlIO encoding layer set, setting C<encoding>
+to anything other than C<groff> or C<roff> will be ignored and no encoding
+will be done by Pod::Man.  It will instead rely on the encoding layer to make
+whatever output encoding transformations are desired.
 
 WARNING: The input encoding of the POD source is independent from the output
 encoding, and setting this option does not affect the interpretation of the
@@ -1963,8 +1988,9 @@ support C<errors>.  Normally, the C<errors> option should be used instead.
 
 =item utf8
 
-This option used to tell Pod::Man to produce UTF-8 output.  Since this is now
-the default as of Pod::Man 5.00, it is ignored and does nothing.
+If this option is set to a true value, the output encoding is set to UTF-8.
+This is equivalent to setting C<encoding> to C<UTF-8> if C<encoding> is not
+already set.  It is supported for backward compatibility.
 
 =back
 

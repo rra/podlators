@@ -293,16 +293,8 @@ will contain terminal control sequences for your current terminal type.
 
 =item B<-u>, B<--utf8>
 
-By default, B<pod2text> tries to use the same output encoding as its input
-encoding (to be backward-compatible with older versions).  This option
-says to instead force the output encoding to UTF-8.
-
-Be aware that, when using this option, the input encoding of your POD
-source should be properly declared unless it's US-ASCII.  Pod::Simple
-will attempt to guess the encoding and may be successful if it's
-Latin-1 or UTF-8, but it will warn, which by default results in a
-B<pod2text> failure.  Use the C<=encoding> command to declare the
-encoding.  See L<perlpod(1)> for more information.
+Set the output encoding to UTF-8.  This is equivalent to C<--encoding=UTF-8>
+and is supported for backward compatibility.
 
 =item B<-w>, B<--width=>I<width>, B<->I<width>
 

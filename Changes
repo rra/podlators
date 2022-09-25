@@ -2,18 +2,24 @@
 
 5.00 - Not Released
 
- - Pod::Man now defaults to UTF-8 output as if the utf8 option or the -u
-   command-line option to pod2man was given.  There is a new encoding
-   option (-e or --encoding to pod2man) to change the output encoding to
-   any encoding recognized by Encode.  It can also be set to the special
-   value "roff", which requests the old behavior of using character
-   substitutions and *roff escapes to generate ASCII-only output.  The
-   utf8 and -u options no longer do anything and are ignored.  (#68741)
+ - The default output encoding of Pod::Man on non-EBCDIC systems is now
+   groff, a special output encoding that replaces all non-ASCII characters
+   with \[uNNNN] escapes.  This escape was not supported by the originally
+   *roff implementation, but it is supported by groff and mandoc and
+   allows proper representation of Unicode characters.  (#68741, #73804)
+
+ - Pod::Man now supports an encoding option (-e or --encoding to pod2man),
+   to change the output encoding to any encoding recognized by Encode, or
+   the special values groff or roff.  Setting it to roff requests the old
+   behavior of using character substitutions and *roff escapes to generate
+   ASCII-only output (the default prior to this version).  The utf8 option
+   (-u or --utf8 to pod2man) is still supported and is equivalent to
+   setting encoding to UTF-8.
 
  - Pod::Text now supports an encoding option, and pod2text supports a -e
    or --encoding option, to force the output encoding, similar to
-   Pod::Man.  The utf8 option is still supported and is equivalent to
-   setting encoding to UTF-8.
+   Pod::Man.  The utf8 option (-u or --utf8 to pod2text) is still
+   supported and is equivalent to setting encoding to UTF-8.
 
  - Pod::Text now defaults to UTF-8 encoding if it sees a non-ASCII
    character on a non-EBCDIC system and the input encoding is not

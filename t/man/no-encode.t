@@ -55,38 +55,43 @@ $parser->parse_string_document($pod);
 like(
     $output,
     qr{ Beyonce\\[*]\' }xms,
-    'Works without Encode for non-utf8 output'
+    'Works without Encode for roff encoding'
 );
 
-# Now, try with the default encoding, which will be UTF-8.  We should then get
-# a warning that we're falling back to non-utf8 output.
-{
-    local $SIG{__WARN__} = sub {
-        like(
-            $_[0],
-            qr{ falling [ ] back [ ] to [ ] [*]roff [ ] escapes }xms,
-            'Pod::Man warns with no Encode module'
-        );
-    };
-    $parser = Pod::Man->new(name => 'test');
-}
-my $output_fallback;
-$parser->output_string(\$output_fallback);
+# Likewise for an encoding of groff.
+$parser = Pod::Man->new(name => 'test', encoding => 'groff');
+$output = q{};
+$parser->output_string(\$output);
 $parser->parse_string_document($pod);
-is($output_fallback, $output, 'Default degraded gracefully to *roff output');
+like(
+    $output,
+    qr{ Beyonc\\\[u00E9\] }xms,
+    'Works without Encode for groff encoding'
+);
 
-# We should get the same error if we set an explicit encoding.
+# Likewise for the default encoding, which should be groff.
+$parser = Pod::Man->new(name => 'test');
+my $output_groff;
+$parser->output_string(\$output_groff);
+$parser->parse_string_document($pod);
+is($output_groff, $output, 'Works without Encode for default encoding');
+
+# Now try with an explicit output encoding, which should produce an error
+# message and then degrade to groff.
 {
     local $SIG{__WARN__} = sub {
         like(
             $_[0],
-            qr{ falling [ ] back [ ] to [ ] [*]roff [ ] escapes }xms,
+            qr{ falling [ ] back [ ] to [ ] groff [ ] escapes }xms,
             'Pod::Man warns with no Encode module'
         );
     };
     $parser = Pod::Man->new(name => 'test', encoding => 'iso-8859-1');
 }
-$output_fallback = q{};
+my $output_fallback = q{};
 $parser->output_string(\$output_fallback);
 $parser->parse_string_document($pod);
-is($output_fallback, $output, 'Explicit degraded gracefully to *roff output');
+is(
+    $output_fallback, $output_groff,
+    'Explicit degraded gracefully to groff output'
+);

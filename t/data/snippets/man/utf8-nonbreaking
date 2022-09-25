@@ -1,6 +1,9 @@
 [name]
 UTF-8 non-breaking space
 
+[options]
+encoding utf-8
+
 [input]
 =encoding utf-8
 

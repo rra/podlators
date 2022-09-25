@@ -128,7 +128,7 @@ __END__
 =for stopwords
 en em --stderr stderr --utf8 UTF-8 overdo markup MT-LEVEL Allbery Solaris URL
 troff troff-specific formatters uppercased Christiansen --nourls UTC prepend
-lquote rquote unrepresentable
+lquote rquote unrepresentable mandoc
 
 =head1 NAME
 
@@ -199,22 +199,27 @@ that the output will be reproducible regardless of local time zone).
 =item B<-e> I<encoding>, B<--encoding>=I<encoding>
 
 Specifies the encoding of the output.  I<encoding> must be an encoding
-recognized by the L<Encode> module (see L<Encode::Supported>).  The default is
-UTF-8.  If the output contains characters that cannot be represented in this
-encoding, that is an error that will be reported as configured by the
-B<--errors> option.  If error handling is other than C<die>, the
-unrepresentable character will be replaced with the Encode substitution
-character (normally C<?>).
+recognized by the L<Encode> module (see L<Encode::Supported>).  If the output
+contains characters that cannot be represented in this encoding, that is an
+error that will be reported as configured by the B<--errors> option.  If error
+handling is other than C<die>, the unrepresentable character will be replaced
+with the Encode substitution character (normally C<?>).
 
-If I<encoding> is set to the special value C<roff>, or if the Encode module is
-not available, B<pod2man> will do its historic transformation of (some) ISO
-8859-1 characters into *roff escapes that may be adequate in troff and may be
-readable (if ugly) in nroff.  With this encoding, all other non-ASCII
-characters will be replaced with C<X>.  This was the default behavior of
-versions of B<pod2man> before 5.00.  It may be required for very old troff and
-nroff implementations that do not support UTF-8, but its representation of any
-non-ASCII character is very poor and often specific to European languages.
-Its use is discouraged.
+If the C<encoding> option is set to the special value C<groff> (the default),
+or if the Encode module is not available and the encoding is set to anything
+other than C<roff> (see below), Pod::Man will translate all non-ASCII
+characters to C<\[uNNNN]> Unicode escapes.  These are not traditionally part
+of the *roff language, but are supported by B<groff> and B<mandoc> and thus by
+the majority of manual page processors in use today.
+
+If I<encoding> is set to the special value C<roff>, B<pod2man> will do its
+historic transformation of (some) ISO 8859-1 characters into *roff escapes
+that may be adequate in troff and may be readable (if ugly) in nroff.  This
+was the default behavior of versions of B<pod2man> before 5.00.  With this
+encoding, all other non-ASCII characters will be replaced with C<X>.  It may
+be required for very old troff and nroff implementations that do not support
+UTF-8, but its representation of any non-ASCII character is very poor and
+often specific to European languages.  Its use is discouraged.
 
 WARNING: The input encoding of the POD source is independent from the output
 encoding, and setting this option does not affect the interpretation of the
