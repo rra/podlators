@@ -10,6 +10,24 @@
    substitutions and *roff escapes to generate ASCII-only output.  The
    utf8 and -u options no longer do anything and are ignored.  (#68741)
 
+ - Pod::Text now supports an encoding option, and pod2text supports a -e
+   or --encoding option, to force the output encoding, similar to
+   Pod::Man.  The utf8 option is still supported and is equivalent to
+   setting encoding to UTF-8.
+
+ - Pod::Text now defaults to UTF-8 encoding if it sees a non-ASCII
+   character on a non-EBCDIC system and the input encoding is not
+   specified.  This should fix rendering of E<> escapes of non-ASCII
+   characters in POD files that don't specify an input encoding, at the
+   cost of assuming UTF-8 output.  Pod::Text also now commits to an
+   encoding the first time it outputs a non-ASCII character and sticks
+   with that encoding for the rest of the file, even if the detected or
+   declared input encoding changes.
+
+ - Stop using a PerlIO encoding layer for Pod::Text output and instead
+   use Encode.  If a PerlIO encoding layer is already set, trust it and do
+   no encoding.  This fixes encoding problems with output to a string.
+
  - Add a coding tag comment to the start of Pod::Man output if the output
    encoding is not ASCII.  groff's preconv program and FreeBSD's mandoc
    will use this line to determine the input encoding.
@@ -17,14 +35,6 @@
  - Fix another Pod::Man instance of bad interaction between making
    functions bold and marking all-capital strings as small caps.  Thanks,
    Dima Kogan.  (#132007)
-
- - In Pod::Text, when UTF-8 output was not forced, output to a string
-   (instead of a file handle) was not properly encoded because the
-   encoding was done with a PerlIO layer.  Overhaul and simplify the
-   encoding code to use the following logic: If a PerlIO encoding layer is
-   set on the output file, trust it and do nothing further.  Otherwise, if
-   UTF-8 output is requested, always encode in UTF-8.  Otherwise, encode
-   the output in the same encoding as the input file.
 
  - Avoid non-standard *roff escape in the troff accent mark definition for
    an acute accent.  \h"..." was used instead of \h'...' as seen in the

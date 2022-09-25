@@ -43,6 +43,11 @@ if ($Pod::Simple::VERSION ge 3.30) {
     $SHY  = chr utf8::unicode_to_native(0xAD);
 }
 
+# Import the ASCII constant from Pod::Simple.  This is true iff we're in an
+# ASCII-based universe (including such things as ISO 8859-1 and UTF-8), and is
+# generally only false for EBCDIC.
+BEGIN { *ASCII = \&Pod::Simple::ASCII }
+
 ##############################################################################
 # Initialization
 ##############################################################################
@@ -89,11 +94,17 @@ sub new {
     my @opts = map { ("opt_$_", $opts{$_}) } keys %opts;
     %$self = (%$self, @opts);
 
-    # Send errors to stderr if requested.
+    # Backwards-compatibility support for the stderr option.
     if ($$self{opt_stderr} and not $$self{opt_errors}) {
         $$self{opt_errors} = 'stderr';
     }
     delete $$self{opt_stderr};
+
+    # Backwards-compatibility support for the utf8 option.
+    if ($$self{opt_utf8} && !$$self{opt_encoding}) {
+        $$self{opt_encoding} = 'UTF-8';
+    }
+    delete $$self{opt_utf8};
 
     # Validate the errors parameter and act on it.
     if (not defined $$self{opt_errors}) {
@@ -272,9 +283,7 @@ sub reformat {
 }
 
 # Output text to the output device.  Replace non-breaking spaces with spaces
-# and soft hyphens with nothing, and then try to fix the output encoding if
-# necessary to match the input encoding unless UTF-8 output is forced.  This
-# preserves the traditional pass-through behavior of Pod::Text.
+# and soft hyphens with nothing, and then determine the output encoding.
 sub output {
     my ($self, @text) = @_;
     my $text = join ('', @text);
@@ -284,10 +293,36 @@ sub output {
     if ($SHY) {
         $text =~ s/$SHY//g;
     }
+
+    # The logic used here is described in the POD documentation.  Prefer the
+    # configured encoding, then the pass-through option of using the same
+    # encoding as the input, and then UTF-8, but commit to an encoding for the
+    # document.
+    #
+    # ENCODE says whether to encode or not and is turned off if there is a
+    # PerlIO encoding layer (in start_document).  ENCODING is the encoding
+    # that we previously committed to and is cleared at the start of each
+    # document.
     if ($$self{ENCODE}) {
-        my $encoding = $$self{opt_utf8} ? 'UTF-8' : $self->encoding();
+        my $encoding = $$self{ENCODING};
+        if (!$encoding) {
+            $encoding = $self->encoding();
+            if (!$encoding && ASCII && $text =~ /[^\x00-\x7F]/) {
+                $encoding = 'UTF-8';
+            }
+            if ($encoding) {
+                $$self{ENCODING} = $encoding;
+            }
+        }
         if ($encoding) {
-            print { $$self{output_fh} } encode ($encoding, $text);
+            my $check = sub {
+                my ($char) = @_;
+                my $display = '"\x{' . hex($char) . '}"';
+                my $error = "$display does not map to $$self{ENCODING}";
+                $self->whine ($self->line_count(), $error);
+                return Encode::encode ($$self{ENCODING}, chr($char));
+            };
+            print { $$self{output_fh} } encode ($encoding, $text, $check);
         } else {
             print { $$self{output_fh} } $text;
         }
@@ -322,7 +357,7 @@ sub start_document {
 
     # We have to redo encoding handling for each document.  Check whether the
     # output file handle already has a PerlIO encoding layer set and, if so,
-    # disable encoding.  Otherwise, enable encoding if UTF-8 output is forced.
+    # disable encoding.
     $$self{ENCODE} = 1;
     eval {
         my @options = (output => 1, details => 1);
@@ -331,6 +366,7 @@ sub start_document {
             $$self{ENCODE} = 0;
         }
     };
+    $$self{ENCODING} = $$self{opt_encoding};
 
     return '';
 }
@@ -757,7 +793,7 @@ __END__
 
 =for stopwords
 alt stderr Allbery Sean Burke's Christiansen UTF-8 pre-Unicode utf8 nourls
-parsers
+parsers EBCDIC autodetecting superset unrepresentable
 
 =head1 NAME
 
@@ -776,10 +812,71 @@ Pod::Text - Convert POD data to formatted text
 
 =head1 DESCRIPTION
 
-Pod::Text is a module that can convert documentation in the POD format
-(the preferred language for documenting Perl) into formatted text.  It
-uses no special formatting controls or codes whatsoever, and its output is
-therefore suitable for nearly any device.
+Pod::Text is a module that can convert documentation in the POD format (the
+preferred language for documenting Perl) into formatted text.  It uses no
+special formatting controls or codes, and its output is therefore suitable for
+nearly any device.
+
+=head2 Encoding
+
+Pod::Text uses the following logic to choose an output encoding, in order:
+
+=over 4
+
+=item 1.
+
+If a PerlIO encoding layer is set on the output file handle, do not do any
+output encoding and will instead rely on the PerlIO encoding layer.
+
+=item 2.
+
+If the C<encoding> or C<utf8> options are set, use the output encoding
+specified by those options.
+
+=item 3.
+
+If the input encoding of the POD source file was explicitly specified (using
+C<=encoding>) or automatically detected by Pod::Simple, use that as the output
+encoding as well.
+
+=item 4.
+
+Otherwise, if running on a non-EBCDIC system, use UTF-8 as the output
+encoding.  Since this is a superset of ASCII, this will result in ASCII output
+unless the POD input contains non-ASCII characters without declaring or
+autodetecting an encoding (usually via EZ<><> escapes).
+
+=item 5.
+
+Otherwise, for EBCDIC systems, output without doing any encoding and hope
+this works.
+
+=back
+
+One caveat: Pod::Text has to commit to an output encoding the first time it
+outputs a non-ASCII character, and then has to stick with it for consistency.
+However, C<=encoding> commands don't have to be at the beginning of a POD
+document.  If someone uses a non-ASCII character early in a document with an
+escape, such as EZ<><0xEF>, and then puts C<=encoding iso-8859-1> later,
+ideally Pod::Text would follow rule 3 and output the entire document as ISO
+8859-1.  Instead, it will commit to UTF-8 following rule 4 as soon as it sees
+that escape, and then stick with that encoding for the rest of the document.
+
+Unfortunately, there's no universally good choice for an output encoding.
+Each choice will be incorrect in some circumstances.  This approach was chosen
+primarily for backwards compatibility.  Callers should consider forcing the
+output encoding via C<encoding> if they have any knowledge about what encoding
+the user may expect.
+
+In particular, consider importing the L<Encode::Locale> module, if available,
+and setting C<encoding> to C<locale> to use an output encoding appropriate to
+the user's locale.  But be aware that if the user is not using locales or is
+using a locale of C<C>, Encode::Locale will set the output encoding to
+US-ASCII.  This will cause all non-ASCII characters will be replaced with C<?>
+and produce a flurry of warnings about unsupported characters, which may or
+may not be what you want.
+
+=head1 METHODS
 
 As a derived class from Pod::Simple, Pod::Text supports the same methods and
 interfaces.  See L<Pod::Simple> for all the details; briefly, one creates a
@@ -801,6 +898,28 @@ colon in the left margin.  Defaults to false.
 If set to a true value, the non-POD parts of the input file will be included
 in the output.  Useful for viewing code documented with POD blocks with the
 POD rendered and the code left intact.
+
+=item encoding
+
+Specifies the encoding of the output.  The value must be an encoding
+recognized by the L<Encode> module (see L<Encode::Supported>).  If the output
+contains characters that cannot be represented in this encoding, that is an
+error that will be reported as configured by the C<errors> option.  If error
+handling is other than C<die>, the unrepresentable character will be replaced
+with the Encode substitution character (normally C<?>).
+
+If the output file handle has a PerlIO encoding layer set, this parameter will
+be ignored and no encoding will be done by Pod::Man.  It will instead rely on
+the encoding layer to make whatever output encoding transformations are
+desired.
+
+WARNING: The input encoding of the POD source is independent from the output
+encoding, and setting this option does not affect the interpretation of the
+POD input.  Unless your POD source is US-ASCII, its encoding should be
+declared with the C<=encoding> command in the source, as near to the top of
+the file as possible.  If this is not done, Pod::Simple will will attempt to
+guess the encoding and may be successful if it's Latin-1 or UTF-8, but it will
+produce warnings.  See L<perlpod(1)> for more information.
 
 =item errors
 
@@ -875,23 +994,15 @@ set.  It is supported for backward compatibility.
 
 =item utf8
 
-If this option is given, the output encoding is forced to UTF-8.
-
-Be aware that, when using this option, the input encoding of your POD
-source should be properly declared unless it's US-ASCII.  Pod::Simple will
-attempt to guess the encoding and may be successful if it's Latin-1 or
-UTF-8, but it will produce warnings.  Use the C<=encoding> command to
-declare the encoding.  See L<perlpod(1)> for more information.
+If this option is set to a true value, the output encoding is set to UTF-8.
+This is equivalent to setting C<encoding> to C<UTF-8> if C<encoding> is not
+already set.  It is supported for backward compatibility.
 
 =item width
 
 The column at which to wrap text on the right-hand side.  Defaults to 76.
 
 =back
-
-By default, Pod::Text uses the same output encoding as the input encoding of
-the POD source.  However, if a PerlIO layer with UTF-8 encoding is set on the
-output file handle, the output will always be in UTF-8.
 
 The standard Pod::Simple method parse_file() takes one argument naming the
 POD file to read from.  By default, the output is sent to C<STDOUT>, but
@@ -910,9 +1021,8 @@ not decoded characters.
 
 To put the output from any parse method into a scalar variable instead of a
 file handle, call the output_string() method instead of output_fh().  Be aware
-that the output stored in that scalar variable will be already encoded (in
-UTF-8 if the C<utf8> option was set, or the encoding of the input document
-otherwise).
+that the output stored in that scalar variable will be already encoded (see
+L</Encoding>).
 
 See L<Pod::Simple> for more specific details on the methods available to
 all derived parsers.
@@ -996,15 +1106,16 @@ how to use Pod::Simple.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2002, 2004, 2006, 2008-2009, 2012-2016, 2018-2019 Russ Allbery
-<rra@cpan.org>
+Copyright 1999-2002, 2004, 2006, 2008-2009, 2012-2016, 2018-2019, 2022 Russ
+Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-L<Pod::Simple>, L<Pod::Text::Termcap>, L<perlpod(1)>, L<pod2text(1)>
+L<Encode::Locale>, L<Encode::Supproted>, L<Pod::Simple>,
+L<Pod::Text::Termcap>, L<perlpod(1)>, L<pod2text(1)>
 
 The current version of this module is always available from its web site at
 L<https://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the

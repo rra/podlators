@@ -81,10 +81,10 @@ my $stdin;
 # Parse our options.  Use the same names as Pod::Text for simplicity.
 my %options;
 Getopt::Long::config ('bundling');
-GetOptions (\%options, 'alt|a', 'code', 'color|c', 'errors=s', 'help|h',
-            'indent|i=i', 'loose|l', 'margin|left-margin|m=i', 'nourls',
-            'overstrike|o', 'quotes|q=s', 'sentence|s', 'stderr', 'termcap|t',
-            'utf8|u', 'width|w=i')
+GetOptions (\%options, 'alt|a', 'code', 'color|c', 'encoding|e=s', 'errors=s',
+            'help|h', 'indent|i=i', 'loose|l', 'margin|left-margin|m=i',
+            'nourls', 'overstrike|o', 'quotes|q=s', 'sentence|s', 'stderr',
+            'termcap|t', 'utf8|u', 'width|w=i')
     or exit 1;
 pod2usage (1) if $options{help};
 
@@ -133,7 +133,7 @@ __END__
 
 =for stopwords
 -aclostu --alt --stderr Allbery --overstrike overstrike --termcap --utf8
-UTF-8 subclasses --nourls
+UTF-8 subclasses --nourls EBCDIC unrepresentable
 
 =head1 NAME
 
@@ -141,9 +141,9 @@ pod2text - Convert POD data to formatted ASCII text
 
 =head1 SYNOPSIS
 
-pod2text [B<-aclostu>] [B<--code>] [B<--errors>=I<style>] [B<-i> I<indent>]
-    S<[B<-q> I<quotes>]> [B<--nourls>] [B<--stderr>] S<[B<-w> I<width>]>
-    [I<input> [I<output> ...]]
+pod2text [B<-aclostu>] [B<--code>] S<[B<-e> I<encoding>]>
+    [B<--errors>=I<style>] [B<-i> I<indent>] S<[B<-q> I<quotes>]>
+    [B<--nourls>] [B<--stderr>] S<[B<-w> I<width>]> [I<input> [I<output> ...]]
 
 pod2text B<-h>
 
@@ -160,6 +160,11 @@ isn't given, the formatted output is written to C<STDOUT>.  Several POD
 files can be processed in the same B<pod2text> invocation (saving module
 load and compile times) by providing multiple pairs of I<input> and
 I<output> files on the command line.
+
+By default, the output encoding is the same as the encoding of the input file,
+or UTF-8 if that encoding is not set (except on EBCDIC systems).  See the
+B<-e> option to explicitly set the output encoding and L<Pod::Text/Encoding>
+for more discussion.
 
 =head1 OPTIONS
 
@@ -180,6 +185,23 @@ code left intact.
 
 Format the output with ANSI color escape sequences.  Using this option
 requires that Term::ANSIColor be installed on your system.
+
+=item B<-e> I<encoding>, B<--encoding>=I<encoding>
+
+Specifies the encoding of the output.  I<encoding> must be an encoding
+recognized by the L<Encode> module (see L<Encode::Supported>).  If the output
+contains characters that cannot be represented in this encoding, that is an
+error that will be reported as configured by the C<errors> option.  If error
+handling is other than C<die>, the unrepresentable character will be replaced
+with the Encode substitution character (normally C<?>).
+
+WARNING: The input encoding of the POD source is independent from the output
+encoding, and setting this option does not affect the interpretation of the
+POD input.  Unless your POD source is US-ASCII, its encoding should be
+declared with the C<=encoding> command in the source, as near to the top of
+the file as possible.  If this is not done, Pod::Simple will will attempt to
+guess the encoding and may be successful if it's Latin-1 or UTF-8, but it will
+produce warnings.  See L<perlpod(1)> for more information.
 
 =item B<--errors>=I<style>
 
@@ -346,7 +368,7 @@ Russ Allbery <rra@cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2019 Russ Allbery
+Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2019, 2022 Russ Allbery
 <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
@@ -354,8 +376,8 @@ under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-L<Pod::Text>, L<Pod::Text::Color>, L<Pod::Text::Overstrike>,
-L<Pod::Text::Termcap>, L<Pod::Simple>, L<perlpod(1)>
+L<Encode::Supported>, L<Pod::Text>, L<Pod::Text::Color>,
+L<Pod::Text::Overstrike>, L<Pod::Text::Termcap>, L<Pod::Simple>, L<perlpod(1)>
 
 The current version of this script is always available from its web site at
 L<https://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
