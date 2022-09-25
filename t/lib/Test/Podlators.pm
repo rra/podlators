@@ -303,7 +303,9 @@ sub test_snippet {
 # $snippet     - Path to the snippet file defining the test
 # $options_ref - Hash of options with the following keys:
 #   encoding    - Expect the snippet to be in this non-standard encoding
-#   perlio_utf8 - Set to 1 to set a PerlIO UTF-8 encoding on the output file
+#   perlio_utf8 - Set to 1 to set PerlIO UTF-8 encoding on the output file
+#   perlio_iso  - Set to 1 to set PerlIO ISO 8859-1 encoding on the output file
+#   output      - Expect the output to be in this non-standard encoding
 sub test_snippet_with_io {
     my ($class, $snippet, $options_ref) = @_;
     my $data_ref = read_snippet($snippet);
@@ -314,6 +316,13 @@ sub test_snippet_with_io {
         $encoding = $options_ref->{encoding};
     }
     $encoding ||= 'UTF-8';
+
+    # Determine the encoding to expect for the actual output.
+    my $outencoding;
+    if (defined($options_ref)) {
+        $outencoding = $options_ref->{output};
+    }
+    $outencoding ||= 'UTF-8';
 
     # Create the formatter object.
     my $parser = $class->new(%{ $data_ref->{options} }, name => 'TEST');
@@ -341,6 +350,11 @@ sub test_snippet_with_io {
         ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
         eval 'binmode($output, ":encoding(utf-8)")';
         ## use critic
+    } elsif ($options_ref->{perlio_iso}) {
+        ## no critic (BuiltinFunctions::ProhibitStringyEval)
+        ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+        eval 'binmode($output, ":encoding(iso-8859-1)")';
+        ## use critic
     }
 
     # Parse the input file into the output file.
@@ -354,7 +368,7 @@ sub test_snippet_with_io {
     my ($line, $saw_accents);
     if ($class eq 'Pod::Man') {
         while (defined($line = <$results>)) {
-            $line = decode('UTF-8', $line);
+            $line = decode($outencoding, $line);
             if ($line =~ m{ Accent [ ] mark [ ] definitions }xms) {
                 $saw_accents = 1;
             }
@@ -362,7 +376,7 @@ sub test_snippet_with_io {
         }
     }
     my $saw = do { local $/ = undef; <$results> };
-    $saw = decode('UTF-8', $saw);
+    $saw = decode($outencoding, $saw);
     $saw =~ s{ \n\s+ \z }{\n}xms;
     close($results) or BAIL_OUT("cannot close output file: $!");
 
@@ -370,11 +384,14 @@ sub test_snippet_with_io {
     unlink($input_file, $output_file);
 
     # Check the accent definitions and the output.
-    my $perlio = $options_ref->{perlio_utf8} ? ' (PerlIO)' : q{};
+    my $perlio = q{};
+    if ($options_ref->{perlio_utf8} || $options_ref->{perlio_iso}) {
+        $perlio = ' (PerlIO)';
+    }
     if ($class eq 'Pod::Man') {
         is(
             $saw_accents,
-            $data_ref->{options}{utf8} ? undef : 1,
+            ($data_ref->{options}{encoding} || q{}) eq 'roff' ? 1 : undef,
             "$data_ref->{name}: accent definitions$perlio"
         );
     }
@@ -514,9 +531,31 @@ The same as test_snippet(), except, rather than parsing the input into a
 string buffer, this function uses real, temporary input and output files.
 This can be used to test I/O layer handling and proper encoding.
 
-OPTIONS, if present, is a reference to a hash of options.  Currently, only one
-key is supported: C<perlio_utf8>, which, if set to true, will set a PerlIO
-UTF-8 encoding layer on the output file before writing to it.
+OPTIONS, if present, is a reference to a hash of options chosen from the
+following:
+
+=over 4
+
+=item encoding
+
+The encoding to expect from the snippet file.  Default if not specified is
+UTF-8.
+
+=item output
+
+The encoding to expect from the output.  Default if not specified is UTF-8.
+
+=item perlio_iso
+
+If set to true, set a PerlIO ISO-8859-1 encoding layer on the output file
+before writing to it.
+
+=item perlio_utf8
+
+If set to true, set a PerlIO UTF-8 encoding layer on the output file before
+writing to it.
+
+=back
 
 =back
 
@@ -526,7 +565,7 @@ Russ Allbery <rra@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2015-2016, 2018-2020 Russ Allbery <rra@cpan.org>
+Copyright 2015-2016, 2018-2020, 2022 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

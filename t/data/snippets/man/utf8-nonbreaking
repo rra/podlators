@@ -1,9 +1,6 @@
 [name]
 UTF-8 non-breaking space
 
-[options]
-utf8 1
-
 [input]
 =encoding utf-8
 
@@ -14,4 +11,4 @@ This is S<non-breaking output>.
 [output]
 .SH "S<> output with UTF\-8"
 .IX Header "S<> output with UTF-8"
-This is non-breaking output.
+This is non-breaking\ output.

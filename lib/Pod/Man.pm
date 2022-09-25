@@ -105,11 +105,36 @@ sub new {
     # some of the guesswork heuristics don't work right.
     $self->merge_text (1);
 
+    # Pod::Simple uses encoding internally, so we need to store it as
+    # ENCODING.  Set the default to UTF-8 if not specified.
+    #
+    # Degrade to the old roff encoding if Encode is not available.
+    #
+    # Suppress the warning message when PERL_CORE is set, indicating this is
+    # running as part of the core Perl build.  Perl builds podlators (and all
+    # pure Perl modules) before Encode and other XS modules, so Encode won't
+    # yet be available.  Rely on the Perl core build to generate man pages
+    # later, after all the modules are available, so that UTF-8 handling will
+    # be correct.
+    my %options = @_;
+    if (($options{encoding} || 'UTF-8') ne 'roff' && !$HAS_ENCODE) {
+        if (!$ENV{PERL_CORE}) {
+            carp ('encoding requested but Encode module not available,'
+                    . ' falling back to *roff escapes');
+        }
+        $$self{ENCODING} = 'roff';
+    } elsif (exists $options{encoding}) {
+        $options{ENCODING} = $options{encoding};
+    } else {
+        $options{ENCODING} = 'UTF-8';
+    }
+    delete $options{encoding};
+
     # Pod::Simple doesn't do anything useful with our arguments, but we want
     # to put them in our object as hash keys and values.  This could cause
     # problems if we ever clash with Pod::Simple's own internal class
     # variables.
-    %$self = (%$self, @_);
+    %$self = (%$self, %options);
 
     # Send errors to stderr if requested.
     if ($$self{stderr} and not $$self{errors}) {
@@ -137,22 +162,6 @@ sub new {
         croak (qq(Invalid errors setting: "$$self{errors}"));
     }
     delete $$self{errors};
-
-    # Degrade back to non-utf8 if Encode is not available.
-    #
-    # Suppress the warning message when PERL_CORE is set, indicating this is
-    # running as part of the core Perl build.  Perl builds podlators (and all
-    # pure Perl modules) before Encode and other XS modules, so Encode won't
-    # yet be available.  Rely on the Perl core build to generate man pages
-    # later, after all the modules are available, so that UTF-8 handling will
-    # be correct.
-    if ($$self{utf8} and !$HAS_ENCODE) {
-        if (!$ENV{PERL_CORE}) {
-            carp ('utf8 mode requested but Encode module not available,'
-                    . ' falling back to non-utf8');
-        }
-        delete $$self{utf8};
-    }
 
     # Initialize various other internal constants based on our arguments.
     $self->init_fonts;
@@ -390,10 +399,16 @@ sub format_text {
         $text =~ s/_(?=_)/_\\|/g;
     }
 
-    # Normally we do character translation, but we won't even do that in
-    # <Data> blocks or if UTF-8 output is desired.
-    if ($convert && !$$self{utf8} && ASCII) {
-        $text =~ s/([^\x00-\x7F])/$ESCAPES{ord ($1)} || "X"/eg;
+    # Except in <Data> blocks, always convert non-breaking spaces and soft
+    # hyphens, since *roff has native escapes for those.  If *roff encoding is
+    # requested, also do that (but not if we're in a non-ASCII environment,
+    # since our character translation tables only support ASCII).
+    if ($convert) {
+        $text =~ s{\xA0}{\\ }g;
+        $text =~ s{\xAD}{\\%}g;
+        if ($$self{ENCODING} eq 'roff' && ASCII) {
+            $text =~ s/([^\x00-\x7F])/$ESCAPES{ord ($1)} || "X"/eg;
+        }
     }
 
     # Ensure that *roff doesn't convert literal quotes to UTF-8 single quotes,
@@ -769,8 +784,17 @@ sub outindex {
 # Output some text, without any additional changes.
 sub output {
     my ($self, @text) = @_;
-    if ($$self{ENCODE}) {
-        print { $$self{output_fh} } Encode::encode ('UTF-8', join ('', @text));
+    if ($$self{ENCODE} && $$self{ENCODING} ne 'roff') {
+        my $check = sub {
+            my ($char) = @_;
+            my $display = '"\x{' . hex($char) . '}"';
+            my $error = "$display does not map to $$self{ENCODING}";
+            $self->whine ($self->line_count(), $error);
+            return Encode::encode ($$self{ENCODING}, chr($char));
+        };
+        my $text = join ('', @text);
+        my $output = Encode::encode ($$self{ENCODING}, $text, $check);
+        print { $$self{output_fh} } $output;
     } else {
         print { $$self{output_fh} } @text;
     }
@@ -791,15 +815,15 @@ sub start_document {
         delete $$self{CONTENTLESS};
     }
 
-    # When UTF-8 output is set, check whether our output file handle already
-    # has a PerlIO encoding layer set.  If it does not, we'll need to encode
-    # our output before printing it (handled in the output() sub).  Wrap the
-    # check in an eval to handle versions of Perl without PerlIO.
+    # When an encoding is requested, check whether our output file handle
+    # already has a PerlIO encoding layer set.  If it does not, we'll need to
+    # encode our output before printing it (handled in the output() sub).
+    # Wrap the check in an eval to handle versions of Perl without PerlIO.
     #
     # PerlIO::get_layers still requires its argument be a glob, so coerce the
     # file handle to a glob.
     $$self{ENCODE} = 0;
-    if ($$self{utf8}) {
+    if ($$self{ENCODING}) {
         $$self{ENCODE} = 1;
         eval {
             my @options = (output => 1, details => 1);
@@ -989,7 +1013,8 @@ sub devise_date {
 # module, but this order is correct for both Solaris and Linux.
 sub preamble {
     my ($self, $name, $section, $date) = @_;
-    my $preamble = $self->preamble_template (!$$self{utf8});
+    my $accents = $$self{ENCODING} eq 'roff';
+    my $preamble = $self->preamble_template ($accents);
 
     # Build the index line and make sure that it will be syntactically valid.
     my $index = "$name $section";
@@ -1648,7 +1673,7 @@ __END__
 =for stopwords
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8 UTF-8
 Allbery Sean Burke Ossanna Solaris formatters troff uppercased Christiansen
-nourls parsers Kernighan lquote rquote
+nourls parsers Kernighan lquote rquote unrepresentable
 
 =head1 NAME
 
@@ -1724,6 +1749,39 @@ the case if the input is from C<STDIN>) will be used.  If obtained from the
 file modification date or the current time, the date will be formatted as
 C<YYYY-MM-DD> and will be based on UTC (so that the output will be
 reproducible regardless of local time zone).
+
+=item encoding
+
+Specifies the encoding of the output.  The value must be an encoding
+recognized by the L<Encode> module (see L<Encode::Supported>).  The default is
+UTF-8.  If the output contains characters that cannot be represented in this
+encoding, that is an error that will be reported as configured by the
+C<errors> option.  If error handling is other than C<die>, the unrepresentable
+character will be replaced with the Encode substitution character (normally
+C<?>).
+
+If the C<encoding> option is set to the special value C<roff>, or if the
+Encode module is not available, Pod::Man will do its historic transformation
+of (some) ISO 8859-1 characters into *roff escapes that may be adequate in
+troff and may be readable (if ugly) in nroff.  With this encoding, all other
+non-ASCII characters will be replaced with C<X>.  This was the default
+behavior of versions of Pod::Man before 5.00.  It may be required for very old
+troff and nroff implementations that do not support UTF-8, but its
+representation of any non-ASCII character is very poor and often specific to
+European languages.  Its use is discouraged.
+
+If the output file handle has a PerlIO encoding layer set, this parameter will
+be ignored and no encoding will be done by Pod::Man.  It will instead rely on
+the encoding layer to make whatever output encoding transformations are
+desired.
+
+WARNING: The input encoding of the POD source is independent from the output
+encoding, and setting this option does not affect the interpretation of the
+POD input.  Unless your POD source is US-ASCII, its encoding should be
+declared with the C<=encoding> command in the source.  If this is not done,
+Pod::Simple will will attempt to guess the encoding and may be successful if
+it's Latin-1 or UTF-8, but it will produce warnings.  See L<perlpod(1)> for
+more information.
 
 =item errors
 
@@ -1824,11 +1882,10 @@ the version of Perl you run Pod::Man under.  Setting this to the empty
 string will cause some *roff implementations to use the system default
 value.
 
-Note that some system C<an> macro sets assume that the centered footer
-will be a modification date and will prepend something like "Last
-modified: ".  If this is the case for your target system, you may want to
-set C<release> to the last modified date and C<date> to the version
-number.
+Note that some system C<an> macro sets assume that the centered footer will be
+a modification date and will prepend something like C<Last modified: >.  If
+this is the case for your target system, you may want to set C<release> to the
+last modified date and C<date> to the version number.
 
 =item section
 
@@ -1846,32 +1903,18 @@ case section 3 will be selected.
 
 =item stderr
 
-Send error messages about invalid POD to standard error instead of
-appending a POD ERRORS section to the generated *roff output.  This is
-equivalent to setting C<errors> to C<stderr> if C<errors> is not already
-set.  It is supported for backward compatibility.
+If set to a true value, send error messages about invalid POD to standard
+error instead of appending a POD ERRORS section to the generated *roff output.
+This is equivalent to setting C<errors> to C<stderr> if C<errors> is not
+already set.
+
+This option is for backward compatibility with Pod::Man versions that did not
+support C<errors>.  Normally, the C<errors> option should be used instead.
 
 =item utf8
 
-By default, Pod::Man produces the most conservative possible *roff output
-to try to ensure that it will work with as many different *roff
-implementations as possible.  Many *roff implementations cannot handle
-non-ASCII characters, so this means all non-ASCII characters are converted
-either to a *roff escape sequence that tries to create a properly accented
-character (at least for troff output) or to C<X>.
-
-If this option is set, Pod::Man will instead output UTF-8.  If your *roff
-implementation can handle it, this is the best output format to use and
-avoids corruption of documents containing non-ASCII characters.  However,
-be warned that *roff source with literal UTF-8 characters is not supported
-by many implementations and may even result in segfaults and other bad
-behavior.
-
-Be aware that, when using this option, the input encoding of your POD
-source should be properly declared unless it's US-ASCII.  Pod::Simple will
-attempt to guess the encoding and may be successful if it's Latin-1 or
-UTF-8, but it will produce warnings.  Use the C<=encoding> command to
-declare the encoding.  See L<perlpod(1)> for more information.
+This option used to tell Pod::Man to produce UTF-8 output.  Since this is now
+the default as of Pod::Man 5.00, it is ignored and does nothing.
 
 =back
 
@@ -1930,9 +1973,9 @@ option was set to C<die>.
 
 =item PERL_CORE
 
-If set and Encode is not available, silently fall back to non-UTF-8 mode
-without complaining to standard error.  This environment variable is set
-during Perl core builds, which build Encode after podlators.  Encode is
+If set and Encode is not available, silently fall back to an encoding of
+C<roff> without complaining to standard error.  This environment variable is
+set during Perl core builds, which build Encode after podlators.  Encode is
 expected to not (yet) be available in that case.
 
 =item POD_MAN_DATE
@@ -1963,10 +2006,6 @@ reliable if this variable overrode the timestamp of the input file.)
 
 =head1 BUGS
 
-Encoding handling assumes that PerlIO is available and does not work
-properly if it isn't.  The C<utf8> option is therefore not supported
-unless Perl is built with PerlIO support.
-
 There is currently no way to turn off the guesswork that tries to format
 unmarked text appropriately, and sometimes it isn't wanted (particularly
 when using POD to document something other than Perl).  Most of the work
@@ -1983,20 +2022,9 @@ Pod::Man doesn't handle font names longer than two characters.  Neither do
 most B<troff> implementations, but GNU troff does as an extension.  It would
 be nice to support as an option for those who want to use it.
 
-The preamble added to each output file is rather verbose, and most of it
-is only necessary in the presence of non-ASCII characters.  It would
-ideally be nice if all of those definitions were only output if needed,
-perhaps on the fly as the characters are used.
-
 Pod::Man is excessively slow.
 
 =head1 CAVEATS
-
-If Pod::Man is given the C<utf8> option, the encoding of its output file
-handle will be forced to UTF-8 if possible, overriding any existing
-encoding.  This will be done even if the file handle is not created by
-Pod::Man and was passed in from outside.  This maintains consistency
-regardless of PERL_UNICODE and other settings.
 
 The handling of hyphens and em dashes is somewhat fragile, and one may get
 the wrong one under some circumstances.  This should only matter for
@@ -2028,8 +2056,8 @@ under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-L<Pod::Simple>, L<perlpod(1)>, L<pod2man(1)>, L<nroff(1)>, L<troff(1)>,
-L<man(1)>, L<man(7)>
+L<Encode::Supported>, L<Pod::Simple>, L<perlpod(1)>, L<pod2man(1)>,
+L<nroff(1)>, L<troff(1)>, L<man(1)>, L<man(7)>
 
 Ossanna, Joseph F., and Brian W. Kernighan.  "Troff User's Manual,"
 Computing Science Technical Report No. 54, AT&T Bell Laboratories.  This is

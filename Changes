@@ -1,6 +1,14 @@
                       Revision history for podlators
 
-4.15 - Not Released
+5.00 - Not Released
+
+ - Pod::Man now defaults to UTF-8 output as if the utf8 option or the -u
+   command-line option to pod2man was given.  There is a new encoding
+   option (-e or --encoding to pod2man) to change the output encoding to
+   any encoding recognized by Encode.  It can also be set to the special
+   value "roff", which requests the old behavior of using character
+   substitutions and *roff escapes to generate ASCII-only output.  The
+   utf8 and -u options no longer do anything and are ignored.  (#68741)
 
  - Fix another Pod::Man instance of bad interaction between making
    functions bold and marking all-capital strings as small caps.  Thanks,
@@ -9,10 +17,10 @@
  - In Pod::Text, when UTF-8 output was not forced, output to a string
    (instead of a file handle) was not properly encoded because the
    encoding was done with a PerlIO layer.  Overhaul and simplify the
-   encoding code to use the following logic: If a PerlIO UTF-8 encoding
-   layer is set on the output file, trust it and do nothing further.
-   Otherwise, if UTF-8 output is requested, always encode in UTF-8.
-   Otherwise, encode the output in the same encoding as the input file.
+   encoding code to use the following logic: If a PerlIO encoding layer is
+   set on the output file, trust it and do nothing further.  Otherwise, if
+   UTF-8 output is requested, always encode in UTF-8.  Otherwise, encode
+   the output in the same encoding as the input file.
 
  - Avoid non-standard *roff escape in the troff accent mark definition for
    an acute accent.  \h"..." was used instead of \h'...' as seen in the

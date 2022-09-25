@@ -72,9 +72,9 @@ my $stdin;
 # allowing short forms as well.  --lax is currently ignored.
 my %options;
 Getopt::Long::config ('bundling_override');
-GetOptions (\%options, 'center|c=s', 'date|d=s', 'errors=s', 'fixed=s',
-            'fixedbold=s', 'fixeditalic=s', 'fixedbolditalic=s', 'help|h',
-            'lax|l', 'lquote=s', 'name|n=s', 'nourls', 'official|o',
+GetOptions (\%options, 'center|c=s', 'date|d=s', 'encoding|e=s', 'errors=s',
+            'fixed=s', 'fixedbold=s', 'fixeditalic=s', 'fixedbolditalic=s',
+            'help|h', 'lax|l', 'lquote=s', 'name|n=s', 'nourls', 'official|o',
             'quotes|q=s', 'release|r=s', 'rquote=s', 'section|s=s', 'stderr',
             'verbose|v', 'utf8|u')
     or exit 1;
@@ -128,7 +128,7 @@ __END__
 =for stopwords
 en em --stderr stderr --utf8 UTF-8 overdo markup MT-LEVEL Allbery Solaris URL
 troff troff-specific formatters uppercased Christiansen --nourls UTC prepend
-lquote rquote
+lquote rquote unrepresentable
 
 =head1 NAME
 
@@ -136,8 +136,9 @@ pod2man - Convert POD data to formatted *roff input
 
 =head1 SYNOPSIS
 
-pod2man [B<--center>=I<string>] [B<--date>=I<string>] [B<--errors>=I<style>]
-    [B<--fixed>=I<font>] [B<--fixedbold>=I<font>] [B<--fixeditalic>=I<font>]
+pod2man [B<--center>=I<string>] [B<--date>=I<string>]
+    [B<--encoding>=I<encoding>] [B<--errors>=I<style>] [B<--fixed>=I<font>]
+    [B<--fixedbold>=I<font>] [B<--fixeditalic>=I<font>]
     [B<--fixedbolditalic>=I<font>] [B<--name>=I<name>] [B<--nourls>]
     [B<--official>] [B<--release>=I<version>] [B<--section>=I<manext>]
     [B<--quotes>=I<quotes>] [B<--lquote>=I<quote>] [B<--rquote>=I<quote>]
@@ -194,6 +195,34 @@ Set the left-hand footer string for the C<.TH> macro to I<string>.  By
 default, the modification date of the input file will be used, or the
 current date if input comes from C<STDIN>, and will be based on UTC (so
 that the output will be reproducible regardless of local time zone).
+
+=item B<-e> I<encoding>, B<--encoding>=I<encoding>
+
+Specifies the encoding of the output.  I<encoding> must be an encoding
+recognized by the L<Encode> module (see L<Encode::Supported>).  The default is
+UTF-8.  If the output contains characters that cannot be represented in this
+encoding, that is an error that will be reported as configured by the
+B<--errors> option.  If error handling is other than C<die>, the
+unrepresentable character will be replaced with the Encode substitution
+character (normally C<?>).
+
+If I<encoding> is set to the special value C<roff>, or if the Encode module is
+not available, B<pod2man> will do its historic transformation of (some) ISO
+8859-1 characters into *roff escapes that may be adequate in troff and may be
+readable (if ugly) in nroff.  With this encoding, all other non-ASCII
+characters will be replaced with C<X>.  This was the default behavior of
+versions of B<pod2man> before 5.00.  It may be required for very old troff and
+nroff implementations that do not support UTF-8, but its representation of any
+non-ASCII character is very poor and often specific to European languages.
+Its use is discouraged.
+
+WARNING: The input encoding of the POD source is independent from the output
+encoding, and setting this option does not affect the interpretation of the
+POD input.  Unless your POD source is US-ASCII, its encoding should be
+declared with the C<=encoding> command in the source.  If this is not done,
+Pod::Simple will will attempt to guess the encoding and may be successful if
+it's Latin-1 or UTF-8, but it will produce warnings.  See L<perlpod(1)> for
+more information.
 
 =item B<--errors>=I<style>
 
@@ -344,26 +373,8 @@ to C<--errors=stderr> and is supported for backward compatibility.
 
 =item B<-u>, B<--utf8>
 
-By default, B<pod2man> produces the most conservative possible *roff
-output to try to ensure that it will work with as many different *roff
-implementations as possible.  Many *roff implementations cannot handle
-non-ASCII characters, so this means all non-ASCII characters are converted
-either to a *roff escape sequence that tries to create a properly accented
-character (at least for troff output) or to C<X>.
-
-This option says to instead output literal UTF-8 characters.  If your
-*roff implementation can handle it, this is the best output format to use
-and avoids corruption of documents containing non-ASCII characters.
-However, be warned that *roff source with literal UTF-8 characters is not
-supported by many implementations and may even result in segfaults and
-other bad behavior.
-
-Be aware that, when using this option, the input encoding of your POD
-source should be properly declared unless it's US-ASCII.  Pod::Simple will
-attempt to guess the encoding and may be successful if it's Latin-1 or
-UTF-8, but it will warn, which by default results in a B<pod2man> failure.
-Use the C<=encoding> command to declare the encoding.  See L<perlpod(1)>
-for more information.
+This option used to tell B<pod2man> to produce UTF-8 output.  Since this is
+now the default as of version 5.00, it is ignored and does nothing.
 
 =item B<-v>, B<--verbose>
 
@@ -417,7 +428,7 @@ B<pod2man> by Larry Wall and Tom Christiansen.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2019 Russ Allbery
+Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2019, 2022 Russ Allbery
 <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
