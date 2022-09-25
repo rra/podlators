@@ -1592,7 +1592,7 @@ sub parse_string_document {
 # the left and right quotes to use for C<> text (designated by @LQOUTE@ and
 # @RQUOTE@).  Accent marks are only defined if the output encoding is roff.
 sub preamble_template {
-    my ($self, $accents) = @_;
+    my ($self) = @_;
     my $preamble = <<'----END OF PREAMBLE----';
 .de Sp \" Vertical space (when we can't use .PP)
 .if t .sp .5v
