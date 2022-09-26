@@ -2261,6 +2261,12 @@ Pod::Man doesn't handle font names longer than two characters.  Neither do
 most B<troff> implementations, but GNU troff does as an extension.  It would
 be nice to support as an option for those who want to use it.
 
+There are numerous bugs and language-specific assumptions in the nroff
+fallbacks for accented characters in the C<roff> encoding.  Since the point of
+this encoding is backward compatibility with the output from earlier versions
+of Pod::Man, and it is deprecated except when necessary to support old
+systems, those bugs are unlikely to ever be fixed.
+
 =head1 CAVEATS
 
 The handling of hyphens and em dashes is somewhat fragile, and one may get
