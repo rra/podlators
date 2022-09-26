@@ -16,7 +16,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 61;
+use Test::More tests => 63;
 use Test::Podlators qw(test_snippet);
 
 # Load the module.
@@ -28,8 +28,9 @@ BEGIN {
 my @snippets = qw(
   alt c-with-spaces code cpp empty error-die error-none error-normal error-pod
   error-stderr error-stderr-opt for late-encoding link-rt link-url margin
-  naive name-quotes name-quotes-none non-latin nonbreaking-space nourls
-  periods quotes-opt s-whitespace sentence-spacing utf8 verbatim
+  naive name-quotes name-quotes-none non-latin nonbreaking-space
+  nonbreaking-space-l nourls periods quotes-opt s-whitespace sentence-spacing
+  utf8 verbatim
 );
 
 # Run all the tests.

@@ -69,9 +69,6 @@ sub new {
     my $class = shift;
     my $self = $class->SUPER::new;
 
-    # Tell Pod::Simple to handle S<> by automatically inserting &nbsp;.
-    $self->nbsp_for_S (1);
-
     # Tell Pod::Simple to keep whitespace whenever possible.
     if ($self->can ('preserve_whitespace')) {
         $self->preserve_whitespace (1);
@@ -614,6 +611,13 @@ sub cmd_b { return $_[0]{alt} ? "``$_[2]''" : $_[2] }
 sub cmd_f { return $_[0]{alt} ? "\"$_[2]\"" : $_[2] }
 sub cmd_i { return '*' . $_[2] . '*' }
 sub cmd_x { return '' }
+
+# Convert all internal whitespace to $NBSP.
+sub cmd_s {
+    my ($self, $attrs, $text) = @_;
+    $text =~ s{ \s }{$NBSP}xmsg;
+    return $text;
+}
 
 # Apply a whole bunch of messy heuristics to not quote things that don't
 # benefit from being quoted.  These originally come from Barrie Slaymaker and

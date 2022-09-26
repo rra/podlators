@@ -43,6 +43,10 @@
    encoding is not ASCII.  groff's preconv program and FreeBSD's mandoc
    will use this line to determine the input encoding.
 
+ - Pod::Man and Pod::Text now correctly honor S<> wrapping L<> with an
+   anchor and URL, and make the space between the anchor and URL
+   nonbreaking.  (#143768)
+
  - Clear the current font before changing fonts in all Pod::Man output,
    not just headings.  groff 1.22.4 does not clear bold or italic when
    seeing \f(CW font change, which meant bold and italic were extending

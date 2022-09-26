@@ -36,6 +36,17 @@ BEGIN {
 
 $VERSION = '4.14';
 
+# Ensure that $Pod::Simple::nbsp and $Pod::Simple::shy are available.  Code
+# taken from Pod::Simple 3.32, but was only added in 3.30.
+my ($NBSP, $SHY);
+if ($Pod::Simple::VERSION ge 3.30) {
+    $NBSP = $Pod::Simple::nbsp;
+    $SHY  = $Pod::Simple::shy;
+} else {
+    $NBSP = chr utf8::unicode_to_native(0xA0);
+    $SHY  = chr utf8::unicode_to_native(0xAD);
+}
+
 # Set the debugging level.  If someone has inserted a debug function into this
 # class already, use that.  Otherwise, use any Pod::Simple debug function
 # that's defined, and failing that, define a debug level of 10.
@@ -132,9 +143,6 @@ sub _needs_encode {
 sub new {
     my $class = shift;
     my $self = $class->SUPER::new;
-
-    # Tell Pod::Simple not to handle S<> by automatically inserting &nbsp;.
-    $self->nbsp_for_S (1);
 
     # Tell Pod::Simple to keep whitespace whenever possible.
     if (my $preserve_whitespace = $self->can ('preserve_whitespace')) {
@@ -448,20 +456,18 @@ sub format_text {
         $text =~ s/_(?=_)/_\\|/g;
     }
 
-    # Except in <Data> blocks, always convert non-breaking spaces and soft
-    # hyphens, since *roff has native escapes for those.  If groff or roff
-    # encoding is requested and we're in an ASCII environment, also do that.
-    # For EBCDIC, we just write what we get and hope for the best.
+    # Except in <Data> blocks, if groff or roff encoding is requested and
+    # we're in an ASCII environment, do the encoding.  For EBCDIC, we just
+    # write what we get and hope for the best.  Leave non-breaking spaces and
+    # soft hyphens alone; we'll convert those at the last minute.
     if ($convert) {
-        $text =~ s{\xA0}{\\ }g;
-        $text =~ s{\xAD}{\\%}g;
         if (ASCII) {
             if ($$self{ENCODING} eq 'groff') {
-                $text =~ s{ ([^\x00-\x7F]) }{
+                $text =~ s{ ([^\x00-\x7F\xA0\xAD]) }{
                     '\\[u' . sprintf('%04X', ord($1)) . ']'
                 }xmsge;
             } elsif ($$self{ENCODING} eq 'roff') {
-                $text =~ s/([^\x00-\x7F])/$ESCAPES{ord ($1)} || "X"/eg;
+                $text =~ s/([^\x00-\x7F\xA0\xAD])/$ESCAPES{ord ($1)} || "X"/eg;
             }
         }
     }
@@ -549,9 +555,9 @@ sub guesswork {
     # Note that this is not user-controllable; we pretty much have to do this
     # transformation or *roff will mangle the output in unacceptable ways.
     s{
-        ( (?:\G|^|\s) [\(\"]* [a-zA-Z] ) ( \\- )?
+        ( (?:\G|^|\s|$NBSP) [\(\"]* [a-zA-Z] ) ( \\- )?
         ( (?: [a-zA-Z\']+ \\-)+ )
-        ( [a-zA-Z\']+ ) (?= [\)\".?!,;:]* (?:\s|\Z|\\\ ) )
+        ( [a-zA-Z\']+ ) (?= [\)\".?!,;:]* (?:\s|$NBSP|\Z|\\\ ) )
         \b
     } {
         my ($prefix, $hyphen, $main, $suffix) = ($1, $2, $3, $4);
@@ -864,6 +870,10 @@ sub outindex {
 # Output some text, without any additional changes.
 sub output {
     my ($self, @text) = @_;
+    my $text = join('', @text);
+    $text =~ s{$NBSP}{\\ }g;
+    $text =~ s{$SHY}{\\%}g;
+
     if ($$self{ENCODE} && _needs_encode($$self{ENCODING})) {
         my $check = sub {
             my ($char) = @_;
@@ -872,11 +882,10 @@ sub output {
             $self->whine ($self->line_count(), $error);
             return Encode::encode ($$self{ENCODING}, chr($char));
         };
-        my $text = join ('', @text);
         my $output = Encode::encode ($$self{ENCODING}, $text, $check);
         print { $$self{output_fh} } $output;
     } else {
-        print { $$self{output_fh} } @text;
+        print { $$self{output_fh} } $text;
     }
 }
 
@@ -1332,6 +1341,13 @@ sub cmd_i { return $_[0]->{IN_NAME} ? $_[2] : '\f(IS' . $_[2] . '\f(IE' }
 sub cmd_f { return $_[0]->{IN_NAME} ? $_[2] : '\f(IS' . $_[2] . '\f(IE' }
 sub cmd_c { return $_[0]->quote_literal ($_[2]) }
 
+# Convert all internal whitespace to $NBSP.
+sub cmd_s {
+    my ($self, $attrs, $text) = @_;
+    $text =~ s{ \s }{$NBSP}xmsg;
+    return $text;
+}
+
 # Index entries are just added to the pending entries.
 sub cmd_x {
     my ($self, $attrs, $text) = @_;
@@ -1587,10 +1603,10 @@ sub parse_string_document {
 # results are pretty poor.
 #
 # This only works in an ASCII world.  What to do in a non-ASCII world is very
-# unclear -- hopefully we can assume UTF-8 and just leave well enough alone.
+# unclear, so we just output what we get and hope for the best.
 @ESCAPES{0xA0 .. 0xFF} = (
-    "\\ ", undef, undef, undef,            undef, undef, undef, undef,
-    undef, undef, undef, undef,            undef, "\\%", undef, undef,
+    $NBSP, undef, undef, undef,            undef, undef, undef, undef,
+    undef, undef, undef, undef,            undef, $SHY,  undef, undef,
 
     undef, undef, undef, undef,            undef, undef, undef, undef,
     undef, undef, undef, undef,            undef, undef, undef, undef,
