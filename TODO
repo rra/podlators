@@ -4,21 +4,6 @@ This is a somewhat random and unordered list of things I'd like to see
 fixed or improved, but which I've not yet had a chance to do.  Patches for
 any of the following are very much welcome.
 
- * Revisit the handling of non-ASCII characters.  At this point, it
-   probably makes sense to output UTF-8 by default, which also eliminates
-   all of the frustrations in Pod::Man with turning valid characters into
-   X and would allow massive simplification of the preamble for most
-   pages.  We could also move some of the remaining *roff macros to the
-   accents section and only conditionally output them.  Unfortunately, it
-   looks like all non-man-db, non-groff *roff implementations still don't
-   support Unicode characters, though, and even some groff setups may not
-   support them properly.  So this is still a portability issue.
-
- * Support an output mode that uses groff escapes for all Unicode
-   characters.  We might be able to just use \[uNNNN] for all Unicode
-   code points.  This would work portably on any system that uses groff,
-   and may make sense as the default output format on Linux.
-
  * Escape all hyphens in the text of L<some-command> links.
 
  * Add a =for license stanza that takes license text and embeds it as a

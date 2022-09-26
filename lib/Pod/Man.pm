@@ -2265,8 +2265,6 @@ Pod::Man doesn't handle font names longer than two characters.  Neither do
 most B<troff> implementations, but GNU troff does as an extension.  It would
 be nice to support as an option for those who want to use it.
 
-Pod::Man is excessively slow.
-
 =head1 CAVEATS
 
 The handling of hyphens and em dashes is somewhat fragile, and one may get
