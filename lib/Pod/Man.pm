@@ -497,7 +497,11 @@ sub quote_literal {
 
     # If in NAME section, just return an ASCII quoted string to avoid
     # confusing tools like whatis.
-    return qq{"$_"} if $$self{IN_NAME};
+    if ($$self{IN_NAME}) {
+        my $lquote = $$self{LQUOTE} eq '""' ? '"' : $$self{LQUOTE};
+        my $rquote = $$self{RQUOTE} eq '""' ? '"' : $$self{RQUOTE};
+        return $lquote . $_ . $rquote;
+    }
 
     # Check for things that we don't want to quote, and if we find any of
     # them, return the string with just a font change and no quoting.
@@ -1746,7 +1750,7 @@ __END__
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8 UTF-8
 Allbery Sean Burke Ossanna Solaris formatters troff uppercased Christiansen
 nourls parsers Kernighan lquote rquote unrepresentable mandoc NetBSD PostScript
-SMP macOS EBCDIC
+SMP macOS EBCDIC fallbacks
 
 =head1 NAME
 

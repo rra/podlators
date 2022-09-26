@@ -43,6 +43,9 @@
    encoding is not ASCII.  groff's preconv program and FreeBSD's mandoc
    will use this line to determine the input encoding.
 
+ - Honor the quotes, lquote, and rquote configuration parameters to
+   Pod::Man for C<> text inside the special NAME section.  (#143967)
+
  - Fix another Pod::Man instance of bad interaction between making
    functions bold and marking all-capital strings as small caps.  Thanks,
    Dima Kogan.  (#132007)
