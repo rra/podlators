@@ -43,27 +43,31 @@ BEGIN {
 local $| = 1;
 
 # Hard-code configuration for Term::Cap to get predictable results.
+#<<<
 local $ENV{COLUMNS}  = 80;
 local $ENV{TERM}     = 'xterm';
 local $ENV{TERMPATH} = File::Spec->catfile('t', 'data', 'termcap');
 local $ENV{TERMCAP}  = 'xterm:co=#80:do=^J:md=\\E[1m:us=\\E[4m:me=\\E[m';
+#>>>
 
 # Find the source of the test file.
-my $INPUT = File::Spec->catfile('t', 'data', 'basic.pod');
+my $input = File::Spec->catfile('t', 'data', 'basic.pod');
 
 # Map of translators to the file containing the formatted output to compare
 # against.
-my %OUTPUT = (
+#<<<
+my %output = (
     'Pod::Man'              => File::Spec->catfile('t', 'data', 'basic.man'),
     'Pod::Text'             => File::Spec->catfile('t', 'data', 'basic.txt'),
     'Pod::Text::Color'      => File::Spec->catfile('t', 'data', 'basic.clr'),
     'Pod::Text::Overstrike' => File::Spec->catfile('t', 'data', 'basic.ovr'),
     'Pod::Text::Termcap'    => File::Spec->catfile('t', 'data', 'basic.cap'),
 );
+#>>>
 
 # Walk through teach of the modules and format the sample file, checking to
 # ensure the results match the pre-generated file.
-for my $module (sort keys %OUTPUT) {
+for my $module (sort keys %output) {
     my $parser = $module->new();
     isa_ok($parser, $module, 'parser object');
 
@@ -71,7 +75,7 @@ for my $module (sort keys %OUTPUT) {
     # instead of a file.
     my $got;
     $parser->output_string(\$got);
-    $parser->parse_file($INPUT);
+    $parser->parse_file($input);
 
     # If the test module is Pod::Man, strip off the header.  This test does
     # not attempt to compare it, since it contains version numbers that
@@ -87,9 +91,9 @@ for my $module (sort keys %OUTPUT) {
 
     # Check the output.  If it doesn't match, save the erroneous output in a
     # file for later inspection.
-    my $expected = slurp($OUTPUT{$module});
+    my $expected = slurp($output{$module});
     if (!ok($got eq $expected, "$module output is correct")) {
-        my ($suffix) = ($OUTPUT{$module} =~ m{ [.] ([^.]+) \z }xms);
+        my ($suffix) = ($output{$module} =~ m{ [.] ([^.]+) \z }xms);
         my $tmpdir = File::Spec->catdir('t', 'tmp');
         if (!-d $tmpdir) {
             mkdir($tmpdir, 0777);

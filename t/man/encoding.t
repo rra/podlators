@@ -48,7 +48,7 @@ my %output = (
 
 # For each encoding, load the input, generate the output, and check that the
 # output matches.
-for my $encoding (keys(%output)) {
+for my $encoding (sort(keys(%output))) {
     my $parser = Pod::Man->new(
         encoding => $encoding,
         center => 'podlators',
@@ -58,7 +58,7 @@ for my $encoding (keys(%output)) {
     $parser->output_string(\$got);
     $parser->parse_file($input);
 
-    # Strip off the version line and canonicalize the Perl version line.
+    # Strip off the version line.
     $got =~ s{ ^ [^\n]+ Automatically [ ] generated [ ] by [^\n]+ \n }{}xms;
 
     # Check the output.  If it doesn't match, save the erroneous output in a
