@@ -14,7 +14,7 @@ use 5.008;
 use strict;
 use warnings;
 
-use Test::More tests => 7;
+use Test::More tests => 8;
 
 # Remove the record of the Encode module being loaded if it already was (it
 # may have been loaded before the test suite runs), and then make it
@@ -60,21 +60,31 @@ like(
 
 # Likewise for an encoding of groff.
 $parser = Pod::Man->new(name => 'test', encoding => 'groff');
-$output = q{};
-$parser->output_string(\$output);
+my $output_groff = q{};
+$parser->output_string(\$output_groff);
 $parser->parse_string_document($pod);
 like(
-    $output,
+    $output_groff,
     qr{ Beyonc\\\[u00E9\] }xms,
     'Works without Encode for groff encoding'
 );
 
-# Likewise for the default encoding, which should be groff.
-$parser = Pod::Man->new(name => 'test');
-my $output_groff;
-$parser->output_string(\$output_groff);
+# The default output format is UTF-8, so it should produce an error message
+# and then degrade to groff.
+{
+    local $SIG{__WARN__} = sub {
+        like(
+            $_[0],
+            qr{ falling [ ] back [ ] to [ ] groff [ ] escapes }xms,
+            'Pod::Man warns with no Encode module'
+        );
+    };
+    $parser = Pod::Man->new(name => 'test');
+}
+$output = q{};
+$parser->output_string(\$output);
 $parser->parse_string_document($pod);
-is($output_groff, $output, 'Works without Encode for default encoding');
+is($output, $output_groff, 'Degraded gracefull to groff output');
 
 # Now try with an explicit output encoding, which should produce an error
 # message and then degrade to groff.
@@ -88,10 +98,10 @@ is($output_groff, $output, 'Works without Encode for default encoding');
     };
     $parser = Pod::Man->new(name => 'test', encoding => 'iso-8859-1');
 }
-my $output_fallback = q{};
-$parser->output_string(\$output_fallback);
+$output = q{};
+$parser->output_string(\$output);
 $parser->parse_string_document($pod);
 is(
-    $output_fallback, $output_groff,
+    $output, $output_groff,
     'Explicit degraded gracefully to groff output'
 );

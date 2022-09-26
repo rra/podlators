@@ -164,7 +164,7 @@ sub new {
     my %options = @_;
     if (defined $options{encoding}) {
         $$self{ENCODING} = $options{encoding};
-    } elsif ($options{utf8}) {
+    } elsif (ASCII) {
         $$self{ENCODING} = 'UTF-8';
     } else {
         $$self{ENCODING} = 'groff';
@@ -1740,10 +1740,13 @@ sub preamble_template {
 1;
 __END__
 
+=encoding UTF-8
+
 =for stopwords
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8 UTF-8
 Allbery Sean Burke Ossanna Solaris formatters troff uppercased Christiansen
-nourls parsers Kernighan lquote rquote unrepresentable mandoc
+nourls parsers Kernighan lquote rquote unrepresentable mandoc NetBSD PostScript
+SMP macOS EBCDIC
 
 =head1 NAME
 
@@ -1768,6 +1771,14 @@ macro set.  The resulting *roff code is suitable for display on a terminal
 using L<nroff(1)>, normally via L<man(1)>, or printing using L<troff(1)>.
 It is conventionally invoked using the driver script B<pod2man>, but it can
 also be used directly.
+
+By default (on non-EBCDIC systems), Pod::Man outputs UTF-8 man pages.  Its
+output should work with the B<man> program on systems that use B<groff> (most
+Linux distributions) or B<mandoc> (most BSD variants), but may result in
+mangled output on older UNIX systems.  To choose a different, possibly more
+backward-compatible output mangling on such systems, set the C<encoding>
+option to C<roff> (the default in earlier Pod::Man versions).  See the
+C<encoding> option and L</ENCODING> for more details.
 
 As a derived class from Pod::Simple, Pod::Man supports the same methods and
 interfaces.  See L<Pod::Simple> for all the details.
@@ -1823,15 +1834,16 @@ reproducible regardless of local time zone).
 =item encoding
 
 Specifies the encoding of the output.  The value must be an encoding
-recognized by the L<Encode> module (see L<Encode::Supported>).  If the output
-contains characters that cannot be represented in this encoding, that is an
-error that will be reported as configured by the C<errors> option.  If error
-handling is other than C<die>, the unrepresentable character will be replaced
-with the Encode substitution character (normally C<?>).
+recognized by the L<Encode> module (see L<Encode::Supported>), or the special
+values C<roff> or C<groff>.  The default on non-EBCDIC systems is UTF-8.  If
+the output contains characters that cannot be represented in this encoding,
+that is an error that will be reported as configured by the C<errors> option.
+If error handling is other than C<die>, the unrepresentable character will be
+replaced with the Encode substitution character (normally C<?>).
 
-If the C<encoding> option is set to the special value C<groff> (the default),
-or if the Encode module is not available and the encoding is set to anything
-other than C<roff> (see below), Pod::Man will translate all non-ASCII
+If the C<encoding> option is set to the special value C<groff> (the default on
+EBCDIC systems), or if the Encode module is not available and the encoding is
+set to anything other than C<roff>, Pod::Man will translate all non-ASCII
 characters to C<\[uNNNN]> Unicode escapes.  These are not traditionally part
 of the *roff language, but are supported by B<groff> and B<mandoc> and thus by
 the majority of manual page processors in use today.
@@ -1843,7 +1855,7 @@ This was the default behavior of versions of Pod::Man before 5.00.  With this
 encoding, all other non-ASCII characters will be replaced with C<X>.  It may
 be required for very old troff and nroff implementations that do not support
 UTF-8, but its representation of any non-ASCII character is very poor and
-often specific to European languages.  Its use is discouraged.
+often specific to European languages.
 
 If the output file handle has a PerlIO encoding layer set, setting C<encoding>
 to anything other than C<groff> or C<roff> will be ignored and no encoding
@@ -1988,9 +2000,8 @@ support C<errors>.  Normally, the C<errors> option should be used instead.
 
 =item utf8
 
-If this option is set to a true value, the output encoding is set to UTF-8.
-This is equivalent to setting C<encoding> to C<UTF-8> if C<encoding> is not
-already set.  It is supported for backward compatibility.
+This option used to set the output encoding to UTF-8.  Since this is now the
+default, it is ignored and does nothing.
 
 =back
 
@@ -2014,6 +2025,162 @@ handle, call the output_string() method instead of output_fh().
 
 See L<Pod::Simple> for more specific details on the methods available to
 all derived parsers.
+
+=head1 ENCODING
+
+As of Pod::Man 5.00, the default output encoding for Pod::Man is now UTF-8.
+This should work correctly on any modern system that uses either B<groff>
+(most Linux distributions) or B<mandoc> (Alpine Linux and most BSD variants,
+including macOS).  On some systems, the user may have to use a UTF-8 locale to
+see correct output.  (The locale C<C.UTF-8> is now available on most systems
+if one wants correct output without changing the other things locales affect,
+such as collation.)
+
+The backward-compatible output format used in Pod::Man versions before 5.00 is
+available by setting the C<encoding> option to C<roff>.  This may produce
+marginally nicer results on older UNIX versions that do not use B<groff> or
+B<mandoc>, but none of the available options will correctly render Unicode
+characters on those systems.
+
+Below are some additional details about how this choice was made and some
+discussion of alternatives.
+
+=head2 History
+
+The default output encoding for Pod::Man has been a long-standing problem.
+B<troff> and B<nroff> predate Unicode by a significant margin, and their
+implementations for many UNIX systems reflect that legacy.  It's common for
+Unicode to not be supported in any form.
+
+Because of this, versions of Pod::Man prior to 5.00 maintained the highly
+conservative output of the original pod2man, which output pure ASCII with
+complex macros to simulate common western European accented characters when
+processed with troff.  The nroff output was awkward and sometimes incorrect,
+and characters not used in western European scripts were replaced with C<X>.
+This choice maximized backwards compatibility with man and nroff/troff
+implementations at the cost of incorrect rendering of many POD documents,
+particularly those containing people's names.
+
+The modern implementations, B<groff> (used in most Linux distributions) and
+B<mandoc> (used by most BSD variants), do now support Unicode.  Other UNIX
+systems often do not, but they're now a tiny minority of the systems people
+use on a daily basis.  It's increasingly common (for very good reasons) to use
+Unicode characters for POD documents rather than using ASCII conversions of
+people's names or avoiding non-English text, making the limitations in the old
+output format more apparent.
+
+Four options have been proposed to fix this:
+
+=over 2
+
+=item * 
+
+Optionally support UTF-8 output but don't change the default.  This is the
+approach taken since Pod::Man 2.1.0, which added the C<utf8> option.  Some
+Pod::Man users use this option for better output on platforms known to support
+Unicode, but since the defaults have not changed, people continued to
+encounter (and file bug reports about) the poor default rendering.
+
+=item *
+
+Convert characters to troff C<\(xx> escapes.  This requires maintaining a
+large translation table and addresses only a tiny part of the problem, since
+many Unicode characters have no standard troff name.  B<groff> has the largest
+list, but if one is willing to assume B<groff> is the formatter, the next
+option is better.
+
+=item *
+
+Convert characters to groff C<\[uNNNN]> escapes.  This is implemented as the
+C<groff> encoding for those who want to use it, and is supported by both
+B<groff> and B<mandoc>.  However, it is no better than UTF-8 output for
+portability to other implementations.  See L</Testing results> for more
+details.
+
+=item *
+
+Change the default output format to UTF-8 and ask those who want maximum
+backward compatibility to explicitly select the old encoding.  This fixes the
+issue for most users at the cost of backwards compatibility.  While the
+rendering of non-ASCII characters is different on older systems that don't
+support UTF-8, it's not always worse than the old output.
+
+=back
+
+Pod::Man 5.00 and later makes the last choice.  This arguably produces worse
+output when man pages are formatted with B<troff> into PostScript or PDF, but
+doing this is rare and normally manual, so the encoding can be changed in
+those cases.  The older output encoding is available by setting C<encoding> to
+C<roff>.
+
+=head2 Testing results
+
+Here is the results of testing C<encoding> values of C<utf-8> and C<groff> on
+various operating systems.  The testing methodology was to create F<man/man1>
+in the current directory, copy F<encoding.utf8> or F<encoding.groff> from the
+podlators 5.00 distribution to F<man/man1/encoding.1>, and then run:
+
+    MANPATH=$(pwd)/man man 1 encoding
+
+Tested on 2022-09-25.  Many thanks to the GCC Compile Farm project for access
+to testing hosts.
+
+  OS                  UTF-8     groff
+  -------             ------    ------
+  AIX 7.1             no [1]    no [2]
+  Alpine 3.15.0       yes       yes
+  CentOS 7.9          yes       yes
+  Debian 7            yes       yes
+  FreeBSD 13.0        yes [3]   yes [3]
+  NetBSD 9.2          yes [3]   yes [3]
+  OpenBSD 7.1         yes [3]   yes [3]
+  openSUSE Leap 15.4  yes       yes
+  Solaris 10          yes       no [2]
+  Solaris 11          no [4]    no [4]
+
+I did not have access to a macOS system for testing, but since it uses
+B<mandoc>, it's behavior is probably the same as the BSD hosts.
+
+Notes:
+
+=over 4
+
+=item [1]
+
+Unicode characters were converted to one or two random ASCII characters
+unrelated to the original character.
+
+=item [2]
+
+Unicode characters were shown as the body of the groff escape rather than the
+indicated character (in other words, text like C<[u00EF]>).
+
+=item [3]
+
+Setting a UTF-8 locale (such as C<C.UTF-8>) was required to see correct
+output.  This was set by default on FreeBSD but not on OpenBSD or NetBSD.
+(This may be an artifact of the testing machine rather than the operating
+system.)
+
+With no locale settings (indicating a C locale), an ISO 8859-1 character with
+an accent was shown without the accent, so apparently there is some ISO 8859-1
+to ASCII conversion layer.  The combining accent mark and an SMP character
+were replaced with C<< <?> >>.
+
+=item [4]
+
+Unicode characters were deleted entirely, as if they weren't there.  Using
+C<nroff -man> instead of B<man> to format the page showed the same results as
+Solaris 10.
+
+=back
+
+PostScript and PDF output using groff on a Debian 12 system do not support
+combining accent marks or SMP characters due to a lack of support in the
+default output font.
+
+Testing on additional platforms is welcome.  Please let the author know if you
+have additional results.
 
 =head1 DIAGNOSTICS
 
@@ -2050,7 +2217,7 @@ option was set to C<die>.
 =item PERL_CORE
 
 If set and Encode is not available, silently fall back to an encoding of
-C<roff> without complaining to standard error.  This environment variable is
+C<groff> without complaining to standard error.  This environment variable is
 set during Perl core builds, which build Encode after podlators.  Encode is
 expected to not (yet) be available in that case.
 

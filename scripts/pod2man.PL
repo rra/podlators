@@ -148,9 +148,17 @@ pod2man B<--help>
 
 =head1 DESCRIPTION
 
-B<pod2man> is a front-end for Pod::Man, using it to generate *roff input
-from POD source.  The resulting *roff code is suitable for display on a
-terminal using nroff(1), normally via man(1), or printing using troff(1).
+B<pod2man> is a front-end for Pod::Man, using it to generate *roff input from
+POD source.  The resulting *roff code is suitable for display on a terminal
+using L<nroff(1)>, normally via L<man(1)>, or printing using L<troff(1)>.
+
+By default, B<pod2man> outputs UTF-8 man pages.  Its output should work with
+the B<man> program on systems that use B<groff> (most Linux distributions) or
+B<mandoc> (most BSD variants), but may result in mangled output on older UNIX
+systems.  To choose a different, possibly more backward-compatible output
+mangling on such systems, use C<--encoding=roff> (the default in earlier
+Pod::Man versions).  See the B<--encoding> option and L<Pod::Man/ENCODING> for
+more details.
 
 I<input> is the file to read for POD source (the POD can be embedded in
 code).  If I<input> isn't given, it defaults to C<STDIN>.  I<output>, if

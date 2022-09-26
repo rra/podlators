@@ -16,7 +16,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 97;
+use Test::More tests => 99;
 use Test::Podlators qw(test_snippet);
 
 # Load the module.
@@ -30,7 +30,7 @@ my @snippets = qw(
   c-in-name dollar-magic error-die error-none error-normal
   error-pod error-stderr error-stderr-opt eth fixed-font fixed-font-in-item
   for-blocks hyphen-in-s item-fonts link-quoting link-to-url long-quote
-  lquote-and-quote lquote-rquote markup-in-name multiline-x naive
+  lquote-and-quote lquote-rquote markup-in-name multiline-x naive naive-groff
   name-guesswork nested-lists newlines-in-c non-ascii not-bullet not-numbers
   nourls paired-quotes periods quote-escaping rquote-none small-caps-magic
   small-caps-magic-function soft-hyphens trailing-space true-false

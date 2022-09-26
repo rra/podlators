@@ -1,6 +1,9 @@
 [name]
 Handling of E<> Unicode escape
 
+[options]
+encoding groff
+
 [input]
 =head1 perlfaq4 SNIPPET
 
@@ -11,4 +14,4 @@ you want to check three keys deep, you might naE<0xEF>vely try this:
 .SH "perlfaq4 SNIPPET"
 .IX Header "perlfaq4 SNIPPET"
 The trick to this problem is avoiding accidental autovivification. If
-you want to check three keys deep, you might naïvely try this:
+you want to check three keys deep, you might na\[u00EF]vely try this:
