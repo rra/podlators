@@ -2028,13 +2028,16 @@ all derived parsers.
 
 =head1 ENCODING
 
-As of Pod::Man 5.00, the default output encoding for Pod::Man is now UTF-8.
-This should work correctly on any modern system that uses either B<groff>
-(most Linux distributions) or B<mandoc> (Alpine Linux and most BSD variants,
-including macOS).  On some systems, the user may have to use a UTF-8 locale to
-see correct output.  (The locale C<C.UTF-8> is now available on most systems
+As of Pod::Man 5.00, the default output encoding for Pod::Man is UTF-8.  This
+should work correctly on any modern system that uses either B<groff> (most
+Linux distributions) or B<mandoc> (Alpine Linux and most BSD variants,
+including macOS).
+
+The user will probably have to use a UTF-8 locale to see correct output.  This
+may be done by default; if not, set the LANG or LC_CTYPE environment variables
+to an appropriate local.  The locale C<C.UTF-8> is available on most systems
 if one wants correct output without changing the other things locales affect,
-such as collation.)
+such as collation.
 
 The backward-compatible output format used in Pod::Man versions before 5.00 is
 available by setting the C<encoding> option to C<roff>.  This may produce
@@ -2120,23 +2123,27 @@ various operating systems.  The testing methodology was to create F<man/man1>
 in the current directory, copy F<encoding.utf8> or F<encoding.groff> from the
 podlators 5.00 distribution to F<man/man1/encoding.1>, and then run:
 
-    MANPATH=$(pwd)/man man 1 encoding
+    LANG=C.UTF-8 MANPATH=$(pwd)/man man 1 encoding
+
+If the locale is not explicitly set to one that includes UTF-8, the Unicode
+characters were usually converted to ASCII (by, for example, dropping an
+accent) or deleted or replaced with C<< <?> >> if there was no conversion.
 
 Tested on 2022-09-25.  Many thanks to the GCC Compile Farm project for access
 to testing hosts.
 
-  OS                  UTF-8     groff
-  -------             ------    ------
-  AIX 7.1             no [1]    no [2]
-  Alpine 3.15.0       yes       yes
-  CentOS 7.9          yes       yes
-  Debian 7            yes       yes
-  FreeBSD 13.0        yes [3]   yes [3]
-  NetBSD 9.2          yes [3]   yes [3]
-  OpenBSD 7.1         yes [3]   yes [3]
-  openSUSE Leap 15.4  yes       yes
-  Solaris 10          yes       no [2]
-  Solaris 11          no [4]    no [4]
+    OS                   UTF-8      groff
+    ------------------   -------    -------
+    AIX 7.1              no [1]     no [2]
+    Alpine 3.15.0        yes        yes
+    CentOS 7.9           yes        yes
+    Debian 7             yes        yes
+    FreeBSD 13.0         yes        yes
+    NetBSD 9.2           yes        yes
+    OpenBSD 7.1          yes        yes
+    openSUSE Leap 15.4   yes        yes
+    Solaris 10           yes        no [2]
+    Solaris 11           no [3]     no [3]
 
 I did not have access to a macOS system for testing, but since it uses
 B<mandoc>, it's behavior is probably the same as the BSD hosts.
@@ -2157,21 +2164,10 @@ indicated character (in other words, text like C<[u00EF]>).
 
 =item [3]
 
-Setting a UTF-8 locale (such as C<C.UTF-8>) was required to see correct
-output.  This was set by default on FreeBSD but not on OpenBSD or NetBSD.
-(This may be an artifact of the testing machine rather than the operating
-system.)
-
-With no locale settings (indicating a C locale), an ISO 8859-1 character with
-an accent was shown without the accent, so apparently there is some ISO 8859-1
-to ASCII conversion layer.  The combining accent mark and an SMP character
-were replaced with C<< <?> >>.
-
-=item [4]
-
 Unicode characters were deleted entirely, as if they weren't there.  Using
 C<nroff -man> instead of B<man> to format the page showed the same results as
-Solaris 10.
+Solaris 10.  Using C<groff -k -man -Tutf8> to format the page produced the
+correct output.
 
 =back
 
