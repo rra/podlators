@@ -66,30 +66,3 @@ therefore of broader scope than just this code:
    terminal display it's becoming common to suppress the headers and
    footers.  For the purposes of Pod::Man, end notes are probably a better
    model and can be handled about the same way as they are for Pod::Text.
-
-The following ideas about guesswork and heuristics were all taken from a
-post by Tom Christiansen to pod-people@perl.org:
-
- * All of the following should be okay to use verbatim in any POD text and
-   have the translator do something appropriate:
-
-   FILEHANDLE PackageName
-   $variable @variable %variable &function
-   $var::iable @vari::able %variab::le &functio::n
-   function() fun::ction() fun::ct::ion()
-   manpage(3r)
-   user@host.com
-   http://somewhere.com/stuff/ ftp://somewhere.com/stuff/
-
-   Pod::Man and Pod::Text handle much of this already, but not all of it
-   (and I've not checked to see exactly where they break).
-
- * Something in __ALLCAPS__ should be in code font but perhaps not small,
-   and maybe some magic between the unders, as in \f(CW_\|_ALLCAPS_\|_\fP.
-   (Pod::Man handles the spaces between the underbars, but not putting
-   this into code font.)
-
- * The module version number should be included in the headers/footers
-   where appropriate.  That means that, when processing a module, ideally
-   one wants to pull out the module's $VERSION to use in the footer rather
-   than Perl's version.
