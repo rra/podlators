@@ -9,7 +9,7 @@ other interesting bits.
 .IX Header "This is a level 1 heading"
 .SS "``Level'' ""2 \fIheading\fP"
 .IX Subsection "``Level'' ""2 heading"
-\fILevel 3 \f(BIheading \f(BIwith \f(CB\*(C`weird \f(CBstuff "" (double quote)\f(CB\*(C'\f(BI\f(BI\fI\fR
+\fILevel 3 \fR\f(BIheading with \fR\f(CB\*(C`weird stuff "" (double quote)\*(C'\fR
 .IX Subsection "Level 3 heading with weird stuff """" (double quote)"
 .PP
 Level "4 \f(CW\*(C`heading\*(C'\fR
@@ -24,7 +24,7 @@ Text.
 .IX Subsection "``Level'' 2 heading"
 Text.
 .PP
-\fILevel 3 \f(BIheading \f(BIwith \f(CB\*(C`weird \f(CBstuff\f(CB\*(C'\f(BI\f(BI\fI\fR
+\fILevel 3 \fR\f(BIheading with \fR\f(CB\*(C`weird stuff\*(C'\fR
 .IX Subsection "Level 3 heading with weird stuff"
 .PP
 Text.
@@ -89,7 +89,7 @@ Testing \fIitalics\fR
 .PP
 "\fIItalic\fR text" in foo
 .PP
-"Section \f(CW\*(C`with\*(C'\fR \fI\f(BIother\fI markup\fR" in foo|bar
+"Section \f(CW\*(C`with\*(C'\fR \fR\f(BIother\fR\fI markup\fR" in foo|bar
 .SH "OVER AND ITEMS"
 .IX Header "OVER AND ITEMS"
 Taken from Pod::Parser tests, this is a test to ensure that multiline
@@ -228,7 +228,7 @@ the first < seen.
 Lets make sure these work for empty ones too, like \f(CW\*(C`\*(C'\fR and \f(CW\*(C`>>\*(C'\fR
 (just to be obnoxious)
 .PP
-The statement: \f(CW\*(C`This is dog kind\*(Aqs \f(CIfinest\f(CW hour!\*(C'\fR is a parody of a
+The statement: \f(CW\*(C`This is dog kind\*(Aqs \fR\f(CIfinest\fR\f(CW hour!\*(C'\fR is a parody of a
 quotation from Winston Churchill.
 .PP
 The following tests are added to those:

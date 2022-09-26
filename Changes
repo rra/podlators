@@ -43,6 +43,11 @@
    encoding is not ASCII.  groff's preconv program and FreeBSD's mandoc
    will use this line to determine the input encoding.
 
+ - Clear the current font before changing fonts in all Pod::Man output,
+   not just headings.  groff 1.22.4 does not clear bold or italic when
+   seeing \f(CW font change, which meant bold and italic were extending
+   farther than they should without this change.  (#143667)
+
  - Honor the quotes, lquote, and rquote configuration parameters to
    Pod::Man for C<> text inside the special NAME section.  (#143967)
 

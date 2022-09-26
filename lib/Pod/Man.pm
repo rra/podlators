@@ -690,9 +690,9 @@ sub mapfonts {
     my ($fixed, $bold, $italic) = (0, 0, 0);
     my %magic = (F => \$fixed, B => \$bold, I => \$italic);
     my $last = '\fR';
-    $text =~ s<
+    $text =~ s{
         \\f\((.)(.)
-    > <
+    }{
         my $sequence = '';
         my $f;
         if ($last ne '\fR') { $sequence = '\fP' }
@@ -705,25 +705,46 @@ sub mapfonts {
             $last = $f;
             $sequence;
         }
-    >gxe;
+    }gxe;
     return $text;
 }
 
 # Unfortunately, there is a bug in Solaris 2.6 nroff (not present in GNU
 # groff) where the sequence \fB\fP\f(CW\fP leaves the font set to B rather
 # than R, presumably because \f(CW doesn't actually do a font change.  To work
-# around this, use a separate textmapfonts for text blocks where the default
-# font is always R and only use the smart mapfonts for headings.
+# around this, use a separate textmapfonts for text blocks that uses \fR
+# instead of \fP.
+#
+# Originally, this function was much simpler because it went directly from \fB
+# to \f(CW and relied on \f(CW clearing bold since it wasn't \f(CB.
+# Unfortunately, while this works for mandoc, this is not how groff works;
+# \fBfoo\f(CWbar still prints bar in bold.  Therefore, we force the font back
+# to the default before each font change.
 sub textmapfonts {
     my ($self, $text) = @_;
     my ($fixed, $bold, $italic) = (0, 0, 0);
     my %magic = (F => \$fixed, B => \$bold, I => \$italic);
-    $text =~ s<
+    my $last = '\fR';
+    $text =~ s{
         \\f\((.)(.)
-    > <
+    }{
+        my $sequence = q{};
+        if ($last ne '\fR') { $sequence = '\fR' }
         ${ $magic{$1} } += ($2 eq 'S') ? 1 : -1;
-        $$self{FONTS}{ ($fixed && 1) . ($bold && 1) . ($italic && 1) };
-    >gxe;
+        my $f = $$self{FONTS}{ ($fixed && 1) . ($bold && 1) . ($italic && 1) };
+        if ($f eq $last) {
+            '';
+        } else {
+            if ($f ne '\fR') { $sequence .= $f }
+            $last = $f;
+            $sequence;
+        }
+    }gxe;
+
+    # We can do a bit of cleanup by collapsing sequences like \fR\fB\fR\fI
+    # into just \fI.
+    $text =~ s{ (?: \\fR )? (?: \\f (.|\(..) \\fR )+ }{\\fR}xms;
+
     return $text;
 }
 
