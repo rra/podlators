@@ -32,6 +32,10 @@ BEGIN {
     use_ok('Pod::Man');
 }
 
+# Force the timestamp on the input file since it will otherwise depend on the
+# checkout.
+local $ENV{SOURCE_DATE_EPOCH} = 1664146047;
+
 # Get the path to the input and output files.
 my $input = File::Spec->catfile('t', 'data', 'man', 'encoding.pod');
 #<<<
