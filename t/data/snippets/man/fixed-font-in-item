@@ -18,7 +18,7 @@ didn't properly stop italic.
 [output]
 .SH "Fixed-width Fonts in =item"
 .IX Header "Fixed-width Fonts in =item"
-In podlators 4.06 and earlier, italic was terminated with \ef(\s-1CW\s0, which
+In podlators 4.06 and earlier, italic was terminated with \ef(CW, which
 didn't properly stop italic.
 .ie n .IP """tar \f(CIoption\fR... [\f(CIname\fR]...""" 2
 .el .IP "\f(CWtar \fR\f(CIoption\fR\f(CW... [\fR\f(CIname\fR\f(CW]...\fR" 2

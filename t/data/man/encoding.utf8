@@ -15,29 +15,12 @@
 .ft R
 .fi
 ..
-.\" Set up some character translations and predefined strings.  \*(-- will
-.\" give an unbreakable dash, \*(PI will give pi, \*(L" will give a left
-.\" double quote, and \*(R" will give a right double quote.  \*(C+ will
-.\" give a nicer C++.  Capital omega is used to do unbreakable dashes and
-.\" therefore won't be available.  \*(C` and \*(C' expand to `' in nroff,
-.\" nothing in troff, for use with C<>.
-.tr \(*W-
-.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.\" \*(C` and \*(C' are quotes in nroff, nothing in troff, for use with C<>.
 .ie n \{\
-.    ds -- \(*W-
-.    ds PI pi
-.    if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
-.    if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\"  diablo 12 pitch
-.    ds L" ""
-.    ds R" ""
 .    ds C` ""
 .    ds C' ""
 'br\}
 .el\{\
-.    ds -- \|\(em\|
-.    ds PI \(*p
-.    ds L" ``
-.    ds R" ''
 .    ds C`
 .    ds C'
 'br\}
@@ -78,17 +61,17 @@
 .nh
 .SH "ENCODING TESTS"
 .IX Header "ENCODING TESTS"
-This \s-1POD\s0 source is intended to test encoding behavior with different
+This POD source is intended to test encoding behavior with different
 pod2man encoding options.  The resulting *roff output files can be copied
 to various systems to test with the local nroff or man implementations.
 .PP
-\&\s-1ISO\s0 8859\-1 character: naïve
+ISO 8859\-1 character: naïve
 .PP
-\&\s-1ISO\s0 8859\-1 escape: naïve, naïve
+ISO 8859\-1 escape: naïve, naïve
 .PP
 Combining accent: naïve
 .PP
-\&\s-1SMP\s0 plane character: 😀
+SMP plane character: 😀
 .PP
 Non-breaking space: foo\ bar, foo\ bar
 .PP
@@ -102,4 +85,4 @@ permitted in any medium without royalty provided the copyright notice and
 this notice are preserved.  This file is offered as-is, without any
 warranty.
 .PP
-SPDX-License-Identifier: \s-1FSFAP\s0
+SPDX-License-Identifier: FSFAP

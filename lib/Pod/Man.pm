@@ -226,12 +226,9 @@ sub new {
     $self->init_page;
 
     # For right now, default to turning on all of the magic.
-    $$self{MAGIC_CPP}       = 1;
-    $$self{MAGIC_EMDASH}    = 1;
-    $$self{MAGIC_FUNC}      = 1;
-    $$self{MAGIC_MANREF}    = 1;
-    $$self{MAGIC_SMALLCAPS} = 1;
-    $$self{MAGIC_VARS}      = 1;
+    $$self{MAGIC_FUNC}   = 1;
+    $$self{MAGIC_MANREF} = 1;
+    $$self{MAGIC_VARS}   = 1;
 
     return $self;
 }
@@ -566,49 +563,6 @@ sub guesswork {
         $prefix . $hyphen . $main . $suffix;
     }egx;
 
-    # Translate "--" into a real em-dash if it's used like one.  This means
-    # that it's either surrounded by whitespace, it follows a regular word, or
-    # it occurs between two regular words.
-    if ($$self{MAGIC_EMDASH}) {
-        s{          (\s) \\-\\- (\s)                } { $1 . '\*(--' . $2 }egx;
-        s{ (\b[a-zA-Z]+) \\-\\- (\s|\Z|[a-zA-Z]+\b) } { $1 . '\*(--' . $2 }egx;
-    }
-
-    # Make words in all-caps a little bit smaller; they look better that way.
-    # However, we don't want to change Perl code (like @ARGV), nor do we want
-    # to fix the MIME in MIME-Version since it looks weird with the
-    # full-height V.
-    #
-    # We change only a string of all caps (2) either at the beginning of the
-    # line or following regular punctuation (like quotes) or whitespace (1),
-    # and followed by either similar punctuation, an em-dash, or the end of
-    # the line (3).
-    #
-    # Allow the text we're changing to small caps to include double quotes,
-    # commas, newlines, and periods as long as it doesn't otherwise interrupt
-    # the string of small caps and still fits the criteria.  This lets us turn
-    # entire warranty disclaimers in man page output into small caps.
-    if ($$self{MAGIC_SMALLCAPS}) {
-        s{
-            ( ^ | [\s\(\"\'\`\[\{<>] | \\[ ]  )                           # (1)
-            (                                                             # (2)
-                [A-Z] [A-Z]
-                (?:
-                    [A-Z\d]+ \"? [.,]? \"?
-                    | \s* \"? [A-Z]
-                    | [/:_\$&-] [A-Z] [A-Z]
-                )*
-            )
-            (?= [\s>\}\]\(\)\'\".?!,;] | \\*\(-- | \\[ ] | $ )            # (3)
-        } {
-            $1 . '\s-1' . $2 . '\s0'
-        }egx;
-    }
-
-    # Note that from this point forward, we have to adjust for \s-1 and \s-0
-    # strings inserted around things that we've made small-caps if later
-    # transforms should work on those strings.
-
     # Embolden functions in the form func(), including functions that are in
     # all capitals, but don't embolden if there's anything between the parens.
     # The function must start with an alphabetic character or underscore and
@@ -616,10 +570,10 @@ sub guesswork {
     if ($$self{MAGIC_FUNC}) {
         s{
             (?<! \\ )
-            ( \b | \\s-1 )
-            ( [A-Za-z_] ([:\w] | \\s-?[01])+ \(\) )
+            \b
+            ( [A-Za-z_] [:\w]+ \(\) )
         } {
-            $1 . '\f(BS' . $2 . '\f(BE'
+            '\f(BS' . $1 . '\f(BE'
         }egx;
     }
 
@@ -632,12 +586,12 @@ sub guesswork {
     # does not recognize man page references like perl(l) or socket(3SOCKET).
     if ($$self{MAGIC_MANREF}) {
         s{
-            ( \b | \\s-1 )
-            (?<! \\ )                                   # rule out \s0(1)
-            ( [A-Za-z_] (?:[.:\w] | \\- | \\s-?[01])+ )
+            \b
+            (?<! \\ )                                   # rule out \e0(1)
+            ( [A-Za-z_] (?:[.:\w] | \\-)+ )
             ( \( \d [a-z]* \) )
         } {
-            $1 . '\f(BS' . $2 . '\f(BE\|' . $3
+            '\f(BS' . $1 . '\f(BE\|' . $2
         }egx;
     }
 
@@ -652,17 +606,6 @@ sub guesswork {
         } {
             $1 . '\f(FS' . $2 . '\f(FE'
         }egx;
-    }
-
-    # Fix up double quotes.  Unfortunately, we miss this transformation if the
-    # quoted text contains any code with formatting codes and there's not much
-    # we can effectively do about that, which makes it somewhat unclear if
-    # this is really a good idea.
-    s{ \" ([^\"]+) \" } { '\*(L"' . $1 . '\*(R"' }egx;
-
-    # Make C++ into \*(C+, which is a squinched version.
-    if ($$self{MAGIC_CPP}) {
-        s{ \b C\+\+ } {\\*\(C+}gx;
     }
 
     # Done.
@@ -1648,29 +1591,12 @@ sub preamble_template {
 .ft R
 .fi
 ..
-.\" Set up some character translations and predefined strings.  \*(-- will
-.\" give an unbreakable dash, \*(PI will give pi, \*(L" will give a left
-.\" double quote, and \*(R" will give a right double quote.  \*(C+ will
-.\" give a nicer C++.  Capital omega is used to do unbreakable dashes and
-.\" therefore won't be available.  \*(C` and \*(C' expand to `' in nroff,
-.\" nothing in troff, for use with C<>.
-.tr \(*W-
-.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.\" \*(C` and \*(C' are quotes in nroff, nothing in troff, for use with C<>.
 .ie n \{\
-.    ds -- \(*W-
-.    ds PI pi
-.    if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
-.    if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\"  diablo 12 pitch
-.    ds L" ""
-.    ds R" ""
 .    ds C` @LQUOTE@
 .    ds C' @RQUOTE@
 'br\}
 .el\{\
-.    ds -- \|\(em\|
-.    ds PI \(*p
-.    ds L" ``
-.    ds R" ''
 .    ds C`
 .    ds C'
 'br\}
@@ -1835,21 +1761,16 @@ a centered footer of the Perl version it is run with, and to a left-hand
 footer of the modification date of its input (or the current date if given
 C<STDIN> for input).
 
+Besides the obvious pod conversions, Pod::Man also takes care of formatting
+func(), func(3), and simple variable references like $foo or @bar so you don't
+have to use code escapes for them; complex expressions like C<$fred{'stuff'}>
+will still need to be escaped, though.
+
 Pod::Man assumes that your *roff formatters have a fixed-width font named
 C<CW>.  If yours is called something else (like C<CR>), use the C<fixed>
 option to specify it.  This generally only matters for troff output for
 printing.  Similarly, you can set the fonts used for bold, italic, and
 bold italic fixed-width output.
-
-Besides the obvious pod conversions, Pod::Man also takes care of
-formatting func(), func(3), and simple variable references like $foo or
-@bar so you don't have to use code escapes for them; complex expressions
-like C<$fred{'stuff'}> will still need to be escaped, though.  It also
-translates dashes that aren't used as hyphens into en dashes, makes long
-dashes--like this--into proper em dashes, fixes "paired quotes," makes C++
-look right, puts a little space between double underscores, makes ALLCAPS
-a teeny bit smaller in B<troff>, and escapes stuff that *roff treats as
-special so that you don't have to.
 
 The recognized options to new() are as follows.  All options take a single
 argument.

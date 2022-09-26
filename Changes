@@ -21,6 +21,13 @@
    over UTF-8 on non-EBCDIC systems.  It is the default output format on
    EBCDIC systems, and when the Encode module is not available.  (#73804)
 
+ - Pod::Man no longer does guesswork transformations that only affected
+   troff output.  Formatting man pages with troff is exceptionally rare,
+   and this magic caused constant maintenance issues.  This means -- is no
+   longer changed to an em-dash, strings of capital letters aren't made a
+   bit smaller, no attempt is made to change double quotes to paired
+   quotes, and no special formatting is done for C++.  (#132007)
+
  - Pod::Text now supports an encoding option (-e or --encoding to
    pod2text) to force the output encoding, similar to Pod::Man.  The utf8
    option (-u or --utf8 to pod2text) is still supported and is equivalent
@@ -54,10 +61,6 @@
 
  - Honor the quotes, lquote, and rquote configuration parameters to
    Pod::Man for C<> text inside the special NAME section.  (#143967)
-
- - Fix another Pod::Man instance of bad interaction between making
-   functions bold and marking all-capital strings as small caps.  Thanks,
-   Dima Kogan.  (#132007)
 
  - Avoid non-standard *roff escape in the troff accent mark definition for
    an acute accent.  \h"..." was used instead of \h'...' as seen in the

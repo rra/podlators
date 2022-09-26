@@ -170,22 +170,19 @@ I<output> files on the command line.
 
 B<--section>, B<--release>, B<--center>, B<--date>, and B<--official> can
 be used to set the headers and footers to use; if not given, Pod::Man will
-assume various defaults.  See below or L<Pod::Man> for details.
+assume various defaults.  See below for details.
 
-B<pod2man> assumes that your *roff formatters have a fixed-width font
-named C<CW>.  If yours is called something else (like C<CR>), use
-B<--fixed> to specify it.  This generally only matters for troff output
-for printing.  Similarly, you can set the fonts used for bold, italic, and
-bold italic fixed-width output.
+Besides the obvious pod conversions, Pod::Man, and therefore B<pod2man>, also
+takes care of formatting func(), func(n), and simple variable references like
+$foo or @bar so you don't have to use code escapes for them; complex
+expressions like C<$fred{'stuff'}> will still need to be escaped, though.  See
+L<Pod::Man> for complete information.
 
-Besides the obvious pod conversions, Pod::Man, and therefore pod2man also
-takes care of formatting func(), func(n), and simple variable references
-like $foo or @bar so you don't have to use code escapes for them; complex
-expressions like C<$fred{'stuff'}> will still need to be escaped, though.
-It also translates dashes that aren't used as hyphens into en dashes, makes
-long dashes--like this--into proper em dashes, fixes "paired quotes," and
-takes care of several other troff-specific tweaks.  See L<Pod::Man> for
-complete information.
+B<pod2man> assumes that your *roff formatters have a fixed-width font named
+C<CW>.  If yours is called something else (like C<CR>), use B<--fixed> to
+specify it.  This generally only matters for troff output for printing.
+Similarly, you can set the fonts used for bold, italic, and bold italic
+fixed-width output.
 
 =head1 OPTIONS
 

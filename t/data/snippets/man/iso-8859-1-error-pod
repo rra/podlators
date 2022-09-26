@@ -26,4 +26,4 @@ error.
 Hey! \fBThe above document had some coding errors, which are explained below:\fR
 .IP "Around line 8:" 4
 .IX Item "Around line 8:"
-\&\*(L"\ex{38790}\*(R" does not map to iso\-8859\-1
+"\ex{38790}" does not map to iso\-8859\-1
