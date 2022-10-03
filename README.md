@@ -4,7 +4,7 @@
 status](https://github.com/rra/podlators/workflows/build/badge.svg)](https://github.com/rra/podlators/actions)
 [![CPAN
 version](https://img.shields.io/cpan/v/podlators)](https://metacpan.org/release/podlators)
-[![License](https://img.shields.io/cpan/l/podlators)](https://github.com/rra/podlators/blob/master/LICENSE)
+[![License](https://img.shields.io/cpan/l/podlators)](https://github.com/rra/podlators/blob/main/LICENSE)
 
 Copyright 1999-2010, 2012-2021 Russ Allbery <rra@cpan.org>.  This software
 is distributed under the same terms as Perl itself.  Please see the
