@@ -68,9 +68,9 @@ BEGIN { *pretty = \&Pod::Simple::pretty }
 # Formatting instructions for various types of blocks.  cleanup makes hyphens
 # hard, adds spaces between consecutive underscores, and escapes backslashes.
 # convert translates characters into escapes.  guesswork means to apply the
-# transformations done by the guesswork sub.  literal says to protect literal
-# quotes from being turned into UTF-8 quotes.  By default, all transformations
-# are on except literal, but some elements override.
+# transformations done by the guesswork sub (if enabled).  literal says to
+# protect literal quotes from being turned into UTF-8 quotes.  By default, all
+# transformations are on except literal, but some elements override.
 #
 # DEFAULT specifies the default settings.  All other elements should list only
 # those settings that they are overriding.  Data indicates =for roff blocks,
@@ -87,7 +87,7 @@ my %FORMATTING = (
 );
 
 # Try to map an encoding as understood by Perl Encode to an encoding
-# understood by groff's preconv.  Encode doesn't care about hyphens are
+# understood by groff's preconv.  Encode doesn't care about hyphens or
 # capitalization, but preconv does.  The key is the canonicalized Encode
 # encoding, and the value is something preconv might understand.
 #
@@ -225,10 +225,22 @@ sub new {
     $self->init_quotes;
     $self->init_page;
 
-    # For right now, default to turning on all of the magic.
-    $$self{MAGIC_FUNC}   = 1;
-    $$self{MAGIC_MANREF} = 1;
-    $$self{MAGIC_VARS}   = 1;
+    # Configure guesswork based on options.
+    my %guesswork = map { $_ => 1 } split(m{,}xms, $$self{guesswork} || q{});
+    if (!%guesswork || $guesswork{all}) {
+        #<<<
+        $$self{GUESSWORK} = {
+            functions => 1,
+            manref    => 1,
+            quoting   => 1,
+            variables => 1,
+        };
+        #>>>
+    } elsif ($guesswork{none}) {
+        $$self{GUESSWORK} = {};
+    } else {
+        $$self{GUESSWORK} = {%guesswork};
+    }
 
     return $self;
 }
@@ -470,15 +482,13 @@ sub format_text {
     }
 
     # Ensure that *roff doesn't convert literal quotes to UTF-8 single quotes,
-    # but don't mess up our accept escapes.
+    # but don't mess up accent escapes.
     if ($literal) {
         $text =~ s/(?<!\\\*)\'/\\*\(Aq/g;
         $text =~ s/(?<!\\\*)\`/\\\`/g;
     }
 
-    # If guesswork is asked for, do that.  This involves more substantial
-    # formatting based on various heuristics that may only be appropriate for
-    # particular documents.
+    # If guesswork is is viable for this block, do that.
     if ($guesswork) {
         $text = $self->guesswork ($text);
     }
@@ -493,11 +503,6 @@ sub quote_literal {
     my $self = shift;
     local $_ = shift;
 
-    # A regex that matches the portion of a variable reference that's the
-    # array or hash index, separated out just because we want to use it in
-    # several places in the following regex.
-    my $index = '(?: \[.*\] | \{.*\} )?';
-
     # If in NAME section, just return an ASCII quoted string to avoid
     # confusing tools like whatis.
     if ($$self{IN_NAME}) {
@@ -506,22 +511,39 @@ sub quote_literal {
         return $lquote . $_ . $rquote;
     }
 
+    # A regex that matches the portion of a variable reference that's the
+    # array or hash index, separated out just because we want to use it in
+    # several places in the following regex.
+    my $index = '(?: \[[^]]+\] | \{[^}]+\} )?';
+
     # Check for things that we don't want to quote, and if we find any of
     # them, return the string with just a font change and no quoting.
+    #
+    # Traditionally, Pod::Man has not quoted Perl variables, functions,
+    # numbers, or hex constants, but this is not always desirable.  Make this
+    # optional on the quoting guesswork flag.
+    my $extra = qr{(?!)}xms;    # never matches
+    if ($$self{GUESSWORK}{quoting}) {
+        $extra = qr{
+             \$+ [\#^]? \S $index                    # special ($^F, $")
+           | [\$\@%&*]+ \#? [:\'\w]+ $index          # plain var or func
+           | [\$\@%&*]* [:\'\w]+
+             (?: \\-> )? \(\s*[^\s,\)]*\s*\)         # 0/1-arg func call
+           | (?: [+] || \\- )? ( \d[\d.]* | \.\d+ )
+             (?: [eE] (?: [+] || \\- )? \d+ )?       # a number
+           | 0x [a-fA-F\d]+                          # a hex constant
+         }xms;
+    }
     m{
       ^\s*
       (?:
-         ( [\'\`\"] ) .* \1                             # already quoted
-       | \\\*\(Aq .* \\\*\(Aq                           # quoted and escaped
-       | \\?\` .* ( \' | \\\*\(Aq )                     # `quoted'
-       | \$+ [\#^]? \S $index                           # special ($^Foo, $")
-       | [\$\@%&*]+ \#? [:\'\w]+ $index                 # plain var or func
-       | [\$\@%&*]* [:\'\w]+ (?: -> )? \(\s*[^\s,]\s*\) # 0/1-arg func call
-       | [-+]? ( \d[\d.]* | \.\d+ ) (?: [eE][-+]?\d+ )? # a number
-       | 0x [a-fA-F\d]+                                 # a hex constant
+         ( [\'\"] ) .* \1                    # already quoted
+       | \\\*\(Aq .* \\\*\(Aq                # quoted and escaped
+       | \\?\` .* ( \' | \\?\` | \\\*\(Aq )  # `quoted' or `quoted`
+       | $extra
       )
       \s*\z
-     }xso and return '\f(FS' . $_ . '\f(FE';
+     }xms and return '\f(FS' . $_ . '\f(FE';
 
     # If we didn't return, go ahead and quote the text.
     return '\f(FS\*(C`' . $_ . "\\*(C'\\f(FE";
@@ -530,10 +552,9 @@ sub quote_literal {
 # Takes a text block to perform guesswork on.  Returns the text block with
 # formatting codes added.  This is the code that marks up various Perl
 # constructs and things commonly used in man pages without requiring the user
-# to add any explicit markup, and is applied to all non-literal text.  We're
-# guaranteed that the text we're applying guesswork to does not contain any
-# *roff formatting codes.  Note that the inserted font sequences must be
-# treated later with mapfonts or textmapfonts.
+# to add any explicit markup, and is applied to all non-literal text.  Note
+# that the inserted font sequences must be treated later with mapfonts or
+# textmapfonts.
 #
 # This method is very fragile, both in the regular expressions it uses and in
 # the ordering of those modifications.  Care and testing is required when
@@ -564,10 +585,10 @@ sub guesswork {
     }egx;
 
     # Embolden functions in the form func(), including functions that are in
-    # all capitals, but don't embolden if there's anything between the parens.
+    # all capitals, but don't embolden if there's anything inside the parens.
     # The function must start with an alphabetic character or underscore and
     # then consist of word characters or colons.
-    if ($$self{MAGIC_FUNC}) {
+    if ($$self{GUESSWORK}{functions}) {
         s{
             (?<! \\ )
             \b
@@ -584,7 +605,7 @@ sub guesswork {
     # configuration file man pages), or colons, and n is a single digit,
     # optionally followed by some number of lowercase letters.  Note that this
     # does not recognize man page references like perl(l) or socket(3SOCKET).
-    if ($$self{MAGIC_MANREF}) {
+    if ($$self{GUESSWORK}{manref}) {
         s{
             \b
             (?<! \\ )                                   # rule out \e0(1)
@@ -598,7 +619,7 @@ sub guesswork {
     # Convert simple Perl variable references to a fixed-width font.  Be
     # careful not to convert functions, though; there are too many subtleties
     # with them to want to perform this transformation.
-    if ($$self{MAGIC_VARS}) {
+    if ($$self{GUESSWORK}{variables}) {
         s{
            ( ^ | \s+ )
            ( [\$\@%] [\w:]+ )
@@ -1713,7 +1734,7 @@ __END__
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8 UTF-8
 Allbery Sean Burke Ossanna Solaris formatters troff uppercased Christiansen
 nourls parsers Kernighan lquote rquote unrepresentable mandoc NetBSD PostScript
-SMP macOS EBCDIC fallbacks
+SMP macOS EBCDIC fallbacks manref
 
 =head1 NAME
 
@@ -1865,6 +1886,52 @@ Bold italic (probably actually oblique) version of the fixed-width font.
 Pod::Man doesn't assume you have this, and defaults to C<CB>.  Some
 systems (such as Solaris) have this font available as C<CX>.  Only matters
 for B<troff> output.
+
+=item guesswork
+
+By default, Pod::Man applies some default formatting rules based on guesswork
+and regular expressions that are intended to make writing Perl documentation
+easier and require less explicit markup.  These rules may not always be
+appropriate, particularly for documentation that isn't about Perl.  This
+option allows turning all or some of it off.
+
+The special value C<all> enables all guesswork.  This is also the default for
+backward compatibility reasons.  The special value C<none> disables all
+guesswork.  Otherwise, the value of this option should be a comma-separated
+list of one or more of the following keywords:
+
+=over 4
+
+=item functions
+
+Convert function references like C<foo()> to bold even if they have no markup.
+The function name accepts valid Perl characters for function names (including
+C<:>), and the trailing parentheses must be present and empty.
+
+=item manref
+
+Make the first part (before the parentheses) of man page references like
+C<foo(1)> bold even if they have no markup.  The section must be a single
+number optionally followed by lowercase letters.
+
+=item quoting
+
+If no guesswork is enabled, any text enclosed in CZ<><> is surrounded by
+double quotes in nroff (terminal) output unless the contents are already
+quoted.  When this guesswork is enabled, quote marks will also be suppressed
+for Perl variables, function names, function calls, numbers, and hex
+constants.
+
+=item variables
+
+Convert Perl variable names to a fixed-width font even if they have no markup.
+This transformation will only be apparent in troff output, or some other
+output format (unlike nroff terminal output) that supports fixed-width fonts.
+
+=back
+
+Any unknown guesswork name is silently ignored (for potential future
+compatibility), so be careful about spelling.
 
 =item lquote
 

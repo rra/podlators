@@ -74,9 +74,9 @@ my %options;
 Getopt::Long::config ('bundling_override');
 GetOptions (\%options, 'center|c=s', 'date|d=s', 'encoding|e=s', 'errors=s',
             'fixed=s', 'fixedbold=s', 'fixeditalic=s', 'fixedbolditalic=s',
-            'help|h', 'lax|l', 'lquote=s', 'name|n=s', 'nourls', 'official|o',
-            'quotes|q=s', 'release|r=s', 'rquote=s', 'section|s=s', 'stderr',
-            'verbose|v', 'utf8|u')
+            'guesswork=s', 'help|h', 'lax|l', 'lquote=s', 'name|n=s',
+            'nourls', 'official|o', 'quotes|q=s', 'release|r=s', 'rquote=s',
+            'section|s=s', 'stderr', 'verbose|v', 'utf8|u')
     or exit 1;
 pod2usage (0) if $options{help};
 
@@ -128,7 +128,7 @@ __END__
 =for stopwords
 en em --stderr stderr --utf8 UTF-8 overdo markup MT-LEVEL Allbery Solaris URL
 troff troff-specific formatters uppercased Christiansen --nourls UTC prepend
-lquote rquote unrepresentable mandoc
+lquote rquote unrepresentable mandoc manref
 
 =head1 NAME
 
@@ -139,8 +139,9 @@ pod2man - Convert POD data to formatted *roff input
 pod2man [B<--center>=I<string>] [B<--date>=I<string>]
     [B<--encoding>=I<encoding>] [B<--errors>=I<style>] [B<--fixed>=I<font>]
     [B<--fixedbold>=I<font>] [B<--fixeditalic>=I<font>]
-    [B<--fixedbolditalic>=I<font>] [B<--name>=I<name>] [B<--nourls>]
-    [B<--official>] [B<--release>=I<version>] [B<--section>=I<manext>]
+    [B<--fixedbolditalic>=I<font>] [B<--guesswork>=I<rule>[,I<rule>...]
+    [B<--name>=I<name>] [B<--nourls>] [B<--official>]
+    [B<--release>=I<version>] [B<--section>=I<manext>]
     [B<--quotes>=I<quotes>] [B<--lquote>=I<quote>] [B<--rquote>=I<quote>]
     [B<--stderr>] [B<--utf8>] [B<--verbose>] [I<input> [I<output>] ...]
 
@@ -174,9 +175,10 @@ assume various defaults.  See below for details.
 
 Besides the obvious pod conversions, Pod::Man, and therefore B<pod2man>, also
 takes care of formatting func(), func(n), and simple variable references like
-$foo or @bar so you don't have to use code escapes for them; complex
-expressions like C<$fred{'stuff'}> will still need to be escaped, though.  See
-L<Pod::Man> for complete information.
+$foo or @bar by default, so you don't have to use code escapes for them.
+Complex expressions like C<$fred{'stuff'}> will still need to be escaped,
+though.  This can be disabled with the C<--guesswork> flag.  See the
+description of that flag and L<Pod::Man> for complete information.
 
 B<pod2man> assumes that your *roff formatters have a fixed-width font named
 C<CW>.  If yours is called something else (like C<CR>), use B<--fixed> to
@@ -267,6 +269,52 @@ Bold italic (probably actually oblique) version of the fixed-width font.
 Pod::Man doesn't assume you have this, and defaults to C<CB>.  Some
 systems (such as Solaris) have this font available as C<CX>.  Only matters
 for troff(1) output.
+
+=item B<--guesswork>=I<rule>[,I<rule>...]
+
+By default, B<pod2man> applies some default formatting rules based on
+guesswork and regular expressions that are intended to make writing Perl
+documentation easier and require less explicit markup.  These rules may not
+always be appropriate, particularly for documentation that isn't about Perl.
+This option allows turning all or some of it off.
+
+The special rule C<all> enables all guesswork.  This is also the default for
+backward compatibility reasons.  The special rule C<none> disables all
+guesswork.  Otherwise, the value of this option should be a comma-separated
+list of one or more of the following keywords:
+
+=over 4
+
+=item functions
+
+Convert function references like C<foo()> to bold even if they have no markup.
+The function name accepts valid Perl characters for function names (including
+C<:>), and the trailing parentheses must be present and empty.
+
+=item manref
+
+Make the first part (before the parentheses) of man page references like
+C<foo(1)> bold even if they have no markup.  The section must be a single
+number optionally followed by lowercase letters.
+
+=item quoting
+
+If no guesswork is enabled, any text enclosed in CZ<><> is surrounded by
+double quotes in nroff (terminal) output unless the contents are already
+quoted.  When this guesswork is enabled, quote marks will also be suppressed
+for Perl variables, function names, function calls, numbers, and hex
+constants.
+
+=item variables
+
+Convert Perl variable names to a fixed-width font even if they have no markup.
+This transformation will only be apparent in troff output, or some other
+output format (unlike nroff terminal output) that supports fixed-width fonts.
+
+=back
+
+Any unknown guesswork name is silently ignored (for potential future
+compatibility), so be careful about spelling.
 
 =item B<-h>, B<--help>
 

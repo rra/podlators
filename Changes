@@ -23,10 +23,14 @@
 
  - Pod::Man no longer does guesswork transformations that only affected
    troff output.  Formatting man pages with troff is exceptionally rare,
-   and this magic caused constant maintenance issues.  This means -- is no
-   longer changed to an em-dash, strings of capital letters aren't made a
-   bit smaller, no attempt is made to change double quotes to paired
+   and this magic caused constant maintenance issues.  This means "--" is
+   no longer changed to an em-dash, strings of capital letters aren't made
+   a bit smaller, no attempt is made to change double quotes to paired
    quotes, and no special formatting is done for C++.  (#132007)
+
+ - Guesswork (formatting rules based on heuristics intended for Perl
+   documentation) can now be disabled or selectively enabled in Pod::Man
+   with the guesswork option (--guessword to pod2man).  (#143668)
 
  - Pod::Text now supports an encoding option (-e or --encoding to
    pod2text) to force the output encoding, similar to Pod::Man.  The utf8
@@ -61,6 +65,11 @@
 
  - Honor the quotes, lquote, and rquote configuration parameters to
    Pod::Man for C<> text inside the special NAME section.  (#143967)
+
+ - Pod::Man suppresses quote marks around some additional cases of Perl
+   code in C<> where the intent had been to suppress the quotes but there
+   were various bugs in the matching regular expressions.  This primarily
+   affects method calls and negative numbers.
 
  - Avoid non-standard *roff escape in the troff accent mark definition for
    an acute accent.  \h"..." was used instead of \h'...' as seen in the

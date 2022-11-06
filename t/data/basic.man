@@ -202,7 +202,7 @@ Second item.
 .IX Header "FORMATTING CODES"
 Another test taken from Pod::Parser.
 .PP
-This is a test to see if I can do not only \f(CW$self\fR and \f(CW\*(C`method()\*(C'\fR, but
+This is a test to see if I can do not only \f(CW$self\fR and \f(CWmethod()\fR, but
 also \f(CW\*(C`$self\->method()\*(C'\fR and \f(CW\*(C`$self\->{FIELDNAME}\*(C'\fR and
 \&\f(CW\*(C`$Foo <=> $Bar\*(C'\fR without resorting to escape sequences. If 
 I want to refer to the right-shift operator I can do something
