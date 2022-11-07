@@ -43,16 +43,6 @@ if ($Pod::Simple::VERSION ge 3.30) {
     $SHY  = chr utf8::unicode_to_native(0xAD);
 }
 
-# Set the debugging level.  If someone has inserted a debug function into this
-# class already, use that.  Otherwise, use any Pod::Simple debug function
-# that's defined, and failing that, define a debug level of 10.
-BEGIN {
-    my $parent = defined (&Pod::Simple::DEBUG) ? \&Pod::Simple::DEBUG : undef;
-    unless (defined &DEBUG) {
-        *DEBUG = $parent || sub () { 10 };
-    }
-}
-
 # Import the ASCII constant from Pod::Simple.  This is true iff we're in an
 # ASCII-based universe (including such things as ISO 8859-1 and UTF-8), and is
 # generally only false for EBCDIC.
@@ -396,7 +386,6 @@ sub init_page {
 # according to the current formatting instructions as we do.
 sub _handle_text {
     my ($self, $text) = @_;
-    DEBUG > 3 and print "== $text\n";
     my $tag = $$self{PENDING}[-1];
     $$tag[2] .= $self->format_text ($$tag[1], $text);
 }
@@ -415,7 +404,6 @@ sub method_for_element {
 # text and nested elements.  Otherwise, if start_element is defined, call it.
 sub _handle_element_start {
     my ($self, $element, $attrs) = @_;
-    DEBUG > 3 and print "++ $element (<", join ('> <', %$attrs), ">)\n";
     my $method = $self->method_for_element ($element);
 
     # If we have a command handler, we need to accumulate the contents of the
@@ -423,7 +411,6 @@ sub _handle_element_start {
     # <Para> and the formatting codes so that IN_NAME isn't still set for the
     # first heading after the NAME heading.
     if ($self->can ("cmd_$method")) {
-        DEBUG > 2 and print "<$element> starts saving a tag\n";
         $$self{IN_NAME} = 0 if ($element ne 'Para' && length ($element) > 1);
 
         # How we're going to format embedded text blocks depends on the tag
@@ -435,11 +422,8 @@ sub _handle_element_start {
             %{ $FORMATTING{$element} || {} },
         };
         push (@{ $$self{PENDING} }, [ $attrs, $formatting, '' ]);
-        DEBUG > 4 and print "Pending: [", pretty ($$self{PENDING}), "]\n";
     } elsif (my $start_method = $self->can ("start_$method")) {
         $self->$start_method ($attrs, '');
-    } else {
-        DEBUG > 2 and print "No $method start method, skipping\n";
     }
 }
 
@@ -448,16 +432,12 @@ sub _handle_element_start {
 # an end_ method for the element, call that.
 sub _handle_element_end {
     my ($self, $element) = @_;
-    DEBUG > 3 and print "-- $element\n";
     my $method = $self->method_for_element ($element);
 
     # If we have a command handler, pull off the pending text and pass it to
     # the handler along with the saved attribute hash.
     if (my $cmd_method = $self->can ("cmd_$method")) {
-        DEBUG > 2 and print "</$element> stops saving a tag\n";
         my $tag = pop @{ $$self{PENDING} };
-        DEBUG > 4 and print "Popped: [", pretty ($tag), "]\n";
-        DEBUG > 4 and print "Pending: [", pretty ($$self{PENDING}), "]\n";
         my $text = $self->$cmd_method ($$tag[0], $$tag[2]);
         if (defined $text) {
             if (@{ $$self{PENDING} } > 1) {
@@ -468,8 +448,6 @@ sub _handle_element_end {
         }
     } elsif (my $end_method = $self->can ("end_$method")) {
         $self->$end_method ();
-    } else {
-        DEBUG > 2 and print "No $method end method, skipping\n";
     }
 }
 
@@ -594,7 +572,6 @@ sub quote_literal {
 sub guesswork {
     my $self = shift;
     local $_ = shift;
-    DEBUG > 5 and print "   Guesswork called on [$_]\n";
 
     # By the time we reach this point, all hyphens will be escaped by adding a
     # backslash.  We want to undo that escaping if they're part of regular
@@ -662,7 +639,6 @@ sub guesswork {
     }
 
     # Done.
-    DEBUG > 5 and print "   Guesswork returning [$_]\n";
     return $_;
 }
 
@@ -894,7 +870,6 @@ sub output {
 sub start_document {
     my ($self, $attrs) = @_;
     if ($$attrs{contentless} && !$$self{ALWAYS_EMIT_SOMETHING}) {
-        DEBUG and print "Document is contentless\n";
         $$self{CONTENTLESS} = 1;
     } else {
         delete $$self{CONTENTLESS};
@@ -934,7 +909,7 @@ sub start_document {
             $date = $self->devise_date();
         }
         $self->preamble ($name, $section, $date)
-            unless $self->bare_output or DEBUG > 9;
+            unless $self->bare_output;
     }
 
     # Initialize a few per-document variables.
@@ -959,7 +934,6 @@ sub end_document {
     }
     return if $self->bare_output;
     return if ($$self{CONTENTLESS} && !$$self{ALWAYS_EMIT_SOMETHING});
-    $self->output (q(.\" [End document]) . "\n") if DEBUG;
 }
 
 # Try to figure out the name and section from the file name and return them as
@@ -1161,7 +1135,6 @@ $preamble
 .if n .ad l
 .nh
 ----END OF HEADER----
-    $self->output (".\\\" [End of preamble]\n") if DEBUG;
 }
 
 ##############################################################################
@@ -1185,11 +1158,6 @@ sub cmd_para {
         push (@{ $$self{SHIFTS} }, $$self{INDENT});
         $$self{SHIFTWAIT} = 0;
     }
-
-    # Add the line number for debugging, but not in the NAME section just in
-    # case the comment would confuse apropos.
-    $self->output (".\\\" [At source line $line]\n")
-        if defined ($line) && DEBUG && !$$self{IN_NAME};
 
     # Force exactly one newline at the end and strip unwanted trailing
     # whitespace at the end, but leave "\ " backslashed space from an S< > at
@@ -1273,9 +1241,6 @@ sub heading_common {
         $self->output (".PD\n");
     }
 
-    # Output the current source line.
-    $self->output ( ".\\\" [At source line $line]\n" )
-        if defined ($line) && DEBUG;
     return $text;
 }
 
@@ -1389,8 +1354,6 @@ sub over_common_start {
     my ($self, $type, $attrs) = @_;
     my $line = $$attrs{start_line};
     my $indent = $$attrs{indent};
-    DEBUG > 3 and print " Starting =over $type (line $line, indent ",
-        ($indent || '?'), "\n";
 
     # Find the indentation level.
     unless (defined ($indent) && $indent =~ /^[-+]?\d{1,4}\s*$/) {
@@ -1423,7 +1386,6 @@ sub over_common_start {
 # .RE and then a new .RS to unconfuse *roff.
 sub over_common_end {
     my ($self) = @_;
-    DEBUG > 3 and print " Ending =over\n";
     $$self{INDENT} = pop @{ $$self{INDENTS} };
     pop @{ $$self{ITEMTYPES} };
 
@@ -1462,7 +1424,6 @@ sub end_over_block  { $_[0]->over_common_end }
 sub item_common {
     my ($self, $type, $attrs, $text) = @_;
     my $line = $$attrs{start_line};
-    DEBUG > 3 and print "  $type item (line $line): $text\n";
 
     # Clean up the text.  We want to end up with two variables, one ($text)
     # which contains any body text after taking out the item portion, and
