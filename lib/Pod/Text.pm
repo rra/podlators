@@ -24,7 +24,8 @@ use Exporter ();
 use Pod::Simple ();
 
 our @ISA = qw(Pod::Simple Exporter);
-our $VERSION = '4.14';
+our $VERSION;
+$VERSION = '4.14';
 
 # We have to export pod2text for backward compatibility.
 our @EXPORT = qw(pod2text);
