@@ -187,6 +187,14 @@ sub new {
     # some of the guesswork heuristics don't work right.
     $self->merge_text (1);
 
+    # Pod::Simple doesn't do anything useful with our arguments, but we want
+    # to put them in our object as hash keys and values.  This could cause
+    # problems if we ever clash with Pod::Simple's own internal class
+    # variables.
+    my %opts = @_;
+    my @opts = map { ("opt_$_", $opts{$_}) } keys %opts;
+    %$self = (%$self, @opts);
+
     # Pod::Simple uses encoding internally, so we need to store it as
     # ENCODING.  Set the default to UTF-8 if not specified.
     #
@@ -199,8 +207,8 @@ sub new {
     # later, after all the modules are available, so that UTF-8 handling will
     # be correct.
     my %options = @_;
-    if (defined $options{encoding}) {
-        $$self{ENCODING} = $options{encoding};
+    if (defined $self->{opt_encoding}) {
+        $$self{ENCODING} = $self->{opt_encoding};
     } elsif (ASCII) {
         $$self{ENCODING} = 'UTF-8';
     } else {
@@ -213,41 +221,33 @@ sub new {
         }
         $$self{ENCODING} = 'groff';
     }
-    delete $options{utf8};
-    delete $options{encoding};
-
-    # Pod::Simple doesn't do anything useful with our arguments, but we want
-    # to put them in our object as hash keys and values.  This could cause
-    # problems if we ever clash with Pod::Simple's own internal class
-    # variables.
-    %$self = (%$self, %options);
 
     # Send errors to stderr if requested.
-    if ($$self{stderr} and not $$self{errors}) {
-        $$self{errors} = 'stderr';
+    if ($self->{opt_stderr} and not $self->{opt_errors}) {
+        $self->{opt_errors} = 'stderr';
     }
-    delete $$self{stderr};
+    delete $self->{opt_stderr};
 
     # Validate the errors parameter and act on it.
-    if (not defined $$self{errors}) {
-        $$self{errors} = 'pod';
+    if (not defined $self->{opt_errors}) {
+        $self->{opt_errors} = 'pod';
     }
-    if ($$self{errors} eq 'stderr' || $$self{errors} eq 'die') {
+    if ($self->{opt_errors} eq 'stderr' || $self->{opt_errors} eq 'die') {
         $self->no_errata_section (1);
         $self->complain_stderr (1);
-        if ($$self{errors} eq 'die') {
-            $$self{complain_die} = 1;
+        if ($self->{opt_errors} eq 'die') {
+            $self->{complain_die} = 1;
         }
-    } elsif ($$self{errors} eq 'pod') {
+    } elsif ($self->{opt_errors} eq 'pod') {
         $self->no_errata_section (0);
         $self->complain_stderr (0);
-    } elsif ($$self{errors} eq 'none') {
+    } elsif ($self->{opt_errors} eq 'none') {
         $self->no_errata_section (1);
         $self->no_whining (1);
     } else {
-        croak (qq(Invalid errors setting: "$$self{errors}"));
+        croak (qq(Invalid errors setting: "$self->{opt_errors}"));
     }
-    delete $$self{errors};
+    delete $self->{opt_errors};
 
     # Initialize various other internal constants based on our arguments.
     $self->init_fonts;
@@ -255,7 +255,8 @@ sub new {
     $self->init_page;
 
     # Configure guesswork based on options.
-    my %guesswork = map { $_ => 1 } split(m{,}xms, $$self{guesswork} || q{});
+    my $guesswork = $self->{opt_guesswork} || q{};
+    my %guesswork = map { $_ => 1 } split(m{,}xms, $guesswork);
     if (!%guesswork || $guesswork{all}) {
         #<<<
         $$self{GUESSWORK} = {
@@ -287,7 +288,7 @@ sub init_fonts {
     # Figure out the fixed-width font.  If user-supplied, make sure that they
     # are the right length.
     for (qw/fixed fixedbold fixeditalic fixedbolditalic/) {
-        my $font = $$self{$_};
+        my $font = $self->{"opt_$_"};
         if (defined ($font) && (length ($font) < 1 || length ($font) > 2)) {
             croak qq(roff font should be 1 or 2 chars, not "$font");
         }
@@ -296,19 +297,19 @@ sub init_fonts {
     # Set the default fonts.  We can't be sure portably across different
     # implementations what fixed bold-italic may be called (if it's even
     # available), so default to just bold.
-    $$self{fixed}           ||= 'CW';
-    $$self{fixedbold}       ||= 'CB';
-    $$self{fixeditalic}     ||= 'CI';
-    $$self{fixedbolditalic} ||= 'CB';
+    $self->{opt_fixed}           ||= 'CW';
+    $self->{opt_fixedbold}       ||= 'CB';
+    $self->{opt_fixeditalic}     ||= 'CI';
+    $self->{opt_fixedbolditalic} ||= 'CB';
 
     # Set up a table of font escapes.  First number is fixed-width, second is
     # bold, third is italic.
     $$self{FONTS} = { '000' => '\fR', '001' => '\fI',
                       '010' => '\fB', '011' => '\f(BI',
-                      '100' => toescape ($$self{fixed}),
-                      '101' => toescape ($$self{fixeditalic}),
-                      '110' => toescape ($$self{fixedbold}),
-                      '111' => toescape ($$self{fixedbolditalic}) };
+                      '100' => toescape ($self->{opt_fixed}),
+                      '101' => toescape ($self->{opt_fixeditalic}),
+                      '110' => toescape ($self->{opt_fixedbold}),
+                      '111' => toescape ($self->{opt_fixedbolditalic}) };
 }
 
 # Initialize the quotes that we'll be using for C<> text.  This requires some
@@ -319,25 +320,27 @@ sub init_quotes {
     my ($self) = (@_);
 
     # Handle the quotes option first, which sets both quotes at once.
-    $$self{quotes} ||= '"';
-    if ($$self{quotes} eq 'none') {
+    $self->{opt_quotes} ||= '"';
+    if ($self->{opt_quotes} eq 'none') {
         $$self{LQUOTE} = $$self{RQUOTE} = '';
-    } elsif (length ($$self{quotes}) == 1) {
-        $$self{LQUOTE} = $$self{RQUOTE} = $$self{quotes};
-    } elsif (length ($$self{quotes}) % 2 == 0) {
-        my $length = length ($$self{quotes}) / 2;
-        $$self{LQUOTE} = substr ($$self{quotes}, 0, $length);
-        $$self{RQUOTE} = substr ($$self{quotes}, $length);
+    } elsif (length ($self->{opt_quotes}) == 1) {
+        $$self{LQUOTE} = $$self{RQUOTE} = $self->{opt_quotes};
+    } elsif (length ($self->{opt_quotes}) % 2 == 0) {
+        my $length = length ($self->{opt_quotes}) / 2;
+        $$self{LQUOTE} = substr ($self->{opt_quotes}, 0, $length);
+        $$self{RQUOTE} = substr ($self->{opt_quotes}, $length);
     } else {
-        croak(qq(Invalid quote specification "$$self{quotes}"))
+        croak(qq(Invalid quote specification "$self->{opt_quotes}"))
     }
 
     # Now handle the lquote and rquote options.
-    if (defined $$self{lquote}) {
-        $$self{LQUOTE} = $$self{lquote} eq 'none' ? q{} : $$self{lquote};
+    if (defined($self->{opt_lquote})) {
+        $self->{opt_lquote} = q{} if $self->{opt_lquote} eq 'none';
+        $$self{LQUOTE} = $self->{opt_lquote};
     }
-    if (defined $$self{rquote}) {
-        $$self{RQUOTE} = $$self{rquote} eq 'none' ? q{} : $$self{rquote};
+    if (defined $self->{opt_rquote}) {
+        $self->{opt_rquote} = q{} if $self->{opt_rquote} eq 'none';
+        $$self{RQUOTE} = $self->{opt_rquote};
     }
 
     # Double the first quote; note that this should not be s///g as two double
@@ -358,16 +361,16 @@ sub init_page {
 
     # Set the defaults for page titles and indentation if the user didn't
     # override anything.
-    $$self{center} = 'User Contributed Perl Documentation'
-        unless defined $$self{center};
-    $$self{release} = 'perl v' . $version
-        unless defined $$self{release};
-    $$self{indent} = 4
-        unless defined $$self{indent};
+    $self->{opt_center} = 'User Contributed Perl Documentation'
+        unless defined $self->{opt_center};
+    $self->{opt_release} = 'perl v' . $version
+        unless defined $self->{opt_release};
+    $self->{opt_indent} = 4
+        unless defined $self->{opt_indent};
 
     # Double quotes in things that will be quoted.
     for (qw/center release/) {
-        $$self{$_} =~ s/\"/\"\"/g if $$self{$_};
+        $self->{"opt_$_"} =~ s/\"/\"\"/g if $self->{"opt_$_"};
     }
 }
 
@@ -920,13 +923,16 @@ sub start_document {
     # document was content-free.
     if (!$$self{CONTENTLESS}) {
         my ($name, $section);
-        if (defined $$self{name}) {
-            $name = $$self{name};
-            $section = $$self{section} || 1;
+        if (defined $self->{opt_name}) {
+            $name = $self->{opt_name};
+            $section = $self->{opt_section} || 1;
         } else {
             ($name, $section) = $self->devise_title;
         }
-        my $date = defined($$self{date}) ? $$self{date} : $self->devise_date;
+        my $date = $self->{opt_date};
+        if (!defined($date)) {
+            $date = $self->devise_date();
+        }
         $self->preamble ($name, $section, $date)
             unless $self->bare_output or DEBUG > 9;
     }
@@ -962,8 +968,8 @@ sub end_document {
 sub devise_title {
     my ($self) = @_;
     my $name = $self->source_filename || '';
-    my $section = $$self{section} || 1;
-    $section = 3 if (!$$self{section} && $name =~ /\.pm\z/i);
+    my $section = $self->{opt_section} || 1;
+    $section = 3 if (!$self->{opt_section} && $name =~ /\.pm\z/i);
     $name =~ s/\.p(od|[lm])\z//i;
 
     # If Pod::Parser gave us an IO::File reference as the source file name,
@@ -1114,7 +1120,7 @@ sub preamble {
     $date =~ s/\"/\"\"/g;
 
     # Substitute into the preamble the configuration options.
-    $preamble =~ s/\@CFONT\@/$$self{fixed}/;
+    $preamble =~ s/\@CFONT\@/$self->{opt_fixed}/;
     $preamble =~ s/\@LQUOTE\@/$$self{LQUOTE}/;
     $preamble =~ s/\@RQUOTE\@/$$self{RQUOTE}/;
     chomp $preamble;
@@ -1149,7 +1155,7 @@ $preamble
 .\\" ========================================================================
 .\\"
 .IX Title "$index"
-.TH $name $section "$date" "$$self{release}" "$$self{center}"
+.TH $name $section "$date" "$self->{opt_release}" "$self->{opt_center}"
 .\\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\\" way too many mistakes in technical documents.
 .if n .ad l
@@ -1362,7 +1368,7 @@ sub cmd_l {
         }
         if (not defined ($to) or $to eq $text) {
             return "<$text>";
-        } elsif ($$self{nourls}) {
+        } elsif ($self->{opt_nourls}) {
             return $text;
         } else {
             return "$text <$$attrs{to}>";
@@ -1388,7 +1394,7 @@ sub over_common_start {
 
     # Find the indentation level.
     unless (defined ($indent) && $indent =~ /^[-+]?\d{1,4}\s*$/) {
-        $indent = $$self{indent};
+        $indent = $self->{opt_indent};
     }
 
     # If we've gotten multiple indentations in a row, we need to emit the
