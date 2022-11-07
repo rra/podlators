@@ -18,23 +18,19 @@ use 5.008;
 use strict;
 use warnings;
 
-use subs qw(makespace);
-use vars qw(@ISA %ESCAPES $PREAMBLE $VERSION);
-
 use Carp qw(carp croak);
 use Pod::Simple ();
 
 # Conditionally import Encode and set $HAS_ENCODE if it is available.  This is
 # required to support building as part of Perl core, since podlators is built
 # before Encode is.
-our $HAS_ENCODE;
+my $HAS_ENCODE;
 BEGIN {
     $HAS_ENCODE = eval { require Encode };
 }
 
-@ISA = qw(Pod::Simple);
-
-$VERSION = '4.14';
+our @ISA = qw(Pod::Simple);
+our $VERSION = '4.14';
 
 # Ensure that $Pod::Simple::nbsp and $Pod::Simple::shy are available.  Code
 # taken from Pod::Simple 3.32, but was only added in 3.30.
@@ -94,7 +90,7 @@ my %FORMATTING = (
 # FreeBSD mandoc only understands utf-8 and iso-latin-1 as of 2022-09-24.
 # groff preconv prefers iso-8859-1, but also understands iso-latin-1, so
 # convert ISO-8859-1 to iso-latin-1 for FreeBSD.
-our %ENCODINGS = (
+my %ENCODINGS = (
     ascii     => 'us-ascii',
     big5      => 'big5',
     big5eten  => 'big5',
@@ -120,6 +116,39 @@ our %ENCODINGS = (
     utf16be   => 'utf-16be',
     utf16le   => 'utf-16le',
 );
+
+##############################################################################
+# Translation tables
+##############################################################################
+
+# The following table is adapted from Tom Christiansen's pod2man.  It is only
+# used with roff output.  It assumes that the standard preamble has already
+# been printed, since that's what defines all of the accent marks.  We really
+# want to do something better than this when *roff actually supports other
+# character sets itself, since these results are pretty poor.
+#
+# This only works in an ASCII world.  What to do in a non-ASCII world is very
+# unclear, so we just output what we get and hope for the best.
+my %ESCAPES;
+@ESCAPES{0xA0 .. 0xFF} = (
+    $NBSP, undef, undef, undef,            undef, undef, undef, undef,
+    undef, undef, undef, undef,            undef, $SHY,  undef, undef,
+
+    undef, undef, undef, undef,            undef, undef, undef, undef,
+    undef, undef, undef, undef,            undef, undef, undef, undef,
+
+    "A\\*`",  "A\\*'", "A\\*^", "A\\*~",   "A\\*:", "A\\*o", "\\*(Ae", "C\\*,",
+    "E\\*`",  "E\\*'", "E\\*^", "E\\*:",   "I\\*`", "I\\*'", "I\\*^",  "I\\*:",
+
+    "\\*(D-", "N\\*~", "O\\*`", "O\\*'",   "O\\*^", "O\\*~", "O\\*:",  undef,
+    "O\\*/",  "U\\*`", "U\\*'", "U\\*^",   "U\\*:", "Y\\*'", "\\*(Th", "\\*8",
+
+    "a\\*`",  "a\\*'", "a\\*^", "a\\*~",   "a\\*:", "a\\*o", "\\*(ae", "c\\*,",
+    "e\\*`",  "e\\*'", "e\\*^", "e\\*:",   "i\\*`", "i\\*'", "i\\*^",  "i\\*:",
+
+    "\\*(d-", "n\\*~", "o\\*`", "o\\*'",   "o\\*^", "o\\*~", "o\\*:",  undef,
+    "o\\*/" , "u\\*`", "u\\*'", "u\\*^",   "u\\*:", "y\\*'", "\\*(th", "y\\*:",
+) if ASCII;
 
 ##############################################################################
 # Utility functions
@@ -1555,38 +1584,6 @@ sub parse_string_document {
     }
     return $self->SUPER::parse_string_document ($doc);
 }
-
-##############################################################################
-# Translation tables
-##############################################################################
-
-# The following table is adapted from Tom Christiansen's pod2man.  It assumes
-# that the standard preamble has already been printed, since that's what
-# defines all of the accent marks.  We really want to do something better than
-# this when *roff actually supports other character sets itself, since these
-# results are pretty poor.
-#
-# This only works in an ASCII world.  What to do in a non-ASCII world is very
-# unclear, so we just output what we get and hope for the best.
-@ESCAPES{0xA0 .. 0xFF} = (
-    $NBSP, undef, undef, undef,            undef, undef, undef, undef,
-    undef, undef, undef, undef,            undef, $SHY,  undef, undef,
-
-    undef, undef, undef, undef,            undef, undef, undef, undef,
-    undef, undef, undef, undef,            undef, undef, undef, undef,
-
-    "A\\*`",  "A\\*'", "A\\*^", "A\\*~",   "A\\*:", "A\\*o", "\\*(Ae", "C\\*,",
-    "E\\*`",  "E\\*'", "E\\*^", "E\\*:",   "I\\*`", "I\\*'", "I\\*^",  "I\\*:",
-
-    "\\*(D-", "N\\*~", "O\\*`", "O\\*'",   "O\\*^", "O\\*~", "O\\*:",  undef,
-    "O\\*/",  "U\\*`", "U\\*'", "U\\*^",   "U\\*:", "Y\\*'", "\\*(Th", "\\*8",
-
-    "a\\*`",  "a\\*'", "a\\*^", "a\\*~",   "a\\*:", "a\\*o", "\\*(ae", "c\\*,",
-    "e\\*`",  "e\\*'", "e\\*^", "e\\*:",   "i\\*`", "i\\*'", "i\\*^",  "i\\*:",
-
-    "\\*(d-", "n\\*~", "o\\*`", "o\\*'",   "o\\*^", "o\\*~", "o\\*:",  undef,
-    "o\\*/" , "u\\*`", "u\\*'", "u\\*^",   "u\\*:", "y\\*'", "\\*(th", "y\\*:",
-) if ASCII;
 
 ##############################################################################
 # Premable

@@ -19,11 +19,8 @@ use warnings;
 use Pod::Text ();
 use Term::ANSIColor qw(color colored);
 
-use vars qw(@ISA $VERSION);
-
-@ISA = qw(Pod::Text);
-
-$VERSION = '4.14';
+our @ISA = qw(Pod::Text);
+our $VERSION = '4.14';
 
 ##############################################################################
 # Overrides
@@ -182,7 +179,7 @@ Russ Allbery <rra@cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2001, 2004, 2006, 2008, 2009, 2018-2019 Russ Allbery
+Copyright 1999, 2001, 2004, 2006, 2008, 2009, 2018-2019, 2022 Russ Allbery
 <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it

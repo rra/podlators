@@ -20,11 +20,8 @@ use Pod::Text ();
 use POSIX ();
 use Term::Cap;
 
-use vars qw(@ISA $VERSION);
-
-@ISA = qw(Pod::Text);
-
-$VERSION = '4.14';
+our @ISA = qw(Pod::Text);
+our $VERSION = '4.14';
 
 ##############################################################################
 # Overrides

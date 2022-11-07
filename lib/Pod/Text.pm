@@ -18,19 +18,16 @@ use 5.008;
 use strict;
 use warnings;
 
-use vars qw(@ISA @EXPORT %ESCAPES $VERSION);
-
 use Carp qw(carp croak);
 use Encode qw(encode);
 use Exporter ();
 use Pod::Simple ();
 
-@ISA = qw(Pod::Simple Exporter);
+our @ISA = qw(Pod::Simple Exporter);
+our $VERSION = '4.14';
 
 # We have to export pod2text for backward compatibility.
-@EXPORT = qw(pod2text);
-
-$VERSION = '4.14';
+our @EXPORT = qw(pod2text);
 
 # Ensure that $Pod::Simple::nbsp and $Pod::Simple::shy are available.  Code
 # taken from Pod::Simple 3.32, but was only added in 3.30.
