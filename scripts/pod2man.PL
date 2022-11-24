@@ -74,9 +74,9 @@ my %options;
 Getopt::Long::config ('bundling_override');
 GetOptions (\%options, 'center|c=s', 'date|d=s', 'encoding|e=s', 'errors=s',
             'fixed=s', 'fixedbold=s', 'fixeditalic=s', 'fixedbolditalic=s',
-            'guesswork=s', 'help|h', 'lax|l', 'lquote=s', 'name|n=s',
-            'nourls', 'official|o', 'quotes|q=s', 'release|r=s', 'rquote=s',
-            'section|s=s', 'stderr', 'verbose|v', 'utf8|u')
+            'guesswork=s', 'help|h', 'lax|l', 'language=s', 'lquote=s',
+            'name|n=s', 'nourls', 'official|o', 'quotes|q=s', 'release|r=s',
+            'rquote=s', 'section|s=s', 'stderr', 'verbose|v', 'utf8|u')
     or exit 1;
 pod2usage (0) if $options{help};
 
@@ -325,6 +325,30 @@ Print out usage information.
 No longer used.  B<pod2man> used to check its input for validity as a
 manual page, but this should now be done by L<podchecker(1)> instead.
 Accepted for backward compatibility; this option no longer does anything.
+
+=item B<--language>=I<language>
+
+Add commands telling B<groff> that the input file is in the given language.
+The value of this setting must be a language abbreviation for which B<groff>
+provides supplemental configuration, such as C<ja> (for Japanese) or C<zh>
+(for Chinese).
+
+This adds:
+
+    .mso <language>.tmac
+    .hla <language>
+
+to the start of the file, which configure correct line breaking for the
+specified language.  Without these commands, groff may not know how to add
+proper line breaks for Chinese and Japanese text if the man page is installed
+into the normal man page directory, such as F</usr/share/man>.
+
+On many systems, this will be done automatically if the man page is installed
+into a language-specific man page directory, such as F</usr/share/man/zh_CN>.
+In that case, this option is not required.
+
+Unfortunately, the commands added with this option are specific to B<groff>
+and will not work with other B<troff> and B<nroff> implementations.
 
 =item B<--lquote>=I<quote>
 

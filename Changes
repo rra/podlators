@@ -54,6 +54,15 @@
    encoding is not ASCII.  groff's preconv program and FreeBSD's mandoc
    will use this line to determine the input encoding.
 
+ - Pod::Man now supports a language option (--language to pod2man) that
+   adds groff language configuration commands to the start of the output.
+   This is required for proper line breaking of Japanese and Chinese text
+   when the man page is not installed in a language-specific directory so
+   that the man program knows to add that configuration automatically.
+   Unfortunately, the commands added when this option is used are
+   groff-specific.  Thanks to zynldyx for the bug report and suggested
+   fix.
+
  - Pod::Man and Pod::Text now correctly honor S<> wrapping L<> with an
    anchor and URL, and make the space between the anchor and URL
    nonbreaking.  (#143768)
