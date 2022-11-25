@@ -885,25 +885,27 @@ may not be what you want.
 =item new(ARGS)
 
 Create a new Pod::Text object.  ARGS should be a list of key/value pairs,
-where the keys are chosen from the following:
+where the keys are chosen from the following.  Each option is annotated with
+the version of Pod::Text in which that option was added with its current
+meaning.
 
 =over 4
 
 =item alt
 
-If set to a true value, selects an alternate output format that, among other
-things, uses a different heading style and marks C<=item> entries with a colon
-in the left margin.  Defaults to false.
+[2.00] If set to a true value, selects an alternate output format that, among
+other things, uses a different heading style and marks C<=item> entries with a
+colon in the left margin.  Defaults to false.
 
 =item code
 
-If set to a true value, the non-POD parts of the input file will be included
-in the output.  Useful for viewing code documented with POD blocks with the
-POD rendered and the code left intact.
+[2.13] If set to a true value, the non-POD parts of the input file will be
+included in the output.  Useful for viewing code documented with POD blocks
+with the POD rendered and the code left intact.
 
 =item encoding
 
-Specifies the encoding of the output.  The value must be an encoding
+[5.00] Specifies the encoding of the output.  The value must be an encoding
 recognized by the L<Encode> module (see L<Encode::Supported>).  If the output
 contains characters that cannot be represented in this encoding, that is an
 error that will be reported as configured by the C<errors> option.  If error
@@ -925,38 +927,39 @@ produce warnings.  See L<perlpod(1)> for more information.
 
 =item errors
 
-How to report errors.  C<die> says to throw an exception on any POD formatting
-error.  C<stderr> says to report errors on standard error, but not to throw an
-exception.  C<pod> says to include a POD ERRORS section in the resulting
-documentation summarizing the errors.  C<none> ignores POD errors entirely, as
-much as possible.
+[3.17] How to report errors.  C<die> says to throw an exception on any POD
+formatting error.  C<stderr> says to report errors on standard error, but not
+to throw an exception.  C<pod> says to include a POD ERRORS section in the
+resulting documentation summarizing the errors.  C<none> ignores POD errors
+entirely, as much as possible.
 
 The default is C<pod>.
 
 =item indent
 
-The number of spaces to indent regular text, and the default indentation for
-C<=over> blocks.  Defaults to 4.
+[2.00] The number of spaces to indent regular text, and the default
+indentation for C<=over> blocks.  Defaults to 4.
 
 =item loose
 
-If set to a true value, a blank line is printed after a C<=head1> heading.  If
-set to false (the default), no blank line is printed after C<=head1>, although
-one is still printed after C<=head2>.  This is the default because it's the
-expected formatting for manual pages; if you're formatting arbitrary text
-documents, setting this to true may result in more pleasing output.
+[2.00] If set to a true value, a blank line is printed after a C<=head1>
+heading.  If set to false (the default), no blank line is printed after
+C<=head1>, although one is still printed after C<=head2>.  This is the default
+because it's the expected formatting for manual pages; if you're formatting
+arbitrary text documents, setting this to true may result in more pleasing
+output.
 
 =item margin
 
-The width of the left margin in spaces.  Defaults to 0.  This is the margin
-for all text, including headings, not the amount by which regular text is
-indented; for the latter, see the I<indent> option.  To set the right margin,
-see the I<width> option.
+[2.21] The width of the left margin in spaces.  Defaults to 0.  This is the
+margin for all text, including headings, not the amount by which regular text
+is indented; for the latter, see the I<indent> option.  To set the right
+margin, see the I<width> option.
 
 =item nourls
 
-Normally, LZ<><> formatting codes with a URL but anchor text are formatted
-to show both the anchor text and the URL.  In other words:
+[3.17] Normally, LZ<><> formatting codes with a URL but anchor text are
+formatted to show both the anchor text and the URL.  In other words:
 
     L<foo|http://example.com/>
 
@@ -970,37 +973,38 @@ less cluttered output in cases where the URLs are not particularly important.
 
 =item quotes
 
-Sets the quote marks used to surround CE<lt>> text.  If the value is a single
-character, it is used as both the left and right quote.  Otherwise, it is
-split in half, and the first half of the string is used as the left quote and
-the second is used as the right quote.
+[4.00] Sets the quote marks used to surround CE<lt>> text.  If the value is a
+single character, it is used as both the left and right quote.  Otherwise, it
+is split in half, and the first half of the string is used as the left quote
+and the second is used as the right quote.
 
 This may also be set to the special value C<none>, in which case no quote
 marks are added around CE<lt>> text.
 
 =item sentence
 
-If set to a true value, Pod::Text will assume that each sentence ends in two
-spaces, and will try to preserve that spacing.  If set to false, all
+[2.00] If set to a true value, Pod::Text will assume that each sentence ends
+in two spaces, and will try to preserve that spacing.  If set to false, all
 consecutive whitespace in non-verbatim paragraphs is compressed into a single
 space.  Defaults to false.
 
 =item stderr
 
-Send error messages about invalid POD to standard error instead of appending a
-POD ERRORS section to the generated output.  This is equivalent to setting
-C<errors> to C<stderr> if C<errors> is not already set.  It is supported for
-backward compatibility.
+[3.10] Send error messages about invalid POD to standard error instead of
+appending a POD ERRORS section to the generated output.  This is equivalent to
+setting C<errors> to C<stderr> if C<errors> is not already set.  It is
+supported for backward compatibility.
 
 =item utf8
 
-If this option is set to a true value, the output encoding is set to UTF-8.
-This is equivalent to setting C<encoding> to C<UTF-8> if C<encoding> is not
-already set.  It is supported for backward compatibility.
+[3.12] If this option is set to a true value, the output encoding is set to
+UTF-8.  This is equivalent to setting C<encoding> to C<UTF-8> if C<encoding>
+is not already set.  It is supported for backward compatibility.
 
 =item width
 
-The column at which to wrap text on the right-hand side.  Defaults to 76.
+[2.00] The column at which to wrap text on the right-hand side.  Defaults to
+76.
 
 =back
 
