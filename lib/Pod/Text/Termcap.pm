@@ -21,8 +21,7 @@ use POSIX ();
 use Term::Cap;
 
 our @ISA = qw(Pod::Text);
-our $VERSION;
-$VERSION = '4.14';
+our $VERSION = '5.00';
 
 ##############################################################################
 # Overrides
@@ -262,8 +261,8 @@ Russ Allbery <rra@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2001-2002, 2004, 2006, 2008-2009, 2014-2015, 2018-2019 Russ
-Allbery <rra@cpan.org>
+Copyright 1999, 2001-2002, 2004, 2006, 2008-2009, 2014-2015, 2018-2019, 2022
+Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

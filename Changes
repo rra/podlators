@@ -1,6 +1,6 @@
                       Revision history for podlators
 
-5.00 - Not Released
+5.00 - 2022-11-25
 
  - The default output encoding of Pod::Man on non-EBCDIC systems is now
    UTF-8.  The utf8 option (-u or --utf8 to pod2man) is now ignored, since
