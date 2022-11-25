@@ -89,7 +89,7 @@ my %metadata     = (
     LICENSE          => 'perl_5',
     EXE_FILES        => [scripts('pod2text', 'pod2man')],
     VERSION_FROM     => 'lib/Pod/Man.pm',
-    MIN_PERL_VERSION => '5.008',
+    MIN_PERL_VERSION => '5.010',
 
     # Use *.PL files to generate the driver scripts so that we get the correct
     # invocation of Perl on non-UNIX platforms.
