@@ -149,17 +149,17 @@ pod2text B<-h>
 
 =head1 DESCRIPTION
 
-B<pod2text> is a front-end for Pod::Text and its subclasses.  It uses them
-to generate formatted ASCII text from POD source.  It can optionally use
-either termcap sequences or ANSI color escape sequences to format the text.
+B<pod2text> is a wrapper script around the L<Pod::Text> and its subclasses.
+It uses them to generate formatted text from POD source.  It can optionally
+use either termcap sequences or ANSI color escape sequences to format the
+text.
 
-I<input> is the file to read for POD source (the POD can be embedded in
-code).  If I<input> isn't given, it defaults to C<STDIN>.  I<output>, if
-given, is the file to which to write the formatted output.  If I<output>
-isn't given, the formatted output is written to C<STDOUT>.  Several POD
-files can be processed in the same B<pod2text> invocation (saving module
-load and compile times) by providing multiple pairs of I<input> and
-I<output> files on the command line.
+I<input> is the file to read for POD source (the POD can be embedded in code).
+If I<input> isn't given, it defaults to C<STDIN>.  I<output>, if given, is the
+file to which to write the formatted output.  If I<output> isn't given, the
+formatted output is written to C<STDOUT>.  Several POD files can be processed
+in the same B<pod2text> invocation (saving module load and compile times) by
+providing multiple pairs of I<input> and I<output> files on the command line.
 
 By default, the output encoding is the same as the encoding of the input file,
 or UTF-8 if that encoding is not set (except on EBCDIC systems).  See the
@@ -168,27 +168,31 @@ for more discussion.
 
 =head1 OPTIONS
 
+Each option is annotated with the version of podlators in which that option
+was added with its current meaning.
+
 =over 4
 
 =item B<-a>, B<--alt>
 
-Use an alternate output format that, among other things, uses a different
-heading style and marks C<=item> entries with a colon in the left margin.
+[1.00] Use an alternate output format that, among other things, uses a
+different heading style and marks C<=item> entries with a colon in the left
+margin.
 
 =item B<--code>
 
-Include any non-POD text from the input file in the output as well.  Useful
-for viewing code documented with POD blocks with the POD rendered and the
-code left intact.
+[1.11] Include any non-POD text from the input file in the output as well.
+Useful for viewing code documented with POD blocks with the POD rendered and
+the code left intact.
 
 =item B<-c>, B<--color>
 
-Format the output with ANSI color escape sequences.  Using this option
+[1.00] Format the output with ANSI color escape sequences.  Using this option
 requires that Term::ANSIColor be installed on your system.
 
 =item B<-e> I<encoding>, B<--encoding>=I<encoding>
 
-Specifies the encoding of the output.  I<encoding> must be an encoding
+[5.00] Specifies the encoding of the output.  I<encoding> must be an encoding
 recognized by the L<Encode> module (see L<Encode::Supported>).  If the output
 contains characters that cannot be represented in this encoding, that is an
 error that will be reported as configured by the C<errors> option.  If error
@@ -205,40 +209,41 @@ produce warnings.  See L<perlpod(1)> for more information.
 
 =item B<--errors>=I<style>
 
-Set the error handling style.  C<die> says to throw an exception on any
-POD formatting error.  C<stderr> says to report errors on standard error,
-but not to throw an exception.  C<pod> says to include a POD ERRORS
-section in the resulting documentation summarizing the errors.  C<none>
-ignores POD errors entirely, as much as possible.
+[2.5.0] Set the error handling style.  C<die> says to throw an exception on
+any POD formatting error.  C<stderr> says to report errors on standard error,
+but not to throw an exception.  C<pod> says to include a POD ERRORS section in
+the resulting documentation summarizing the errors.  C<none> ignores POD
+errors entirely, as much as possible.
 
 The default is C<die>.
 
 =item B<-i> I<indent>, B<--indent=>I<indent>
 
-Set the number of spaces to indent regular text, and the default indentation
-for C<=over> blocks.  Defaults to 4 spaces if this option isn't given.
+[1.00] Set the number of spaces to indent regular text, and the default
+indentation for C<=over> blocks.  Defaults to 4 spaces if this option isn't
+given.
 
 =item B<-h>, B<--help>
 
-Print out usage information and exit.
+[1.00] Print out usage information and exit.
 
 =item B<-l>, B<--loose>
 
-Print a blank line after a C<=head1> heading.  Normally, no blank line is
-printed after C<=head1>, although one is still printed after C<=head2>,
-because this is the expected formatting for manual pages; if you're
-formatting arbitrary text documents, using this option is recommended.
+[1.00] Print a blank line after a C<=head1> heading.  Normally, no blank line
+is printed after C<=head1>, although one is still printed after C<=head2>,
+because this is the expected formatting for manual pages; if you're formatting
+arbitrary text documents, using this option is recommended.
 
 =item B<-m> I<width>, B<--left-margin>=I<width>, B<--margin>=I<width>
 
-The width of the left margin in spaces.  Defaults to 0.  This is the margin
-for all text, including headings, not the amount by which regular text is
-indented; for the latter, see B<-i> option.
+[1.24] The width of the left margin in spaces.  Defaults to 0.  This is the
+margin for all text, including headings, not the amount by which regular text
+is indented; for the latter, see B<-i> option.
 
 =item B<--nourls>
 
-Normally, LZ<><> formatting codes with a URL but anchor text are formatted
-to show both the anchor text and the URL.  In other words:
+[2.5.0] Normally, LZ<><> formatting codes with a URL but anchor text are
+formatted to show both the anchor text and the URL.  In other words:
 
     L<foo|http://example.com/>
 
@@ -247,72 +252,71 @@ is formatted as:
     foo <http://example.com/>
 
 This flag, if given, suppresses the URL when anchor text is given, so this
-example would be formatted as just C<foo>.  This can produce less
-cluttered output in cases where the URLs are not particularly important.
+example would be formatted as just C<foo>.  This can produce less cluttered
+output in cases where the URLs are not particularly important.
 
 =item B<-o>, B<--overstrike>
 
-Format the output with overstrike printing.  Bold text is rendered as
+[1.06] Format the output with overstrike printing.  Bold text is rendered as
 character, backspace, character.  Italics and file names are rendered as
-underscore, backspace, character.  Many pagers, such as B<less>, know how
-to convert this to bold or underlined text.
+underscore, backspace, character.  Many pagers, such as B<less>, know how to
+convert this to bold or underlined text.
 
 =item B<-q> I<quotes>, B<--quotes>=I<quotes>
 
-Sets the quote marks used to surround CE<lt>> text to I<quotes>.  If
-I<quotes> is a single character, it is used as both the left and right
-quote.  Otherwise, it is split in half, and the first half of the string
-is used as the left quote and the second is used as the right quote.
+[4.00] Sets the quote marks used to surround CE<lt>> text to I<quotes>.  If
+I<quotes> is a single character, it is used as both the left and right quote.
+Otherwise, it is split in half, and the first half of the string is used as
+the left quote and the second is used as the right quote.
 
-I<quotes> may also be set to the special value C<none>, in which case no
-quote marks are added around CE<lt>> text.
+I<quotes> may also be set to the special value C<none>, in which case no quote
+marks are added around CE<lt>> text.
 
 =item B<-s>, B<--sentence>
 
-Assume each sentence ends with two spaces and try to preserve that spacing.
-Without this option, all consecutive whitespace in non-verbatim paragraphs
-is compressed into a single space.
+[1.00] Assume each sentence ends with two spaces and try to preserve that
+spacing.  Without this option, all consecutive whitespace in non-verbatim
+paragraphs is compressed into a single space.
 
 =item B<--stderr>
 
-By default, B<pod2text> dies if any errors are detected in the POD input.
-If B<--stderr> is given and no B<--errors> flag is present, errors are
-sent to standard error, but B<pod2text> does not abort.  This is
-equivalent to C<--errors=stderr> and is supported for backward
-compatibility.
+[2.1.3] By default, B<pod2text> dies if any errors are detected in the POD
+input.  If B<--stderr> is given and no B<--errors> flag is present, errors are
+sent to standard error, but B<pod2text> does not abort.  This is equivalent to
+C<--errors=stderr> and is supported for backward compatibility.
 
 =item B<-t>, B<--termcap>
 
-Try to determine the width of the screen and the bold and underline
+[1.00] Try to determine the width of the screen and the bold and underline
 sequences for the terminal from termcap, and use that information in
 formatting the output.  Output will be wrapped at two columns less than the
 width of your terminal device.  Using this option requires that your system
 have a termcap file somewhere where Term::Cap can find it and requires that
-your system support termios.  With this option, the output of B<pod2text>
-will contain terminal control sequences for your current terminal type.
+your system support termios.  With this option, the output of B<pod2text> will
+contain terminal control sequences for your current terminal type.
 
 =item B<-u>, B<--utf8>
 
-Set the output encoding to UTF-8.  This is equivalent to C<--encoding=UTF-8>
-and is supported for backward compatibility.
+[2.2.0] Set the output encoding to UTF-8.  This is equivalent to
+C<--encoding=UTF-8> and is supported for backward compatibility.
 
 =item B<-w>, B<--width=>I<width>, B<->I<width>
 
-The column at which to wrap text on the right-hand side.  Defaults to 76,
-unless B<-t> is given, in which case it's two columns less than the width of
-your terminal device.
+[1.00] The column at which to wrap text on the right-hand side.  Defaults to
+76, unless B<-t> is given, in which case it's two columns less than the width
+of your terminal device.
 
 =back
 
 =head1 EXIT STATUS
 
-As long as all documents processed result in some output, even if that
-output includes errata (a C<POD ERRORS> section generated with
-C<--errors=pod>), B<pod2text> will exit with status 0.  If any of the
-documents being processed do not result in an output document, B<pod2text>
-will exit with status 1.  If there are syntax errors in a POD document
-being processed and the error handling style is set to the default of
-C<die>, B<pod2text> will abort immediately with exit status 255.
+As long as all documents processed result in some output, even if that output
+includes errata (a C<POD ERRORS> section generated with C<--errors=pod>),
+B<pod2text> will exit with status 0.  If any of the documents being processed
+do not result in an output document, B<pod2text> will exit with status 1.  If
+there are syntax errors in a POD document being processed and the error
+handling style is set to the default of C<die>, B<pod2text> will abort
+immediately with exit status 255.
 
 =head1 DIAGNOSTICS
 
@@ -324,8 +328,7 @@ produce the following diagnostics:
 
 =item -c (--color) requires Term::ANSIColor be installed
 
-(F) B<-c> or B<--color> were given, but Term::ANSIColor could not be
-loaded.
+(F) B<-c> or B<--color> were given, but Term::ANSIColor could not be loaded.
 
 =item Unknown option: %s
 
@@ -342,8 +345,8 @@ command-line options.
 
 =item COLUMNS
 
-If B<-t> is given, B<pod2text> will take the current width of your screen
-from this environment variable, if available.  It overrides terminal width
+If B<-t> is given, B<pod2text> will take the current width of your screen from
+this environment variable, if available.  It overrides terminal width
 information in TERMCAP.
 
 =item TERMCAP
