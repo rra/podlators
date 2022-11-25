@@ -24,11 +24,11 @@
    EBCDIC systems, and when the Encode module is not available.  (#73804)
 
  - Pod::Man no longer does guesswork transformations that only affected
-   troff output.  Formatting man pages with troff is exceptionally rare,
-   and this magic caused constant maintenance issues.  This means "--" is
-   no longer changed to an em-dash, strings of capital letters aren't made
-   a bit smaller, no attempt is made to change double quotes to paired
-   quotes, and no special formatting is done for C++.  (#132007)
+   troff output.  Formatting manual pages with troff is exceptionally
+   rare, and this magic caused constant maintenance issues.  This means
+   "--" is no longer changed to an em-dash, strings of capital letters
+   aren't made a bit smaller, no attempt is made to change double quotes
+   to paired quotes, and no special formatting is done for C++.  (#132007)
 
  - Guesswork (formatting rules based on heuristics intended for Perl
    documentation) can now be disabled or selectively enabled in Pod::Man
@@ -59,8 +59,8 @@
  - Pod::Man now supports a language option (--language to pod2man) that
    adds groff language configuration commands to the start of the output.
    This is required for proper line breaking of Japanese and Chinese text
-   when the man page is not installed in a language-specific directory so
-   that the man program knows to add that configuration automatically.
+   when the manual page is not installed in a language-specific directory
+   so that the man program knows to add that configuration automatically.
    Unfortunately, the commands added when this option is used are
    groff-specific.  Thanks to zynldyx for the bug report and suggested
    fix.
@@ -183,11 +183,11 @@
 
 4.10 - 2017-12-25
 
- - Change man page references and function names to bold instead of italic
-   in *roff output following the current Linux man page standard.  The
-   previous formatting was taken from Solaris, and it seems safe to say
-   that the Linux man page formatting conventions are now much more widely
-   followed than Solaris's.  Patch from Guillem Jover.
+ - Change manual page references and function names to bold instead of
+   italic in *roff output following the current Linux manual page
+   standard.  The previous formatting was taken from Solaris, and it seems
+   safe to say that the Linux manual page formatting conventions are now
+   much more widely followed than Solaris's.  Patch from Guillem Jover.
 
  - Revert the .IX handling code in Pod::Man to the earlier version from
    Bjarni Ingi Gislason but add the trailing backslashes that should
@@ -214,16 +214,16 @@
 4.08 - 2016-09-24
 
  - Partially revert change in 4.00 to require the name option (--name to
-   pod2man) when generating man pages from standard input.  Historically,
-   pod2man silently tolerated this, and there turned out to be a lot of
-   software that depended on this, making the change too disruptive.
-   Instead, silently set the man page title to STDIN in this case, but
-   warn about it in the documentation.  (#117990)
+   pod2man) when generating manual pages from standard input.
+   Historically, pod2man silently tolerated this, and there turned out to
+   be a lot of software that depended on this, making the change too
+   disruptive.  Instead, silently set the manual page title to STDIN in
+   this case, but warn about it in the documentation.  (#117990)
 
  - Fix rendering bug for "TRUE (1)" in Pod::Man, which was recognized as
-   needing small caps and then erroneously as a man page reference,
+   needing small caps and then erroneously as a manual page reference,
    resulting in escaped nroff.  (Found by Dan Jacobson with the
-   XML::LibXML::Element man page.)  (Debian Bug#836831)
+   XML::LibXML::Element manual page.)  (Debian Bug#836831)
 
  - Fix rendering bug causing "\s0(1)" to be mistakenly marked as a man
    page reference in Pod::Man, later confusing backslash escaping.
@@ -259,9 +259,9 @@
    without core having to maintain a separate build system.  Thanks, Craig
    A. Berry.
 
- - During build, generate the pod2text and pod2man man pages from the *.PL
-   files rather than the generated scripts.  This may be required due to
-   the different script extensions on VMS hosts.
+ - During build, generate the pod2text and pod2man manual pages from the
+   *.PL files rather than the generated scripts.  This may be required due
+   to the different script extensions on VMS hosts.
 
  - Rename perlpodstyle back to perlpodstyle.pod, since we no longer need
    the workaround for Module::Build's POD handling.
@@ -402,7 +402,7 @@
 
  - Fix documentation of the default for the errors constructor parameter.
 
- - Skip the empty text and man page errors tests if Pod::Simple didn't
+ - Skip the empty text and manual page errors tests if Pod::Simple didn't
    produce any errors, which happens with the version shipped with Perl
    versions prior to 5.18.  Catch warnings as well as exceptions in these
    tests.
@@ -428,8 +428,8 @@
  - Fix various comment typos.  Thanks, David Steinbrunner.  (#85683)
 
  - In perlpodstyle, wrap verbatim license line in POD that was over 79
-   characters after the man page indentation.  Thanks, Brian Gottreu and
-   Steve Hay.  (#87440)
+   characters after nroff indentation.  Thanks, Brian Gottreu and Steve
+   Hay.  (#87440)
 
 2.5.1 - 2013-02-27
 
@@ -515,9 +515,9 @@
    created by S<> at the end of a line, since the backslash is then taken
    by *roff as escaping the newline.  Thanks, Kevin Ryde.  (#61781)
 
- - Add perlpodstyle, a new style guide for POD documentation, split
-   mostly from the NOTES section of the pod2man man page.  Remove the
-   NOTES section of pod2man's documentation.
+ - Add perlpodstyle, a new style guide for POD documentation, split mostly
+   from the NOTES section of the pod2man manual page.  Remove the NOTES
+   section of pod2man's documentation.
 
  - Convert pod2man and pod2text from scripts generated from *.PL files to
    simple scripts, relying on ExtUtils::MakeMaker to handle replacing the
@@ -716,7 +716,7 @@
  - Add pod2text support for multiple pairs of input and output files,
    similar to pod2man.
 
- - Strip vendor_perl as well as site_perl when determining the man page
+ - Strip vendor_perl as well as site_perl when determining the manual page
    title.  Thanks, Alexey Tourbin.
 
  - Count text lengths correctly when wrapping in Pod::Text::Color and
@@ -843,9 +843,9 @@
 
  - Improve and simplify the handling of indentation shifts in Pod::Man.
 
- - When intuiting the man page name for a module, also strip $^O by itself
-   as a directory component even when not preceded or followed by a dash
-   and other text.
+ - When intuiting the manual page name for a module, also strip $^O by
+   itself as a directory component even when not preceded or followed by a
+   dash and other text.
 
  - Fix handling of =for or =begin/=end in =item paragraphs in Pod::Text.
    Default to a tag of "*" if none is given.  Insert some whitespace for
@@ -888,10 +888,10 @@
 
  - Include the version of Pod::Parser in the header of *roff output.
 
- - Only try to determine a module name from the path for the man page name
-   if the man page we're generating is in section 3.
+ - Only try to determine a module name from the path for the manual page
+   name if the manual page we're generating is in section 3.
 
- - No longer insert a timestamp into the generated man page.  It just
+ - No longer insert a timestamp into the generated manual page.  It just
    causes unnecessary differences and merge conflicts.
 
  - Inside S<> in Pod::Man, convert all whitespace to non-breaking spaces,
@@ -900,8 +900,8 @@
  - Add the --name option to pod2man and document the name option in
    Pod::Man.
 
- - Use L<> for all man page references in the documentation that should be
-   highlighted.  Switch the rest to bold versions of the program name.
+ - Use L<> for all manual page references in the documentation that should
+   be highlighted.  Switch the rest to bold versions of the program name.
    Change func(n) to func(3) in the example of things that are
    automatically formatted so that it will be formatted.  Remove from BUGS
    the note that some of the path mangling assumes Unix directory
@@ -976,7 +976,7 @@
 
  - Remove newlines from heading contents in Pod::Man.
 
- - Quote the file name in the man page header if it contains spaces.
+ - Quote the file name in the manual page header if it contains spaces.
 
 1.06 - 2000-12-25
 
@@ -1046,8 +1046,8 @@
  - Install the modules in the Perl core area if the Perl version is 5.6.0
    or higher.
 
- - Strip a leading lib/ from a file name for module man pages when
-   constructing the man page name, needed for ExtUtils::MakeMaker.
+ - Strip a leading lib/ from a file name for module manual pages when
+   constructing the manual page name, needed for ExtUtils::MakeMaker.
 
 1.00 - 2000-03-16
 
@@ -1113,8 +1113,8 @@
  - Improve the small caps guesswork for *roff output to allow for more
    cases, including several adjacent all caps words.
 
- - Fix some bugs with the link text generation for man page references in
-   *roff output.
+ - Fix some bugs with the link text generation for manual page references
+   in *roff output.
 
  - Improve the index generation in *roff output slightly.
 
@@ -1122,7 +1122,7 @@
 
 0.06 - 1999-09-20
 
- - Add pod2roff and Pod::Man, which convert POD to man pages.
+ - Add pod2roff and Pod::Man, which convert POD to manual pages.
 
  - Rename pod2txt to pod2text and Pod::PlainText to Pod::Text.
 
