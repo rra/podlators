@@ -795,7 +795,7 @@ __END__
 
 =for stopwords
 alt stderr Allbery Sean Burke's Christiansen UTF-8 pre-Unicode utf8 nourls
-parsers EBCDIC autodetecting superset unrepresentable
+parsers EBCDIC autodetecting superset unrepresentable FH NNN
 
 =head1 NAME
 
@@ -878,22 +878,22 @@ US-ASCII.  This will cause all non-ASCII characters will be replaced with C<?>
 and produce a flurry of warnings about unsupported characters, which may or
 may not be what you want.
 
-=head1 METHODS
+=head1 CLASS METHODS
 
-As a derived class from Pod::Simple, Pod::Text supports the same methods and
-interfaces.  See L<Pod::Simple> for all the details; briefly, one creates a
-new parser with C<< Pod::Text->new() >> and then normally calls parse_file().
+=over 4
 
-new() can take options, in the form of key/value pairs, that control the
-behavior of the parser.  The currently recognized options are:
+=item new(ARGS)
+
+Create a new Pod::Text object.  ARGS should be a list of key/value pairs,
+where the keys are chosen from the following:
 
 =over 4
 
 =item alt
 
 If set to a true value, selects an alternate output format that, among other
-things, uses a different heading style and marks C<=item> entries with a
-colon in the left margin.  Defaults to false.
+things, uses a different heading style and marks C<=item> entries with a colon
+in the left margin.  Defaults to false.
 
 =item code
 
@@ -925,11 +925,11 @@ produce warnings.  See L<perlpod(1)> for more information.
 
 =item errors
 
-How to report errors.  C<die> says to throw an exception on any POD
-formatting error.  C<stderr> says to report errors on standard error, but
-not to throw an exception.  C<pod> says to include a POD ERRORS section
-in the resulting documentation summarizing the errors.  C<none> ignores
-POD errors entirely, as much as possible.
+How to report errors.  C<die> says to throw an exception on any POD formatting
+error.  C<stderr> says to report errors on standard error, but not to throw an
+exception.  C<pod> says to include a POD ERRORS section in the resulting
+documentation summarizing the errors.  C<none> ignores POD errors entirely, as
+much as possible.
 
 The default is C<pod>.
 
@@ -940,19 +940,18 @@ C<=over> blocks.  Defaults to 4.
 
 =item loose
 
-If set to a true value, a blank line is printed after a C<=head1> heading.
-If set to false (the default), no blank line is printed after C<=head1>,
-although one is still printed after C<=head2>.  This is the default because
-it's the expected formatting for manual pages; if you're formatting
-arbitrary text documents, setting this to true may result in more pleasing
-output.
+If set to a true value, a blank line is printed after a C<=head1> heading.  If
+set to false (the default), no blank line is printed after C<=head1>, although
+one is still printed after C<=head2>.  This is the default because it's the
+expected formatting for manual pages; if you're formatting arbitrary text
+documents, setting this to true may result in more pleasing output.
 
 =item margin
 
 The width of the left margin in spaces.  Defaults to 0.  This is the margin
 for all text, including headings, not the amount by which regular text is
-indented; for the latter, see the I<indent> option.  To set the right
-margin, see the I<width> option.
+indented; for the latter, see the I<indent> option.  To set the right margin,
+see the I<width> option.
 
 =item nourls
 
@@ -965,17 +964,16 @@ is formatted as:
 
     foo <http://example.com/>
 
-This option, if set to a true value, suppresses the URL when anchor text
-is given, so this example would be formatted as just C<foo>.  This can
-produce less cluttered output in cases where the URLs are not particularly
-important.
+This option, if set to a true value, suppresses the URL when anchor text is
+given, so this example would be formatted as just C<foo>.  This can produce
+less cluttered output in cases where the URLs are not particularly important.
 
 =item quotes
 
-Sets the quote marks used to surround CE<lt>> text.  If the value is a
-single character, it is used as both the left and right quote.  Otherwise,
-it is split in half, and the first half of the string is used as the left
-quote and the second is used as the right quote.
+Sets the quote marks used to surround CE<lt>> text.  If the value is a single
+character, it is used as both the left and right quote.  Otherwise, it is
+split in half, and the first half of the string is used as the left quote and
+the second is used as the right quote.
 
 This may also be set to the special value C<none>, in which case no quote
 marks are added around CE<lt>> text.
@@ -984,15 +982,15 @@ marks are added around CE<lt>> text.
 
 If set to a true value, Pod::Text will assume that each sentence ends in two
 spaces, and will try to preserve that spacing.  If set to false, all
-consecutive whitespace in non-verbatim paragraphs is compressed into a
-single space.  Defaults to false.
+consecutive whitespace in non-verbatim paragraphs is compressed into a single
+space.  Defaults to false.
 
 =item stderr
 
-Send error messages about invalid POD to standard error instead of
-appending a POD ERRORS section to the generated output.  This is
-equivalent to setting C<errors> to C<stderr> if C<errors> is not already
-set.  It is supported for backward compatibility.
+Send error messages about invalid POD to standard error instead of appending a
+POD ERRORS section to the generated output.  This is equivalent to setting
+C<errors> to C<stderr> if C<errors> is not already set.  It is supported for
+backward compatibility.
 
 =item utf8
 
@@ -1006,28 +1004,90 @@ The column at which to wrap text on the right-hand side.  Defaults to 76.
 
 =back
 
-The standard Pod::Simple method parse_file() takes one argument naming the
-POD file to read from.  By default, the output is sent to C<STDOUT>, but
-this can be changed with the output_fh() method.
+=back
 
-The standard Pod::Simple method parse_from_file() takes up to two
-arguments, the first being the input file to read POD from and the second
-being the file to write the formatted output to.
+=head1 INSTANCE METHODS
 
-You can also call parse_lines() to parse an array of lines or
-parse_string_document() to parse a document already in memory.  As with
-parse_file(), parse_lines() and parse_string_document() default to sending
-their output to C<STDOUT> unless changed with the output_fh() method.  Be
-aware that parse_lines() and parse_string_document() both expect raw bytes,
-not decoded characters.
+As a derived class from Pod::Simple, Pod::Text supports the same methods and
+interfaces.  See L<Pod::Simple> for all the details.  This section summarizes
+the most-frequently-used methods and the ones added by Pod::Text.
 
-To put the output from any parse method into a scalar variable instead of a
-file handle, call the output_string() method instead of output_fh().  Be aware
-that the output stored in that scalar variable will be already encoded (see
+=over 4
+
+=item output_fh(FH)
+
+Direct the output from parse_file(), parse_lines(), or parse_string_document()
+to the file handle FH instead of C<STDOUT>.
+
+=item output_string(REF)
+
+Direct the output from parse_file(), parse_lines(), or parse_string_document()
+to the scalar variable pointed to by REF, rather than C<STDOUT>.  For example:
+
+    my $man = Pod::Man->new();
+    my $output;
+    $man->output_string(\$output);
+    $man->parse_file('/some/input/file');
+
+Be aware that the output in that variable will already be encoded (see
 L</Encoding>).
 
-See L<Pod::Simple> for more specific details on the methods available to
-all derived parsers.
+=item parse_file(PATH)
+
+Read the POD source from PATH and format it.  By default, the output is sent
+to C<STDOUT>, but this can be changed with the output_fh() or output_string()
+methods.
+
+=item parse_from_file(INPUT, OUTPUT)
+
+=item parse_from_filehandle(FH, OUTPUT)
+
+Read the POD source from INPUT, format it, and output the results to OUTPUT.
+
+parse_from_filehandle() is provided for backward compatibility with older
+versions of Pod::Man.  parse_from_file() should be used instead.
+
+=item parse_lines(LINES[, ...[, undef]])
+
+Parse the provided lines as POD source, writing the output to either C<STDOUT>
+or the file handle set with the output_fh() or output_string() methods.  This
+method can be called repeatedly to provide more input lines.  An explicit
+C<undef> should be passed to indicate the end of input.
+
+This method expects raw bytes, not decoded characters.
+
+=item parse_string_document(INPUT)
+
+Parse the provided scalar variable as POD source, writing the output to either
+C<STDOUT> or the file handle set with the output_fh() or output_string()
+methods.
+
+This method expects raw bytes, not decoded characters.
+
+=back
+
+=head1 FUNCTIONS
+
+Pod::Text exports one function for backward compatibility with older versions.
+This function is deprecated; instead, use the object-oriented interface
+described above.
+
+=over 4
+
+=item pod2text([[-a,] [-NNN,]] INPUT[, OUTPUT])
+
+Convert the POD source from INPUT to text and write it to OUTPUT.  If OUTPUT
+is not given, defaults to C<STDOUT>.  INPUT can be any expression supported as
+the second argument to two-argument open().
+
+If C<-a> is given as an initial argument, pass the C<alt> option to the
+Pod::Text constructor.  This enables alternative formatting.
+
+If C<-NNN> is given as an initial argument, pass the C<width> option to the
+Pod::Text constructor with the number C<NNN> as its argument.  This sets the
+wrap line width to NNN.
+
+=back
 
 =head1 DIAGNOSTICS
 
@@ -1062,49 +1122,13 @@ option was set to C<die>.
 
 =back
 
-=head1 BUGS
-
-Encoding handling assumes that PerlIO is available and does not work
-properly if it isn't.  The C<utf8> option is therefore not supported
-unless Perl is built with PerlIO support.
-
-=head1 CAVEATS
-
-If Pod::Text is given the C<utf8> option, the encoding of its output file
-handle will be forced to UTF-8 if possible, overriding any existing
-encoding.  This will be done even if the file handle is not created by
-Pod::Text and was passed in from outside.  This maintains consistency
-regardless of PERL_UNICODE and other settings.
-
-If the C<utf8> option is not given, the encoding of its output file handle
-will be forced to the detected encoding of the input POD, which preserves
-whatever the input text is.  This ensures backward compatibility with
-earlier, pre-Unicode versions of this module, without large numbers of
-Perl warnings.
-
-This is not ideal, but it seems to be the best compromise.  If it doesn't
-work for you, please let me know the details of how it broke.
-
-=head1 NOTES
-
-This is a replacement for an earlier Pod::Text module written by Tom
-Christiansen.  It has a revamped interface, since it now uses Pod::Simple,
-but an interface roughly compatible with the old Pod::Text::pod2text()
-function is still available.  Please change to the new calling convention,
-though.
-
-The original Pod::Text contained code to do formatting via termcap
-sequences, although it wasn't turned on by default and it was problematic to
-get it to work at all.  This rewrite doesn't even try to do that, but a
-subclass of it does.  Look for L<Pod::Text::Termcap>.
-
 =head1 AUTHOR
 
-Russ Allbery <rra@cpan.org>, based I<very> heavily on the original
-Pod::Text by Tom Christiansen <tchrist@mox.perl.com> and its conversion to
-Pod::Parser by Brad Appleton <bradapp@enteract.com>.  Sean Burke's initial
-conversion of Pod::Man to use Pod::Simple provided much-needed guidance on
-how to use Pod::Simple.
+Russ Allbery <rra@cpan.org>, based I<very> heavily on the original Pod::Text
+by Tom Christiansen <tchrist@mox.perl.com> and its conversion to Pod::Parser
+by Brad Appleton <bradapp@enteract.com>.  Sean Burke's initial conversion of
+Pod::Man to use Pod::Simple provided much-needed guidance on how to use
+Pod::Simple.
 
 =head1 COPYRIGHT AND LICENSE
 

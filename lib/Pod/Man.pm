@@ -2035,6 +2035,8 @@ to the scalar variable pointed to by REF, rather than C<STDOUT>.  For example:
     $man->output_string(\$output);
     $man->parse_file('/some/input/file');
 
+Be aware that the output in that variable will already be encoded in UTF-8.
+
 =item parse_file(PATH)
 
 Read the POD source from PATH and format it.  By default, the output is sent
