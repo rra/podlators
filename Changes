@@ -92,6 +92,11 @@
    other accent mark definitions.  This error appears to have existed
    since the first version of Pod::Man.  Thanks, Paul Evans.  (GitHub #14)
 
+ - Document that nroff adds two spaces after each sentence when reflowing,
+   and therefore if you want formatted Pod::Man output to consistently
+   have one space after each sentence, you will have to avoid ending a
+   sentence at the end of a line in the middle of a paragraph.
+
 4.14 - 2020-01-04
 
  - Document that parse_lines and parse_string_document expect raw bytes,

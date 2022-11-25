@@ -173,19 +173,6 @@ B<--section>, B<--release>, B<--center>, B<--date>, and B<--official> can
 be used to set the headers and footers to use; if not given, Pod::Man will
 assume various defaults.  See below for details.
 
-Besides the obvious pod conversions, Pod::Man, and therefore B<pod2man>, also
-takes care of formatting func(), func(n), and simple variable references like
-$foo or @bar by default, so you don't have to use code escapes for them.
-Complex expressions like C<$fred{'stuff'}> will still need to be escaped,
-though.  This can be disabled with the C<--guesswork> flag.  See the
-description of that flag and L<Pod::Man> for complete information.
-
-B<pod2man> assumes that your *roff formatters have a fixed-width font named
-C<CW>.  If yours is called something else (like C<CR>), use B<--fixed> to
-specify it.  This generally only matters for troff output for printing.
-Similarly, you can set the fonts used for bold, italic, and bold italic
-fixed-width output.
-
 =head1 OPTIONS
 
 =over 4
@@ -249,26 +236,26 @@ The default is C<die>.
 =item B<--fixed>=I<font>
 
 The fixed-width font to use for verbatim text and code.  Defaults to
-C<CW>.  Some systems may want C<CR> instead.  Only matters for troff(1)
+C<CW>.  Some systems may want C<CR> instead.  Only matters for B<troff>
 output.
 
 =item B<--fixedbold>=I<font>
 
 Bold version of the fixed-width font.  Defaults to C<CB>.  Only matters
-for troff(1) output.
+for B<troff> output.
 
 =item B<--fixeditalic>=I<font>
 
 Italic version of the fixed-width font (actually, something of a misnomer,
 since most fixed-width fonts only have an oblique version, not an italic
-version).  Defaults to C<CI>.  Only matters for troff(1) output.
+version).  Defaults to C<CI>.  Only matters for B<troff> output.
 
 =item B<--fixedbolditalic>=I<font>
 
 Bold italic (probably actually oblique) version of the fixed-width font.
 Pod::Man doesn't assume you have this, and defaults to C<CB>.  Some
 systems (such as Solaris) have this font available as C<CX>.  Only matters
-for troff(1) output.
+for B<troff> output.
 
 =item B<--guesswork>=I<rule>[,I<rule>...]
 

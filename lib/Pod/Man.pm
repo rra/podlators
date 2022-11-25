@@ -1706,7 +1706,7 @@ __END__
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8 UTF-8
 Allbery Sean Burke Ossanna Solaris formatters troff uppercased Christiansen
 nourls parsers Kernighan lquote rquote unrepresentable mandoc NetBSD PostScript
-SMP macOS EBCDIC fallbacks manref
+SMP macOS EBCDIC fallbacks manref reflowed reflowing FH
 
 =head1 NAME
 
@@ -1732,41 +1732,22 @@ using L<nroff(1)>, normally via L<man(1)>, or printing using L<troff(1)>.
 It is conventionally invoked using the driver script B<pod2man>, but it can
 also be used directly.
 
-By default (on non-EBCDIC systems), Pod::Man outputs UTF-8 man pages.  Its
-output should work with the B<man> program on systems that use B<groff> (most
-Linux distributions) or B<mandoc> (most BSD variants), but may result in
-mangled output on older UNIX systems.  To choose a different, possibly more
+By default (on non-EBCDIC systems), Pod::Man outputs UTF-8.  Its output should
+work with the B<man> program on systems that use B<groff> (most Linux
+distributions) or B<mandoc> (most BSD variants), but may result in mangled
+output on older UNIX systems.  To choose a different, possibly more
 backward-compatible output mangling on such systems, set the C<encoding>
 option to C<roff> (the default in earlier Pod::Man versions).  See the
 C<encoding> option and L</ENCODING> for more details.
 
-As a derived class from Pod::Simple, Pod::Man supports the same methods and
-interfaces.  See L<Pod::Simple> for all the details.
+=head1 CLASS METHODS
 
-new() can take options, in the form of key/value pairs that control the
-behavior of the parser.  See below for details.
+=over 4
 
-If no options are given, Pod::Man uses the name of the input file with any
-trailing C<.pod>, C<.pm>, or C<.pl> stripped as the man page title, to
-section 1 unless the file ended in C<.pm> in which case it defaults to
-section 3, to a centered title of "User Contributed Perl Documentation", to
-a centered footer of the Perl version it is run with, and to a left-hand
-footer of the modification date of its input (or the current date if given
-C<STDIN> for input).
+=item new(ARGS)
 
-Besides the obvious pod conversions, Pod::Man also takes care of formatting
-func(), func(3), and simple variable references like $foo or @bar so you don't
-have to use code escapes for them; complex expressions like C<$fred{'stuff'}>
-will still need to be escaped, though.
-
-Pod::Man assumes that your *roff formatters have a fixed-width font named
-C<CW>.  If yours is called something else (like C<CR>), use the C<fixed>
-option to specify it.  This generally only matters for troff output for
-printing.  Similarly, you can set the fonts used for bold, italic, and
-bold italic fixed-width output.
-
-The recognized options to new() are as follows.  All options take a single
-argument.
+Create a new Pod::Man object.  ARGS should be a list of key/value pairs, where
+the keys are chosen from the following:
 
 =over 4
 
@@ -1781,17 +1762,18 @@ Sets the left-hand footer for the C<.TH> macro.  If this option is not set,
 the contents of the environment variable POD_MAN_DATE, if set, will be used.
 Failing that, the value of SOURCE_DATE_EPOCH, the modification date of the
 input file, or the current time if stat() can't find that file (which will be
-the case if the input is from C<STDIN>) will be used.  If obtained from the
-file modification date or the current time, the date will be formatted as
-C<YYYY-MM-DD> and will be based on UTC (so that the output will be
-reproducible regardless of local time zone).
+the case if the input is from C<STDIN>) will be used.  If taken from any
+source other than POD_MAN_DATE (which is used verbatim), the date will be
+formatted as C<YYYY-MM-DD> and will be based on UTC (so that the output will
+be reproducible regardless of local time zone).
 
 =item encoding
 
 Specifies the encoding of the output.  The value must be an encoding
 recognized by the L<Encode> module (see L<Encode::Supported>), or the special
-values C<roff> or C<groff>.  The default on non-EBCDIC systems is UTF-8.  If
-the output contains characters that cannot be represented in this encoding,
+values C<roff> or C<groff>.  The default on non-EBCDIC systems is UTF-8.
+
+If the output contains characters that cannot be represented in this encoding,
 that is an error that will be reported as configured by the C<errors> option.
 If error handling is other than C<die>, the unrepresentable character will be
 replaced with the Encode substitution character (normally C<?>).
@@ -1837,9 +1819,8 @@ The default is C<pod>.
 
 =item fixed
 
-The fixed-width font to use for verbatim text and code.  Defaults to
-C<CW>.  Some systems may want C<CR> instead.  Only matters for B<troff>
-output.
+The fixed-width font to use for verbatim text and code.  Defaults to C<CW>.
+Some systems prefer C<CR> instead.  Only matters for B<troff> output.
 
 =item fixedbold
 
@@ -1854,10 +1835,10 @@ version).  Defaults to C<CI>.  Only matters for B<troff> output.
 
 =item fixedbolditalic
 
-Bold italic (probably actually oblique) version of the fixed-width font.
-Pod::Man doesn't assume you have this, and defaults to C<CB>.  Some
-systems (such as Solaris) have this font available as C<CX>.  Only matters
-for B<troff> output.
+Bold italic (in theory, probably oblique in practice) version of the
+fixed-width font.  Pod::Man doesn't assume you have this, and defaults to
+C<CB>.  Some systems (such as Solaris) have this font available as C<CX>.
+Only matters for B<troff> output.
 
 =item guesswork
 
@@ -1880,33 +1861,9 @@ Convert function references like C<foo()> to bold even if they have no markup.
 The function name accepts valid Perl characters for function names (including
 C<:>), and the trailing parentheses must be present and empty.
 
-=item language
-
-Add commands telling B<groff> that the input file is in the given language.
-The value of this setting must be a language abbreviation for which B<groff>
-provides supplemental configuration, such as C<ja> (for Japanese) or C<zh>
-(for Chinese).
-
-This adds:
-
-    .mso <language>.tmac
-    .hla <language>
-
-to the start of the file, which configure correct line breaking for the
-specified language.  Without these commands, groff may not know how to add
-proper line breaks for Chinese and Japanese text if the man page is installed
-into the normal man page directory, such as F</usr/share/man>.
-
-On many systems, this will be done automatically if the man page is installed
-into a language-specific man page directory, such as F</usr/share/man/zh_CN>.
-In that case, this option is not required.
-
-Unfortunately, the commands added with this option are specific to B<groff>
-and will not work with other B<troff> and B<nroff> implementations.
-
 =item manref
 
-Make the first part (before the parentheses) of man page references like
+Make the first part (before the parentheses) of manual page references like
 C<foo(1)> bold even if they have no markup.  The section must be a single
 number optionally followed by lowercase letters.
 
@@ -1928,6 +1885,30 @@ output format (unlike nroff terminal output) that supports fixed-width fonts.
 
 Any unknown guesswork name is silently ignored (for potential future
 compatibility), so be careful about spelling.
+
+=item language
+
+Add commands telling B<groff> that the input file is in the given language.
+The value of this setting must be a language abbreviation for which B<groff>
+provides supplemental configuration, such as C<ja> (for Japanese) or C<zh>
+(for Chinese).
+
+Specifically, this adds:
+
+    .mso <language>.tmac
+    .hla <language>
+
+to the start of the file, which configure correct line breaking for the
+specified language.  Without these commands, groff may not know how to add
+proper line breaks for Chinese and Japanese text if the manual page is
+installed into the normal manual page directory, such as F</usr/share/man>.
+
+On many systems, this will be done automatically if the manual page is
+installed into a language-specific manual page directory, such as
+F</usr/share/man/zh_CN>.  In that case, this option is not required.
+
+Unfortunately, the commands added with this option are specific to B<groff>
+and will not work with other B<troff> and B<nroff> implementations.
 
 =item lquote
 
@@ -1953,8 +1934,8 @@ C<.../lib/Pod/Man.pm> is converted into a name like C<Pod::Man>.  This
 option, if given, overrides any automatic determination of the name.
 
 If generating a manual page from standard input, the name will be set to
-C<STDIN> if this option is not provided.  Providing this option is strongly
-recommended to set a meaningful manual page name.
+C<STDIN> if this option is not provided.  In this case, providing this option
+is strongly recommended to set a meaningful manual page name.
 
 =item nourls
 
@@ -1989,10 +1970,9 @@ options is set, C<lquote> or C<rquote> overrides C<quotes>.
 
 =item release
 
-Set the centered footer for the C<.TH> macro.  By default, this is set to
-the version of Perl you run Pod::Man under.  Setting this to the empty
-string will cause some *roff implementations to use the system default
-value.
+Set the centered footer for the C<.TH> macro.  By default, this is set to the
+version of Perl you run Pod::Man under.  Setting this to the empty string will
+cause some *roff implementations to use the system default value.
 
 Note that some system C<an> macro sets assume that the centered footer will be
 a modification date and will prepend something like C<Last modified: >.  If
@@ -2002,13 +1982,13 @@ last modified date and C<date> to the version number.
 =item section
 
 Set the section for the C<.TH> macro.  The standard section numbering
-convention is to use 1 for user commands, 2 for system calls, 3 for
-functions, 4 for devices, 5 for file formats, 6 for games, 7 for
-miscellaneous information, and 8 for administrator commands.  There is a lot
-of variation here, however; some systems (like Solaris) use 4 for file
-formats, 5 for miscellaneous information, and 7 for devices.  Still others
-use 1m instead of 8, or some mix of both.  About the only section numbers
-that are reliably consistent are 1, 2, and 3.
+convention is to use 1 for user commands, 2 for system calls, 3 for functions,
+4 for devices, 5 for file formats, 6 for games, 7 for miscellaneous
+information, and 8 for administrator commands.  There is a lot of variation
+here, however; some systems (like Solaris) use 4 for file formats, 5 for
+miscellaneous information, and 7 for devices.  Still others use 1m instead of
+8, or some mix of both.  About the only section numbers that are reliably
+consistent are 1, 2, and 3.
 
 By default, section 1 will be used unless the file ends in C<.pm> in which
 case section 3 will be selected.
@@ -2030,26 +2010,64 @@ default, it is ignored and does nothing.
 
 =back
 
-The standard Pod::Simple method parse_file() takes one argument naming the
-POD file to read from.  By default, the output is sent to C<STDOUT>, but
-this can be changed with the output_fh() method.
+=back
 
-The standard Pod::Simple method parse_from_file() takes up to two
-arguments, the first being the input file to read POD from and the second
-being the file to write the formatted output to.
+=head1 INSTANCE METHODS
 
-You can also call parse_lines() to parse an array of lines or
-parse_string_document() to parse a document already in memory.  As with
-parse_file(), parse_lines() and parse_string_document() default to sending
-their output to C<STDOUT> unless changed with the output_fh() method.  Be
-aware that parse_lines() and parse_string_document() both expect raw bytes,
-not decoded characters.
+As a derived class from Pod::Simple, Pod::Man supports the same methods and
+interfaces.  See L<Pod::Simple> for all the details.  This section summarizes
+the most-frequently-used methods and the ones added by Pod::Man.
 
-To put the output from any parse method into a string instead of a file
-handle, call the output_string() method instead of output_fh().
+=over 4
 
-See L<Pod::Simple> for more specific details on the methods available to
-all derived parsers.
+=item output_fh(FH)
+
+Direct the output from parse_file(), parse_lines(), or parse_string_document()
+to the file handle FH instead of C<STDOUT>.
+
+=item output_string(REF)
+
+Direct the output from parse_file(), parse_lines(), or parse_string_document()
+to the scalar variable pointed to by REF, rather than C<STDOUT>.  For example:
+
+    my $man = Pod::Man->new();
+    my $output;
+    $man->output_string(\$output);
+    $man->parse_file('/some/input/file');
+
+=item parse_file(PATH)
+
+Read the POD source from PATH and format it.  By default, the output is sent
+to C<STDOUT>, but this can be changed with the output_fh() or output_string()
+methods.
+
+=item parse_from_file(INPUT, OUTPUT)
+
+=item parse_from_filehandle(FH, OUTPUT)
+
+Read the POD source from INPUT, format it, and output the results to OUTPUT.
+
+parse_from_filehandle() is provided for backward compatibility with older
+versions of Pod::Man.  parse_from_file() should be used instead.
+
+=item parse_lines(LINES[, ...[, undef]])
+
+Parse the provided lines as POD source, writing the output to either C<STDOUT>
+or the file handle set with the output_fh() or output_string() methods.  This
+method can be called repeatedly to provide more input lines.  An explicit
+C<undef> should be passed to indicate the end of input.
+
+This method expects raw bytes, not decoded characters.
+
+=item parse_string_document(INPUT)
+
+Parse the provided scalar variable as POD source, writing the output to either
+C<STDOUT> or the file handle set with the output_fh() or output_string()
+methods.
+
+This method expects raw bytes, not decoded characters.
+
+=back
 
 =head1 ENCODING
 
@@ -2085,9 +2103,9 @@ conservative output of the original pod2man, which output pure ASCII with
 complex macros to simulate common western European accented characters when
 processed with troff.  The nroff output was awkward and sometimes incorrect,
 and characters not used in western European scripts were replaced with C<X>.
-This choice maximized backwards compatibility with man and nroff/troff
-implementations at the cost of incorrect rendering of many POD documents,
-particularly those containing people's names.
+This choice maximized backwards compatibility with B<man> and
+B<nroff>/B<troff> implementations at the cost of incorrect rendering of many
+POD documents, particularly those containing people's names.
 
 The modern implementations, B<groff> (used in most Linux distributions) and
 B<mandoc> (used by most BSD variants), do now support Unicode.  Other UNIX
@@ -2136,8 +2154,8 @@ support UTF-8, it's not always worse than the old output.
 =back
 
 Pod::Man 5.00 and later makes the last choice.  This arguably produces worse
-output when man pages are formatted with B<troff> into PostScript or PDF, but
-doing this is rare and normally manual, so the encoding can be changed in
+output when manual pages are formatted with B<troff> into PostScript or PDF,
+but doing this is rare and normally manual, so the encoding can be changed in
 those cases.  The older output encoding is available by setting C<encoding> to
 C<roff>.
 
@@ -2270,48 +2288,61 @@ reliable if this variable overrode the timestamp of the input file.)
 
 =head1 BUGS
 
-There is currently no way to turn off the guesswork that tries to format
-unmarked text appropriately, and sometimes it isn't wanted (particularly
-when using POD to document something other than Perl).  Most of the work
-toward fixing this has now been done, however, and all that's still needed
-is a user interface.
-
-The NAME section should be recognized specially and index entries emitted
-for everything in that section.  This would have to be deferred until the
-next section, since extraneous things in NAME tends to confuse various man
-page processors.  Currently, no index entries are emitted for anything in
-NAME.
-
-Pod::Man doesn't handle font names longer than two characters.  Neither do
-most B<troff> implementations, but GNU troff does as an extension.  It would
-be nice to support as an option for those who want to use it.
-
 There are numerous bugs and language-specific assumptions in the nroff
 fallbacks for accented characters in the C<roff> encoding.  Since the point of
 this encoding is backward compatibility with the output from earlier versions
 of Pod::Man, and it is deprecated except when necessary to support old
 systems, those bugs are unlikely to ever be fixed.
 
+Pod::Man doesn't handle font names longer than two characters.  Neither do
+most B<troff> implementations, but groff does as an extension.  It would be
+nice to support as an option for those who want to use it.
+
 =head1 CAVEATS
 
-The handling of hyphens and em dashes is somewhat fragile, and one may get
-the wrong one under some circumstances.  This should only matter for
-B<troff> output.
+=head2 Sentence spacing
 
-When and whether to use small caps is somewhat tricky, and Pod::Man doesn't
-necessarily get it right.
+Pod::Man copies the input spacing verbatim to the output *roff document.  This
+means your output will be affected by how B<nroff> generally handles sentence
+spacing.
 
-Converting neutral double quotes to properly matched double quotes doesn't
-work unless there are no formatting codes between the quote marks.  This
-only matters for troff output.
+B<nroff> dates from an era in which it was standard to use two spaces after
+sentences, and will always add two spaces after a line-ending period (or
+similar punctuation) when reflowing text.  For example, the following input:
+
+    =pod
+
+    One sentence.
+    Another sentence.
+
+will result in two spaces after the period when the text is reflowed.  If you
+use two spaces after sentences anyway, this will be consistent, although you
+will have to be careful to not end a line with an abbreviation such as C<e.g.>
+or C<Ms.>.  Output will also be consistent if you use the *roff style guide
+(and L<XKCD 1285|https://xkcd.com/1285/>) recommendation of putting a line
+break after each sentence, although that will consistently produce two spaces
+after each sentence, which may not be what you want.
+
+If you prefer one space after sentences (which is the more modern style), you
+will unfortunately need to ensure that no line in the middle of a paragraph
+ends in a period or similar sentence-ending paragraph.  Otherwise, B<nroff>
+will add a two spaces after that sentence when reflowing, and your output
+document will have inconsistent spacing.
+
+=head2 Hyphens
+
+The handling of hyphens versus dashes is somewhat fragile, and one may get a
+the wrong one under some circumstances.  This will normally only matter for
+line breaking and possibly for troff output.
 
 =head1 AUTHOR
 
-Russ Allbery <rra@cpan.org>, based I<very> heavily on the original B<pod2man>
-by Tom Christiansen <tchrist@mox.perl.com>.  The modifications to work with
-Pod::Simple instead of Pod::Parser were originally contributed by Sean Burke
-<sburke@cpan.org> (but I've since hacked them beyond recognition and all bugs
-are mine).
+Written by Russ Allbery <rra@cpan.org>, based on the original B<pod2man> by
+Tom Christiansen <tchrist@mox.perl.com>.
+
+The modifications to work with Pod::Simple instead of Pod::Parser were
+contributed by Sean Burke <sburke@cpan.org>, but I've since hacked them beyond
+recognition and all bugs are mine.
 
 =head1 COPYRIGHT AND LICENSE
 
@@ -2332,10 +2363,11 @@ Computing Science Technical Report No. 54, AT&T Bell Laboratories.  This is
 the best documentation of standard B<nroff> and B<troff>.  At the time of
 this writing, it's available at L<http://www.troff.org/54.pdf>.
 
-The man page documenting the man macro set may be L<man(5)> instead of
-L<man(7)> on your system.  Also, please see L<pod2man(1)> for extensive
-documentation on writing manual pages if you've not done it before and
-aren't familiar with the conventions.
+The manual page documenting the man macro set may be L<man(5)> instead of
+L<man(7)> on your system.
+
+See L<perlpodstyle(1)> for documentation on writing manual pages in POD if
+you've not done it before and aren't familiar with the conventions.
 
 The current version of this module is always available from its web site at
 L<https://www.eyrie.org/~eagle/software/podlators/>.  It is also part of the
