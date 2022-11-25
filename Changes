@@ -32,7 +32,7 @@
 
  - Guesswork (formatting rules based on heuristics intended for Perl
    documentation) can now be disabled or selectively enabled in Pod::Man
-   with the guesswork option (--guessword to pod2man).  (#143668)
+   with the guesswork option (--guesswork to pod2man).  (#143668)
 
  - Pod::Text now supports an encoding option (-e or --encoding to
    pod2text) to force the output encoding, similar to Pod::Man.  The utf8
