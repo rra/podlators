@@ -983,7 +983,7 @@ marks are added around CE<lt>> text.
 
 =item sentence
 
-[2.00] If set to a true value, Pod::Text will assume that each sentence ends
+[3.00] If set to a true value, Pod::Text will assume that each sentence ends
 in two spaces, and will try to preserve that spacing.  If set to false, all
 consecutive whitespace in non-verbatim paragraphs is compressed into a single
 space.  Defaults to false.
@@ -1125,6 +1125,46 @@ character long or an even number (greater than one) characters long.
 option was set to C<die>.
 
 =back
+
+=head1 COMPATIBILITY
+
+Pod::Text 2.03 (based on L<Pod::Parser>) was the first version of this module
+included with Perl, in Perl 5.6.0.  Earlier versions of Perl had a different
+Pod::Text module, with a different API.
+
+The current API based on L<Pod::Simple> was added in Pod::Text 3.00.
+Pod::Text 3.01 was included in Perl 5.9.3, the first version of Perl to
+incorporate those changes.  This is the first version that correctly supports
+all modern POD syntax.  The parse_from_filehandle() method was re-added for
+backward compatibility in Pod::Text 3.07, included in Perl 5.9.4.
+
+Pod::Text 3.12, included in Perl 5.10.1, first implemented the current
+practice of attempting to match the default output encoding with the input
+encoding of the POD source, unless overridden by the C<utf8> option or (added
+later) the C<encoding> option.
+
+Support for anchor text in LZ<><> links of type URL was added in Pod::Text
+3.14, included in Perl 5.11.5.
+
+parse_lines(), parse_string_document(), and parse_file() set a default output
+file handle of C<STDOUT> if one was not already set as of Pod::Text 3.18,
+included in Perl 5.19.5.
+
+Pod::Text 4.00, included in Perl 5.23.7, aligned the module version and the
+version of the podlators distribution.  All modules included in podlators, and
+the podlators distribution itself, share the same version number from this
+point forward.
+
+Pod::Text 4.09, included in Perl 5.25.7, fixed a serious bug on EBCDIC
+systems, present in all versions back to 3.00, that would cause opening
+brackets to disappear.
+
+Pod::Text 5.00 now defaults, on non-EBCDIC systems, to UTF-8 encoding if it
+sees a non-ASCII character in the input and the input encoding is not
+specified.  It also commits to an encoding with the first non-ASCII character
+and does not change the output encoding if the input encoding changes.  The
+L<Encode> module is now used for all output encoding rather than PerlIO
+layers, which fixes earlier problems with output to scalars.
 
 =head1 AUTHOR
 

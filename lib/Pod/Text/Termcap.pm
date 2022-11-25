@@ -202,12 +202,12 @@ sub wrap {
 1;
 __END__
 
+=for stopwords
+ECMA-48 VT100 Allbery Solaris TERMPATH unformatted
+
 =head1 NAME
 
 Pod::Text::Termcap - Convert POD data to ASCII text with format escapes
-
-=for stopwords
-ECMA-48 VT100 Allbery Solaris TERMPATH
 
 =head1 SYNOPSIS
 
@@ -232,6 +232,29 @@ documentation of that module for how it finds terminal database information
 and how to override that behavior if necessary.  If unable to find control
 strings for bold and underscore formatting, that formatting is skipped,
 resulting in the same output as Pod::Text.
+
+=head1 COMPATIBILITY
+
+Pod::Text::Termcap 0.04 (based on L<Pod::Parser>) was the first version of
+this module included with Perl, in Perl 5.6.0.
+
+The current API based on L<Pod::Simple> was added in Pod::Text::Termcap 2.00.
+Pod::Text::Termcap 2.01 was included in Perl 5.9.3, the first version of Perl
+to incorporate those changes.
+
+Several problems with wrapping and line length were fixed as recently as
+Pod::Text::Termcap 4.11, included in Perl 5.29.1.
+
+Pod::Text::Termcap 4.13 stopped setting the TERMPATH environment variable
+during module load.  It also stopped falling back on VT100 escape sequences if
+Term::Cap was not able to find usable escape sequences, instead producing
+unformatted output for better results on dumb terminals.  The next version to
+be incorporated into Perl, 4.14, was included in Perl 5.31.8.
+
+This module inherits its API and most behavior from Pod::Text, so the details
+in L<Pod::Text/COMPATIBILITY> also apply.  Pod::Text and Pod::Text::Termcap
+have had the same module version since 4.00, included in Perl 5.23.7.  (They
+unfortunately diverge in confusing ways prior to that.)
 
 =head1 AUTHOR
 

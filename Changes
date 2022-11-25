@@ -681,7 +681,7 @@
  - In the parse_from_file method, flush the output file handle rather than
    closing it.  Closing it is unexpected and could break callers.
 
- - In Pod::Text::Termcap and Pod::Text::Color, Use additional temporary
+ - In Pod::Text::Termcap and Pod::Text::Color, use additional temporary
    variables to avoid ${char}{0,$width} in regexes, which only works in
    very recent Perls.
 

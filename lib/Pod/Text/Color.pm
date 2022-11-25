@@ -168,11 +168,22 @@ options.
 Term::ANSIColor is used to get colors and therefore must be installed to use
 this module.
 
-=head1 BUGS
+=head1 COMPATIBILITY
 
-This is just a basic proof of concept.  It should be seriously expanded to
-support configurable coloration via options passed to the constructor, and
-B<pod2text> should be taught about those.
+Pod::Text::Color 0.05 (based on L<Pod::Parser>) was the first version of this
+module included with Perl, in Perl 5.6.0.
+
+The current API based on L<Pod::Simple> was added in Pod::Text::Color 2.00.
+Pod::Text::Color 2.01 was included in Perl 5.9.3, the first version of Perl to
+incorporate those changes.
+
+Several problems with wrapping and line length were fixed as recently as
+Pod::Text::Color 4.11, included in Perl 5.29.1.
+
+This module inherits its API and most behavior from Pod::Text, so the details
+in L<Pod::Text/COMPATIBILITY> also apply.  Pod::Text and Pod::Text::Color have
+had the same module version since 4.00, included in Perl 5.23.7.  (They
+unfortunately diverge in confusing ways prior to that.)
 
 =head1 AUTHOR
 

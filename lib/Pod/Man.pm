@@ -1706,7 +1706,7 @@ __END__
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8 UTF-8
 Allbery Sean Burke Ossanna Solaris formatters troff uppercased Christiansen
 nourls parsers Kernighan lquote rquote unrepresentable mandoc NetBSD PostScript
-SMP macOS EBCDIC fallbacks manref reflowed reflowing FH
+SMP macOS EBCDIC fallbacks manref reflowed reflowing FH overridable
 
 =head1 NAME
 
@@ -1739,6 +1739,10 @@ output on older UNIX systems.  To choose a different, possibly more
 backward-compatible output mangling on such systems, set the C<encoding>
 option to C<roff> (the default in earlier Pod::Man versions).  See the
 C<encoding> option and L</ENCODING> for more details.
+
+See L</COMPATIBILTY> for the versions of Pod::Man with significant
+backward-incompatible changes (other than constructor options, whose versions
+are documented below), and the versions of Perl that included them.
 
 =head1 CLASS METHODS
 
@@ -2287,6 +2291,43 @@ current time.  However, for reproducible builds in Debian, results were more
 reliable if this variable overrode the timestamp of the input file.)
 
 =back
+
+=head1 COMPATIBILITY
+
+Pod::Man 1.02 (based on L<Pod::Parser>) was the first version included with
+Perl, in Perl 5.6.0.
+
+The current API based on L<Pod::Simple> was added in Pod::Man 2.00.  Pod::Man
+2.04 was included in Perl 5.9.3, the first version of Perl to incorporate
+those changes.  This is the first version that correctly supports all modern
+POD syntax.  The parse_from_filehandle() method was re-added for backward
+compatibility in Pod::Man 2.09, included in Perl 5.9.4.
+
+Support for anchor text in LZ<><> links of type URL was added in Pod::Man
+2.23, included in Perl 5.11.5.
+
+parse_lines(), parse_string_document(), and parse_file() set a default output
+file handle of C<STDOUT> if one was not already set as of Pod::Man 2.28,
+included in Perl 5.19.5.
+
+Support for SOURCE_DATE_EPOCH and POD_MAN_DATE was added in Pod::Man 4.00,
+included in Perl 5.23.7, and generated dates were changed to use UTC instead
+of the local time zone.  This is also the first release that aligned the
+module version and the version of the podlators distribution.  All modules
+included in podlators, and the podlators distribution itself, share the same
+version number from this point forward.
+
+Pod::Man 4.10, included in Perl 5.27.8, changed the formatting for manual page
+references and function names to bold instead of italic, following the current
+Linux manual page standard.
+
+Pod::Man 5.00 changed the default output encoding to UTF-8, overridable with
+the new C<encoding> option.  It also fixed problems with bold or italic
+extending too far when used with CZ<><> escapes, and began converting Unicode
+zero-width spaces (U+200B) to the C<\:> *roff escape.  It also dropped
+attempts to add subtle formatting corrections in the output that would only be
+visible when typeset with B<troff>, which had previously been a significant
+source of bugs.
 
 =head1 BUGS
 

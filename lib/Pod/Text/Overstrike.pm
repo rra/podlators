@@ -174,6 +174,22 @@ Currently, the outermost formatting instruction wins, so for example
 underlined text inside a region of bold text is displayed as simply bold.
 There may be some better approach possible.
 
+=head1 COMPATIBILITY
+
+Pod::Text::Overstrike 1.01 (based on L<Pod::Parser>) was the first version of
+this module included with Perl, in Perl 5.6.1.
+
+The current API based on L<Pod::Simple> was added in Pod::Text::Overstrike
+2.00, included in Perl 5.9.3.
+
+Several problems with wrapping and line length were fixed as recently as
+Pod::Text::Overstrike 2.04, included in Perl 5.11.5.
+
+This module inherits its API and most behavior from Pod::Text, so the details
+in L<Pod::Text/COMPATIBILITY> also apply.  Pod::Text and Pod::Text::Overstrike
+have had the same module version since 4.00, included in Perl 5.23.7.  (They
+unfortunately diverge in confusing ways prior to that.)
+
 =head1 AUTHOR
 
 Originally written by Joe Smith <Joe.Smith@inwap.com>, using the framework
