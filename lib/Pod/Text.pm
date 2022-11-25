@@ -14,7 +14,7 @@
 
 package Pod::Text;
 
-use 5.008;
+use 5.010;
 use strict;
 use warnings;
 
@@ -101,9 +101,7 @@ sub new {
     delete $$self{opt_utf8};
 
     # Validate the errors parameter and act on it.
-    if (not defined $$self{opt_errors}) {
-        $$self{opt_errors} = 'pod';
-    }
+    $$self{opt_errors} //= 'pod';
     if ($$self{opt_errors} eq 'stderr' || $$self{opt_errors} eq 'die') {
         $self->no_errata_section (1);
         $self->complain_stderr (1);
@@ -122,12 +120,12 @@ sub new {
     delete $$self{errors};
 
     # Initialize various things from our parameters.
-    $$self{opt_alt}      = 0  unless defined $$self{opt_alt};
-    $$self{opt_indent}   = 4  unless defined $$self{opt_indent};
-    $$self{opt_margin}   = 0  unless defined $$self{opt_margin};
-    $$self{opt_loose}    = 0  unless defined $$self{opt_loose};
-    $$self{opt_sentence} = 0  unless defined $$self{opt_sentence};
-    $$self{opt_width}    = 76 unless defined $$self{opt_width};
+    $$self{opt_alt}      //= 0;
+    $$self{opt_indent}   //= 4;
+    $$self{opt_margin}   //= 0;
+    $$self{opt_loose}    //= 0;
+    $$self{opt_sentence} //= 0;
+    $$self{opt_width}    //= 76;
 
     # Figure out what quotes we'll be using for C<> text.
     $$self{opt_quotes} ||= '"';
@@ -404,8 +402,7 @@ sub item {
 
     # Calculate the indentation and margin.  $fits is set to true if the tag
     # will fit into the margin of the paragraph given our indentation level.
-    my $indent = $$self{INDENTS}[-1];
-    $indent = $$self{opt_indent} unless defined $indent;
+    my $indent = $$self{INDENTS}[-1] // $$self{opt_indent};
     my $margin = ' ' x $$self{opt_margin};
     my $tag_length = length ($self->strip_format ($tag));
     my $fits = ($$self{MARGIN} - $indent >= $tag_length + 1);

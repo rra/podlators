@@ -14,7 +14,7 @@
 
 package Pod::Man;
 
-use 5.008;
+use 5.010;
 use strict;
 use warnings;
 
@@ -219,9 +219,7 @@ sub new {
     delete $self->{opt_stderr};
 
     # Validate the errors parameter and act on it.
-    if (not defined $self->{opt_errors}) {
-        $self->{opt_errors} = 'pod';
-    }
+    $self->{opt_errors} //= 'pod';
     if ($self->{opt_errors} eq 'stderr' || $self->{opt_errors} eq 'die') {
         $self->no_errata_section (1);
         $self->complain_stderr (1);
@@ -351,12 +349,9 @@ sub init_page {
 
     # Set the defaults for page titles and indentation if the user didn't
     # override anything.
-    $self->{opt_center} = 'User Contributed Perl Documentation'
-        unless defined $self->{opt_center};
-    $self->{opt_release} = 'perl v' . $version
-        unless defined $self->{opt_release};
-    $self->{opt_indent} = 4
-        unless defined $self->{opt_indent};
+    $self->{opt_center}  //= 'User Contributed Perl Documentation';
+    $self->{opt_release} //= 'perl v' . $version;
+    $self->{opt_indent}  //= 4;
 
     # Double quotes in things that will be quoted.
     for (qw/center release/) {
@@ -905,10 +900,7 @@ sub start_document {
         } else {
             ($name, $section) = $self->devise_title;
         }
-        my $date = $self->{opt_date};
-        if (!defined($date)) {
-            $date = $self->devise_date();
-        }
+        my $date = $self->{opt_date} // $self->devise_date();
         $self->preamble ($name, $section, $date)
             unless $self->bare_output;
     }
