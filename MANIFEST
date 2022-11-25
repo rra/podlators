@@ -99,7 +99,7 @@ t/data/snippets/man/x-whitespace-entry
 t/data/snippets/man/zero-width-space
 t/data/snippets/overstrike/tag-width
 t/data/snippets/overstrike/wrapping
-t/data/snippets/README
+t/data/snippets/README.md
 t/data/snippets/termcap/escape-wrapping
 t/data/snippets/termcap/tag-width
 t/data/snippets/termcap/tag-wrapping
