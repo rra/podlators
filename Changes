@@ -4,7 +4,7 @@
 
  - The default output encoding of Pod::Man on non-EBCDIC systems is now
    UTF-8.  The utf8 option (-u or --utf8 to pod2man) is now ignored, since
-   it is the default.  See the ENCODE section of its documentation for
+   it is the default.  See the ENCODING section of its documentation for
    testing results and further discussion.  (#68741)
 
  - Pod::Man now supports an encoding option (-e or --encoding to pod2man),
@@ -62,6 +62,13 @@
    Unfortunately, the commands added when this option is used are
    groff-specific.  Thanks to zynldyx for the bug report and suggested
    fix.
+
+ - Pod::Man now converts Unicode zero-width spaces (U+200B) to the *roff
+   escape \:, which indicates a line break point without a space or
+   hyphen.  (Unfortunately, groff does not honor U+200B itself as a line
+   break point.)  This escape is not part of the language defined in CSTR
+   #54, but is supported by both groff and mandoc, so hopefully use of
+   this escape won't cause problems.  (Debian Bug#941980)
 
  - Pod::Man and Pod::Text now correctly honor S<> wrapping L<> with an
    anchor and URL, and make the space between the anchor and URL

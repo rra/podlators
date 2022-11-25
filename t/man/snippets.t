@@ -16,7 +16,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 111;
+use Test::More tests => 113;
 use Test::Podlators qw(test_snippet);
 
 # Load the module.
@@ -36,6 +36,7 @@ my @snippets = qw(
   name-quotes-none nested-lists newlines-in-c non-ascii nonbreaking-space-l
   not-bullet not-numbers nourls periods quote-escaping rquote-none
   soft-hyphens trailing-space true-false x-whitespace x-whitespace-entry
+  zero-width-space
 );
 
 # Run all the tests.

@@ -467,13 +467,14 @@ sub format_text {
     my $literal = $$options{literal};
 
     # Cleanup just tidies up a few things, telling *roff that the hyphens are
-    # hard, putting a bit of space between consecutive underscores, and
-    # escaping backslashes.  Be careful not to mangle our character
-    # translations by doing this before processing character translation.
+    # hard, putting a bit of space between consecutive underscores, escaping
+    # backslashes, and converting zero-width spaces to zero-width break
+    # points.
     if ($cleanup) {
         $text =~ s/\\/\\e/g;
         $text =~ s/-/\\-/g;
         $text =~ s/_(?=_)/_\\|/g;
+        $text =~ s/\x{200B}/\\:/g;
     }
 
     # Except in <Data> blocks, if groff or roff encoding is requested and
