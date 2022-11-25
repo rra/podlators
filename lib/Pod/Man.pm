@@ -1747,29 +1747,30 @@ C<encoding> option and L</ENCODING> for more details.
 =item new(ARGS)
 
 Create a new Pod::Man object.  ARGS should be a list of key/value pairs, where
-the keys are chosen from the following:
+the keys are chosen from the following.  Each option is annotated with the
+version of Pod::Man in which that option was added with its current meaning.
 
 =over 4
 
 =item center
 
-Sets the centered page header for the C<.TH> macro.  The default, if this
-option is not specified, is "User Contributed Perl Documentation".
+[1.00] Sets the centered page header for the C<.TH> macro.  The default, if
+this option is not specified, is "User Contributed Perl Documentation".
 
 =item date
 
-Sets the left-hand footer for the C<.TH> macro.  If this option is not set,
-the contents of the environment variable POD_MAN_DATE, if set, will be used.
-Failing that, the value of SOURCE_DATE_EPOCH, the modification date of the
-input file, or the current time if stat() can't find that file (which will be
-the case if the input is from C<STDIN>) will be used.  If taken from any
+[4.00] Sets the left-hand footer for the C<.TH> macro.  If this option is not
+set, the contents of the environment variable POD_MAN_DATE, if set, will be
+used.  Failing that, the value of SOURCE_DATE_EPOCH, the modification date of
+the input file, or the current time if stat() can't find that file (which will
+be the case if the input is from C<STDIN>) will be used.  If taken from any
 source other than POD_MAN_DATE (which is used verbatim), the date will be
 formatted as C<YYYY-MM-DD> and will be based on UTC (so that the output will
 be reproducible regardless of local time zone).
 
 =item encoding
 
-Specifies the encoding of the output.  The value must be an encoding
+[5.00] Specifies the encoding of the output.  The value must be an encoding
 recognized by the L<Encode> module (see L<Encode::Supported>), or the special
 values C<roff> or C<groff>.  The default on non-EBCDIC systems is UTF-8.
 
@@ -1809,44 +1810,44 @@ more information.
 
 =item errors
 
-How to report errors.  C<die> says to throw an exception on any POD
-formatting error.  C<stderr> says to report errors on standard error, but
-not to throw an exception.  C<pod> says to include a POD ERRORS section
-in the resulting documentation summarizing the errors.  C<none> ignores
-POD errors entirely, as much as possible.
+[2.27] How to report errors.  C<die> says to throw an exception on any POD
+formatting error.  C<stderr> says to report errors on standard error, but not
+to throw an exception.  C<pod> says to include a POD ERRORS section in the
+resulting documentation summarizing the errors.  C<none> ignores POD errors
+entirely, as much as possible.
 
 The default is C<pod>.
 
 =item fixed
 
-The fixed-width font to use for verbatim text and code.  Defaults to C<CW>.
-Some systems prefer C<CR> instead.  Only matters for B<troff> output.
+[1.00] The fixed-width font to use for verbatim text and code.  Defaults to
+C<CW>.  Some systems prefer C<CR> instead.  Only matters for B<troff> output.
 
 =item fixedbold
 
-Bold version of the fixed-width font.  Defaults to C<CB>.  Only matters
+[1.00] Bold version of the fixed-width font.  Defaults to C<CB>.  Only matters
 for B<troff> output.
 
 =item fixeditalic
 
-Italic version of the fixed-width font (actually, something of a misnomer,
-since most fixed-width fonts only have an oblique version, not an italic
-version).  Defaults to C<CI>.  Only matters for B<troff> output.
+[1.00] Italic version of the fixed-width font (actually, something of a
+misnomer, since most fixed-width fonts only have an oblique version, not an
+italic version).  Defaults to C<CI>.  Only matters for B<troff> output.
 
 =item fixedbolditalic
 
-Bold italic (in theory, probably oblique in practice) version of the
+[1.00] Bold italic (in theory, probably oblique in practice) version of the
 fixed-width font.  Pod::Man doesn't assume you have this, and defaults to
 C<CB>.  Some systems (such as Solaris) have this font available as C<CX>.
 Only matters for B<troff> output.
 
 =item guesswork
 
-By default, Pod::Man applies some default formatting rules based on guesswork
-and regular expressions that are intended to make writing Perl documentation
-easier and require less explicit markup.  These rules may not always be
-appropriate, particularly for documentation that isn't about Perl.  This
-option allows turning all or some of it off.
+[5.00] By default, Pod::Man applies some default formatting rules based on
+guesswork and regular expressions that are intended to make writing Perl
+documentation easier and require less explicit markup.  These rules may not
+always be appropriate, particularly for documentation that isn't about Perl.
+This option allows turning all or some of it off.
 
 The special value C<all> enables all guesswork.  This is also the default for
 backward compatibility reasons.  The special value C<none> disables all
@@ -1888,10 +1889,10 @@ compatibility), so be careful about spelling.
 
 =item language
 
-Add commands telling B<groff> that the input file is in the given language.
-The value of this setting must be a language abbreviation for which B<groff>
-provides supplemental configuration, such as C<ja> (for Japanese) or C<zh>
-(for Chinese).
+[5.00] Add commands telling B<groff> that the input file is in the given
+language.  The value of this setting must be a language abbreviation for which
+B<groff> provides supplemental configuration, such as C<ja> (for Japanese) or
+C<zh> (for Chinese).
 
 Specifically, this adds:
 
@@ -1914,11 +1915,10 @@ and will not work with other B<troff> and B<nroff> implementations.
 
 =item rquote
 
-Sets the quote marks used to surround CE<lt>> text.  C<lquote> sets the
-left quote mark and C<rquote> sets the right quote mark.  Either may also
-be set to the special value C<none>, in which case no quote mark is added
-on that side of CE<lt>> text (but the font is still changed for troff
-output).
+[4.08] Sets the quote marks used to surround CE<lt>> text.  C<lquote> sets the
+left quote mark and C<rquote> sets the right quote mark.  Either may also be
+set to the special value C<none>, in which case no quote mark is added on that
+side of CE<lt>> text (but the font is still changed for troff output).
 
 Also see the C<quotes> option, which can be used to set both quotes at once.
 If both C<quotes> and one of the other options is set, C<lquote> or C<rquote>
@@ -1926,12 +1926,12 @@ overrides C<quotes>.
 
 =item name
 
-Set the name of the manual page for the C<.TH> macro.  Without this
-option, the manual name is set to the uppercased base name of the file
-being converted unless the manual section is 3, in which case the path is
-parsed to see if it is a Perl module path.  If it is, a path like
-C<.../lib/Pod/Man.pm> is converted into a name like C<Pod::Man>.  This
-option, if given, overrides any automatic determination of the name.
+[4.08] Set the name of the manual page for the C<.TH> macro.  Without this
+option, the manual name is set to the uppercased base name of the file being
+converted unless the manual section is 3, in which case the path is parsed to
+see if it is a Perl module path.  If it is, a path like C<.../lib/Pod/Man.pm>
+is converted into a name like C<Pod::Man>.  This option, if given, overrides
+any automatic determination of the name.
 
 If generating a manual page from standard input, the name will be set to
 C<STDIN> if this option is not provided.  In this case, providing this option
@@ -1939,8 +1939,8 @@ is strongly recommended to set a meaningful manual page name.
 
 =item nourls
 
-Normally, LZ<><> formatting codes with a URL but anchor text are formatted
-to show both the anchor text and the URL.  In other words:
+[2.27] Normally, LZ<><> formatting codes with a URL but anchor text are
+formatted to show both the anchor text and the URL.  In other words:
 
     L<foo|http://example.com/>
 
@@ -1955,10 +1955,10 @@ important.
 
 =item quotes
 
-Sets the quote marks used to surround CE<lt>> text.  If the value is a
-single character, it is used as both the left and right quote.  Otherwise,
-it is split in half, and the first half of the string is used as the left
-quote and the second is used as the right quote.
+[4.00] Sets the quote marks used to surround CE<lt>> text.  If the value is a
+single character, it is used as both the left and right quote.  Otherwise, it
+is split in half, and the first half of the string is used as the left quote
+and the second is used as the right quote.
 
 This may also be set to the special value C<none>, in which case no quote
 marks are added around CE<lt>> text (but the font is still changed for troff
@@ -1970,9 +1970,9 @@ options is set, C<lquote> or C<rquote> overrides C<quotes>.
 
 =item release
 
-Set the centered footer for the C<.TH> macro.  By default, this is set to the
-version of Perl you run Pod::Man under.  Setting this to the empty string will
-cause some *roff implementations to use the system default value.
+[1.00] Set the centered footer for the C<.TH> macro.  By default, this is set
+to the version of Perl you run Pod::Man under.  Setting this to the empty
+string will cause some *roff implementations to use the system default value.
 
 Note that some system C<an> macro sets assume that the centered footer will be
 a modification date and will prepend something like C<Last modified: >.  If
@@ -1981,7 +1981,7 @@ last modified date and C<date> to the version number.
 
 =item section
 
-Set the section for the C<.TH> macro.  The standard section numbering
+[1.00] Set the section for the C<.TH> macro.  The standard section numbering
 convention is to use 1 for user commands, 2 for system calls, 3 for functions,
 4 for devices, 5 for file formats, 6 for games, 7 for miscellaneous
 information, and 8 for administrator commands.  There is a lot of variation
@@ -1995,18 +1995,18 @@ case section 3 will be selected.
 
 =item stderr
 
-If set to a true value, send error messages about invalid POD to standard
-error instead of appending a POD ERRORS section to the generated *roff output.
-This is equivalent to setting C<errors> to C<stderr> if C<errors> is not
-already set.
+[2.19] If set to a true value, send error messages about invalid POD to
+standard error instead of appending a POD ERRORS section to the generated
+*roff output.  This is equivalent to setting C<errors> to C<stderr> if
+C<errors> is not already set.
 
 This option is for backward compatibility with Pod::Man versions that did not
 support C<errors>.  Normally, the C<errors> option should be used instead.
 
 =item utf8
 
-This option used to set the output encoding to UTF-8.  Since this is now the
-default, it is ignored and does nothing.
+[2.21] This option used to set the output encoding to UTF-8.  Since this is
+now the default, it is ignored and does nothing.
 
 =back
 
