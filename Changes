@@ -2,6 +2,8 @@
 
 5.00 - 2022-11-25
 
+ - Drop support for Perl 5.8.  The minimum required version is Perl 5.10.
+
  - The default output encoding of Pod::Man on non-EBCDIC systems is now
    UTF-8.  The utf8 option (-u or --utf8 to pod2man) is now ignored, since
    it is the default.  See the ENCODING section of its documentation for
