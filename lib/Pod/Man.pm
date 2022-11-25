@@ -1755,7 +1755,7 @@ version of Pod::Man in which that option was added with its current meaning.
 =item center
 
 [1.00] Sets the centered page header for the C<.TH> macro.  The default, if
-this option is not specified, is "User Contributed Perl Documentation".
+this option is not specified, is C<User Contributed Perl Documentation>.
 
 =item date
 
@@ -1830,9 +1830,9 @@ for B<troff> output.
 
 =item fixeditalic
 
-[1.00] Italic version of the fixed-width font (actually, something of a
-misnomer, since most fixed-width fonts only have an oblique version, not an
-italic version).  Defaults to C<CI>.  Only matters for B<troff> output.
+[1.00] Italic version of the fixed-width font (something of a misnomer, since
+most fixed-width fonts only have an oblique version, not an italic version).
+Defaults to C<CI>.  Only matters for B<troff> output.
 
 =item fixedbolditalic
 
