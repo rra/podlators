@@ -1,5 +1,10 @@
                       Revision history for podlators
 
+5.01 - Not Released
+
+ - Depend on Pod::Simple 3.26 or later, since Pod::Text now calls its
+   encoding() method.
+
 5.00 - 2022-11-25
 
  - Drop support for Perl 5.8.  The minimum required version is Perl 5.10.

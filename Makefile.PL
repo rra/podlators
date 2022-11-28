@@ -111,7 +111,7 @@ my %metadata     = (
     realclean => { FILES => scalar(scripts('pod2text', 'pod2man')) },
 
     # Dependencies on other modules.
-    PREREQ_PM => { 'Pod::Simple' => 3.06 },
+    PREREQ_PM => { 'Pod::Simple' => 3.26 },
 
     # Older versions of ExtUtils::MakeMaker don't pick up nested test
     # directories by default.
