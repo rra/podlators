@@ -88,7 +88,7 @@ sub _stderr_restore {
 }
 
 # Read one test snippet from the provided relative file name and return it.
-# For the format, see t/data/snippets/README.
+# For the format, see t/data/snippets/README.md.
 #
 # $path     - Relative path to read test data from
 #
