@@ -572,8 +572,7 @@ sub quote_literal {
 # formatting codes added.  This is the code that marks up various Perl
 # constructs and things commonly used in man pages without requiring the user
 # to add any explicit markup, and is applied to all non-literal text.  Note
-# that the inserted font sequences must be treated later with mapfonts or
-# textmapfonts.
+# that the inserted font sequences must be treated later with mapfonts.
 #
 # This method is very fragile, both in the regular expressions it uses and in
 # the ordering of those modifications.  Care and testing is required when
@@ -661,72 +660,52 @@ sub guesswork {
 # the right start and end codes.
 #
 # We add this level of complexity because the old pod2man didn't get code like
-# B<someI<thing> else> right; after I<> it switched back to normal text rather
-# than bold.  We take care of this by using variables that state whether bold,
-# italic, or fixed are turned on as a combined pointer to our current font
-# sequence, and set each to the number of current nestings of start tags for
-# that font.
+# B<< someI<thing> else>> right.  After I<> it switched back to normal text
+# rather than bold.  We take care of this by using variables that state
+# whether bold, italic, or fixed are turned on as a combined pointer to our
+# current font sequence, and set each to the number of current nestings of
+# start tags for that font.
 #
-# \fP changes to the previous font, but only one previous font is kept.  We
-# don't know what the outside level font is; normally it's R, but if we're
-# inside a heading it could be something else.  So arrange things so that the
-# outside font is always the "previous" font and end with \fP instead of \fR.
-# Idea from Zack Weinberg.
+# The base font must be either \fP or \fR.  \fP changes to the previous font,
+# but only one previous font is kept.  Unfortunately, there is a bug in
+# Solaris 2.6 nroff (not present in GNU groff) where the sequence
+# \fB\fP\f(CW\fP leaves the font set to B rather than R, presumably because
+# \f(CW doesn't actually do a font change.  Because of this, we prefer to use
+# \fR where possible.
+#
+# Unfortunately, this isn't possible for arguments to heading macros, since
+# there we don't know what the outside level font is.  In that case, arrange
+# things so that the outside font is always the "previous" font and end with
+# \fP instead of \fR.  Idea from Zack Weinberg.
+#
+# This function used to be much simpler outside of macro arguments because it
+# went directly from \fB to \f(CW and relied on \f(CW clearing bold since it
+# wasn't \f(CB.  Unfortunately, while this works for mandoc, this is not how
+# groff works; \fBfoo\f(CWbar still prints bar in bold.  Therefore, we force
+# the font back to the base font before each font change.
 sub mapfonts {
-    my ($self, $text) = @_;
-    my ($fixed, $bold, $italic) = (0, 0, 0);
-    my %magic = (F => \$fixed, B => \$bold, I => \$italic);
-    my $last = '\fR';
-    $text =~ s{
-        \\f\((.)(.)
-    }{
-        my $sequence = '';
-        my $f;
-        if ($last ne '\fR') { $sequence = '\fP' }
-        ${ $magic{$1} } += ($2 eq 'S') ? 1 : -1;
-        $f = $$self{FONTS}{ ($fixed && 1) . ($bold && 1) . ($italic && 1) };
-        if ($f eq $last) {
-            '';
-        } else {
-            if ($f ne '\fR') { $sequence .= $f }
-            $last = $f;
-            $sequence;
-        }
-    }gxe;
-    return $text;
-}
+    my ($self, $text, $base) = @_;
 
-# Unfortunately, there is a bug in Solaris 2.6 nroff (not present in GNU
-# groff) where the sequence \fB\fP\f(CW\fP leaves the font set to B rather
-# than R, presumably because \f(CW doesn't actually do a font change.  To work
-# around this, use a separate textmapfonts for text blocks that uses \fR
-# instead of \fP.
-#
-# Originally, this function was much simpler because it went directly from \fB
-# to \f(CW and relied on \f(CW clearing bold since it wasn't \f(CB.
-# Unfortunately, while this works for mandoc, this is not how groff works;
-# \fBfoo\f(CWbar still prints bar in bold.  Therefore, we force the font back
-# to the default before each font change.
-sub textmapfonts {
-    my ($self, $text) = @_;
+    # The closure used to process each font escape, expected to be called from
+    # the right-hand side of an s/// expression.
     my ($fixed, $bold, $italic) = (0, 0, 0);
     my %magic = (F => \$fixed, B => \$bold, I => \$italic);
     my $last = '\fR';
-    $text =~ s{
-        \\f\((.)(.)
-    }{
-        my $sequence = q{};
-        if ($last ne '\fR') { $sequence = '\fR' }
-        ${ $magic{$1} } += ($2 eq 'S') ? 1 : -1;
-        my $f = $$self{FONTS}{ ($fixed && 1) . ($bold && 1) . ($italic && 1) };
-        if ($f eq $last) {
-            '';
-        } else {
-            if ($f ne '\fR') { $sequence .= $f }
-            $last = $f;
-            $sequence;
+    my $process = sub {
+        my ($style, $start_stop) = @_;
+        my $sequence = ($last ne '\fR') ? $base : q{};
+        ${ $magic{$style} } += ($start_stop eq 'S') ? 1 : -1;
+        my $f = $self->{FONTS}{($fixed && 1) . ($bold && 1) . ($italic && 1)};
+        return q{} if ($f eq $last);
+        if ($f ne '\fR') {
+            $sequence .= $f;
         }
-    }gxe;
+        $last = $f;
+        return $sequence;
+    };
+
+    # Now, do the actual work.
+    $text =~ s{ \\f\((.)(.) }{$process->($1, $2)}xmsge;
 
     # We can do a bit of cleanup by collapsing sequences like \fR\fB\fR\fI
     # into just \fI.
@@ -1176,8 +1155,8 @@ sub cmd_para {
     $text = reverse $text;
 
     # Output the paragraph.
-    $self->output ($self->protect ($self->textmapfonts ($text)));
-    $self->outindex;
+    $self->output($self->protect($self->mapfonts($text, '\fR')));
+    $self->outindex();
     $$self{NEEDSPACE} = 1;
     return '';
 }
@@ -1261,7 +1240,7 @@ sub cmd_head1 {
     $text =~ s/\\s-?\d//g;
     $text = $self->heading_common ($text, $$attrs{start_line});
     my $isname = ($text eq 'NAME' || $text =~ /\(NAME\)/);
-    $self->output ($self->switchquotes ('.SH', $self->mapfonts ($text)));
+    $self->output($self->switchquotes('.SH', $self->mapfonts($text, '\fP')));
     $self->outindex ('Header', $text) unless $isname;
     $$self{NEEDSPACE} = 0;
     $$self{IN_NAME} = $isname;
@@ -1272,7 +1251,7 @@ sub cmd_head1 {
 sub cmd_head2 {
     my ($self, $attrs, $text) = @_;
     $text = $self->heading_common ($text, $$attrs{start_line});
-    $self->output ($self->switchquotes ('.SS', $self->mapfonts ($text)));
+    $self->output($self->switchquotes('.SS', $self->mapfonts($text, '\fP')));
     $self->outindex ('Subsection', $text);
     $$self{NEEDSPACE} = 0;
     return '';
@@ -1284,7 +1263,7 @@ sub cmd_head3 {
     my ($self, $attrs, $text) = @_;
     $text = $self->heading_common ($text, $$attrs{start_line});
     $self->makespace;
-    $self->output ($self->textmapfonts ('\f(IS' . $text . '\f(IE') . "\n");
+    $self->output($self->mapfonts('\f(IS' . $text . '\f(IE', '\fR') . "\n");
     $self->outindex ('Subsection', $text);
     $$self{NEEDSPACE} = 1;
     return '';
@@ -1296,7 +1275,7 @@ sub cmd_head4 {
     my ($self, $attrs, $text) = @_;
     $text = $self->heading_common ($text, $$attrs{start_line});
     $self->makespace;
-    $self->output ($self->textmapfonts ($text) . "\n");
+    $self->output($self->mapfonts($text, '\fR') . "\n");
     $self->outindex ('Subsection', $text);
     $$self{NEEDSPACE} = 1;
     return '';
@@ -1463,8 +1442,8 @@ sub item_common {
     $self->output (".PD 0\n") if ($$self{ITEMS} == 1);
 
     # Now, output the item tag itself.
-    $item = $self->textmapfonts ($item);
-    $self->output ($self->switchquotes ('.IP', $item, $$self{INDENT}));
+    $item = $self->mapfonts($item, '\fR');
+    $self->output($self->switchquotes('.IP', $item, $$self{INDENT}));
     $$self{NEEDSPACE} = 0;
     $$self{ITEMS}++;
     $$self{SHIFTWAIT} = 0;
@@ -1473,7 +1452,7 @@ sub item_common {
     if ($text) {
         $text =~ s/\s*$/\n/;
         $self->makespace;
-        $self->output ($self->protect ($self->textmapfonts ($text)));
+        $self->output($self->protect($self->mapfonts($text, '\fR')));
         $$self{NEEDSPACE} = 1;
     }
     $self->outindex ($index ? ('Item', $index) : ());
