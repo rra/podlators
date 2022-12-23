@@ -2,6 +2,17 @@
 
 5.01 - Not Released
 
+ - Guesswork (formatting rules based on heuristics intended for Perl
+   documentation) can now be disabled or selectively enabled in Pod::Text
+   with the guesswork option (--guesswork to pod2text).  This is similar
+   to the support added to Pod::Man in 5.00, except there is only one type
+   of guesswork currently (quoting).
+
+ - Pod::Text suppresses quote marks around some additional cases of Perl
+   code in C<> where the intent had been to suppress the quotes but there
+   were various bugs in the matching regular expressions.  This primarily
+   affects function and method calls.
+
  - Depend on Pod::Simple 3.26 or later, since Pod::Text now calls its
    encoding() method.
 
