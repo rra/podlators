@@ -144,6 +144,20 @@ my %ESCAPES;
 # Utility functions
 ##############################################################################
 
+# Quote an argument to a macro.
+#
+# $arg - Intended argument to the macro
+#
+# Returns: $arg suitably escaped and quoted
+sub _quote_macro_argument {
+    my ($arg) = @_;
+    if (length($arg) > 0 && $arg !~ m{ [\s\"] }xms) {
+        return $arg;
+    }
+    $arg =~ s{ \" }{""}xmsg;
+    return qq("$arg");
+}
+
 # Returns whether the given encoding needs a call to Encode::encode.
 sub _needs_encode {
     my ($encoding) = @_;
@@ -352,11 +366,6 @@ sub init_page {
     $self->{opt_center}  //= 'User Contributed Perl Documentation';
     $self->{opt_release} //= 'perl v' . $version;
     $self->{opt_indent}  //= 4;
-
-    # Double quotes in things that will be quoted.
-    for (qw/center release/) {
-        $self->{"opt_$_"} =~ s/\"/\"\"/g if $self->{"opt_$_"};
-    }
 }
 
 ##############################################################################
@@ -1070,47 +1079,43 @@ sub preamble {
     my ($self, $name, $section, $date) = @_;
     my $preamble = $self->preamble_template();
 
-    # Build the index line and make sure that it will be syntactically valid.
-    my $index = "$name $section";
-    $index =~ s/\"/\"\"/g;
-
-    # If name or section contain spaces, quote them (section really never
-    # should, but we may as well be cautious).
-    for ($name, $section) {
-        if (/\s/) {
-            s/\"/\"\"/g;
-            $_ = '"' . $_ . '"';
-        }
-    }
-
-    # Double quotes in date, since it will be quoted.
-    $date =~ s/\"/\"\"/g;
-
-    # Substitute into the preamble the configuration options.
-    $preamble =~ s/\@CFONT\@/$self->{opt_fixed}/;
-    $preamble =~ s/\@LQUOTE\@/$$self{LQUOTE}/;
-    $preamble =~ s/\@RQUOTE\@/$$self{RQUOTE}/;
-    chomp $preamble;
-
-    # Get the version information.
-    my $version = $self->version_report;
-
     # groff's preconv script will use this line to correctly determine the
     # input encoding if the encoding is one of the ones it recognizes.  It
     # must be the first or second line.
     #
     # If the output encoding is some version of Unicode, we could also add a
-    # Unicode Byte Order Mark to the start of the file, but I am concerned
-    # that may break a *roff implementation that might otherwise cope with
-    # Unicode.  Revisit this if someone files a bug report about it.
+    # Unicode Byte Order Mark to the start of the file, but the BOM is now
+    # deprecated and I am concerned that may break a *roff implementation that
+    # might otherwise cope with Unicode.  Revisit this if someone files a bug
+    # report about it.
     if (_needs_encode($$self{ENCODING})) {
         my $normalized = lc($$self{ENCODING});
         $normalized =~ s{-}{}g;
         my $coding = $ENCODINGS{$normalized} || lc($$self{ENCODING});
         if ($coding ne 'us-ascii') {
-            $self->output (qq{.\\\" -*- mode: troff; coding: $coding -*-\n});
+            $self->output(qq{.\\\" -*- mode: troff; coding: $coding -*-\n});
         }
     }
+
+    # Substitute into the preamble the configuration options.
+    $preamble =~ s/\@CFONT\@/$self->{opt_fixed}/;
+    $preamble =~ s/\@LQUOTE\@/$$self{LQUOTE}/;
+    $preamble =~ s/\@RQUOTE\@/$$self{RQUOTE}/;
+    chomp($preamble);
+
+    # Get the version information.
+    my $version = $self->version_report();
+
+    # Build the index line and make sure that it will be syntactically valid.
+    my $index = _quote_macro_argument("$name $section");
+
+    # Quote the arguments to the .TH macro.  (Section should never require
+    # this, but we may as well be cautious.)
+    $name = _quote_macro_argument($name);
+    $section = _quote_macro_argument($section);
+    $date = _quote_macro_argument($date);
+    my $center = _quote_macro_argument($self->{opt_center});
+    my $release = _quote_macro_argument($self->{opt_release});
 
     # Output the majority of the preamble.
     $self->output (<<"----END OF HEADER----");
@@ -1121,8 +1126,8 @@ sub preamble {
 $preamble
 .\\" ========================================================================
 .\\"
-.IX Title "$index"
-.TH $name $section "$date" "$self->{opt_release}" "$self->{opt_center}"
+.IX Title $index
+.TH $name $section $date $release $center
 .\\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\\" way too many mistakes in technical documents.
 .if n .ad l
