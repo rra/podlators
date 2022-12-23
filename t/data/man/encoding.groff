@@ -75,7 +75,7 @@ SMP plane character: \[u1F600]
 Non-breaking space: foo\ bar, foo\ bar
 .PP
 Soft hyphen: fac\%tory
-.SH "LICENSE"
+.SH LICENSE
 .IX Header "LICENSE"
 Copyright 2022 Russ Allbery <rra@cpan.org>
 .PP

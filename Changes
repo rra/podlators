@@ -13,6 +13,12 @@
    were various bugs in the matching regular expressions.  This primarily
    affects function and method calls.
 
+ - Fix an escaping issue in Pod::Man with complex lquote, rquote, and
+   quotes options containing double quotes that caused some double quotes
+   to be incorrectly duplicated.
+
+ - Pod::Man now avoids quoting macro arguments when this is unnecessary.
+
  - Depend on Pod::Simple 3.26 or later, since Pod::Text now calls its
    encoding() method.
 
