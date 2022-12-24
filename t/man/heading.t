@@ -25,6 +25,7 @@ BEGIN {
 
 # Loop through all the test data, generate output, and compare it to the
 # desired output data.
+my $testnum = 1;
 while (defined(my $data = read_test_data(\*DATA, { options => 1 }))) {
     my $parser = Pod::Man->new(%{ $data->{options} });
     isa_ok($parser, 'Pod::Man', 'Parser object');
@@ -38,7 +39,8 @@ while (defined(my $data = read_test_data(\*DATA, { options => 1 }))) {
     my ($heading) = ($got =~ m{^ ([.]TH [^\n]+ \n)}xms);
 
     # Compare the results.
-    is($heading, $data->{output});
+    is($heading, $data->{output}, "Test $testnum");
+    $testnum++;
 }
 
 # Below the marker are sets of options, the input data, and the corresponding
