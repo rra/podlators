@@ -48,9 +48,6 @@ if ($Pod::Simple::VERSION ge 3.30) {
 # generally only false for EBCDIC.
 BEGIN { *ASCII = \&Pod::Simple::ASCII }
 
-# Pretty-print a data structure.  Only used for debugging.
-BEGIN { *pretty = \&Pod::Simple::pretty }
-
 # Formatting instructions for various types of blocks.  cleanup makes hyphens
 # hard, adds spaces between consecutive underscores, and escapes backslashes.
 # convert translates characters into escapes.  guesswork means to apply the
