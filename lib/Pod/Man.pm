@@ -1168,45 +1168,44 @@ sub cmd_verbatim {
     my ($self, $attrs, $text) = @_;
 
     # Ignore an empty verbatim paragraph.
-    return unless $text =~ /\S/;
+    return if $text !~ m{ \S }xms;
 
     # Force exactly one newline at the end and strip unwanted trailing
-    # whitespace at the end.  Reverse the text first, to avoid having to scan
-    # the entire paragraph.
-    $text = reverse $text;
-    $text =~ s/\A\s*/\n/;
-    $text = reverse $text;
+    # whitespace at the end.
+    $text =~ s{ \s* \z }{\n}xms;
 
     # Get a count of the number of lines before the first blank line, which
     # we'll pass to .Vb as its parameter.  This tells *roff to keep that many
     # lines together.  We don't want to tell *roff to keep huge blocks
     # together.
-    my @lines = split (/\n/, $text);
+    my @lines = split (m{ \n }xms, $text);
     my $unbroken = 0;
-    for (@lines) {
-        last if /^\s*$/;
+    for my $line (@lines) {
+        last if $line =~ m{ \A \s* \z }xms;
         $unbroken++;
     }
-    $unbroken = 10 if ($unbroken > 12 && !$$self{MAGIC_VNOPAGEBREAK_LIMIT});
+    if ($unbroken > 12) {
+        $unbroken = 10;
+    }
 
-    # Prepend a null token to each line.
-    $text =~ s/^/\\&/gm;
+    # Prepend a null token to each line to preserve indentation.
+    $text =~ s{ ^ }{\\&}xmsg;
 
     # Output the results.
-    $self->makespace;
-    $self->output (".Vb $unbroken\n$text.Ve\n");
+    $self->makespace();
+    $self->output(".Vb $unbroken\n$text.Ve\n");
     $$self{NEEDSPACE} = 1;
-    return '';
+    return q{};
 }
 
 # Handle literal text (produced by =for and similar constructs).  Just output
 # it with the minimum of changes.
 sub cmd_data {
     my ($self, $attrs, $text) = @_;
-    $text =~ s/^\n+//;
-    $text =~ s/\n{0,2}$/\n/;
-    $self->output ($text);
-    return '';
+    $text =~ s{ \A \n+ }{}xms;
+    $text =~ s{ \n{0,2} \z }{\n}xms;
+    $self->output($text);
+    return q{};
 }
 
 ##############################################################################
