@@ -1,6 +1,6 @@
                       Revision history for podlators
 
-5.01 - Not Released
+5.01 - 2022-12-25
 
  - Guesswork (formatting rules based on heuristics intended for Perl
    documentation) can now be disabled or selectively enabled in Pod::Text

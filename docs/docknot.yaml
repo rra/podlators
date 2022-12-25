@@ -15,7 +15,7 @@ format: v1
 
 name: podlators
 maintainer: Russ Allbery <rra@cpan.org>
-version: '5.00'
+version: '5.01'
 synopsis: format POD source into various output formats
 
 license:
