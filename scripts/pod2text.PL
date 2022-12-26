@@ -86,7 +86,7 @@ GetOptions (\%options, 'alt|a', 'code', 'color|c', 'encoding|e=s', 'errors=s',
             'margin|left-margin|m=i', 'nourls', 'overstrike|o', 'quotes|q=s',
             'sentence|s', 'stderr', 'termcap|t', 'utf8|u', 'width|w=i')
     or exit 1;
-pod2usage (1) if $options{help};
+pod2usage (0) if $options{help};
 
 # Figure out what formatter we're going to use.  -c overrides -t.
 my $formatter = 'Pod::Text';
