@@ -48,7 +48,7 @@ skip_unless_automated('Strictness tests');
 use_prereq('Test::Strict', '0.25');
 
 # Directories to exclude from checks.
-my %EXCLUDE = map { $_ => 1 } qw(.git blib);
+my %EXCLUDE = map { $_ => 1 } qw(.git blib local);
 
 # Determine whether we want to check the given file or top-level directory.
 # Assume that the only interesting files at the top level are directories or
