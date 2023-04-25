@@ -419,6 +419,7 @@ sub _handle_element_start {
     # first heading after the NAME heading.
     if ($self->can ("cmd_$method")) {
         $$self{IN_NAME} = 0 if ($element ne 'Para' && length ($element) > 1);
+        $$self{IN_LINK} = $element eq "L";
 
         # How we're going to format embedded text blocks depends on the tag
         # and also depends on our parent tags.  Thankfully, inside tags that
@@ -467,7 +468,7 @@ sub _handle_element_end {
 # convert, all of which are boolean.
 sub format_text {
     my ($self, $options, $text) = @_;
-    my $guesswork = $$options{guesswork} && !$$self{IN_NAME};
+    my $guesswork = $$options{guesswork} && !$$self{IN_NAME} && !$$self{IN_LINK};
     my $cleanup = $$options{cleanup};
     my $convert = $$options{convert};
     my $literal = $$options{literal};
@@ -893,6 +894,7 @@ sub start_document {
     $$self{INDENTS}   = [];     # Stack of indentations.
     $$self{INDEX}     = [];     # Index keys waiting to be printed.
     $$self{IN_NAME}   = 0;      # Whether processing the NAME section.
+    $$self{IN_LINK}   = 0;      # Whether processing the NAME section.
     $$self{ITEMS}     = 0;      # The number of consecutive =items.
     $$self{ITEMTYPES} = [];     # Stack of =item types, one per list.
     $$self{SHIFTWAIT} = 0;      # Whether there is a shift waiting.
@@ -1321,8 +1323,11 @@ sub cmd_l {
         } else {
             return "$text <$$attrs{to}>";
         }
+    } elsif ($$attrs{type} eq 'man') {
+        my ($page, $section) = $text =~ /^([^(]+)(?:[(](\d+)[)])?$/; # Copied from Simple.pm
+        return '\f(BS' . $page . '\f(BE\|' . "($section)";
     } else {
-        return $text;
+        return '\f(BS' . $text . '\f(BE';
     }
 }
 

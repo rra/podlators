@@ -20,7 +20,7 @@ S<L<RFC4034|https://tools.ietf.org/html/rfc4034>>
 S<> wrapping L<> should make the space between the anchor and URL
 non-breaking and thus keep them together.
 .PP
-perl Net::DNS Net::DNS::RR Net::DNS::SEC
+\&\fBperl\fR \fBNet::DNS\fR \fBNet::DNS::RR\fR \fBNet::DNS::SEC\fR
 RFC2535\ <https://tools.ietf.org/html/rfc2535>
 RFC2536\ <https://tools.ietf.org/html/rfc2536>
 RFC2931\ <https://tools.ietf.org/html/rfc2931>
