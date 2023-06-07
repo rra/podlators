@@ -30,6 +30,9 @@ use File::Spec;
 use Test::More tests => 15;
 use Test::Podlators qw(slurp);
 
+# Color is expected to be enabled in tests
+BEGIN { delete $ENV{NO_COLOR}; }
+
 # Check that all the modules can be loaded.
 BEGIN {
     use_ok('Pod::Man');

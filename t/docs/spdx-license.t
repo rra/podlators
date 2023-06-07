@@ -56,6 +56,7 @@ my @IGNORE = (
     qr{ \A (MY)? META [.] .* }xms,          # Generated file, no license itself
     qr{ [.] output \z }xms,                 # Test data
     qr{ pod2htm . [.] tmp \z }xms,          # Windows pod2html output
+    qr{ cpanfile\.snapshot }xms,            # Carton snapshot
     qr{ ~ \z }xms,                          # Backup files
 );
 my @IGNORE_PATHS = (
@@ -66,12 +67,14 @@ my @IGNORE_PATHS = (
     qr{ \A [.] /cover_db/ }xms,             # Artifacts from coverage testing
     qr{ \A [.] /debian/ }xms,               # Found in debian/* branches
     qr{ \A [.] /docs/metadata/ }xms,        # Package license should be fine
+    qr{ \A [.] /local/ }xms,                # Carton local lib
     qr{ \A [.] /README ( [.] .* )? \z }xms, # Package license should be fine
     qr{ \A [.] /share/ }xms,                # Package license should be fine
     qr{ \A [.] /t/data/generate/ }xms,      # Test metadata
     qr{ \A [.] /t/data/spin/ }xms,          # Test metadata
     qr{ \A [.] /t/data/update/ }xms,        # Test output
     qr{ \A [.] /t/data .* [.] json \z }xms, # Test metadata
+    qr{ \A [.] /t/tmp }xms,                 # Test metadata
 );
 #>>>
 ## use critic

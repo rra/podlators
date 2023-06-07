@@ -17,6 +17,9 @@ use lib 't/lib';
 use Test::More tests => 11;
 use Test::Podlators qw(test_snippet);
 
+# Color is expected to be enabled in tests
+BEGIN { delete $ENV{NO_COLOR}; }
+
 # Load the module.
 BEGIN {
     use_ok('Pod::Text::Color');
