@@ -9,7 +9,7 @@
 # The canonical version of this file is maintained in the rra-c-util package,
 # which can be found at <https://www.eyrie.org/~eagle/software/rra-c-util/>.
 #
-# Copyright 2018-2021 Russ Allbery <eagle@eyrie.org>
+# Copyright 2018-2021, 2023 Russ Allbery <eagle@eyrie.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -55,8 +55,8 @@ my @IGNORE = (
     qr{ \A Makefile \z }xms,                # Generated file, no license itself
     qr{ \A (MY)? META [.] .* }xms,          # Generated file, no license itself
     qr{ [.] output \z }xms,                 # Test data
+    qr{ cpanfile [.] snapshot }xms,         # Carton snapshot
     qr{ pod2htm . [.] tmp \z }xms,          # Windows pod2html output
-    qr{ cpanfile\.snapshot }xms,            # Carton snapshot
     qr{ ~ \z }xms,                          # Backup files
 );
 my @IGNORE_PATHS = (
