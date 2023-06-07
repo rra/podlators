@@ -12,7 +12,7 @@
 # the machinery to run small POD snippets through the specific formatter being
 # tested should probably be used instead.
 #
-# Copyright 2001-2002, 2004, 2006, 2009, 2012, 2014-2015, 2018-2019, 2022
+# Copyright 2001-2002, 2004, 2006, 2009, 2012, 2014-2015, 2018-2019, 2022-2023
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -30,9 +30,6 @@ use File::Spec;
 use Test::More tests => 15;
 use Test::Podlators qw(slurp);
 
-# Color is expected to be enabled in tests
-BEGIN { delete $ENV{NO_COLOR}; }
-
 # Check that all the modules can be loaded.
 BEGIN {
     use_ok('Pod::Man');
@@ -41,6 +38,9 @@ BEGIN {
     use_ok('Pod::Text::Overstrike');
     use_ok('Pod::Text::Termcap');
 }
+
+# Ensure color is enabled for testing purposes.
+delete $ENV{NO_COLOR};
 
 # Flush output, since otherwise our diag messages come after other tests.
 local $| = 1;

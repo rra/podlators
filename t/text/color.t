@@ -2,7 +2,7 @@
 #
 # Test Pod::Text::Color behavior with various snippets.
 #
-# Copyright 2002, 2004, 2006, 2009, 2012-2013, 2018-2019
+# Copyright 2002, 2004, 2006, 2009, 2012-2013, 2018-2019, 2023
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -17,13 +17,13 @@ use lib 't/lib';
 use Test::More tests => 11;
 use Test::Podlators qw(test_snippet);
 
-# Color is expected to be enabled in tests
-BEGIN { delete $ENV{NO_COLOR}; }
-
 # Load the module.
 BEGIN {
     use_ok('Pod::Text::Color');
 }
+
+# Ensure color is enabled for testing purposes.
+delete $ENV{NO_COLOR};
 
 # List of snippets run by this test.
 my @snippets = qw(escape-wrapping tag-width tag-wrapping width wrapping);
