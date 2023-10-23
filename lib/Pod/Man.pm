@@ -578,26 +578,6 @@ sub guesswork {
     my $self = shift;
     local $_ = shift;
 
-    # By the time we reach this point, all hyphens will be escaped by adding a
-    # backslash.  We want to undo that escaping if they're part of regular
-    # words and there's only a single dash, since that's a real hyphen that
-    # *roff gets to consider a possible break point.  Make sure that a dash
-    # after the first character of a word stays non-breaking, however.
-    #
-    # Note that this is not user-controllable; we pretty much have to do this
-    # transformation or *roff will mangle the output in unacceptable ways.
-    s{
-        ( (?:\G|^|\s|$NBSP) [\(\"]* [a-zA-Z] ) ( \\- )?
-        ( (?: [a-zA-Z\']+ \\-)+ )
-        ( [a-zA-Z\']+ ) (?= [\)\".?!,;:]* (?:\s|$NBSP|\Z|\\\ ) )
-        \b
-    } {
-        my ($prefix, $hyphen, $main, $suffix) = ($1, $2, $3, $4);
-        $hyphen ||= '';
-        $main =~ s/\\-/-/g;
-        $prefix . $hyphen . $main . $suffix;
-    }egx;
-
     # Embolden functions in the form func(), including functions that are in
     # all capitals, but don't embolden if there's anything inside the parens.
     # The function must start with an alphabetic character or underscore and
@@ -2349,9 +2329,25 @@ document will have inconsistent spacing.
 
 =head2 Hyphens
 
-The handling of hyphens versus dashes is somewhat fragile, and one may get a
-the wrong one under some circumstances.  This will normally only matter for
-line breaking and possibly for troff output.
+The *roff language distinguishes between two types of hyphens: C<->, which is
+a true typesetting hyphen (roughly equivalent to the Unicode U+2010 code
+point), and C<\->, which is the ASCII hyphen-minus (U+002D) that is used for
+UNIX command options and most filenames.  Hyphens, where appropriate, produce
+better typesetting, but incorrectly using them for command names and options
+can cause problems with searching and cut-and-paste.
+
+POD does not draw this distinction.  Before podlators 6.00, Pod::Man attempted
+to translate C<-> in the input into either a hyphen or a hyphen-minus,
+depending on context.  However, this distinction proved impossible to do
+correctly with heuristics.  Pod::Man therefore translates all C<-> characters
+in the input to C<\-> in the output, ensuring that command names and options
+are correct at the cost of somewhat inferior typesetting and line breaking
+issues with long hyphenated phrases.
+
+To use true hyphens in the Pod::Man output, declare an input character set of
+UTF-8 (or some other Unicode encoding) and use Unicode hyphens.  Pod::Man and
+*roff should handle those correctly with the default output format and most
+modern *roff implementations.
 
 =head1 AUTHOR
 
@@ -2364,7 +2360,7 @@ recognition and all bugs are mine.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2010, 2012-2020, 2022 Russ Allbery <rra@cpan.org>
+Copyright 1999-2010, 2012-2020, 2022-2023 Russ Allbery <rra@cpan.org>
 
 Substantial contributions by Sean Burke <sburke@cpan.org>.
 

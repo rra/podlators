@@ -112,7 +112,7 @@ sub check_file {
         if ($line =~ m{ \b See \s+ LICENSE \s+ for \s+ licensing }xms) {
             $saw_legacy_notice = 1;
         }
-        if ($line =~ m{ \b SPDX-License-Identifier: \s+ \S+ }xms) {
+        if ($line =~ m{ \b SPDX\\?-License\\?-Identifier: \s+ \S+ }xms) {
             $saw_spdx = 1;
             last;
         }

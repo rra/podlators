@@ -1,6 +1,16 @@
                       Revision history for podlators
 
-5.02 - Not Released
+6.00 - Not Released
+
+ - Pod::Man now translates all "-" characters in the input into *roff "\-"
+   escapes (normally rendered as an ASCII hyphen-minus, U+002D) rather
+   than using fragile heuristics to decide which characters represent true
+   hyphens and which represent ASCII hyphen-minus.  The previous
+   heuristics misrendered command names such as apt-get, causing search
+   and cut-and-paste issues.  This change may cause line-break issues with
+   long hyphenated phrases.  In cases where the intent is a true hyphen,
+   consider using UTF-8 as the POD character set (declared with =encoding)
+   and using true Unicode hyphens instead of the ASCII "-" character.
 
  - pod2text --help now exits with status 0, not 1, matching normal UNIX
    command behavior and the behavior of pod2man.  (GitHub #19)

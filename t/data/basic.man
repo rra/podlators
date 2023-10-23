@@ -174,7 +174,7 @@ This paragraph should be doubly indented.
 .Sp
 This paragraph should only be singly indented.
 .IP \(bu 4
-This is an item in the middle of a block-quote, which should be allowed.
+This is an item in the middle of a block\-quote, which should be allowed.
 .IP \(bu 4
 We're also testing tagless item commands.
 .RE
@@ -204,7 +204,7 @@ Another test taken from Pod::Parser.
 This is a test to see if I can do not only \f(CW$self\fR and \f(CWmethod()\fR, but
 also \f(CW\*(C`$self\->method()\*(C'\fR and \f(CW\*(C`$self\->{FIELDNAME}\*(C'\fR and
 \&\f(CW\*(C`$Foo <=> $Bar\*(C'\fR without resorting to escape sequences. If 
-I want to refer to the right-shift operator I can do something
+I want to refer to the right\-shift operator I can do something
 like \f(CW\*(C`$x >> 3\*(C'\fR or even \f(CW\*(C`$y >> 5\*(C'\fR.
 .PP
 Now for the grand finale of \f(CW\*(C`$self\->method()\->{FIELDNAME} = {FOO=>BAR}\*(C'\fR.
@@ -240,18 +240,18 @@ An ampersand.
 .IP ' 3
 An apostrophe.
 .IP < 3
-A less-than sign.
+A less\-than sign.
 .IP > 3
-A greater-than sign.
+A greater\-than sign.
 .IP """" 3
 A double quotation mark.
 .IP / 3
 A forward slash.
 .PP
 Try to get this bit of text over towards the edge so |that\ all\ of\ this\ text\ inside\ S<>\ won't| be wrapped.  Also test the
-|same\ thing\ with\ non-breaking\ spaces.|
+|same\ thing\ with\ non\-breaking\ spaces.|
 .PP
-There is a soft hy\%phen in hyphen at hy-phen.
+There is a soft hy\%phen in hyphen at hy\-phen.
 .PP
 This is a test of an index entry.
 .IX Xref "index entry"
@@ -322,7 +322,7 @@ Copyright 2001, 2004, 2016, 2018 Russ Allbery <rra@cpan.org>
 .PP
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and
-this notice are preserved.  This file is offered as-is, without any
+this notice are preserved.  This file is offered as\-is, without any
 warranty.
 .PP
-SPDX-License-Identifier: FSFAP
+SPDX\-License\-Identifier: FSFAP

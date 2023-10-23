@@ -16,7 +16,7 @@ didn't properly stop italic.
 =back
 
 [output]
-.SH "Fixed-width Fonts in =item"
+.SH "Fixed\-width Fonts in =item"
 .IX Header "Fixed-width Fonts in =item"
 In podlators 4.06 and earlier, italic was terminated with \ef(CW, which
 didn't properly stop italic.
