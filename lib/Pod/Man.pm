@@ -1282,10 +1282,17 @@ sub cmd_x {
     return '';
 }
 
-# Links reduce to the text that we're given, wrapped in angle brackets if it's
-# a URL, followed by the URL.  We take an option to suppress the URL if anchor
-# text is given.  We need to format the "to" value of the link before
-# comparing it to the text since we may escape hyphens.
+# Pod::Man requires some special handling of links, so cannot treat it simply
+# as a formatting directive all the time.
+#
+# For URL links, we want to show the URL itself in angle brackets, even
+# (optionally) if there is anchor text.  We need to format the "to" value of
+# the link before comparing it to the text since we may escape hyphens.
+#
+# For man page links, we want to ensure that the entire man page reference is
+# formatted like one, even if we normally wouldn't detect it as such.  This
+# means we can't use the formatting that Pod::Simple does for us, and instead
+# need to do all of the formatting ourselves.
 sub cmd_l {
     my ($self, $attrs, $text) = @_;
     if ($$attrs{type} eq 'url') {
@@ -1300,6 +1307,34 @@ sub cmd_l {
             return $text;
         } else {
             return "$text <$$attrs{to}>";
+        }
+    } elsif ($$attrs{type} eq 'man') {
+        if (not $$attrs{'content-implicit'}) {
+            return $text;
+        }
+        my $tag = $$self{PENDING}[-1];
+        my $to = $$attrs{to};
+        my $section = $$attrs{section};
+        if ($section) {
+            $section = $self->format_text ($$tag[1], qq{"$section"});
+        }
+
+        # If the man reference cannot be parsed, just fall back on whatever
+        # Pod::Simple wants to do.
+        my ($page, $mansection) = $to =~ m{ \A (.*) \( ([^\)]+) \) \z }xms;
+        if (!defined($page) || !defined($mansection)) {
+            return $text;
+        }
+
+        # Otherwise, do proper formatting, copying the normal output style of
+        # Pod::Simple.
+        $page = $self->format_text ($$tag[1], $page);
+        $mansection = $self->format_text ($$tag[1], $mansection);
+        $to = '\f(BS' . $page . '\f(BE\|' . "($mansection)";
+        if (defined($section)) {
+            return "$section in $to";
+        } else {
+            return $to;
         }
     } else {
         return $text;

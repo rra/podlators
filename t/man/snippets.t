@@ -16,7 +16,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 111;
+use Test::More tests => 113;
 use Test::Podlators qw(test_snippet);
 
 # Load the module.
@@ -31,7 +31,7 @@ my @snippets = qw(
     error-stderr error-stderr-opt eth fixed-font fixed-font-in-item for-blocks
     guesswork guesswork-all guesswork-no-quoting guesswork-none
     guesswork-partial guesswork-quoting item-fonts language link-quoting
-    link-to-url long-quote lquote-and-quote lquote-rquote markup-in-name
+    link-to-url long-quote lquote-and-quote lquote-rquote man-l markup-in-name
     multiline-x naive naive-groff name-guesswork name-quotes name-quotes-none
     nested-lists newlines-in-c non-ascii nonbreaking-space-l not-bullet
     not-numbers nourls periods quote-escaping rquote-none soft-hyphens
