@@ -173,6 +173,9 @@ B<--section>, B<--release>, B<--center>, B<--date>, and B<--official> can be
 used to set the headers and footers to use.  If not given, Pod::Man will
 assume various defaults.  See below for details.
 
+For specific details and caveats about the translation from POD to *roff, see
+L<Pod::Man/CAVEATS>.
+
 =head1 OPTIONS
 
 Each option is annotated with the version of podlators in which that option
@@ -496,7 +499,7 @@ and Tom Christiansen.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2019, 2022 Russ Allbery
+Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2019, 2022-2023 Russ Allbery
 <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
