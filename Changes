@@ -12,6 +12,15 @@
    consider using UTF-8 as the POD character set (declared with =encoding)
    and using true Unicode hyphens instead of the ASCII "-" character.
 
+ - Pod::Man now disables the special *roff interpretation of "`" and "'"
+   characters as paired quotes everywhere, not just in verbatim text, thus
+   forcing them to be interpreted as the regular ASCII characters.  This
+   also disables the use of "``" and "''" for paired double-quotes.  The
+   rationale is similar to that for hyphens: there is no way to tell from
+   the POD source that the special interpretation as quotes is intended.
+   To produce paired typographic quotes in the output, use UTF-8 and
+   Unicode paired quote characters.
+
  - Man page references in L<> that are detected as such by Pod::Simple are
    now always formatted as man page references even if our normal
    heuristic would not detect them.  This fixes the formatting of

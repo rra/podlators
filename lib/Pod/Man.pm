@@ -51,9 +51,7 @@ BEGIN { *ASCII = \&Pod::Simple::ASCII }
 # Formatting instructions for various types of blocks.  cleanup makes hyphens
 # hard, adds spaces between consecutive underscores, and escapes backslashes.
 # convert translates characters into escapes.  guesswork means to apply the
-# transformations done by the guesswork sub (if enabled).  literal says to
-# protect literal quotes from being turned into UTF-8 quotes.  By default, all
-# transformations are on except literal, but some elements override.
+# transformations done by the guesswork sub (if enabled).
 #
 # DEFAULT specifies the default settings.  All other elements should list only
 # those settings that they are overriding.  Data indicates =for roff blocks,
@@ -62,11 +60,11 @@ BEGIN { *ASCII = \&Pod::Simple::ASCII }
 # Formatting inherits negatively, in the sense that if the parent has turned
 # off guesswork, all child elements should leave it off.
 my %FORMATTING = (
-    DEFAULT  => { cleanup => 1, convert => 1, guesswork => 1, literal => 0 },
-    Data     => { cleanup => 0, convert => 0, guesswork => 0, literal => 0 },
-    Verbatim => {                             guesswork => 0, literal => 1 },
-    C        => {                             guesswork => 0, literal => 1 },
-    X        => { cleanup => 0,               guesswork => 0               },
+    DEFAULT  => { cleanup => 1, convert => 1, guesswork => 1 },
+    Data     => { cleanup => 0, convert => 0, guesswork => 0 },
+    Verbatim => {                             guesswork => 0 },
+    C        => {                             guesswork => 0 },
+    X        => { cleanup => 0,               guesswork => 0 },
 );
 
 # Try to map an encoding as understood by Perl Encode to an encoding
@@ -470,7 +468,6 @@ sub format_text {
     my $guesswork = $$options{guesswork} && !$$self{IN_NAME};
     my $cleanup = $$options{cleanup};
     my $convert = $$options{convert};
-    my $literal = $$options{literal};
 
     # Cleanup just tidies up a few things, telling *roff that the hyphens are
     # hard, putting a bit of space between consecutive underscores, escaping
@@ -501,10 +498,8 @@ sub format_text {
 
     # Ensure that *roff doesn't convert literal quotes to UTF-8 single quotes,
     # but don't mess up accent escapes.
-    if ($literal) {
-        $text =~ s/(?<!\\\*)\'/\\*\(Aq/g;
-        $text =~ s/(?<!\\\*)\`/\\\`/g;
-    }
+    $text =~ s/(?<!\\\*)\'/\\*\(Aq/g;
+    $text =~ s/(?<!\\\*)\`/\\\`/g;
 
     # If guesswork is is viable for this block, do that.
     if ($guesswork) {
@@ -784,7 +779,9 @@ sub outindex {
     }
     if ($section) {
         $index =~ s/\\-/-/g;
-        $index =~ s/\\(?:s-?\d|.\(..|.)//g;
+        $index =~ s/\\\`/\`/g;
+        $index =~ s/\\[*]\(Aq/\'/g;
+        $index =~ s/\\(?:.\(..|.)//g;
         push @output, [ $section, $index ];
     }
 
@@ -2323,6 +2320,9 @@ Pod::Man 6.00 and later unconditionally convert C<-> to the C<\-> *roff
 escape, representing an ASCII hyphen-minus.  Earlier versions attempted to use
 heuristics to decide when a given C<-> character should translate to a
 hyphen-minus or a true hyphen, but these heuristics were buggy and fragile.
+6.00 and later also unconditionally convert C<`> and C<'> to ASCII grave
+accent and apostrophe marks instead of the default *roff behavior of
+interpreting them as paired quotes.
 
 =head1 BUGS
 
@@ -2367,7 +2367,7 @@ ends in a period or similar sentence-ending paragraph.  Otherwise, B<nroff>
 will add a two spaces after that sentence when reflowing, and your output
 document will have inconsistent spacing.
 
-=head2 Hyphens
+=head2 Hyphens and quotes
 
 The *roff language distinguishes between two types of hyphens: C<->, which is
 a true typesetting hyphen (roughly equivalent to the Unicode U+2010 code
@@ -2388,6 +2388,13 @@ To use true hyphens in the Pod::Man output, declare an input character set of
 UTF-8 (or some other Unicode encoding) and use Unicode hyphens.  Pod::Man and
 *roff should handle those correctly with the default output format and most
 modern *roff implementations.
+
+Similarly, Pod::Man disables the default *roff behavior of turning C<`> and
+C<'> characters into matched quotes, and pairs of those characters into
+matched double quotes, because there is no good way to tell from the POD input
+whether this interpretation is desired or whether the intent is to use a
+literal grave accent or neutral apostrophe.  If you want paired quotes in the
+output, use Unicode and its paired quote characters.
 
 =head1 AUTHOR
 
