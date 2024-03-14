@@ -363,6 +363,7 @@ sub start_document {
     # disable encoding.
     $$self{ENCODE} = 1;
     eval {
+        require PerlIO;
         my @options = (output => 1, details => 1);
         my $flag = (PerlIO::get_layers ($$self{output_fh}, @options))[-1];
         if ($flag && ($flag & PerlIO::F_UTF8 ())) {
