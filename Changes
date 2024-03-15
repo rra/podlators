@@ -34,6 +34,9 @@
 
  - Fix tests when NO_COLOR is set in the environment.  (GitHub #20)
 
+ - Avoid using strftime on gmtime in the test suite, since its behavior is
+   unexpected in Perl blead.  (GitHub #27)
+
 5.01 - 2022-12-25
 
  - Guesswork (formatting rules based on heuristics intended for Perl

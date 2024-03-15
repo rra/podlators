@@ -1,11 +1,9 @@
 #!/usr/bin/perl
 #
-# In order for MakeMaker to build in the core, nothing can use Fcntl which
-# includes POSIX.  devise_date()'s use of strftime() was replaced.  This tests
-# that it's identical.  It also tests special handling of the POD_MAN_DATE
-# and SOURCE_DATE_EPOCH environment variables.
+# Tests the handling of the date added to the man page header in the output of
+# Pod::Man.
 #
-# Copyright 2009, 2014-2015, 2018-2019, 2022 Russ Allbery <rra@cpan.org>
+# Copyright 2009, 2014-2015, 2018-2019, 2022, 2024 Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -47,7 +45,7 @@ local $ENV{POD_MAN_DATE} = undef;
 local $ENV{SOURCE_DATE_EPOCH} = 1439390140;
 is($parser->devise_date, '2015-08-12', 'devise_date honors SOURCE_DATE_EPOCH');
 
-# Check that POD_MAN_DATE overrides SOURCE_DATE_EPOCH
+# Check that POD_MAN_DATE overrides SOURCE_DATE_EPOCH.
 local $ENV{POD_MAN_DATE} = '2013-01-01';
 local $ENV{SOURCE_DATE_EPOCH} = 1482676620;
 is(
@@ -55,11 +53,27 @@ is(
     'devise_date honors POD_MAN_DATE over SOURCE_DATE_EPOCH',
 );
 
-# Check that an invalid SOURCE_DATE_EPOCH is not accepted
+# Check that an invalid SOURCE_DATE_EPOCH is not accepted.  Be careful to
+# avoid false failures if the test is run exactly at the transition from one
+# day to the next.
 local $ENV{POD_MAN_DATE} = undef;
 local $ENV{SOURCE_DATE_EPOCH} = '1482676620B';
-is(
-    $parser->devise_date,
-    strftime('%Y-%m-%d', gmtime()),
-    'devise_date ignores invalid SOURCE_DATE_EPOCH',
-);
+my ($year, $month, $day) = (gmtime())[5, 4, 3];
+my $expected_old = sprintf('%04d-%02d-%02d', $year + 1900, $month + 1, $day);
+my $seen = $parser->devise_date();
+($year, $month, $day) = (gmtime())[5, 4, 3];
+my $expected_new = sprintf('%04d-%02d-%02d', $year + 1900, $month + 1, $day);
+
+if ($expected_old eq $expected_new || $seen eq $expected_old) {
+    is(
+        $parser->devise_date,
+        $expected_old,
+        'devise_date ignores invalid SOURCE_DATE_EPOCH',
+    );
+} else {
+    is(
+        $parser->devise_date,
+        $expected_new,
+        'devise_date ignores invalid SOURCE_DATE_EPOCH',
+    );
+}
