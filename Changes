@@ -29,6 +29,9 @@
    at build time.  Thanks to Marco Sirabella for the analysis and an
    initial patch.  (GitHub #21)
 
+ - Fix wrapping of text with S<> markup in all subclasses of Pod::Text.
+   Thanks to Jim Avera for the report.  (GitHub #24)
+
  - Pod::Man now forces a blank line after a nested list contains only
    =item tags without bodies.  In previous versions, the blank line before
    the next item in the surrounding =over block was not included.  Thanks

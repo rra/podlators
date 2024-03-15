@@ -96,7 +96,7 @@ sub wrap {
     # $chars, used when we have to truncate and hard wrap.
     my $code = '(?:\e\[[\d;]+m)';
     my $char = "(?>$code*[^\\n])";
-    my $shortchar = '^(' . $char . "{0,$width}(?>$code*)" . ')(?:\s+|\z)';
+    my $shortchar = '^(' . $char . "{0,$width}(?>$code*)" . ')(?:[ \t\n]+|\z)';
     my $longchar = '^(' . $char . "{$width})";
     while (length > $width) {
         if (s/$shortchar// || s/$longchar//) {
@@ -190,8 +190,8 @@ Russ Allbery <rra@cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999, 2001, 2004, 2006, 2008, 2009, 2018-2019, 2022 Russ Allbery
-<rra@cpan.org>
+Copyright 1999, 2001, 2004, 2006, 2008, 2009, 2018-2019, 2022, 2024 Russ
+Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.

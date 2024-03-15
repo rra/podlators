@@ -114,7 +114,7 @@ sub wrap {
         # backspace, and a character).  Use [^\n] rather than . to protect
         # against odd settings of $*.
         my $char = '(?:[^\n][\b])?[^\n]';
-        if (s/^((?>$char){0,$width})(?:\Z|\s+)//) {
+        if (s/^((?>$char){0,$width})(?:\Z|[ \t\n]+)//) {
             $output .= $spaces . $1 . "\n";
         } else {
             last;
@@ -196,9 +196,10 @@ created by Russ Allbery <rra@cpan.org>.  Subsequently updated by Russ Allbery.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2000 by Joe Smith <Joe.Smith@inwap.com>
+Copyright 2000 Joe Smith <Joe.Smith@inwap.com>
 
-Copyright 2001, 2004, 2008, 2014, 2018-2019, 2022 by Russ Allbery <rra@cpan.org>
+Copyright 2001, 2004, 2008, 2014, 2018-2019, 2022, 2024 Russ Allbery
+<rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
