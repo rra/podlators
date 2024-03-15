@@ -1385,6 +1385,14 @@ sub over_common_end {
     $$self{INDENT} = pop @{ $$self{INDENTS} };
     pop @{ $$self{ITEMTYPES} };
 
+    # If there were multiple =item tags in a row, none of which have bodies,
+    # we have disabled spacing with .PD 0 but have not set NEEDSPACE, so
+    # makespace will not turn spacing back on with .PD.  We have to do that
+    # ourselves, and also reset the count of consecutive items since we've now
+    # left the block in which we were counting.
+    $self->output (".PD\n") if $$self{ITEMS} > 1;
+    $$self{ITEMS} = 0;
+
     # If we emitted code for that indentation, end it.
     if (@{ $$self{SHIFTS} } > @{ $$self{INDENTS} }) {
         $self->output (".RE\n");
@@ -1440,14 +1448,15 @@ sub item_common {
 
     # Take care of the indentation.  If shifts and indents are equal, close
     # the top shift, since we're about to create an indentation with .IP.
-    # Also output .PD 0 to turn off spacing between items if this item is
-    # directly following another one.  We only have to do that once for a
-    # whole chain of items so do it for the second item in the change.  Note
-    # that makespace is what undoes this.
     if (@{ $$self{SHIFTS} } == @{ $$self{INDENTS} }) {
         $self->output (".RE\n");
         pop @{ $$self{SHIFTS} };
     }
+
+    # Output .PD 0 to turn off spacing between items if this item is directly
+    # following another one.  We only have to do that once for a whole chain
+    # of items so do it for the second item in the change.  This is undone by
+    # makespace.
     $self->output (".PD 0\n") if ($$self{ITEMS} == 1);
 
     # Now, output the item tag itself.
@@ -2408,7 +2417,7 @@ recognition and all bugs are mine.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2010, 2012-2020, 2022-2023 Russ Allbery <rra@cpan.org>
+Copyright 1999-2010, 2012-2020, 2022-2024 Russ Allbery <rra@cpan.org>
 
 Substantial contributions by Sean Burke <sburke@cpan.org>.
 

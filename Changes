@@ -29,6 +29,11 @@
    at build time.  Thanks to Marco Sirabella for the analysis and an
    initial patch.  (GitHub #21)
 
+ - Pod::Man now forces a blank line after a nested list contains only
+   =item tags without bodies.  In previous versions, the blank line before
+   the next item in the surrounding =over block was not included.  Thanks
+   to Julien ÉLIE for the report.  (GitHub #26)
+
  - Import PerlIO before checking for layers so that PerlIO::F_UTF8 is
    available, which fixes double-encoding of output when a :utf8 layer is
    in place and PerlIO is not imported.  Thanks to youpong for the bug
