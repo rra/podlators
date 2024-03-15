@@ -182,12 +182,17 @@ The current API based on L<Pod::Simple> was added in Pod::Text::Overstrike
 2.00, included in Perl 5.9.3.
 
 Several problems with wrapping and line length were fixed as recently as
-Pod::Text::Overstrike 2.04, included in Perl 5.11.5.
+Pod::Text::Overstrike 6.0.0.
 
 This module inherits its API and most behavior from Pod::Text, so the details
 in L<Pod::Text/COMPATIBILITY> also apply.  Pod::Text and Pod::Text::Overstrike
 have had the same module version since 4.00, included in Perl 5.23.7.  (They
 unfortunately diverge in confusing ways prior to that.)
+
+=head1 CAVEATS
+
+Line wrapping is done only at ASCII spaces and tabs, rather than using a
+correct Unicode-aware line wrapping algorithm.
 
 =head1 AUTHOR
 

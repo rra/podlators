@@ -177,12 +177,17 @@ Pod::Text::Color 2.01 was included in Perl 5.9.3, the first version of Perl to
 incorporate those changes.
 
 Several problems with wrapping and line length were fixed as recently as
-Pod::Text::Color 4.11, included in Perl 5.29.1.
+Pod::Text::Color 6.0.0.
 
 This module inherits its API and most behavior from Pod::Text, so the details
 in L<Pod::Text/COMPATIBILITY> also apply.  Pod::Text and Pod::Text::Color have
 had the same module version since 4.00, included in Perl 5.23.7.  (They
 unfortunately diverge in confusing ways prior to that.)
+
+=head1 CAVEATS
+
+Line wrapping is done only at ASCII spaces and tabs, rather than using a
+correct Unicode-aware line wrapping algorithm.
 
 =head1 AUTHOR
 

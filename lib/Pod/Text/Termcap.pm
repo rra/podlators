@@ -241,19 +241,24 @@ The current API based on L<Pod::Simple> was added in Pod::Text::Termcap 2.00.
 Pod::Text::Termcap 2.01 was included in Perl 5.9.3, the first version of Perl
 to incorporate those changes.
 
-Several problems with wrapping and line length were fixed as recently as
-Pod::Text::Termcap 4.11, included in Perl 5.29.1.
-
 Pod::Text::Termcap 4.13 stopped setting the TERMPATH environment variable
 during module load.  It also stopped falling back on VT100 escape sequences if
 Term::Cap was not able to find usable escape sequences, instead producing
 unformatted output for better results on dumb terminals.  The next version to
 be incorporated into Perl, 4.14, was included in Perl 5.31.8.
 
+Several problems with wrapping and line length were fixed as recently as
+Pod::Text::Termcap 6.0.0.
+
 This module inherits its API and most behavior from Pod::Text, so the details
 in L<Pod::Text/COMPATIBILITY> also apply.  Pod::Text and Pod::Text::Termcap
 have had the same module version since 4.00, included in Perl 5.23.7.  (They
 unfortunately diverge in confusing ways prior to that.)
+
+=head1 CAVEATS
+
+Line wrapping is done only at ASCII spaces and tabs, rather than using a
+correct Unicode-aware line wrapping algorithm.
 
 =head1 AUTHOR
 
