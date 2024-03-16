@@ -67,6 +67,9 @@ if (!@files && -d 'lib') {
 if (-e 'Build.PL') {
     push(@files, 'Build.PL');
 }
+if (-e 'Makefile.PL') {
+    push(@files, 'Makefile.PL');
+}
 for my $dir (qw(examples usr t)) {
     if (-d $dir) {
         push(@files, Perl::Critic::Utils::all_perl_files($dir));
