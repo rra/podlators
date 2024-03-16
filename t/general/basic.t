@@ -12,7 +12,7 @@
 # the machinery to run small POD snippets through the specific formatter being
 # tested should probably be used instead.
 #
-# Copyright 2001-2002, 2004, 2006, 2009, 2012, 2014-2015, 2018-2019, 2022-2023
+# Copyright 2001-2002, 2004, 2006, 2009, 2012, 2014-2015, 2018-2019, 2022-2024
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -20,8 +20,7 @@
 #
 # SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
-use 5.008;
-use strict;
+use 5.012;
 use warnings;
 
 use lib 't/lib';

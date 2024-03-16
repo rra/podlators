@@ -12,10 +12,9 @@
 # Modules and declarations
 ##############################################################################
 
-package Pod::Man;
+package Pod::Man v6.0.0;
 
-use 5.010;
-use strict;
+use 5.012;
 use warnings;
 
 use Carp qw(carp croak);
@@ -30,7 +29,6 @@ BEGIN {
 }
 
 our @ISA = qw(Pod::Simple);
-our $VERSION = '5.01';
 
 # Ensure that $Pod::Simple::nbsp and $Pod::Simple::shy are available.  Code
 # taken from Pod::Simple 3.32, but was only added in 3.30.
@@ -799,8 +797,8 @@ sub outindex {
 sub output {
     my ($self, @text) = @_;
     my $text = join('', @text);
-    $text =~ s{$NBSP}{\\ }g;
-    $text =~ s{$SHY}{\\%}g;
+    $text =~ s{$NBSP}{\\ }xmsg;
+    $text =~ s{$SHY}{\\%}xmsg;
 
     if ($$self{ENCODE} && _needs_encode($$self{ENCODING})) {
         my $check = sub {
@@ -1122,11 +1120,11 @@ sub cmd_para {
     }
 
     # Force exactly one newline at the end and strip unwanted trailing
-    # whitespace at the end, but leave "\ " backslashed space from an S< > at
-    # the end of a line.  Reverse the text first, to avoid having to scan the
-    # entire paragraph.
+    # whitespace at the end, but leave Unicode whitespace (which includes the
+    # nonbreaking spaces from S<>).  Reverse the text first, to avoid having
+    # to scan the entire paragraph.
     $text = reverse $text;
-    $text =~ s/\A\s*?(?= \\|\S|\z)/\n/;
+    $text =~ s{ \A [ \t\n]* }{\n}xms;
     $text = reverse $text;
 
     # Output the paragraph.

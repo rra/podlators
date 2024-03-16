@@ -12,10 +12,9 @@
 # Modules and declarations
 ##############################################################################
 
-package Pod::Text;
+package Pod::Text v6.0.0;
 
-use 5.010;
-use strict;
+use 5.012;
 use warnings;
 
 use Carp qw(carp croak);
@@ -24,7 +23,6 @@ use Exporter ();
 use Pod::Simple ();
 
 our @ISA = qw(Pod::Simple Exporter);
-our $VERSION = '5.01';
 
 # We have to export pod2text for backward compatibility.
 our @EXPORT = qw(pod2text);

@@ -1,6 +1,9 @@
                       Revision history for podlators
 
-6.00 - Not Released
+6.0.0 - Not Released
+
+ - podlators now uses semantic versioning for the package and module
+   versions and requires a minimum Perl version of 5.12.
 
  - Pod::Man now translates all "-" characters in the input into *roff "\-"
    escapes (normally rendered as an ASCII hyphen-minus, U+002D) rather

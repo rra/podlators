@@ -7,15 +7,14 @@
 # helper program regenerates those files using the local installation of
 # podlators.  The output can then be reviewed with normal Git tools.
 #
-# Copyright 2022 Russ Allbery <rra@cpan.org>
+# Copyright 2022, 2024 Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
 # under the same terms as Perl itself.
 #
 # SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
-use 5.008;
-use strict;
+use 5.012;
 use warnings;
 
 use lib 'blib/lib';
@@ -88,8 +87,8 @@ $input = File::Spec->catfile('t', 'data', 'man', 'encoding.pod');
 for my $encoding (keys(%output)) {
     my $parser = Pod::Man->new(
         encoding => $encoding,
-        center => 'podlators',
-        release => 'testing',
+        center   => 'podlators',
+        release  => 'testing',
     );
     my $output;
     $parser->output_string(\$output);

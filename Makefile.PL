@@ -4,7 +4,7 @@
 # which only supports that build method, and because it is a dependency of
 # other build systems like Module::Build.
 #
-# Copyright 1999-2001, 2008, 2010, 2012, 2014-2016, 2018-2019, 2022
+# Copyright 1999-2001, 2008, 2010, 2012, 2014-2016, 2018-2019, 2022, 2024
 #     Russ Allbery <rra@cpan.org>
 #
 # This program is free software; you may redistribute it and/or modify it
@@ -12,8 +12,7 @@
 #
 # SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
-use 5.008;
-use strict;
+use 5.012;
 use warnings;
 
 use Config;
@@ -30,7 +29,7 @@ sub dist_version {
     open(my $fh, '<', File::Spec->catfile('lib', 'Pod', 'Man.pm'))
       or die "$0: cannot open lib/Pod/Man.pm: $!\n";
     while (defined(my $line = <$fh>)) {
-        if ($line =~ m{ \A (?:our \s+)? \$VERSION \s+ = \s+ '([^\']+)' }xms) {
+        if ($line =~ m{ \A package \s+ \S+ \s+ (v[0-9.]+) }xms) {
             close($fh) or die "$0: cannot close lib/Pod/Man.pm\n";
             return $1;
         }
@@ -90,7 +89,7 @@ my %metadata = (
     LICENSE          => 'perl_5',
     EXE_FILES        => [scripts('pod2text', 'pod2man')],
     VERSION_FROM     => 'lib/Pod/Man.pm',
-    MIN_PERL_VERSION => '5.010',
+    MIN_PERL_VERSION => '5.012',
     #>>>
 
     # Use *.PL files to generate the driver scripts so that we get the correct
@@ -118,11 +117,6 @@ my %metadata = (
     # Older versions of ExtUtils::MakeMaker don't pick up nested test
     # directories by default.
     test => { TESTS => 't/*/*.t' },
-
-    # For older versions of Perl, we have to force installation into the Perl
-    # module directories since site modules did not take precedence over core
-    # modules.
-    INSTALLDIRS => $] lt '5.011' ? 'perl' : 'site',
 
     # Additional metadata.
     META_ADD => {

@@ -17,16 +17,14 @@
 # Modules and declarations
 ##############################################################################
 
-package Pod::Text::Overstrike;
+package Pod::Text::Overstrike v6.0.0;
 
-use 5.010;
-use strict;
+use 5.012;
 use warnings;
 
 use Pod::Text ();
 
 our @ISA = qw(Pod::Text);
-our $VERSION = '5.01';
 
 ##############################################################################
 # Overrides

@@ -4,8 +4,7 @@
 # required for proper start-up code on non-UNIX platforms, and is used inside
 # Perl core.
 
-use 5.008;
-use strict;
+use 5.012;
 use warnings;
 
 use Config qw(%Config);
@@ -50,15 +49,12 @@ print {$out} <<'SCRIPT_BODY' or die "Cannot write to $file: $!\n";
 #
 # SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
-use 5.006;
-use strict;
+use 5.012;
 use warnings;
 
 use Getopt::Long qw(GetOptions);
 use Pod::Man ();
 use Pod::Usage qw(pod2usage);
-
-use strict;
 
 # Clean up $0 for error reporting.
 $0 =~ s%.*/%%;
@@ -499,7 +495,7 @@ and Tom Christiansen.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2019, 2022-2023 Russ Allbery
+Copyright 1999-2001, 2004, 2006, 2008, 2010, 2012-2019, 2022-2024 Russ Allbery
 <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it

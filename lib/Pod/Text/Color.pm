@@ -10,17 +10,15 @@
 # Modules and declarations
 ##############################################################################
 
-package Pod::Text::Color;
+package Pod::Text::Color v6.0.0;
 
-use 5.010;
-use strict;
+use 5.012;
 use warnings;
 
 use Pod::Text ();
 use Term::ANSIColor qw(color colored);
 
 our @ISA = qw(Pod::Text);
-our $VERSION = '5.01';
 
 ##############################################################################
 # Overrides
