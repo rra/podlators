@@ -123,6 +123,10 @@ The [podlators web page](https://www.eyrie.org/~eagle/software/podlators/)
 will always have the current version of this package, the current
 documentation, and pointers to any additional resources.
 
+New podlators releases are announced on the pod-people mailing list.  To
+subscribe or see the list archives, go to the [pod-people list information
+page](https://lists.perl.org/list/pod-people.html).
+
 For bug tracking, use the [issue tracker on
 GitHub](https://github.com/rra/podlators/issues).  However, please be
 aware that I tend to be extremely busy and work projects often take

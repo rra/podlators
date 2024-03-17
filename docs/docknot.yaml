@@ -35,6 +35,8 @@ support:
   email: rra@cpan.org
   github: rra/podlators
   web: https://www.eyrie.org/~eagle/software/podlators/
+  listname: pod-people
+  listurl: https://lists.perl.org/list/pod-people.html
 vcs:
   browse: https://git.eyrie.org/?p=perl/podlators.git
   github: rra/podlators
