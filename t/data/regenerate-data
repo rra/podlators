@@ -27,16 +27,13 @@ use Pod::Text::Overstrike;
 use Pod::Text::Termcap;
 
 # Hard-code configuration for Term::Cap to get predictable results.
-#<<<
-local $ENV{COLUMNS}  = 80;
-local $ENV{TERM}     = 'xterm';
+local $ENV{COLUMNS} = 80;
+local $ENV{TERM} = 'xterm';
 local $ENV{TERMPATH} = File::Spec->catfile('t', 'data', 'termcap');
-local $ENV{TERMCAP}  = 'xterm:co=#80:do=^J:md=\\E[1m:us=\\E[4m:me=\\E[m';
-#>>>
+local $ENV{TERMCAP} = 'xterm:co=#80:do=^J:md=\\E[1m:us=\\E[4m:me=\\E[m';
 
 # Map of translators to the file containing the formatted output for the
 # general/basic.t test.
-#<<<
 my %output = (
     'Pod::Man'              => File::Spec->catfile('t', 'data', 'basic.man'),
     'Pod::Text'             => File::Spec->catfile('t', 'data', 'basic.txt'),
@@ -44,7 +41,6 @@ my %output = (
     'Pod::Text::Overstrike' => File::Spec->catfile('t', 'data', 'basic.ovr'),
     'Pod::Text::Termcap'    => File::Spec->catfile('t', 'data', 'basic.cap'),
 );
-#>>>
 
 # Regenerate those output files.
 my $input = File::Spec->catfile('t', 'data', 'basic.pod');
@@ -74,13 +70,11 @@ for my $module (keys(%output)) {
 
 # Now switch to the files for the man/encoding.t test.
 $input = File::Spec->catfile('t', 'data', 'man', 'encoding.pod');
-#<<<
 %output = (
     groff => File::Spec->catfile('t', 'data', 'man', 'encoding.groff'),
     roff  => File::Spec->catfile('t', 'data', 'man', 'encoding.roff'),
     utf8  => File::Spec->catfile('t', 'data', 'man', 'encoding.utf8'),
 );
-#>>>
 
 # For each encoding, load the input, generate the output, and check that the
 # output matches.

@@ -37,13 +37,11 @@ local $ENV{SOURCE_DATE_EPOCH} = 1664146047;
 
 # Get the path to the input and output files.
 my $input = File::Spec->catfile('t', 'data', 'man', 'encoding.pod');
-#<<<
 my %output = (
     groff => File::Spec->catfile('t', 'data', 'man', 'encoding.groff'),
     roff  => File::Spec->catfile('t', 'data', 'man', 'encoding.roff'),
     utf8  => File::Spec->catfile('t', 'data', 'man', 'encoding.utf8'),
 );
-#>>>
 
 # For each encoding, load the input, generate the output, and check that the
 # output matches.
