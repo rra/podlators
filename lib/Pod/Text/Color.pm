@@ -13,12 +13,10 @@
 package Pod::Text::Color v6.0.0;
 
 use 5.012;
+use parent qw(Pod::Text);
 use warnings;
 
-use Pod::Text ();
 use Term::ANSIColor qw(color colored);
-
-our @ISA = qw(Pod::Text);
 
 ##############################################################################
 # Overrides

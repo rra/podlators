@@ -15,10 +15,10 @@
 package Pod::Man v6.0.0;
 
 use 5.012;
+use parent qw(Pod::Simple);
 use warnings;
 
 use Carp qw(carp croak);
-use Pod::Simple ();
 
 # Conditionally import Encode and set $HAS_ENCODE if it is available.  This is
 # required to support building as part of Perl core, since podlators is built
@@ -28,8 +28,6 @@ my $HAS_ENCODE;
 BEGIN {
     $HAS_ENCODE = eval { require Encode };
 }
-
-our @ISA = qw(Pod::Simple);
 
 # Ensure that $Pod::Simple::nbsp and $Pod::Simple::shy are available.  Code
 # taken from Pod::Simple 3.32, but was only added in 3.30.

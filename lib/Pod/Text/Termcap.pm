@@ -13,13 +13,11 @@
 package Pod::Text::Termcap v6.0.0;
 
 use 5.012;
+use parent qw(Pod::Text);
 use warnings;
 
-use Pod::Text ();
 use POSIX ();
 use Term::Cap;
-
-our @ISA = qw(Pod::Text);
 
 ##############################################################################
 # Overrides

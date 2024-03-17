@@ -12,10 +12,10 @@ package Test::RRA v11.0.0;
 
 use 5.012;
 use autodie;
-use base qw(Exporter);
 use warnings;
 
 use Carp qw(croak);
+use Exporter qw(import);
 use File::Temp;
 
 # Abort if Test::More was loaded before Test::RRA to be sure that we get the

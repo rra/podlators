@@ -10,9 +10,9 @@ package Test::RRA::ModuleVersion v11.0.0;
 
 use 5.012;
 use autodie;
-use base qw(Exporter);
 use warnings;
 
+use Exporter qw(import);
 use File::Find qw(find);
 use Test::More;
 use Test::RRA::Config qw(@MODULE_VERSION_IGNORE);

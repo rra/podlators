@@ -9,11 +9,10 @@
 package Test::Podlators v6.0.0;
 
 use 5.012;
-use base qw(Exporter);
 use warnings;
 
 use Encode qw(decode encode);
-use Exporter;
+use Exporter qw(import);
 use File::Spec;
 use Test::More;
 

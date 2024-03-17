@@ -10,9 +10,9 @@
 package Test::RRA::Config v11.0.0;
 
 use 5.012;
-use base qw(Exporter);
 use warnings;
 
+use Exporter qw(import);
 use Test::More;
 
 # Exports.

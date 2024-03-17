@@ -16,9 +16,8 @@ package Pod::ParseLink v6.0.0;
 use 5.012;
 use warnings;
 
-use Exporter;
+use Exporter qw(import);
 
-our @ISA = qw(Exporter);
 our @EXPORT = qw(parselink);
 
 ##############################################################################

@@ -15,14 +15,12 @@
 package Pod::Text v6.0.0;
 
 use 5.012;
+use parent qw(Pod::Simple);
 use warnings;
 
 use Carp qw(carp croak);
 use Encode qw(encode);
-use Exporter ();
-use Pod::Simple ();
-
-our @ISA = qw(Pod::Simple Exporter);
+use Exporter qw(import);
 
 # We have to export pod2text for backward compatibility.
 our @EXPORT = qw(pod2text);
