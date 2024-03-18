@@ -22,7 +22,7 @@ license:
   name: Perl
 copyrights:
   - holder: Russ Allbery <rra@cpan.org>
-    years: 1999-2010, 2012-2024
+    years: 1999-2024
 
 build:
   type: ExtUtils::MakeMaker
