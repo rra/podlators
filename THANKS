@@ -197,9 +197,10 @@ title of a simple module and for how best to suppress Encode warnings
 during Perl core builds.
 
 Guillem Jover, for the formatting change for manual page references and
-function names to match the Linux manual page standard, and reporting a
+function names to match the Linux manual page standard, reporting a
 diagnostic bug when pod2man or pod2text gets empty input on standard
-input.
+input, and reporting a groff 1.23.0 regression with ragged-right
+justification.
 
 Zefram, for analyzing and fixing a problem with the UTF-8 layer detection
 code in Pod::Man.
@@ -237,7 +238,8 @@ continued farther than they should in Pod::Man output if they were
 combined with C<> and fixed-width fonts, and for finding a subtle spacing
 bug with nested =items without bodies.
 
-G. Branden Robinson, for his assistance in understanding *roff syntax.
+G. Branden Robinson, for his assistance in understanding *roff syntax and
+analysis of groff justification changes.
 
 youpong, for reporting a double-encoding bug with a :utf8 output layer.
 

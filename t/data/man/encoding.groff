@@ -50,6 +50,9 @@
 .    \}
 .\}
 .rr rF
+.\"
+.\" Required to disable full justification in groff 1.23.0.
+.if n .ds AD l
 .\" ========================================================================
 .\"
 .IX Title "ENCODING 1"

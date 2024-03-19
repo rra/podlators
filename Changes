@@ -32,6 +32,10 @@ v6.0.0 - Not Released
    at build time.  Thanks to Marco Sirabella for the analysis and an
    initial patch.  (GitHub #21)
 
+ - Add a workaround to Pod::Man to force persistent ragged-right
+   justification under nroff with groff 1.23.0.  Thanks to Guillem Jover
+   for the report and G. Branden Robinson for the analysis.  (GitHub #23)
+
  - Fix wrapping of text with S<> markup in all subclasses of Pod::Text.
    Thanks to Jim Avera for the report.  (GitHub #24)
 

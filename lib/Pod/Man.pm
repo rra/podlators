@@ -1620,6 +1620,9 @@ sub preamble_template {
 .    \}
 .\}
 .rr rF
+.\"
+.\" Required to disable full justification in groff 1.23.0.
+.if n .ds AD l
 ----END OF PREAMBLE----
 
     if ($$self{ENCODING} eq 'roff') {
