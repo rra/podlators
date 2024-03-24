@@ -52,27 +52,17 @@ is(
     'devise_date honors POD_MAN_DATE over SOURCE_DATE_EPOCH',
 );
 
-# Check that an invalid SOURCE_DATE_EPOCH is not accepted.  Be careful to
-# avoid false failures if the test is run exactly at the transition from one
-# day to the next.
+# Check that an invalid SOURCE_DATE_EPOCH is not accepted and the code falls
+# back on using the current time.  Be careful to avoid false failures if the
+# test is run exactly at the transition from one day to the next.
 local $ENV{POD_MAN_DATE} = undef;
 local $ENV{SOURCE_DATE_EPOCH} = '1482676620B';
-my ($year, $month, $day) = (gmtime())[5, 4, 3];
-my $expected_old = sprintf('%04d-%02d-%02d', $year + 1900, $month + 1, $day);
+my $expected_old = strftime('%Y-%m-%d', gmtime());
 my $seen = $parser->devise_date();
-($year, $month, $day) = (gmtime())[5, 4, 3];
-my $expected_new = sprintf('%04d-%02d-%02d', $year + 1900, $month + 1, $day);
-
-if ($expected_old eq $expected_new || $seen eq $expected_old) {
-    is(
-        $parser->devise_date,
-        $expected_old,
-        'devise_date ignores invalid SOURCE_DATE_EPOCH',
-    );
-} else {
-    is(
-        $parser->devise_date,
-        $expected_new,
-        'devise_date ignores invalid SOURCE_DATE_EPOCH',
-    );
-}
+my $expected_new = strftime('%Y-%m-%d', gmtime());
+my $expected = ($seen eq $expected_old) ? $expected_old : $expected_new;
+is(
+    $parser->devise_date,
+    $expected,
+    'devise_date ignores invalid SOURCE_DATE_EPOCH',
+);
