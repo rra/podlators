@@ -25,11 +25,11 @@ local $ENV{POD_MAN_DATE} = undef;
 # Check that the results of device_date matches strftime.  There is no input
 # file name, so this will use the current time.
 my $parser = Pod::Man->new;
-is(
-    $parser->devise_date,
-    strftime('%Y-%m-%d', gmtime()),
-    'devise_date matches strftime',
-);
+my $expected_old = strftime('%Y-%m-%d', gmtime());
+my $seen = $parser->devise_date();
+my $expected_new = strftime('%Y-%m-%d', gmtime());
+my $expected = ($seen eq $expected_old) ? $expected_old : $expected_new;
+is($seen, $expected, 'devise_date matches strftime');
 
 # Set the override environment variable and ensure that it's honored.
 local $ENV{POD_MAN_DATE} = '2014-01-01';
@@ -57,10 +57,10 @@ is(
 # test is run exactly at the transition from one day to the next.
 local $ENV{POD_MAN_DATE} = undef;
 local $ENV{SOURCE_DATE_EPOCH} = '1482676620B';
-my $expected_old = strftime('%Y-%m-%d', gmtime());
-my $seen = $parser->devise_date();
-my $expected_new = strftime('%Y-%m-%d', gmtime());
-my $expected = ($seen eq $expected_old) ? $expected_old : $expected_new;
+$expected_old = strftime('%Y-%m-%d', gmtime());
+$seen = $parser->devise_date();
+$expected_new = strftime('%Y-%m-%d', gmtime());
+$expected = ($seen eq $expected_old) ? $expected_old : $expected_new;
 is(
     $parser->devise_date,
     $expected,
