@@ -1,6 +1,6 @@
                       Revision history for podlators
 
-v6.0.0 - Not Released
+v6.0.0 - 2024-07-10
 
  - Drop support for Perl 5.10.  podlators now requires Perl 5.12 or later.
 

@@ -89,7 +89,7 @@ podlators comes with a test suite, which you can run after building with:
     make test
 ```
 
-If a test vails, you can run a single test with verbose output via:
+If a test fails, you can run a single test with verbose output via:
 
 ```
     prove -vb <path-to-test>
@@ -128,10 +128,10 @@ subscribe or see the list archives, go to the [pod-people list information
 page](https://lists.perl.org/list/pod-people.html).
 
 For bug tracking, use the [issue tracker on
-GitHub](https://github.com/rra/podlators/issues).  However, please be
-aware that I tend to be extremely busy and work projects often take
-priority.  I'll save your report and get to it as soon as I can, but it
-may take me a couple of months.
+GitHub](https://github.com/rra/podlators/issues).  Please be aware that I
+tend to be extremely busy and work projects often take priority.  I'll
+save your report and get to it as soon as I can, but it may take me a
+couple of months.
 
 ## Source Repository
 
