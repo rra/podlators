@@ -31,6 +31,9 @@ distribution:
   section: perl
   tarname: podlators
   version: podlators
+  ignore:
+    - .github/dependabot.yml
+    - .github/workflows/build.yaml
 support:
   email: rra@cpan.org
   github: rra/podlators
