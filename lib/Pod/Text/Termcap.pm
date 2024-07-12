@@ -10,7 +10,7 @@
 # Modules and declarations
 ##############################################################################
 
-package Pod::Text::Termcap v6.0.0;
+package Pod::Text::Termcap v6.0.99;
 
 use 5.012;
 use parent qw(Pod::Text);
@@ -244,7 +244,7 @@ unformatted output for better results on dumb terminals.  The next version to
 be incorporated into Perl, 4.14, was included in Perl 5.31.8.
 
 Several problems with wrapping and line length were fixed as recently as
-Pod::Text::Termcap 6.0.0.
+Pod::Text::Termcap 6.0.99.
 
 This module inherits its API and most behavior from Pod::Text, so the details
 in L<Pod::Text/COMPATIBILITY> also apply.  Pod::Text and Pod::Text::Termcap

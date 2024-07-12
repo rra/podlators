@@ -17,7 +17,7 @@
 # Modules and declarations
 ##############################################################################
 
-package Pod::Text::Overstrike v6.0.0;
+package Pod::Text::Overstrike v6.0.99;
 
 use 5.012;
 use parent qw(Pod::Text);
@@ -177,7 +177,7 @@ The current API based on L<Pod::Simple> was added in Pod::Text::Overstrike
 2.00, included in Perl 5.9.3.
 
 Several problems with wrapping and line length were fixed as recently as
-Pod::Text::Overstrike 6.0.0.
+Pod::Text::Overstrike 6.0.99.
 
 This module inherits its API and most behavior from Pod::Text, so the details
 in L<Pod::Text/COMPATIBILITY> also apply.  Pod::Text and Pod::Text::Overstrike

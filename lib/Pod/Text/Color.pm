@@ -10,7 +10,7 @@
 # Modules and declarations
 ##############################################################################
 
-package Pod::Text::Color v6.0.0;
+package Pod::Text::Color v6.0.99;
 
 use 5.012;
 use parent qw(Pod::Text);
@@ -173,7 +173,7 @@ Pod::Text::Color 2.01 was included in Perl 5.9.3, the first version of Perl to
 incorporate those changes.
 
 Several problems with wrapping and line length were fixed as recently as
-Pod::Text::Color 6.0.0.
+Pod::Text::Color 6.0.99.
 
 This module inherits its API and most behavior from Pod::Text, so the details
 in L<Pod::Text/COMPATIBILITY> also apply.  Pod::Text and Pod::Text::Color have
