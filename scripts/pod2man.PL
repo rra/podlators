@@ -5,7 +5,6 @@
 # Perl core.
 
 use 5.012;
-use autodie;
 use warnings;
 
 use Config qw(%Config);
@@ -20,14 +19,14 @@ use File::Basename qw(basename dirname);
 
 # This forces PL files to create target in same directory as PL file.
 # This is so that make depend always knows where to find PL derivatives.
-chdir(dirname($0));
+chdir(dirname($0)) or die "Cannot change directories: $!\n";
 my $file = basename($0, '.PL');
 if ($^O eq 'VMS') {
     $file .= '.com';
 }
 
 # Create the generated script.
-open(my $out, '>', $file);
+open(my $out, '>', $file) or die "Cannot create $file: $!\n";
 print "Extracting $file (with variable substitutions)\n"
   or die "$0: cannot write to stdout: $!\n";
 
@@ -560,8 +559,8 @@ Perl core distribution as of 5.6.0.
 SCRIPT_BODY
 
 # Finish the generation of the script.
-close($out);
-chmod(0755, $file);
+close($out) or die "Cannot close $file: $!\n";
+chmod(0755, $file) or die "Cannot reset permissions for $file: $!\n";
 if ($Config{'eunicefix'} ne q{:}) {
     exec("$Config{'eunicefix'} $file");
 }
