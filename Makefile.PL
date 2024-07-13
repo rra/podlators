@@ -13,7 +13,6 @@
 # SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
 use 5.012;
-use autodie;
 use warnings;
 
 use Config;
@@ -27,14 +26,14 @@ use File::Spec;
 # Returns: Distribution version as a string
 sub dist_version {
     my ($path) = @_;
-    open(my $fh, '<', $path);
+    open(my $fh, '<', $path) or die "$0: cannot open $path: $!\n";
     while (defined(my $line = <$fh>)) {
         if ($line =~ m{ \A package \s+ \S+ \s+ (v[\d.]+) }xms) {
-            close($fh);
+            close($fh) or die "$0: cannot close $path: $!\n";
             return $1;
         }
     }
-    close($fh);
+    close($fh) or die "$0: cannot close $path: $!\n";
     die "$0: cannot find version in lib/Pod/Man.pm\n";
 }
 
