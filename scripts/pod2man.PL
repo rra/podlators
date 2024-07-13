@@ -4,6 +4,8 @@
 # required for proper start-up code on non-UNIX platforms, and is used inside
 # Perl core.
 
+# Do not use autodie here.  When podlators is built as part of Perl core, it
+# is built before autodie is available.
 use 5.012;
 use warnings;
 

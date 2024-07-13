@@ -12,6 +12,8 @@
 #
 # SPDX-License-Identifier: GPL-1.0-or-later OR Artistic-1.0-Perl
 
+# Do not use autodie here.  When podlators is built as part of Perl core, it
+# is built before autodie is available.
 use 5.012;
 use warnings;
 
