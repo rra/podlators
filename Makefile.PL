@@ -141,19 +141,6 @@ my %metadata = (
     },
 );
 
-# Remove keys that aren't supported by this version of ExtUtils::MakeMaker.
-# This hash maps keys to the minimum supported version.
-my %supported = (
-    LICENSE          => 6.31,
-    META_ADD         => 6.46,
-    MIN_PERL_VERSION => 6.48,
-);
-for my $key (keys(%supported)) {
-    if ($ExtUtils::MakeMaker::VERSION < $supported{$key}) {
-        delete $metadata{$key};
-    }
-}
-
 # Generate the actual Makefile.  Pick an arbitrary module to pull the version
 # from, since they should all have the same version.
 WriteMakefile(%metadata);
