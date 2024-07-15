@@ -2,6 +2,7 @@
 Changes
 cpanfile
 docs/docknot.yaml
+lib/perlpodstyle.pod
 lib/Pod/Man.pm
 lib/Pod/ParseLink.pm
 lib/Pod/Text.pm
@@ -12,11 +13,10 @@ LICENSE
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
-pod/perlpodstyle.pod
 README
 README.md
-scripts/pod2man.PL
-scripts/pod2text.PL
+scripts/pod2man
+scripts/pod2text
 t/data/basic.cap
 t/data/basic.clr
 t/data/basic.man

@@ -16,8 +16,6 @@
 /podlators-*/
 /podlators-*.tar.gz
 /podlators-*.tar.gz.asc
-/scripts/pod2man
-/scripts/pod2text
 /t/tmp/
 
 # Some plenv/carton cruft
