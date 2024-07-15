@@ -15,8 +15,8 @@ MANIFEST			This list of files
 MANIFEST.SKIP
 README
 README.md
-scripts/pod2man.PL
-scripts/pod2text.PL
+scripts/pod2man
+scripts/pod2text
 t/data/basic.cap
 t/data/basic.clr
 t/data/basic.man

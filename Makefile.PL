@@ -17,47 +17,8 @@
 use 5.012;
 use warnings;
 
-use Config;
 use ExtUtils::MakeMaker;
 use File::Spec;
-
-# Generate full paths for scripts distributed in the bin directory.  Appends
-# the .com extension to scripts on VMS, unless they already have the .PL
-# extension.
-#
-# @scripts - List of script names
-#
-# Returns: List of relative paths from top of distribution
-sub scripts {
-    my (@scripts) = @_;
-    my @paths = map { File::Spec->catfile('scripts', $_) } @scripts;
-    if ($^O eq 'VMS') {
-        @paths = map { m{ [.] PL \z }xms ? $_ : $_ . '.com' } @paths;
-    }
-    return @paths;
-}
-
-# Generate an association between a source file and a destination man page for
-# non-module man pages.  ExtUtils::MakeMaker only really understands how to
-# generate man pages for modules, so we need to help it for the script man
-# pages and (particularly) the perlpodstyle man page.
-#
-# $directory - Directory containing the file
-# $file      - File containing POD in that directory
-#
-# Returns: The path to the file with POD and the output man page, as a pair
-sub man1pod {
-    my ($directory, $file) = @_;
-
-    # Build the base name of the file by stripping any *.pod or *.PL suffix.
-    my $basename = $file;
-    $basename =~ s{ [.] (?: pod | PL ) \z }{}xms;
-
-    # Determine the output file name for the generated man page.
-    my $outname = $basename . q{.} . $Config{man1ext};
-    my $outpath = File::Spec->catfile(qw(blib man1), $outname);
-    return (File::Spec->catfile($directory, $file), $outpath);
-}
 
 # The hash of all the metadata.  This will be modified before WriteMakefile to
 # remove keys not supported by the local version of ExtUtils::MakeMaker.
@@ -68,25 +29,13 @@ my %metadata = (
     ABSTRACT         => 'Convert POD data to various other formats',
     AUTHOR           => 'Russ Allbery <rra@cpan.org>',
     LICENSE          => 'perl_5',
-    EXE_FILES        => [scripts('pod2text', 'pod2man')],
+    EXE_FILES        => ['scripts/pod2man', 'scripts/pod2text'],
     VERSION          => $dist_version,
     MIN_PERL_VERSION => '5.012',
-
-    # Use *.PL files to generate the driver scripts so that we get the correct
-    # invocation of Perl on non-UNIX platforms.
-    PL_FILES => {
-        scripts('pod2man.PL', 'pod2man'), scripts('pod2text.PL', 'pod2text'),
-    },
-
-    # Override the files that generate section 1 man pages.
-    MAN1PODS => {
-        man1pod('scripts', 'pod2man.PL'),
-        man1pod('scripts', 'pod2text.PL'),
-    },
+    PL_FILES         => {},
 
     # Clean some additional files.
-    clean     => { FILES => File::Spec->catdir('t', 'tmp') },
-    realclean => { FILES => join(q{ }, scripts('pod2text', 'pod2man')) },
+    clean => { FILES => File::Spec->catdir('t', 'tmp') },
 
     # Dependencies on other modules.
     PREREQ_PM => { 'Pod::Simple' => 3.26 },
