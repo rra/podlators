@@ -1742,7 +1742,7 @@ backward-compatible output mangling on such systems, set the C<encoding>
 option to C<roff> (the default in earlier Pod::Man versions).  See the
 C<encoding> option and L</ENCODING> for more details.
 
-See L</COMPATIBILTY> for the versions of Pod::Man with significant
+See L</COMPATIBILITY> for the versions of Pod::Man with significant
 backward-incompatible changes (other than constructor options, whose versions
 are documented below), and the versions of Perl that included them.
 

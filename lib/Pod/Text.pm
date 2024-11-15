@@ -1234,7 +1234,7 @@ under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-L<Encode::Locale>, L<Encode::Supproted>, L<Pod::Simple>,
+L<Encode::Locale>, L<Encode::Supported>, L<Pod::Simple>,
 L<Pod::Text::Termcap>, L<perlpod(1)>, L<pod2text(1)>
 
 The current version of this module is always available from its web site at
