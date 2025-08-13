@@ -135,7 +135,7 @@ if ($options{official} && !defined($options{center})) {
 # Delete flags that are only used in pod2man, not in Pod::Man. lax is accepted
 # only for backward compatibility and does nothing.
 my $verbose = $options{verbose};
-delete @options{qw(verbose lax official)};
+delete @options{ qw(verbose lax official) };
 
 # If neither stderr nor errors is set, default to errors = die rather than the
 # Pod::Man default of pod.
