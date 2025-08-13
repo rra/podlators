@@ -1,6 +1,13 @@
                       Revision history for podlators
 
-v6.0.3 - Not Released
+v6.1.0 - Not Released
+
+- Pod::Text now supports setting the encoding option to "none" to disable
+  output encoding. This only makes sense when calling output_string() to
+  direct the formatted output to a scalar. It is intended for special
+  cases where the formatted output is held in memory for further
+  processing and will encoded for output at a later step. Thanks to
+  djerius for the suggestion. (GitHub #38)
 
 - Fix Pod::Text quoting heuristics for C<> when the contents contains
   newlines. Thanks to van-de-bugger for the report. (GitHub #39)
