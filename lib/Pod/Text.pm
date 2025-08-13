@@ -922,32 +922,32 @@ with the POD rendered and the code left intact.
 
 =item encoding
 
-[6.1.0] Specifies the encoding of the output. The value must be an encoding
+[6.1.0] Specifies the encoding of the output.  The value must be an encoding
 recognized by the L<Encode> module (see L<Encode::Supported>) or the special
-value C<none>. If the output contains characters that cannot be represented in
-this encoding, that is an error that will be reported as configured by the
-C<errors> option. If error handling is other than C<die>, the unrepresentable
+value C<none>.  If the output contains characters that cannot be represented
+in this encoding, that is an error that will be reported as configured by the
+C<errors> option.  If error handling is other than C<die>, the unrepresentable
 character will be replaced with the Encode substitution character (normally
 C<?>).
 
 If the output file handle has a PerlIO encoding layer set, this parameter will
-be ignored and no encoding will be done by Pod::Man. It will instead rely on
+be ignored and no encoding will be done by Pod::Man.  It will instead rely on
 the encoding layer to make whatever output encoding transformations are
 desired.
 
 As a special case, if the encoding is set to C<none>, no encoding will be done
-and characters will be output in Perl's internal representation. This option
-only makes sense in combination with output_string(). It is intended for
+and characters will be output in Perl's internal representation.  This option
+only makes sense in combination with output_string().  It is intended for
 special cases when the results of formatting are kept in memory and will be
 encoded for output at some later step.
 
 WARNING: The input encoding of the POD source is independent from the output
 encoding, and setting this option does not affect the interpretation of the
-POD input. Unless your POD source is US-ASCII, its encoding should be declared
-with the C<=encoding> command in the source, as near to the top of the file as
-possible. If this is not done, Pod::Simple will will attempt to guess the
-encoding and may be successful if it's Latin-1 or UTF-8, but it will produce
-warnings. See L<perlpod(1)> for more information.
+POD input.  Unless your POD source is US-ASCII, its encoding should be
+declared with the C<=encoding> command in the source, as near to the top of
+the file as possible.  If this is not done, Pod::Simple will will attempt to
+guess the encoding and may be successful if it's Latin-1 or UTF-8, but it will
+produce warnings.  See L<perlpod(1)> for more information.
 
 =item errors
 

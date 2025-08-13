@@ -2332,11 +2332,11 @@ would only be visible when typeset with B<troff>, which had previously been a
 significant source of bugs.
 
 Pod::Man v6.0.0 and later, included in Perl 5.41.2, unconditionally convert
-C<-> to the C<\-> *roff escape, representing an ASCII hyphen-minus. Earlier
+C<-> to the C<\-> *roff escape, representing an ASCII hyphen-minus.  Earlier
 versions attempted to use heuristics to decide when a given C<-> character
 should translate to a hyphen-minus or a true hyphen, but these heuristics were
-buggy and fragile. v6.0.0 and later also unconditionally convert C<`> and C<'>
-to ASCII grave accent and apostrophe marks instead of the default *roff
+buggy and fragile.  v6.0.0 and later also unconditionally convert C<`> and
+C<'> to ASCII grave accent and apostrophe marks instead of the default *roff
 behavior of interpreting them as paired quotes.
 
 =head1 BUGS
