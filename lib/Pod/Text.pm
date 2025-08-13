@@ -651,7 +651,7 @@ sub cmd_c {
          }xms;
     }
     $text =~ m{
-      ^\s*
+      \A\s*
       (?:
          ( [\'\`\"] ) .* \1                  # already quoted
        | \` .* \'                            # `quoted'

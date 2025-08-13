@@ -1,5 +1,10 @@
                       Revision history for podlators
 
+v6.0.3 - Not Released
+
+- Fix Pod::Text quoting heuristics for C<> when the contents contains
+  newlines. Thanks to van-de-bugger for the report. (GitHub #39)
+
 v6.0.2 - 2024-07-14
 
  - Fix removal of scripts/pod2man and scripts/pod2text by make realclean,
