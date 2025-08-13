@@ -1085,11 +1085,15 @@ $preamble
 .\\"
 .IX Title $index
 .TH $name $section $date $release $center
-.\\" For nroff, turn off justification.  Always turn off hyphenation; it makes
-.\\" way too many mistakes in technical documents.
+.\\" For nroff, turn off justification. Always turn off hyphenation; it makes
+.\\" way too many mistakes in technical documents. String and register
+.\\" settings are required by groff 1.23.0 and later.
+.if n .ds AD l
 .if n .ad l
+.nr HY 0
 .nh
 ----END OF HEADER----
+#"# for cperl-mode
 
     # If the language was specified, output the language configuration.
     if ($self->{opt_language}) {
@@ -1620,9 +1624,6 @@ sub preamble_template {
 .    \}
 .\}
 .rr rF
-.\"
-.\" Required to disable full justification in groff 1.23.0.
-.if n .ds AD l
 ----END OF PREAMBLE----
 
     if ($$self{ENCODING} eq 'roff') {

@@ -2,6 +2,13 @@
 
 v6.1.0 - Not Released
 
+- Move the Pod::Man override of the AD string (needed to request left
+  justification) after .TH, and also clear the HY register to request no
+  hyphenation. This positioning also works with groff 1.23.0 and will be
+  required by groff 1.24.0 to disable hyphenation and use left
+  justification by default without overriding user preferences. Many
+  thanks to G. Branden Robinson for the discussion and assistance.
+
 - Pod::Text now supports setting the encoding option to "none" to disable
   output encoding. This only makes sense when calling output_string() to
   direct the formatted output to a scalar. It is intended for special

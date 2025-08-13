@@ -240,8 +240,11 @@ continued farther than they should in Pod::Man output if they were
 combined with C<> and fixed-width fonts, and for finding a subtle spacing
 bug with nested =items without bodies.
 
-G. Branden Robinson, for his assistance in understanding *roff syntax and
-analysis of groff justification changes.
+G. Branden Robinson, for his assistance in understanding *roff syntax,
+analysis of groff justification and hyphenation changes, collaboration on
+finding an approach to set a default for hyphenation and justification
+without overriding user preferences, and his general helpfulness with all
+things related to groff.
 
 youpong, for reporting a double-encoding bug with a :utf8 output layer.
 
