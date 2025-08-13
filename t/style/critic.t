@@ -53,7 +53,17 @@ use_prereq('Test::Perl::Critic');
 local $ENV{PERLTIDY} = 't/data/perltidyrc';
 
 # Import the configuration file.
-Test::Perl::Critic->import(-profile => 't/data/perlcriticrc');
+#
+# Exclude Freenode::EmptyReturn unconditionally. It duplicates
+# Community::EmptyReturn, which is excluded in the default configuration file.
+# In some installations (such as the one that comes with the Perl testing
+# images for GitHub CI) it is installed, identifies as Community::EmptyReturn,
+# but doesn't honor the configuration file exclusion. Excluding it here works
+# around that.
+Test::Perl::Critic->import(
+    -exclude => ['Freenode::EmptyReturn'],
+    -profile => 't/data/perlcriticrc',
+);
 
 # By default, Test::Perl::Critic only checks blib.  We also want to check t,
 # Build.PL, and examples.
