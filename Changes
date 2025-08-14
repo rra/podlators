@@ -19,6 +19,11 @@ v6.1.0 - Not Released
 - Fix Pod::Text quoting heuristics for C<> when the contents contains
   newlines. Thanks to van-de-bugger for the report. (GitHub #39)
 
+- Fix the documentation for the date and release options to Pod::Man and
+  the corresponding --date and --release options to pod2man. The positions
+  of the footers controlled by these options were reversed in podlators
+  1.12 but the documentation was never updated.
+
 v6.0.2 - 2024-07-14
 
  - Fix removal of scripts/pod2man and scripts/pod2text by make realclean,

@@ -1764,14 +1764,17 @@ this option is not specified, is C<User Contributed Perl Documentation>.
 
 =item date
 
-[4.00] Sets the left-hand footer for the C<.TH> macro.  If this option is not
-set, the contents of the environment variable POD_MAN_DATE, if set, will be
-used.  Failing that, the value of SOURCE_DATE_EPOCH, the modification date of
-the input file, or the current time if stat() can't find that file (which will
-be the case if the input is from C<STDIN>) will be used.  If taken from any
-source other than POD_MAN_DATE (which is used verbatim), the date will be
+[4.00] Sets the centered page footer for the C<.TH> macro.  If this option is
+not set, the contents of the environment variable POD_MAN_DATE, if set, will
+be used.  Failing that, the value of SOURCE_DATE_EPOCH, the modification date
+of the input file, or the current time if stat() can't find that file (which
+will be the case if the input is from C<STDIN>) will be used.  If taken from
+any source other than POD_MAN_DATE (which is used verbatim), the date will be
 formatted as C<YYYY-MM-DD> and will be based on UTC (so that the output will
 be reproducible regardless of local time zone).
+
+Note that some system C<an> macro sets assume that the centered footer will be
+a modification date and will prepend something like C<Last modified: >.
 
 =item encoding
 
@@ -1975,14 +1978,10 @@ options is set, C<lquote> or C<rquote> overrides C<quotes>.
 
 =item release
 
-[1.00] Set the centered footer for the C<.TH> macro.  By default, this is set
-to the version of Perl you run Pod::Man under.  Setting this to the empty
-string will cause some *roff implementations to use the system default value.
-
-Note that some system C<an> macro sets assume that the centered footer will be
-a modification date and will prepend something like C<Last modified: >.  If
-this is the case for your target system, you may want to set C<release> to the
-last modified date and C<date> to the version number.
+[1.12] Set the left-hand page footer for the C<.TH> macro.  By default, this
+is set to the version of Perl you run Pod::Man under.  Setting this to the
+empty string will cause some *roff implementations to use the system default
+value.
 
 =item section
 
