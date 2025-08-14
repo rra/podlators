@@ -249,7 +249,7 @@ things related to groff.
 youpong, for reporting a double-encoding bug with a :utf8 output layer.
 
 Graham Knop, for fixing a tricky bug in detecting output PerlIO UTF-8
-layers.
+layers and simplifying the build system.
 
 Jim Avera, for finding a bug in wrapping in Pod::Text subclasses when S<>
 is used in combination with a UTF-8 input encoding.
