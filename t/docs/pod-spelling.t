@@ -49,7 +49,10 @@ use_prereq('Test::Spelling');
 # Check all POD in the Perl distribution.  Add the examples, pod, and t/lib
 # directories if they exist.  Also add any files in usr/bin or usr/sbin, which
 # are widely used in Stanford-internal packages.
-my @files = all_pod_files();
+my @files;
+if (-d 'blib' || -d 'lib') {
+    push(@files, all_pod_files());
+}
 for my $optional ('examples', 'pod', File::Spec->catfile('t', 'lib')) {
     if (-d $optional) {
         push(@files, all_pod_files($optional));
