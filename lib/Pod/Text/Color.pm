@@ -16,7 +16,7 @@ use 5.012;
 use parent qw(Pod::Text);
 use warnings;
 
-use Term::ANSIColor qw(color colored);
+use Term::ANSIColor qw(color colored colorstrip);
 
 ##############################################################################
 # Overrides
@@ -71,12 +71,10 @@ sub output_code {
 }
 
 # Strip all of the formatting from a provided string, returning the stripped
-# version.  We will eventually want to use colorstrip() from Term::ANSIColor,
-# but it's fairly new so avoid the tight dependency.
+# version.
 sub strip_format {
     my ($self, $text) = @_;
-    $text =~ s{ \e\[ [\d;]* m }{}xmsg;
-    return $text;
+    return colorstrip($text);
 }
 
 # We unfortunately have to override the wrapping code here, since the normal
