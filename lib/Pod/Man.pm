@@ -2376,9 +2376,9 @@ after each sentence, which may not be what you want.
 
 If you prefer one space after sentences (which is the more modern style), you
 will unfortunately need to ensure that no line in the middle of a paragraph
-ends in a period or similar sentence-ending paragraph.  Otherwise, B<nroff>
-will add a two spaces after that sentence when reflowing, and your output
-document will have inconsistent spacing.
+ends in a period or similar sentence-ending punctuation sequence.  Otherwise,
+B<nroff> will add a two spaces after that sentence when reflowing, and your
+output document will have inconsistent spacing.
 
 =head2 Hyphens and quotes
 
