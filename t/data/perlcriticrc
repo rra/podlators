@@ -54,6 +54,11 @@ exclude = Freenode::
 # everything.
 [-CodeLayout::ProhibitParensWithBuiltins]
 
+# This rule conflicts with my perltidy configuration, which prefers to omit
+# the comma if there is a single argument so that the call will be collapsed
+# to a single line if it will fit.
+[-CodeLayout::RequireTrailingCommaAtNewline]
+
 # This conflicts with Subroutines::ProhibitExplicitReturnUndef and
 # Subroutines::RequireFinalReturn, and I prefer the brevity of the simple
 # return statement. I don't think the empty list versus undef behavior is that
