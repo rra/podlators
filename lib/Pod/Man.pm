@@ -2379,15 +2379,15 @@ reflowed.
 
 One significant exception, however, is that different versions of groff vary
 in their interpretation of C<."> (a sentence ending with an ASCII double
-quote).  Some versions of groff treat this as the end of a sentence if there
-are two spaces after the closing quote, or if it comes at the end of a line.
-Others will never treat this as the end of a sentence and will collapse any
-following spaces down to a single space.  For consistent behavior for
-documents written in POD, you must use Unicode double quotes (C<“”>, U+201C
-and U+201D) and declare UTF-8 encoding (or some other Unicode encoding).  The
-Unicode closing double-quote, when preceded by a period and followed by two
-spaces or the end of the line, will always be interpreted as the end of a
-sentence in modern versions of groff.
+quote).  Versions of groff prior to 1.24.0 treat this as the end of a sentence
+if there are two spaces after the closing quote, or if it comes at the end of
+a line.  Later versions will never treat this as the end of a sentence and
+will collapse any following spaces down to a single space.  For consistent
+behavior for documents written in POD, you must use Unicode double quotes
+(C<“”>, U+201C and U+201D) and declare UTF-8 encoding (or some other Unicode
+encoding).  The Unicode closing double-quote, when preceded by a period and
+followed by two spaces or the end of the line, will always be interpreted as
+the end of a sentence in modern versions of groff.
 
 Therefore, if you want two spaces after sentences in the B<nroff> output, you
 can achieve this by using Unicode double quotes and using two spaces after
