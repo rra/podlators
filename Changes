@@ -24,6 +24,10 @@ v6.1.0 - Not Released
   of the footers controlled by these options were reversed in podlators
   1.12 but the documentation was never updated.
 
+- Update the Pod::Man discussion of intersentence spacing to reflect
+  upcoming groff changes around double quotes and to recommend against
+  attempting to manage the spacing for *roff output.
+
 v6.0.2 - 2024-07-14
 
  - Fix removal of scripts/pod2man and scripts/pod2text by make realclean,

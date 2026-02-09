@@ -2353,32 +2353,60 @@ nice to support as an option for those who want to use it.
 
 =head2 Sentence spacing
 
-Pod::Man copies the input spacing verbatim to the output *roff document.  This
-means your output will be affected by how B<nroff> generally handles sentence
-spacing.
+It is difficult to write POD documents such that the resulting *roff output
+has consistent intersentence spacing.  For most documents, writing the POD
+using whatever conventions you prefer and letting the *roff output be
+inconsistent is probably the best trade-off to make.  But if you want to dive
+into the details, read on.
 
-B<nroff> dates from an era in which it was standard to use two spaces after
+Pod::Man copies the input spacing verbatim to the output *roff document.  This
+means your output will be affected by how *roff handles sentence spacing.
+
+*roff dates from an era in which it was standard to use two spaces after
 sentences, and will always add two spaces after a line-ending period (or
-similar punctuation) when reflowing text.  For example, the following input:
+similar punctuation) when reflowing text, with one exception mentioned below.
+For example, the following input:
 
     =pod
 
     One sentence.
     Another sentence.
 
-will result in two spaces after the period when the text is reflowed.  If you
-use two spaces after sentences anyway, this will be consistent, although you
-will have to be careful to not end a line with an abbreviation such as C<e.g.>
-or C<Ms.>.  Output will also be consistent if you use the *roff style guide
-(and L<XKCD 1285|https://xkcd.com/1285/>) recommendation of putting a line
-break after each sentence, although that will consistently produce two spaces
-after each sentence, which may not be what you want.
+will result in two spaces after the period in B<nroff> output when the text is
+reflowed.
 
-If you prefer one space after sentences (which is the more modern style), you
-will unfortunately need to ensure that no line in the middle of a paragraph
-ends in a period or similar sentence-ending punctuation sequence.  Otherwise,
-B<nroff> will add a two spaces after that sentence when reflowing, and your
-output document will have inconsistent spacing.
+One significant exception, however, is that different versions of groff vary
+in their interpretation of C<."> (a sentence ending with an ASCII double
+quote).  Some versions of groff treat this as the end of a sentence if there
+are two spaces after the closing quote, or if it comes at the end of a line.
+Others will never treat this as the end of a sentence and will collapse any
+following spaces down to a single space.  For consistent behavior for
+documents written in POD, you must use Unicode double quotes (C<“”>, U+201C
+and U+201D) and declare UTF-8 encoding (or some other Unicode encoding).  The
+Unicode closing double-quote, when preceded by a period and followed by two
+spaces or the end of the line, will always be interpreted as the end of a
+sentence in modern versions of groff.
+
+Therefore, if you want two spaces after sentences in the B<nroff> output, you
+can achieve this by using Unicode double quotes and using two spaces after
+periods that end a sentence.  You will have to be careful to not end a line
+with an abbreviation such as C<e.g.> or C<Ms.>.  Alternately, you can use the
+*roff style guide (and L<XKCD 1285|https://xkcd.com/1285/>) recommendation of
+putting a line break after each sentence, but you will still need to use
+Unicode double quotes.
+
+If you prefer one space after sentences (which is the more modern style), your
+best option is to configure your local *roff installation to always format man
+pages that way, rather than attempt to force this result via your POD source.
+For example, for groff, L<groff_man_style(7)> documents putting:
+
+    .\" Put only one space after the end of a sentence.
+    .ss 12 0 \" See groff(7).
+
+in F</usr/share/groff/site-tmac/man.local> (on Debian-derived systems,
+F</etc/groff/man.local> is used instead).  This will affect all man pages
+formatted with groff on that system, regardless of how their source is
+formatted.
 
 =head2 Hyphens and quotes
 
@@ -2420,7 +2448,7 @@ recognition and all bugs are mine.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 1999-2020, 2022-2025 Russ Allbery <rra@cpan.org>
+Copyright 1999-2020, 2022-2026 Russ Allbery <rra@cpan.org>
 
 Substantial contributions by Sean Burke <sburke@cpan.org>.
 
