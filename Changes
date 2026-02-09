@@ -19,6 +19,10 @@ v6.1.0 - Not Released
 - Fix Pod::Text quoting heuristics for C<> when the contents contains
   newlines. Thanks to van-de-bugger for the report. (GitHub #39)
 
+- Suppress adding double quotes around C<> text in Pod::Man and Pod::Text
+  if the contents are quoted with Unicode double quotes or consist of a
+  single character followed by an ASCII double quote.
+
 - Fix the documentation for the date and release options to Pod::Man and
   the corresponding --date and --release options to pod2man. The positions
   of the footers controlled by these options were reversed in podlators

@@ -548,6 +548,8 @@ sub quote_literal {
       ^\s*
       (?:
          ( [\'\"] ) .* \1                    # already quoted
+       | \x{201C} .* \x{201D}                # already quoted (Unicode)
+       | . \"                                # one character and double quote
        | \\\*\(Aq .* \\\*\(Aq                # quoted and escaped
        | \\?\` .* ( \' | \\?\` | \\\*\(Aq )  # `quoted' or `quoted`
        | $extra

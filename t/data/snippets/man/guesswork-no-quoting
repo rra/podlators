@@ -5,6 +5,8 @@ Disable quoting guesswork
 guesswork none
 
 [input]
+=encoding UTF-8
+
 =head1 QUOTING
 
 Suppress quotes:
@@ -12,6 +14,8 @@ C<"foo">,
 C<'foo'>,
 C<`foo`>,
 C<`foo'>,
+C<.">,
+C<“foo”>
 
 All these should now be quoted:
 C<$#f>,
@@ -38,6 +42,8 @@ Suppress quotes:
 \&\f(CW\*(Aqfoo\*(Aq\fR,
 \&\f(CW\`foo\`\fR,
 \&\f(CW\`foo\*(Aq\fR,
+\&\f(CW."\fR,
+\&\f(CW“foo”\fR
 .PP
 All these should now be quoted:
 \&\f(CW\*(C`$#f\*(C'\fR,

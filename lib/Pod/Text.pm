@@ -656,6 +656,8 @@ sub cmd_c {
       (?:
          ( [\'\`\"] ) .* \1                  # already quoted
        | \` .* \'                            # `quoted'
+       | \x{201C} .* \x{201D}                # already quoted (Unicode)
+       | . \"                                # one character and double quote
        | $extra
       )
       \s*\z
@@ -1237,7 +1239,7 @@ Pod::Simple.
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 1999-2002, 2004, 2006, 2008-2009, 2012-2016, 2018-2019, 2022,
-2024-2025 Russ Allbery <rra@cpan.org>
+2024-2026 Russ Allbery <rra@cpan.org>
 
 This program is free software; you may redistribute it and/or modify it
 under the same terms as Perl itself.
