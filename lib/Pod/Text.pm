@@ -321,7 +321,6 @@ sub output {
                 $self->whine ($self->line_count(), $error);
                 return Encode::encode ($$self{ENCODING}, chr($char));
             };
-            print("ENCODING IN $encoding\n");
             print { $$self{output_fh} } encode ($encoding, $text, $check);
         } else {
             print { $$self{output_fh} } $text;
