@@ -1708,8 +1708,9 @@ __END__
 =for stopwords
 en em ALLCAPS teeny fixedbold fixeditalic fixedbolditalic stderr utf8 UTF-8
 Allbery Sean Burke Ossanna Solaris formatters troff uppercased Christiansen
-nourls parsers Kernighan lquote rquote unrepresentable mandoc NetBSD PostScript
-SMP macOS EBCDIC fallbacks manref reflowed reflowing FH overridable
+nourls parsers Kernighan lquote rquote unrepresentable mandoc NetBSD
+PostScript SMP macOS EBCDIC fallbacks manref reflowed reflowing FH overridable
+intersentence
 
 =head1 NAME
 
