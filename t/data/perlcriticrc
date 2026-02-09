@@ -10,7 +10,7 @@
 # which can be found at <https://www.eyrie.org/~eagle/software/rra-c-util/>.
 #
 # Written by Russ Allbery <eagle@eyrie.org>
-# Copyright 2018-2022, 2025 Russ Allbery <eagle@eyrie.org>
+# Copyright 2018-2022, 2025-2026 Russ Allbery <eagle@eyrie.org>
 # Copyright 2011-2013
 #     The Board of Trustees of the Leland Stanford Junior University
 #
@@ -41,6 +41,10 @@ severity = 1
 # tools understand it, and include the policy name for ease of writing
 # exclusion rules.
 verbose = %f:%l:%c: [%p] %m (%e, Severity: %s)\n
+
+# This module is installed in the Perl containers used on GitHub but doesn't
+# seem to be packaged by Debian.
+exclude = Bangs::
 
 # Perl::Critic::Freenode has been renamed upstream to Perl::Critic::Community
 # but some systems may still have both installed and the old checks may report
