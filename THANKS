@@ -243,8 +243,8 @@ bug with nested =items without bodies.
 G. Branden Robinson, for his assistance in understanding *roff syntax,
 analysis of groff justification and hyphenation changes, collaboration on
 finding an approach to set a default for hyphenation and justification
-without overriding user preferences, and his general helpfulness with all
-things related to groff.
+without overriding user preferences, assistance with fixed-with fonts, and
+his general helpfulness with all things related to groff.
 
 youpong, for reporting a double-encoding bug with a :utf8 output layer.
 

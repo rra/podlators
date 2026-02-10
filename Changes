@@ -6,7 +6,8 @@ v6.1.0 - Not Released
   with groff 1.24.0 or later at the cost of breaking troff output on
   Solaris 10. nroff output and troff output on Solaris 11 are
   unaffected. The pod2man option --fixed=CW will restore the previous
-  behavior. (GitHub #43)
+  behavior. Thanks to G. Branden Robinson for the analysis and assistance.
+  (GitHub #43)
 
 - Move the Pod::Man override of the AD string (needed to request left
   justification) after .TH, and also clear the HY register to request no
