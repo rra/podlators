@@ -7,7 +7,7 @@
 .if n .sp
 ..
 .de Vb \" Begin verbatim text
-.ft CW
+.ft CR
 .nf
 .ne \\$1
 ..

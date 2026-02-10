@@ -294,7 +294,7 @@ sub init_fonts {
     # implementations what fixed bold-italic may be called (if it's even
     # available), so default to just bold.
     #<<<
-    $self->{opt_fixed}           ||= 'CW';
+    $self->{opt_fixed}           ||= 'CR';
     $self->{opt_fixedbold}       ||= 'CB';
     $self->{opt_fixeditalic}     ||= 'CI';
     $self->{opt_fixedbolditalic} ||= 'CB';
@@ -1831,8 +1831,9 @@ The default is C<pod>.
 
 =item fixed
 
-[1.00] The fixed-width font to use for verbatim text and code.  Defaults to
-C<CW>.  Some systems prefer C<CR> instead.  Only matters for B<troff> output.
+[6.1.0] The fixed-width font to use for verbatim text and code.  Defaults to
+C<CR>.  Solaris systems historically preferred C<CW> instead.  Only matters
+for B<troff> output.
 
 =item fixedbold
 
@@ -2339,6 +2340,10 @@ should translate to a hyphen-minus or a true hyphen, but these heuristics were
 buggy and fragile.  v6.0.0 and later also unconditionally convert C<`> and
 C<'> to ASCII grave accent and apostrophe marks instead of the default *roff
 behavior of interpreting them as paired quotes.
+
+Pod::Man v6.1.0 and later use C<CR> as the default fixed-width font instead of
+C<CW>, as was used in previous versions.  This should only matter for B<troff>
+output.
 
 =head1 BUGS
 

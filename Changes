@@ -2,6 +2,12 @@
 
 v6.1.0 - Not Released
 
+- Change the default fixed-width font from CW to CR. This avoids warnings
+  with groff 1.24.0 or later at the cost of breaking troff output on
+  Solaris 10. nroff output and troff output on Solaris 11 are
+  unaffected. The pod2man option --fixed=CW will restore the previous
+  behavior. (GitHub #43)
+
 - Move the Pod::Man override of the AD string (needed to request left
   justification) after .TH, and also clear the HY register to request no
   hyphenation. This positioning also works with groff 1.23.0 and will be
