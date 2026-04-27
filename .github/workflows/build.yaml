@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: perl-actions/install-with-cpm@v1.9
+      - uses: perl-actions/install-with-cpm@v2.3
         with:
           cpanfile: "cpanfile"
           args: "--with-suggests"
