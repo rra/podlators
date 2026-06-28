@@ -42,7 +42,7 @@ jobs:
       AUTHOR_TESTING: 1
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: perl-actions/install-with-cpm@v2.4
         with:
