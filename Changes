@@ -2,6 +2,15 @@
 
 v6.1.0 - Not Released
 
+- groff 1.24.0 broke use of the .IP macro for tag list formatting by
+  removing the mandatory spacing between the tag and the paragraph. Work
+  around this by using .TP for lists other than bullet or numbered
+  lists. Override the new groff TS register to force the minimum
+  separation between the tag and the paragraph to be one space rather than
+  the new default of two so that formatting with .TP will match the
+  previous formatting with .IP, for which the choice of indent in =over
+  commands was likely chosen.
+
 - Change the default fixed-width font from CW to CR. This avoids warnings
   with groff 1.24.0 or later at the cost of breaking troff output on
   Solaris 10. nroff output and troff output on Solaris 11 are
@@ -11,7 +20,7 @@ v6.1.0 - Not Released
 
 - Move the Pod::Man override of the AD string (needed to request left
   justification) after .TH, and also clear the HY register to request no
-  hyphenation. This positioning also works with groff 1.23.0 and will be
+  hyphenation. This positioning also works with groff 1.23.0 and is
   required by groff 1.24.0 to disable hyphenation and use left
   justification by default without overriding user preferences. Many
   thanks to G. Branden Robinson for the discussion and assistance.
@@ -35,9 +44,9 @@ v6.1.0 - Not Released
   of the footers controlled by these options were reversed in podlators
   1.12 but the documentation was never updated.
 
-- Update the Pod::Man discussion of intersentence spacing to reflect
-  upcoming groff changes around double quotes and to recommend against
-  attempting to manage the spacing for *roff output.
+- Update the Pod::Man discussion of intersentence spacing to reflect groff
+  changes around double quotes and to recommend against attempting to
+  manage the spacing for *roff output.
 
 v6.0.2 - 2024-07-14
 

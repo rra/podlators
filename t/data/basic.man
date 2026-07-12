@@ -94,7 +94,8 @@ Testing \fIitalics\fR
 .IX Header "OVER AND ITEMS"
 Taken from Pod::Parser tests, this is a test to ensure that multiline
 =item paragraphs get indented appropriately.
-.IP "This is a test." 4
+.TP 4
+This is a test.
 .IX Item "This is a test."
 .PP
 There should be whitespace now before this line.
@@ -104,10 +105,12 @@ paragraphs get indented appropriately.
 .IP 1. 2
 First section.
 .RS 2
-.IP a 2
+.TP 2
+a
 .IX Item "a"
 this is item a
-.IP b 2
+.TP 2
+b
 .IX Item "b"
 this is item b
 .RE
@@ -116,16 +119,20 @@ this is item b
 .IP 2. 2
 Second section.
 .RS 2
-.IP a 2
+.TP 2
+a
 .IX Item "a"
 this is item a
-.IP b 2
+.TP 2
+b
 .IX Item "b"
 this is item b
-.IP c 2
+.TP 2
+c
 .IX Item "c"
 .PD 0
-.IP d 2
+.TP 2
+d
 .IX Item "d"
 .PD
 This is item c & d.
@@ -135,18 +142,21 @@ This is item c & d.
 .PP
 Now some additional weirdness of our own.  Make sure that multiple tags
 for one paragraph are properly compacted.
-.IP """foo""" 4
+.TP 4
+"foo"
 .IX Item """foo"""
 .PD 0
-.IP \fBbar\fR 4
+.TP 4
+\&\fBbar\fR
 .IX Item "bar"
-.ie n .IP """baz""" 4
-.el .IP \f(CRbaz\fR 4
+.TP 4
+\&\f(CR\*(C`baz\*(C'\fR
 .IX Item "baz"
 .PD
 There shouldn\*(Aqt be any spaces between any of these item tags; this idiom
 is used in perlfunc.
-.IP "Some longer item text" 4
+.TP 4
+Some longer item text
 .IX Item "Some longer item text"
 Just to make sure that we test paragraphs where the item text doesn\*(Aqt fit
 in the margin of the paragraph (and make sure that this paragraph fills a
@@ -235,18 +245,24 @@ The following tests are added to those:
 Make sure that a few other odd \fIthings\fR still work.  This should be
 a vertical bar:  |.  Here\*(Aqs a test of a few more special escapes
 that have to be supported:
-.IP & 3
+.TP 3
+&
 An ampersand.
-.IP \*(Aq 3
+.TP 3
+\&\*(Aq
 .IX Item "'"
 An apostrophe.
-.IP < 3
+.TP 3
+<
 A less\-than sign.
-.IP > 3
+.TP 3
+>
 A greater\-than sign.
-.IP """" 3
+.TP 3
+"
 A double quotation mark.
-.IP / 3
+.TP 3
+/
 A forward slash.
 .PP
 Try to get this bit of text over towards the edge so |that\ all\ of\ this\ text\ inside\ S<>\ won\*(Aqt| be wrapped.  Also test the
