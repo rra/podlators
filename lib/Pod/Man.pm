@@ -1093,7 +1093,6 @@ $preamble
 .if n .ds AD l
 .if n .ad l
 .nr HY 0
-.nr TS 1n
 .nh
 ----END OF HEADER----
 #"# unconfuse Emacs cperl-mode
@@ -2211,7 +2210,7 @@ B<mandoc>, it's behavior is probably the same as the BSD hosts.
 
 Notes:
 
-=over 4
+=over 5
 
 =item [1]
 

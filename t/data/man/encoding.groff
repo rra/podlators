@@ -60,7 +60,6 @@
 .if n .ds AD l
 .if n .ad l
 .nr HY 0
-.nr TS 1n
 .nh
 .SH "ENCODING TESTS"
 .IX Header "ENCODING TESTS"

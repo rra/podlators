@@ -5,11 +5,12 @@ v6.1.0 - Not Released
 - groff 1.24.0 broke use of the .IP macro for tag list formatting by
   removing the mandatory spacing between the tag and the paragraph. Work
   around this by using .TP for lists other than bullet or numbered
-  lists. Override the new groff TS register to force the minimum
-  separation between the tag and the paragraph to be one space rather than
-  the new default of two so that formatting with .TP will match the
-  previous formatting with .IP, for which the choice of indent in =over
-  commands was likely chosen.
+  lists. Be aware that groff 1.24 and later defaults to a minimum gap of
+  two spaces between the tag and the paragraph for .TP instead of one
+  space as in previous pod2man and groff releases. POD documents that want
+  an indent just wide enough for tags to format on the same line as the
+  paragraph may need to increase the indent level for the =over command by
+  one to render as desired with those versions of groff.
 
 - Change the default fixed-width font from CW to CR. This avoids warnings
   with groff 1.24.0 or later at the cost of breaking troff output on
