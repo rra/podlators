@@ -1,6 +1,6 @@
                       Revision history for podlators
 
-v6.1.0 - Not Released
+v6.1.0 - 2026-07-19
 
 - groff 1.24.0 broke use of the .IP macro for tag list formatting by
   removing the mandatory spacing between the tag and the paragraph. Work
