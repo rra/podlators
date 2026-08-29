@@ -113,14 +113,19 @@ sub wrap {
         $width = $self->{opt_width};
     }
 
+    # This regex represents a single character, that's possibly underlined or
+    # in bold (in which case, it's three characters; the character, a
+    # backspace, and a character).  Use [^\n] rather than . to protect against
+    # odd settings of $*.
+    my $char = '(?:[^\n][\b])?[^\n]';
+
+    # Perform the wrapping.  After we find a break point, remove any
+    # underlined or bold spaces left over in the input text after the break
+    # point.
     while (length > $width) {
-        # This regex represents a single character, that's possibly underlined
-        # or in bold (in which case, it's three characters; the character, a
-        # backspace, and a character).  Use [^\n] rather than . to protect
-        # against odd settings of $*.
-        my $char = '(?:[^\n][\b])?[^\n]';
         if (s/^((?>$char){0,$width})(?:\Z|[ \t\n]+)//) {
             $output .= $spaces . $1 . "\n";
+            s/^(?:[\b][ _])?(?:[ ][\b][ ])*//;
         } else {
             last;
         }
