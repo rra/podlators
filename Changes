@@ -4,7 +4,8 @@ v6.1.1 - Not Released
 
 - Avoid errors or an infinite loop in Pod::Text and its subclasses when
   attempting to wrap text whose margin equals or exceeds the output width.
-  Instead, report an error and force the margin to zero. (CVE-2026-82560)
+  Instead, report an error and force the margin to zero. Thanks to Jitka
+  Plesnikova for the report. (CVE-2026-82560)
 
 - When Pod::Text::Overstrike wraps a line at a bold or underscored space,
   avoid leaving partially formatted spaces at the start of the subsequent
