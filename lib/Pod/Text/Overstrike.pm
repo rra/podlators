@@ -17,7 +17,7 @@
 # Modules and declarations
 ##############################################################################
 
-package Pod::Text::Overstrike v6.1.0;
+package Pod::Text::Overstrike v6.1.1;
 
 use 5.012;
 use parent qw(Pod::Text);
